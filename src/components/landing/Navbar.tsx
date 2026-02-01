@@ -54,6 +54,9 @@ export function Navbar() {
                 {link.name}
               </a>
             ))}
+            <Link href="/login" className="text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground hover:text-primary transition-colors">
+              Login V3
+            </Link>
           </nav>
 
           {/* Auth Actions */}
