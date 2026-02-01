@@ -7,10 +7,19 @@ import { headers } from 'next/headers';
 export async function createCheckoutSession() {
   try {
     const supabase = await createClient();
+    
+    // Verificação dupla de sessão para Next.js 15
+    const { data: { session }, error: sessionError } = await supabase.auth.getSession();
+    
+    if (sessionError || !session) {
+      console.error('Erro de sessão no Checkout:', sessionError);
+      return { error: `Sessão não encontrada: ${sessionError?.message || 'Faça login novamente.'}` };
+    }
+
     const { data: { user }, error: authError } = await supabase.auth.getUser();
 
     if (authError || !user) {
-      return { error: 'Por favor, saia e faça login novamente para validar sua assinatura.' };
+      return { error: `Usuário não verificado: ${authError?.message || 'Tente sair e entrar novamente.'}` };
     }
 
     const { data: profile } = await supabase
