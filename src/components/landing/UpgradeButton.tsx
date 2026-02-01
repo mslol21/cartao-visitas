@@ -43,7 +43,7 @@ export function UpgradeButton() {
       disabled={loading}
     >
       <Zap className="w-4 h-4 mr-2 fill-current" />
-      {loading ? 'Redirecionando...' : 'Seja Premium'}
+      {loading ? 'Redirecionando...' : 'Confirmar Assinatura'}
     </Button>
   );
 }

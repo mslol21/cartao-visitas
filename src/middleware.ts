@@ -23,29 +23,16 @@ export async function middleware(request: NextRequest) {
     }
   )
 
-  // 1. Tentar pegar o usuário (pode falhar/timeout em rede lenta)
+  // Refresh the session
   const { data: { user } } = await supabase.auth.getUser()
   const pathname = request.nextUrl.pathname
 
-  // 2. Verificar se existe o cookie específico do seu projeto atual
-  // O ID do seu projeto é 'fyexdnjvxphhgestfvrt'
-  const projectAuthCookie = request.cookies.get('sb-fyexdnjvxphhgestfvrt-auth-token')
-  
-  console.log(`[Middleware] Rota: ${pathname} | User: ${user ? '✅' : '❌'} | Cookie Projeto: ${projectAuthCookie ? 'Sim' : 'Não'}`)
+  if (!user && pathname.startsWith('/dashboard')) {
+    return NextResponse.redirect(new URL('/login', request.url))
+  }
 
-  // 3. Regras de Redirecionamento com tolerância para erro de rede
-  if (user || projectAuthCookie) {
-    // Se logado (ou com cookie), não acessa login/signup
-    if (pathname === '/login' || pathname === '/signup') {
-      return NextResponse.redirect(new URL('/dashboard', request.url))
-    }
-    // Permite dashboard
-    return response
-  } else {
-    // Se REALMENTE não tem nada, manda pro login apenas se estiver no dashboard
-    if (pathname.startsWith('/dashboard')) {
-      return NextResponse.redirect(new URL('/login', request.url))
-    }
+  if (user && (pathname === '/login' || pathname === '/signup')) {
+    return NextResponse.redirect(new URL('/dashboard', request.url))
   }
 
   return response
