@@ -35,7 +35,7 @@ export async function createCheckoutSession() {
     const headersList = await headers();
     const origin = headersList.get('origin') || 'https://konnexy.vercel.app';
 
-    const session = await stripe.checkout.sessions.create({
+    const checkoutSession = await stripe.checkout.sessions.create({
       payment_method_types: ['card'],
       line_items: [
         {
@@ -52,7 +52,7 @@ export async function createCheckoutSession() {
       customer_email: user.email,
     });
 
-    return { url: session.url };
+    return { url: checkoutSession.url };
   } catch (error: any) {
     console.error('Stripe error:', error);
     return { error: 'Erro de servidor: ' + error.message };
