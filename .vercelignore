@@ -1,0 +1,4 @@
+# Force fresh builds
+.vercel
+.next
+node_modules
