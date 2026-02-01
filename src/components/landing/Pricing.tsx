@@ -4,6 +4,7 @@ import { Check, Sparkles, Zap, ShieldCheck } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
+import { UpgradeButton } from './UpgradeButton';
 
 const plans = [
   {
@@ -36,7 +37,7 @@ const plans = [
       'Suporte prioritário',
     ],
     cta: 'Seja Premium',
-    href: '/signup',
+    href: '/pricing',
     popular: true,
   },
 ];
@@ -107,18 +108,20 @@ export function Pricing() {
                 ))}
               </div>
 
-              <Button
-                asChild
-                variant={plan.popular ? 'hero' : 'outline'}
-                className={`w-full h-16 rounded-2xl text-sm font-black uppercase tracking-widest shadow-xl transition-all active:scale-95 ${
-                  plan.popular ? 'shadow-primary/20' : ''
-                }`}
-              >
-                <Link href={plan.href}>
-                   {plan.popular && <Zap className="w-4 h-4 mr-2 fill-current" />}
-                   {plan.cta}
-                </Link>
-              </Button>
+              
+              {plan.popular ? (
+                <UpgradeButton />
+              ) : (
+                <Button
+                  asChild
+                  variant="outline"
+                  className="w-full h-16 rounded-2xl text-sm font-black uppercase tracking-widest shadow-xl transition-all active:scale-95"
+                >
+                  <Link href={plan.href}>
+                    {plan.cta}
+                  </Link>
+                </Button>
+              )}
               
               <p className="mt-6 text-center text-[10px] font-bold text-muted-foreground/40 uppercase tracking-widest">
                  Cancelamento instantâneo a qualquer momento
