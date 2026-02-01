@@ -43,6 +43,12 @@ function DashboardContent() {
     }
   }, [profile]);
 
+  useEffect(() => {
+    if (!authLoading && !user) {
+      router.push('/login');
+    }
+  }, [user, authLoading, router]);
+
   const handleSignOut = async () => {
     await signOut();
     router.push('/');
