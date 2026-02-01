@@ -17,24 +17,28 @@ const jakarta = Plus_Jakarta_Sans({
 
 export const metadata: Metadata = {
   title: {
-    default: "ConnectCard | Networking Digital de Elite",
-    template: "%s | ConnectCard"
+    default: "Konnexy | Networking Digital de Elite",
+    template: "%s | Konnexy"
   },
   description: "A plataforma nº 1 para criação de cartões de visita digitais focados em conversão e SEO profissional.",
-  keywords: ["cartão de visita digital", "link no whatsapp", "bio link profissional", "marketing digital", "networking", "saas"],
-  authors: [{ name: "ConnectCard Team" }],
-  creator: "ConnectCard Inc",
+  keywords: ["cartão de visita digital", "link no whatsapp", "bio link profissional", "marketing digital", "networking", "saas", "konnexy"],
+  authors: [{ name: "Konnexy Team" }],
+  creator: "Konnexy",
+  icons: {
+    icon: "/logo-icon.svg",
+    apple: "/logo-icon.svg",
+  },
   openGraph: {
     type: "website",
     locale: "pt_BR",
-    url: "https://connectcard.io",
-    title: "ConnectCard | Networking Digital de Elite",
+    url: "https://konnexy.io",
+    title: "Konnexy | Networking Digital de Elite",
     description: "Crie seu cartão de visita digital em segundos e conquiste mais clientes.",
-    siteName: "ConnectCard",
+    siteName: "Konnexy",
   },
   twitter: {
     card: "summary_large_image",
-    title: "ConnectCard | Networking Digital de Elite",
+    title: "Konnexy | Networking Digital de Elite",
     description: "Cartão de visita digital focado em conversão.",
   },
   viewport: "width=device-width, initial-scale=1, maximum-scale=1",

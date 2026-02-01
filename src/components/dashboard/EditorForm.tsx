@@ -42,6 +42,7 @@ export function EditorForm({ initialData, onSubmit, onChange, isPro = false }: E
   const [isSaving, setIsSaving] = useState(false);
   const [uploading, setUploading] = useState(false);
   const [newService, setNewService] = useState('');
+  const [usernameStatus, setUsernameStatus] = useState<'idle' | 'checking' | 'available' | 'taken'>('idle');
   const fileInputRef = useRef<HTMLInputElement>(null);
   const supabase = createClient();
   const firstRender = useRef(true);
@@ -50,11 +51,47 @@ export function EditorForm({ initialData, onSubmit, onChange, isPro = false }: E
     setFormData(initialData);
   }, [initialData]);
 
+  // Real-time username availability check
+  useEffect(() => {
+    if (!formData.username || formData.username === initialData.username) {
+      setUsernameStatus('idle');
+      return;
+    }
+
+    const checkUsername = async () => {
+      setUsernameStatus('checking');
+      try {
+        const { data, error } = await supabase
+          .from('profiles')
+          .select('id')
+          .eq('username', formData.username)
+          .maybeSingle();
+
+        if (error) throw error;
+        
+        if (data) {
+          setUsernameStatus('taken');
+        } else {
+          setUsernameStatus('available');
+        }
+      } catch (err) {
+        console.error('Error checking username:', err);
+        setUsernameStatus('idle');
+      }
+    };
+
+    const debounce = setTimeout(checkUsername, 500);
+    return () => clearTimeout(debounce);
+  }, [formData.username, initialData.username, supabase]);
+
   useEffect(() => {
     if (firstRender.current) {
       firstRender.current = false;
       return;
     }
+
+    // Don't autosave if the username is taken
+    if (usernameStatus === 'taken') return;
 
     const timer = setTimeout(async () => {
       setIsSaving(true);
@@ -66,7 +103,7 @@ export function EditorForm({ initialData, onSubmit, onChange, isPro = false }: E
     }, 1500);
 
     return () => clearTimeout(timer);
-  }, [formData, onSubmit]);
+  }, [formData, onSubmit, usernameStatus]);
 
   const handleChange = (field: keyof ProfileFormData, value: any) => {
     const updated = { ...formData, [field]: value };
@@ -207,12 +244,28 @@ export function EditorForm({ initialData, onSubmit, onChange, isPro = false }: E
                 </div>
                 <div className="space-y-2">
                   <Label className="text-xs font-bold uppercase tracking-wider opacity-60">Username (URL)</Label>
-                  <Input
-                    value={formData.username || ''}
-                    onChange={(e) => handleChange('username', e.target.value.toLowerCase().replace(/[^a-z0-9-]/g, ''))}
-                    placeholder="seu.nome"
-                    className="rounded-2xl h-12"
-                  />
+                  <div className="relative">
+                    <Input
+                      value={formData.username || ''}
+                      onChange={(e) => handleChange('username', e.target.value.toLowerCase().replace(/[^a-z0-9-]/g, ''))}
+                      placeholder="seu.nome"
+                      className={cn(
+                        "rounded-2xl h-12 pr-10",
+                        usernameStatus === 'taken' && "border-red-500 focus-visible:ring-red-500",
+                        usernameStatus === 'available' && "border-green-500 focus-visible:ring-green-500"
+                      )}
+                    />
+                    <div className="absolute right-3 top-1/2 -translate-y-1/2">
+                      {usernameStatus === 'checking' && <Loader2 className="w-4 h-4 animate-spin text-muted-foreground" />}
+                      {usernameStatus === 'available' && <Check className="w-4 h-4 text-green-500" />}
+                      {usernameStatus === 'taken' && <X className="w-4 h-4 text-red-500" />}
+                    </div>
+                  </div>
+                  {usernameStatus === 'taken' && (
+                    <p className="text-[10px] font-bold text-red-500 uppercase tracking-widest mt-1 ml-1">
+                      Este link já está em uso
+                    </p>
+                  )}
                 </div>
               </div>
             </div>

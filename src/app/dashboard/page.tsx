@@ -23,12 +23,16 @@ import {
 } from 'lucide-react';
 import { toast } from 'sonner';
 import { motion, AnimatePresence } from 'framer-motion';
+import { cn } from "@/lib/utils";
+
+import { Logo } from '@/components/brand/Logo';
 
 function DashboardContent() {
   const router = useRouter();
   const { user, loading: authLoading, signOut } = useAuth();
   const { profile, loading: profileLoading, updateProfile } = useProfile();
   
+  const [activeTab, setActiveTab] = useState<'editor' | 'analytics' | 'settings'>('editor');
   const [currentData, setCurrentData] = useState<Partial<Profile>>({});
   const [copied, setCopied] = useState(false);
 
@@ -78,6 +82,7 @@ function DashboardContent() {
   }
 
   const publicUrl = profile?.username ? `/${profile.username}` : null;
+  const isPro = profile?.plan === 'pro';
 
   return (
     <div className="min-h-screen bg-slate-50 dark:bg-slate-950">
@@ -85,30 +90,51 @@ function DashboardContent() {
       <header className="bg-white/70 dark:bg-slate-900/70 backdrop-blur-xl border-b border-slate-200/50 dark:border-slate-800/50 sticky top-0 z-50">
         <div className="max-w-[1400px] mx-auto px-6 h-20 flex items-center justify-between">
           <div className="flex items-center gap-8">
-            <Link href="/" className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-2xl bg-slate-900 dark:bg-white flex items-center justify-center shadow-2xl">
-                <span className="text-white dark:text-slate-900 font-black text-xs">CV</span>
-              </div>
-              <span className="font-black text-xl tracking-tighter hidden sm:inline">ConnectCard</span>
+            <Link href="/" className="flex items-center">
+              <Logo variant="horizontal" showTagline={false} className="scale-75 origin-left" />
             </Link>
             
             <nav className="hidden md:flex items-center gap-1 bg-slate-100 dark:bg-slate-800 p-1 rounded-2xl">
-               <button className="px-4 py-2 rounded-xl bg-white dark:bg-slate-700 shadow-sm text-xs font-bold transition-all">Editor</button>
-               <button className="px-4 py-2 rounded-xl text-xs font-bold opacity-40 hover:opacity-100 transition-all">Analytics</button>
-               <button className="px-4 py-2 rounded-xl text-xs font-bold opacity-40 hover:opacity-100 transition-all">Ajustes</button>
+               <button 
+                 onClick={() => setActiveTab('editor')}
+                 className={cn(
+                   "px-4 py-2 rounded-xl text-xs font-bold transition-all",
+                   activeTab === 'editor' ? "bg-white dark:bg-slate-700 shadow-sm opacity-100" : "opacity-40 hover:opacity-100"
+                 )}
+               >
+                 Editor
+               </button>
+               <button 
+                 onClick={() => setActiveTab('analytics')}
+                 className={cn(
+                   "px-4 py-2 rounded-xl text-xs font-bold transition-all",
+                   activeTab === 'analytics' ? "bg-white dark:bg-slate-700 shadow-sm opacity-100" : "opacity-40 hover:opacity-100"
+                 )}
+               >
+                 Analytics
+               </button>
+               <button 
+                 onClick={() => setActiveTab('settings')}
+                 className={cn(
+                   "px-4 py-2 rounded-xl text-xs font-bold transition-all",
+                   activeTab === 'settings' ? "bg-white dark:bg-slate-700 shadow-sm opacity-100" : "opacity-40 hover:opacity-100"
+                 )}
+               >
+                 Ajustes
+               </button>
             </nav>
           </div>
 
           <div className="flex items-center gap-3">
             <AnimatePresence>
-              {profile?.plan === 'pro' ? (
+              {isPro ? (
                 <motion.div 
                   initial={{ opacity: 0, x: 10 }}
                   animate={{ opacity: 1, x: 0 }}
                   className="hidden lg:flex items-center gap-2 px-4 py-2 rounded-2xl bg-primary/10 border border-primary/20 text-primary"
                 >
                   <Crown className="w-4 h-4" />
-                  <span className="text-[10px] font-black uppercase tracking-widest">Plano ProAtivo</span>
+                  <span className="text-[10px] font-black uppercase tracking-widest">Plano Pro</span>
                 </motion.div>
               ) : (
                 <Button asChild variant="hero" size="sm" className="hidden sm:flex rounded-2xl bg-slate-900 dark:bg-white text-white dark:text-slate-900">
@@ -133,86 +159,200 @@ function DashboardContent() {
       </header>
 
       <main className="max-w-[1400px] mx-auto px-6 py-10">
-        <div className="grid lg:grid-cols-[1fr,450px] gap-12 items-start">
-          
-          {/* LEFT: Management */}
-          <div className="space-y-8">
-            <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
-              <div className="space-y-2">
-                <div className="flex items-center gap-2 text-[10px] font-black uppercase tracking-[0.3em] text-primary">
-                  <span className="w-8 h-[2px] bg-primary rounded-full" />
-                  Workplace
+        <AnimatePresence mode="wait">
+          {activeTab === 'editor' && (
+            <motion.div 
+              key="editor"
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -10 }}
+              className="grid lg:grid-cols-[1fr,450px] gap-12 items-start"
+            >
+              {/* LEFT: Management */}
+              <div className="space-y-8">
+                <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
+                  <div className="space-y-2">
+                    <div className="flex items-center gap-2 text-[10px] font-black uppercase tracking-[0.3em] text-primary">
+                      <span className="w-8 h-[2px] bg-primary rounded-full" />
+                      Workplace
+                    </div>
+                    <h1 className="text-4xl font-black tracking-tighter">Personalize seu Perfil</h1>
+                  </div>
+
+                  {publicUrl && (
+                    <div className="flex items-center gap-3">
+                      <button 
+                        onClick={copyLink}
+                        className="flex items-center gap-2 px-5 h-12 rounded-2xl bg-white dark:bg-slate-900 border border-border/50 shadow-sm font-bold text-sm hover:border-primary transition-all active:scale-95"
+                      >
+                        {copied ? <Check className="w-4 h-4 text-green-500" /> : <Copy className="w-4 h-4" />}
+                        {copied ? 'Copiado' : 'Link'}
+                      </button>
+                      <Button asChild variant="hero" className="h-12 px-6 rounded-2xl shadow-xl shadow-primary/20 group">
+                        <Link href={publicUrl} target="_blank">
+                          Ver Perfil
+                          <ExternalLink className="w-4 h-4 ml-2 transition-transform group-hover:translate-x-1 group-hover:-translate-y-1" />
+                        </Link>
+                      </Button>
+                    </div>
+                  )}
                 </div>
-                <h1 className="text-4xl font-black tracking-tighter">Personalize seu Perfil</h1>
+
+                <div className="bg-white dark:bg-slate-900 rounded-[2.5rem] border border-slate-200/60 dark:border-slate-800/60 p-8 sm:p-10 shadow-2xl shadow-slate-200/50 dark:shadow-none">
+                  <EditorForm
+                    initialData={currentData}
+                    onSubmit={handleAutoSave}
+                    onChange={setCurrentData}
+                    isPro={isPro}
+                  />
+                </div>
               </div>
 
-              {publicUrl && (
-                <div className="flex items-center gap-3">
-                  <button 
-                    onClick={copyLink}
-                    className="flex items-center gap-2 px-5 h-12 rounded-2xl bg-white dark:bg-slate-900 border border-border/50 shadow-sm font-bold text-sm hover:border-primary transition-all active:scale-95"
+              {/* RIGHT: Visual Reference */}
+              <div className="lg:sticky lg:top-32 space-y-8">
+                <div className="bg-white dark:bg-slate-900 rounded-[2.5rem] border border-slate-200/60 dark:border-slate-800/60 p-10 shadow-2xl shadow-slate-200/50 dark:shadow-none relative overflow-hidden">
+                  <div className="absolute top-0 right-0 p-8 opacity-5">
+                    <LayoutDashboard className="w-40 h-40" />
+                  </div>
+                  <LivePreview data={currentData} />
+                </div>
+
+                {/* Pro Upgrade Card */}
+                {!isPro && (
+                  <motion.div 
+                    whileHover={{ y: -5 }}
+                    className="relative overflow-hidden p-8 rounded-[2.5rem] bg-slate-900 text-white shadow-2xl dark:border dark:border-white/10"
                   >
-                    {copied ? <Check className="w-4 h-4 text-green-500" /> : <Copy className="w-4 h-4" />}
-                    {copied ? 'Copiado' : 'Link'}
-                  </button>
-                  <Button asChild variant="hero" className="h-12 px-6 rounded-2xl shadow-xl shadow-primary/20 group">
-                    <Link href={publicUrl} target="_blank">
-                      Ver Perfil
-                      <ExternalLink className="w-4 h-4 ml-2 transition-transform group-hover:translate-x-1 group-hover:-translate-y-1" />
-                    </Link>
-                  </Button>
+                    <div className="absolute -top-10 -right-10 w-40 h-40 bg-primary/20 rounded-full blur-[80px]" />
+                    <div className="relative z-10 space-y-6">
+                      <div className="w-12 h-12 rounded-2xl bg-primary/20 flex items-center justify-center border border-primary/30">
+                        <Zap className="w-6 h-6 text-primary fill-current" />
+                      </div>
+                      <div>
+                        <h3 className="text-xl font-black tracking-tight mb-2">Desbloqueie o Potencial Máximo</h3>
+                        <p className="text-slate-400 text-sm leading-relaxed">
+                          Remova marcas d&apos;água, use domínios personalizados e tenha acesso a métricas avançadas de cliques.
+                        </p>
+                      </div>
+                      <Button asChild variant="hero" className="w-full h-14 rounded-2xl shadow-xl shadow-primary/20 font-black text-sm uppercase tracking-widest">
+                        <Link href="/pricing">Upgrade por R$19/mês</Link>
+                      </Button>
+                    </div>
+                  </motion.div>
+                )}
+              </div>
+            </motion.div>
+          )}
+
+          {activeTab === 'analytics' && (
+            <motion.div 
+              key="analytics"
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -10 }}
+              className="space-y-8"
+            >
+              <div className="space-y-2">
+                <h1 className="text-4xl font-black tracking-tighter">Analytics</h1>
+                <p className="text-muted-foreground font-medium">Visualize quem está visitando seu perfil e quais botões estão sendo clicados.</p>
+              </div>
+
+              {!isPro ? (
+                <div className="bg-white dark:bg-slate-900 rounded-[2.5rem] p-12 text-center border-2 border-dashed border-slate-200 dark:border-slate-800">
+                  <div className="max-w-md mx-auto space-y-6">
+                    <div className="w-20 h-20 bg-primary/10 rounded-3xl flex items-center justify-center mx-auto">
+                      <Eye className="w-10 h-10 text-primary" />
+                    </div>
+                    <h2 className="text-2xl font-black tracking-tight">Recurso Exclusivo Pro</h2>
+                    <p className="text-muted-foreground leading-relaxed">
+                      Assine o plano Pro para ter acesso a gráficos detalhados, origem de tráfego e taxa de conversão do seu cartão.
+                    </p>
+                    <Button asChild variant="hero" size="xl" className="w-full rounded-[1.5rem] shadow-2xl shadow-primary/20">
+                      <Link href="/pricing">Subir de Nível agora</Link>
+                    </Button>
+                  </div>
+                </div>
+              ) : (
+                <div className="grid md:grid-cols-3 gap-6">
+                  {/* Mock Stats for Pro */}
+                  {[
+                    { label: 'Visitas Totais', value: '1.242', change: '+12%', icon: Eye },
+                    { label: 'Cliques no WhatsApp', value: '384', change: '+5%', icon: MessageCircle },
+                    { label: 'Taxa de Conversão', value: '31%', change: '+2%', icon: Zap },
+                  ].map((stat, i) => (
+                    <div key={i} className="bg-white dark:bg-slate-900 p-8 rounded-[2rem] border border-border/50 shadow-sm space-y-4">
+                      <div className="flex items-center justify-between">
+                        <div className="w-10 h-10 rounded-xl bg-slate-50 dark:bg-slate-800 flex items-center justify-center">
+                          <stat.icon className="w-5 h-5 text-primary" />
+                        </div>
+                        <span className="text-[10px] font-bold text-green-500 bg-green-500/10 px-2 py-1 rounded-full">{stat.change}</span>
+                      </div>
+                      <div>
+                        <p className="text-xs font-bold text-muted-foreground uppercase tracking-widest">{stat.label}</p>
+                        <p className="text-3xl font-black mt-1">{stat.value}</p>
+                      </div>
+                    </div>
+                  ))}
+                  
+                  <div className="md:col-span-3 bg-white dark:bg-slate-900 p-12 rounded-[2.5rem] border border-border/50 text-center">
+                    <p className="text-muted-foreground font-medium italic">Gráfico detalhado em desenvolvimento...</p>
+                  </div>
                 </div>
               )}
-            </div>
+            </motion.div>
+          )}
 
-            <div className="bg-white dark:bg-slate-900 rounded-[2.5rem] border border-slate-200/60 dark:border-slate-800/60 p-8 sm:p-10 shadow-2xl shadow-slate-200/50 dark:shadow-none">
-              <EditorForm
-                initialData={currentData}
-                onSubmit={handleAutoSave}
-                onChange={setCurrentData}
-                isPro={profile?.plan === 'pro'}
-              />
-            </div>
-          </div>
-
-          {/* RIGHT: Visual Reference */}
-          <div className="lg:sticky lg:top-32 space-y-8">
-            <div className="bg-white dark:bg-slate-900 rounded-[2.5rem] border border-slate-200/60 dark:border-slate-800/60 p-10 shadow-2xl shadow-slate-200/50 dark:shadow-none relative overflow-hidden">
-              <div className="absolute top-0 right-0 p-8 opacity-5">
-                 <LayoutDashboard className="w-40 h-40" />
+          {activeTab === 'settings' && (
+            <motion.div 
+              key="settings"
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -10 }}
+              className="max-w-2xl space-y-8"
+            >
+              <div className="space-y-2">
+                <h1 className="text-4xl font-black tracking-tighter">Ajustes</h1>
+                <p className="text-muted-foreground font-medium">Gerencie sua conta e preferências da plataforma.</p>
               </div>
-              <LivePreview data={currentData} />
-            </div>
 
-            {/* Pro Upgrade Card */}
-            {profile?.plan !== 'pro' && (
-              <motion.div 
-                whileHover={{ y: -5 }}
-                className="relative overflow-hidden p-8 rounded-[2.5rem] bg-slate-900 text-white shadow-2xl dark:border dark:border-white/10"
-              >
-                <div className="absolute -top-10 -right-10 w-40 h-40 bg-primary/20 rounded-full blur-[80px]" />
-                <div className="relative z-10 space-y-6">
-                  <div className="w-12 h-12 rounded-2xl bg-primary/20 flex items-center justify-center border border-primary/30">
-                     <Zap className="w-6 h-6 text-primary fill-current" />
-                  </div>
+              <div className="bg-white dark:bg-slate-900 rounded-[2.5rem] border border-border/50 overflow-hidden">
+                <div className="p-8 border-b border-border/50 flex items-center justify-between">
                   <div>
-                    <h3 className="text-xl font-black tracking-tight mb-2">Desbloqueie o Potencial Máximo</h3>
-                    <p className="text-slate-400 text-sm leading-relaxed">
-                      Remova marcas d&apos;água, use domínios personalizados e tenha acesso a métricas avançadas de cliques.
-                    </p>
+                    <p className="font-bold">Informações da Conta</p>
+                    <p className="text-xs text-muted-foreground">{user?.email}</p>
                   </div>
-                  <Button asChild variant="hero" className="w-full h-14 rounded-2xl shadow-xl shadow-primary/20 font-black text-sm uppercase tracking-widest">
-                    <Link href="/pricing">Upgrade por R$19/mês</Link>
-                  </Button>
+                  <div className="px-3 py-1 rounded-full bg-slate-100 dark:bg-slate-800 text-[10px] font-black uppercase tracking-widest">
+                    Plano {isPro ? 'Pro' : 'Free'}
+                  </div>
                 </div>
-              </motion.div>
-            )}
-          </div>
-        </div>
+                
+                <div className="p-8 space-y-6">
+                  <div className="flex items-center justify-between group cursor-pointer" onClick={() => router.push('/pricing')}>
+                    <div>
+                      <p className="text-sm font-bold">Assinatura</p>
+                      <p className="text-xs text-muted-foreground">Gerencie seus pagamentos e faturas via Stripe.</p>
+                    </div>
+                    <ExternalLink className="w-4 h-4 opacity-20 group-hover:opacity-100 transition-opacity" />
+                  </div>
+
+                  <div className="h-[1px] bg-border/50" />
+
+                  <div className="flex items-center justify-between group cursor-pointer text-red-500" onClick={handleSignOut}>
+                    <div>
+                      <p className="text-sm font-bold">Encerrar Sessão</p>
+                      <p className="text-xs opacity-60">Sair da sua conta no Konnexy.</p>
+                    </div>
+                    <LogOut className="w-4 h-4" />
+                  </div>
+                </div>
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </main>
 
       <footer className="max-w-[1400px] mx-auto px-6 py-12 flex flex-col sm:flex-row items-center justify-between gap-6 border-t border-border/30 mt-12">
-        <p className="text-[10px] font-black uppercase tracking-widest text-slate-400">© 2024 ConnectCard Platform • Premium Experience</p>
+        <p className="text-[10px] font-black uppercase tracking-widest text-slate-400">© 2024 Konnexy • Premium Experience</p>
         <div className="flex items-center gap-6">
            <Link href="/terms" className="text-[10px] font-black uppercase tracking-widest text-slate-400 hover:text-primary">Termos</Link>
            <Link href="/privacy" className="text-[10px] font-black uppercase tracking-widest text-slate-400 hover:text-primary">Privacidade</Link>

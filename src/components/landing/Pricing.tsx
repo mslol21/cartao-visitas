@@ -127,15 +127,6 @@ export function Pricing() {
           ))}
         </div>
         
-        <div className="mt-20 flex flex-wrap items-center justify-center gap-12 opacity-30 grayscale">
-            <h4 className="text-xs font-black tracking-[0.3em] uppercase">Trusted by scale teams</h4>
-            {/* Logos generic names or placeholders */}
-            <div className="flex gap-10 items-center">
-               <span className="font-display font-black tracking-tighter italic">FINANCE.IO</span>
-               <span className="font-display font-black tracking-tighter">DESIGN.CO</span>
-               <span className="font-display font-black tracking-tighter italic shadow-sm">NET.APP</span>
-            </div>
-        </div>
       </div>
     </section>
   );

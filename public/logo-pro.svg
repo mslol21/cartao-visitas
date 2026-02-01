@@ -1,0 +1,8 @@
+<svg width="400" height="120" viewBox="0 0 400 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="400" height="120" rx="20" fill="#2D3135"/>
+  <!-- Link/Infinity Icon -->
+  <path d="M50 60C50 48.9543 58.9543 40 70 40C81.0457 40 90 48.9543 90 60C90 71.0457 81.0457 80 70 80C58.9543 80 50 71.0457 50 60Z" stroke="white" strokeWidth="6" />
+  <path d="M30 60C30 48.9543 38.9543 40 50 40C61.0457 40 70 48.9543 70 60C70 71.0457 61.0457 80 50 80C38.9543 80 30 71.0457 30 60Z" stroke="white" strokeWidth="6" />
+  
+  <text x="110" y="72" font-family="Arial, sans-serif" font-weight="900" font-size="44" fill="white">Konnexy</text>
+</svg>

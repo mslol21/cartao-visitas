@@ -10,6 +10,7 @@ import { toast } from 'sonner';
 import { z } from 'zod';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
+import { Logo } from '@/components/brand/Logo';
 
 const authSchema = z.object({
   email: z.string().email('Email inválido').max(255, 'Email muito longo'),
@@ -127,11 +128,8 @@ export function AuthForm({ mode }: AuthFormProps) {
         {/* Card */}
         <div className="bg-card border border-border rounded-2xl p-8 shadow-soft">
           {/* Logo */}
-          <div className="flex items-center justify-center gap-2 mb-8">
-            <div className="w-10 h-10 rounded-xl gradient-primary flex items-center justify-center">
-              <span className="text-primary-foreground font-bold">CV</span>
-            </div>
-            <span className="font-display font-bold text-xl">ConnectCard</span>
+          <div className="flex items-center justify-center mb-8">
+            <Logo variant="horizontal" showTagline={false} className="scale-75" />
           </div>
 
           {/* Title */}

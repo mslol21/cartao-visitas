@@ -8,6 +8,8 @@ import { useAuth } from '@/hooks/useAuth';
 import { motion, AnimatePresence } from 'framer-motion';
 import { cn } from '@/lib/utils';
 
+import { Logo } from '@/components/brand/Logo';
+
 export function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
@@ -22,7 +24,6 @@ export function Navbar() {
   const navLinks = [
     { name: 'Soluções', href: '#como-funciona' },
     { name: 'Planos', href: '#precos' },
-    { name: 'Empresas', href: '#empresas' },
   ];
 
   return (
@@ -38,11 +39,8 @@ export function Navbar() {
       )}>
         <div className="flex items-center justify-between h-full">
           {/* Brand */}
-          <Link href="/" className="flex items-center gap-3 group">
-            <div className="w-10 h-10 rounded-2xl bg-slate-900 dark:bg-white flex items-center justify-center shadow-xl group-hover:rotate-6 transition-transform">
-              <span className="text-white dark:text-slate-900 font-black text-xs">CV</span>
-            </div>
-            <span className="font-black text-xl tracking-tighter">ConnectCard</span>
+          <Link href="/" className="flex items-center group">
+            <Logo variant="horizontal" showTagline={false} className="scale-75 origin-left" />
           </Link>
 
           {/* Nav Links */}
