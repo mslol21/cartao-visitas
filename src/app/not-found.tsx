@@ -4,6 +4,8 @@ import Link from 'next/link';
 import { ArrowLeft, Home } from 'lucide-react';
 import { Logo } from '@/components/brand/Logo';
 
+export const dynamic = 'force-dynamic';
+
 export default function NotFound() {
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-slate-50 via-white to-blue-50 dark:from-slate-950 dark:via-slate-900 dark:to-slate-950">
