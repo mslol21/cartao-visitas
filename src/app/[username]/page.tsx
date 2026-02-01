@@ -4,21 +4,22 @@ import { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 
 interface Props {
-  params: { username: string };
+  params: Promise<{ username: string }>;
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const { username } = await params;
   const supabase = createClient();
   const { data: profile } = await supabase
     .from('profiles')
     .select('*')
-    .eq('username', params.username)
+    .eq('username', username)
     .single();
 
   if (!profile) return { title: 'Perfil não encontrado' };
 
-  const name = profile.name || params.username;
-  const title = profile.seo_title || `${name} | ConnectCard Profissional`;
+  const name = profile.name || username;
+  const title = profile.seo_title || `${name} | Konnexy Profissional`;
   const description = profile.seo_description || profile.tagline || `Confira o cartão de visita digital de ${name}. Contato via WhatsApp, redes sociais e serviços.`;
 
   return {
@@ -29,7 +30,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       description,
       images: profile.photo_url ? [profile.photo_url] : [],
       type: 'profile',
-      url: `https://connectcard.io/${params.username}`,
+      url: `https://konnexy.io/${username}`,
     },
     twitter: {
       card: 'summary_large_image',
@@ -38,17 +39,18 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       images: profile.photo_url ? [profile.photo_url] : [],
     },
     alternates: {
-      canonical: `https://connectcard.io/${params.username}`,
+      canonical: `https://konnexy.io/${username}`,
     },
   };
 }
 
 export default async function PublicPage({ params }: Props) {
+  const { username } = await params;
   const supabase = createClient();
   const { data: profile } = await supabase
     .from('profiles')
     .select('*')
-    .eq('username', params.username)
+    .eq('username', username)
     .single();
 
   if (!profile) notFound();
