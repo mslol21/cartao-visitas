@@ -28,11 +28,12 @@ export function UpgradeButton() {
 
       const data = await response.json();
 
-      if (data.url) {
+      if (response.ok && data.url) {
         // Redireciona para o Stripe Checkout
         window.location.href = data.url;
       } else {
-        toast.error('Erro ao criar sessão de checkout');
+        toast.error(data.error || 'Erro ao criar sessão de checkout');
+        console.error('Checkout error:', data);
       }
     } catch (error) {
       console.error('Erro:', error);
