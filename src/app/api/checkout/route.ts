@@ -6,17 +6,15 @@ export async function POST(request: Request) {
   try {
     const supabase = await createClient();
     
-    // Tenta pegar a sessão primeiro
-    const { data: { session }, error: sessionError } = await supabase.auth.getSession();
+    // getUser() é mais lento mas valida o token com o Supabase
+    const { data: { user }, error: authError } = await supabase.auth.getUser();
     
-    if (sessionError || !session) {
+    if (authError || !user) {
       return NextResponse.json(
-        { error: 'Não autorizado: Sessão não encontrada. Por favor, faça login novamente.', details: sessionError?.message }, 
+        { error: 'Não autorizado: Usuário não autenticado no servidor.', details: authError?.message }, 
         { status: 401 }
       );
     }
-
-    const user = session.user;
 
     const { data: profile, error: profileError } = await supabase
       .from('profiles')
