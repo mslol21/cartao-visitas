@@ -8,18 +8,28 @@ export async function createCheckoutSession(manualToken?: string) {
   try {
     const supabase = await createClient();
     
-    // Se um token manual foi passado, forçamos a sessão no servidor
+    let user = null;
+
+    // Tenta validar o usuário diretamente com o token fornecido pelo cliente
     if (manualToken) {
-      await supabase.auth.setSession({
-        access_token: manualToken,
-        refresh_token: '', // Não precisamos do refresh para essa operação única
-      });
+      const { data: { user: verifiedUser }, error: verifyError } = await supabase.auth.getUser(manualToken);
+      if (verifiedUser) {
+        user = verifiedUser;
+      } else {
+        console.error('Erro ao validar token manual:', verifyError);
+      }
     }
 
-    const { data: { user }, error: authError } = await supabase.auth.getUser();
+    // Se não validou com o token, tenta pelos cookies da sessão
+    if (!user) {
+      const { data: { user: cookieUser } } = await supabase.auth.getUser();
+      user = cookieUser;
+    }
     
-    if (authError || !user) {
-      return { error: 'Sessão não reconhecida pelo servidor. Tente atualizar a página.' };
+    if (!user) {
+      return { 
+        error: 'Sessão não reconhecida. Por favor, faça login novamente para revalidar seu acesso.' 
+      };
     }
 
     const { data: profile } = await supabase
@@ -29,7 +39,7 @@ export async function createCheckoutSession(manualToken?: string) {
       .single();
 
     if (!profile) {
-      return { error: 'Perfil não encontrado no banco de dados.' };
+      return { error: 'Perfil não encontrado na nossa base de dados.' };
     }
 
     const headersList = await headers();
@@ -55,6 +65,6 @@ export async function createCheckoutSession(manualToken?: string) {
     return { url: checkoutSession.url };
   } catch (error: any) {
     console.error('Stripe error:', error);
-    return { error: 'Erro de processamento: ' + error.message };
+    return { error: 'Falha na conexão com o checkout: ' + error.message };
   }
 }
