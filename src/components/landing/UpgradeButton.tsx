@@ -10,7 +10,7 @@ import { createCheckoutSession } from '@/app/actions/checkout';
 
 export function UpgradeButton() {
   const router = useRouter();
-  const { user } = useAuth();
+  const { user, session } = useAuth();
   const [loading, setLoading] = useState(false);
 
   const handleUpgrade = async () => {
@@ -21,11 +21,6 @@ export function UpgradeButton() {
 
     setLoading(true);
     try {
-      // Pegamos o cliente do supabase e a sessão atual
-      const { createClient } = await import('@/utils/supabase/client');
-      const supabase = createClient();
-      const { data: { session } } = await supabase.auth.getSession();
-      
       const result = await createCheckoutSession(session?.access_token);
 
       if (result.url) {
