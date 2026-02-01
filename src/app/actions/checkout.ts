@@ -8,21 +8,14 @@ export async function createCheckoutSession() {
   try {
     const supabase = await createClient();
     
-    // 1. Pegar a sessão do Supabase (chamamos de 'supabaseAuth')
-    const { data: { session: supabaseSession }, error: sessionError } = await supabase.auth.getSession();
+    // Simplificado para pegar o usuário de forma mais direta
+    const { data: { user } } = await supabase.auth.getUser();
     
-    if (sessionError || !supabaseSession) {
-      return { error: 'Sessão não encontrada. Por favor, faça login novamente.' };
+    if (!user) {
+      console.error('SERVER ACTION: Usuário não encontrado no getUser()');
+      return { error: 'Sessão expirada. Por favor, saia e faça login novamente.' };
     }
 
-    // 2. Pegar o usuário
-    const { data: { user }, error: authError } = await supabase.auth.getUser();
-
-    if (authError || !user) {
-      return { error: 'Usuário não verificado. Tente sair e entrar novamente.' };
-    }
-
-    // 3. Verificar o perfil
     const { data: profile } = await supabase
       .from('profiles')
       .select('id, user_id')
@@ -36,7 +29,6 @@ export async function createCheckoutSession() {
     const headersList = await headers();
     const origin = headersList.get('origin') || 'https://konnexy.vercel.app';
 
-    // 4. Criar sessão do Stripe (chamamos de 'stripeSession')
     const stripeSession = await stripe.checkout.sessions.create({
       payment_method_types: ['card'],
       line_items: [
@@ -57,6 +49,6 @@ export async function createCheckoutSession() {
     return { url: stripeSession.url };
   } catch (error: any) {
     console.error('Stripe error:', error);
-    return { error: 'Erro de servidor: ' + error.message };
+    return { error: 'Erro crítico de servidor. Tente atualizar a página.' };
   }
 }
