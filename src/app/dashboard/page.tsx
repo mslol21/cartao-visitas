@@ -18,6 +18,7 @@ import {
   Crown,
   Eye,
   Zap,
+  MessageCircle,
   ArrowLeft,
   LayoutDashboard
 } from 'lucide-react';
