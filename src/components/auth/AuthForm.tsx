@@ -52,19 +52,6 @@ export function AuthForm({ mode }: AuthFormProps) {
 
     console.log('📝 Formulário submetido. Modo:', mode);
     
-    // Limpeza preventiva de cookies de outros projetos no localhost:3000
-    if (typeof document !== 'undefined') {
-      const cookies = document.cookie.split(";");
-      for (let i = 0; i < cookies.length; i++) {
-        const cookie = cookies[i];
-        const eqPos = cookie.indexOf("=");
-        const name = eqPos > -1 ? cookie.substr(0, eqPos).trim() : cookie.trim();
-        if (name.startsWith("sb-")) {
-          document.cookie = name + "=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/";
-        }
-      }
-    }
-
     setLoading(true);
 
     try {
