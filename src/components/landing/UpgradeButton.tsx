@@ -6,6 +6,7 @@ import { Zap } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
 import { toast } from 'sonner';
 import { useState } from 'react';
+import { createCheckoutSession } from '@/app/actions/checkout';
 
 export function UpgradeButton() {
   const router = useRouter();
@@ -13,29 +14,21 @@ export function UpgradeButton() {
   const [loading, setLoading] = useState(false);
 
   const handleUpgrade = async () => {
-    // Se não está logado, redireciona para signup
     if (!user) {
       router.push('/signup?plan=pro');
       return;
     }
 
-    // Se está logado, chama a API de checkout
     setLoading(true);
     try {
-      const response = await fetch('/api/checkout', {
-        method: 'POST',
-      });
+      const result = await createCheckoutSession();
 
-      const data = await response.json();
-
-      if (response.ok && data.url) {
-        // Redireciona para o Stripe Checkout
-        window.location.href = data.url;
+      if (result.url) {
+        window.location.href = result.url;
       } else {
-        toast.error(data.error || 'Erro ao criar sessão de checkout');
-        console.error('Checkout error:', data);
+        toast.error(result.error || 'Erro ao criar sessão de checkout');
       }
-    } catch (error) {
+    } catch (error: any) {
       console.error('Erro:', error);
       toast.error('Erro ao processar pagamento');
     } finally {
@@ -51,7 +44,7 @@ export function UpgradeButton() {
       disabled={loading}
     >
       <Zap className="w-4 h-4 mr-2 fill-current" />
-      {loading ? 'Processando...' : 'Seja Premium'}
+      {loading ? 'Redirecionando...' : 'Seja Premium'}
     </Button>
   );
 }
