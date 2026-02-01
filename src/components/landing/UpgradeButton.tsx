@@ -21,7 +21,12 @@ export function UpgradeButton() {
 
     setLoading(true);
     try {
-      const result = await createCheckoutSession();
+      // Pegamos o cliente do supabase e a sessão atual
+      const { createClient } = await import('@/utils/supabase/client');
+      const supabase = createClient();
+      const { data: { session } } = await supabase.auth.getSession();
+      
+      const result = await createCheckoutSession(session?.access_token);
 
       if (result.url) {
         window.location.href = result.url;

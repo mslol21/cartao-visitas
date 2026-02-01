@@ -26,12 +26,7 @@ export async function middleware(request: NextRequest) {
             },
           })
           cookiesToSet.forEach(({ name, value, options }) =>
-            response.cookies.set(name, value, {
-              ...options,
-              // Forçar o domínio para ser o correto no Vercel
-              domain: '.konnexy.vercel.app',
-              path: '/',
-            })
+            response.cookies.set(name, value, options)
           )
         },
       },

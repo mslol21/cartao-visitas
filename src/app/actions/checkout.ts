@@ -4,16 +4,22 @@ import { createClient } from '@/utils/supabase/server';
 import { stripe, PRO_PLAN_PRICE_ID } from '@/lib/stripe';
 import { headers } from 'next/headers';
 
-export async function createCheckoutSession() {
+export async function createCheckoutSession(manualToken?: string) {
   try {
     const supabase = await createClient();
     
-    // Simplificado para pegar o usuário de forma mais direta
-    const { data: { user } } = await supabase.auth.getUser();
+    // Se um token manual foi passado, forçamos a sessão no servidor
+    if (manualToken) {
+      await supabase.auth.setSession({
+        access_token: manualToken,
+        refresh_token: '', // Não precisamos do refresh para essa operação única
+      });
+    }
+
+    const { data: { user }, error: authError } = await supabase.auth.getUser();
     
-    if (!user) {
-      console.error('SERVER ACTION: Usuário não encontrado no getUser()');
-      return { error: 'Sessão expirada. Por favor, saia e faça login novamente.' };
+    if (authError || !user) {
+      return { error: 'Sessão não reconhecida pelo servidor. Tente atualizar a página.' };
     }
 
     const { data: profile } = await supabase
@@ -23,13 +29,13 @@ export async function createCheckoutSession() {
       .single();
 
     if (!profile) {
-      return { error: 'Perfil não encontrado.' };
+      return { error: 'Perfil não encontrado no banco de dados.' };
     }
 
     const headersList = await headers();
     const origin = headersList.get('origin') || 'https://konnexy.vercel.app';
 
-    const stripeSession = await stripe.checkout.sessions.create({
+    const checkoutSession = await stripe.checkout.sessions.create({
       payment_method_types: ['card'],
       line_items: [
         {
@@ -46,9 +52,9 @@ export async function createCheckoutSession() {
       customer_email: user.email,
     });
 
-    return { url: stripeSession.url };
+    return { url: checkoutSession.url };
   } catch (error: any) {
     console.error('Stripe error:', error);
-    return { error: 'Erro crítico de servidor. Tente atualizar a página.' };
+    return { error: 'Erro de processamento: ' + error.message };
   }
 }
