@@ -112,7 +112,7 @@ export function CardPreview({ data, showBranding = true }: CardPreviewProps) {
               <motion.div 
                 initial={{ scale: 0, opacity: 0 }}
                 animate={{ scale: 1, opacity: 1 }}
-                delay={0.4}
+                transition={{ delay: 0.4 }}
                 className="absolute -bottom-1 -right-1 bg-blue-500 text-white rounded-xl p-1.5 shadow-lg border-2 border-white dark:border-slate-900"
               >
                 <BadgeCheck className="w-4 h-4" />
