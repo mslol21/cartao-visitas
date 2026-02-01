@@ -14,6 +14,7 @@ export function UpgradeButton() {
   const [loading, setLoading] = useState(false);
 
   const handleUpgrade = async () => {
+    console.log('--- Iniciando Checkout (Versão V3 - Server Actions) ---');
     if (!user) {
       router.push('/signup?plan=pro');
       return;
