@@ -94,7 +94,6 @@ function DashboardContent() {
             <Link href="/" className="flex items-center">
               <Logo variant="horizontal" showTagline={false} className="scale-75 origin-left" />
             </Link>
-            
             <nav className="hidden md:flex items-center gap-1 bg-slate-100 dark:bg-slate-800 p-1 rounded-2xl">
                <button 
                  onClick={() => setActiveTab('editor')}
@@ -353,7 +352,7 @@ function DashboardContent() {
       </main>
 
       <footer className="max-w-[1400px] mx-auto px-6 py-12 flex flex-col sm:flex-row items-center justify-between gap-6 border-t border-border/30 mt-12">
-        <p className="text-[10px] font-black uppercase tracking-widest text-slate-400">© 2024 Konnexy • Premium Experience</p>
+        <p className="text-[10px] font-black uppercase tracking-widest text-slate-400">© 2024 Konnexy</p>
         <div className="flex items-center gap-6">
            <Link href="/terms" className="text-[10px] font-black uppercase tracking-widest text-slate-400 hover:text-primary">Termos</Link>
            <Link href="/privacy" className="text-[10px] font-black uppercase tracking-widest text-slate-400 hover:text-primary">Privacidade</Link>
