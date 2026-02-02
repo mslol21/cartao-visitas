@@ -22,9 +22,25 @@ export function useProfile() {
 
       if (error) {
         if (error.code === 'PGRST116') {
-          // Profile not found, but trigger should have created it. 
-          // If not, we could handle creation here as fallback.
-          console.warn('Profile not found for authenticated user');
+          // Profile not found, let's create it as a fallback
+          console.log('Profile missing, creating one for user:', user.id);
+          const { data: newProfile, error: createError } = await supabase
+            .from('profiles')
+            .insert({
+              user_id: user.id,
+              plan: 'free'
+            })
+            .select()
+            .single();
+
+          if (createError) {
+            console.error('Failed to create fallback profile:', createError);
+            return;
+          }
+          
+          if (newProfile) {
+            setProfile(newProfile as Profile);
+          }
         } else {
           throw error;
         }
