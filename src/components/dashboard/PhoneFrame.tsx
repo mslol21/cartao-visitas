@@ -9,7 +9,7 @@ interface PhoneFrameProps {
 
 export function PhoneFrame({ children }: PhoneFrameProps) {
   return (
-    <div className="relative mx-auto w-full max-w-[320px] sm:max-w-[340px] aspect-[9/18.5]">
+    <div className="relative mx-auto w-full max-w-[280px] sm:max-w-[340px] aspect-[9/18.5]">
       {/* Premium Outer Chassis */}
       <motion.div 
         initial={{ opacity: 0, scale: 0.95 }}

@@ -120,15 +120,16 @@ function DashboardContent() {
   const isPro = profile?.plan === 'pro';
 
   return (
-    <div className="min-h-screen bg-slate-50 dark:bg-slate-950">
+    <>
+      <div className="min-h-screen bg-slate-50 dark:bg-slate-950">
       {/* Premium Header */}
       <header className="bg-white/70 dark:bg-slate-900/70 backdrop-blur-xl border-b border-slate-200/50 dark:border-slate-800/50 sticky top-0 z-50">
         <div className="max-w-[1400px] mx-auto px-6 h-20 flex items-center justify-between">
-          <div className="flex items-center gap-8">
+          <div className="flex items-center gap-4">
             <Link href="/" className="flex items-center">
-              <Logo variant="horizontal" showTagline={false} className="scale-75 origin-left" />
+              <Logo variant="horizontal" showTagline={false} className="scale-[0.65] sm:scale-75 origin-left" />
             </Link>
-            <nav className="hidden md:flex items-center gap-1 bg-slate-100 dark:bg-slate-800 p-1 rounded-2xl">
+            <nav className="hidden lg:flex items-center gap-1 bg-slate-100 dark:bg-slate-800 p-1 rounded-2xl">
                <button 
                  onClick={() => setActiveTab('editor')}
                  className={cn(
@@ -165,10 +166,10 @@ function DashboardContent() {
                 <motion.div 
                   initial={{ opacity: 0, x: 10 }}
                   animate={{ opacity: 1, x: 0 }}
-                  className="hidden lg:flex items-center gap-2 px-4 py-2 rounded-2xl bg-primary/10 border border-primary/20 text-primary"
+                  className="flex items-center gap-2 px-3 sm:px-4 py-2 rounded-2xl bg-primary/10 border border-primary/20 text-primary"
                 >
-                  <Crown className="w-4 h-4" />
-                  <span className="text-[10px] font-black uppercase tracking-widest">Plano Pro</span>
+                  <Crown className="w-3.5 h-3.5 sm:w-4 h-4" />
+                  <span className="text-[9px] sm:text-[10px] font-black uppercase tracking-widest">PRO</span>
                 </motion.div>
               ) : (
                 <Button asChild variant="hero" size="sm" className="hidden sm:flex rounded-2xl bg-slate-900 dark:bg-white text-white dark:text-slate-900">
@@ -192,7 +193,7 @@ function DashboardContent() {
         </div>
       </header>
 
-      <main className="max-w-[1400px] mx-auto px-6 py-10">
+      <main className="max-w-[1400px] mx-auto px-4 sm:px-6 py-10">
         <AnimatePresence mode="wait">
           {activeTab === 'editor' && (
             <motion.div 
@@ -210,7 +211,7 @@ function DashboardContent() {
                       <span className="w-8 h-[2px] bg-primary rounded-full" />
                       Workplace
                     </div>
-                    <h1 className="text-4xl font-black tracking-tighter">Personalize seu Perfil</h1>
+                    <h1 className="text-3xl sm:text-4xl font-black tracking-tighter">Personalize seu Perfil</h1>
                   </div>
 
                   {publicUrl && (
@@ -287,7 +288,7 @@ function DashboardContent() {
               className="space-y-8"
             >
               <div className="space-y-2">
-                <h1 className="text-4xl font-black tracking-tighter">Analytics</h1>
+                <h1 className="text-3xl sm:text-4xl font-black tracking-tighter">Analytics</h1>
                 <p className="text-muted-foreground font-medium">Visualize quem está visitando seu perfil e quais botões estão sendo clicados.</p>
               </div>
 
@@ -345,7 +346,7 @@ function DashboardContent() {
               className="max-w-2xl space-y-8"
             >
               <div className="space-y-2">
-                <h1 className="text-4xl font-black tracking-tighter">Ajustes</h1>
+                <h1 className="text-3xl sm:text-4xl font-black tracking-tighter">Ajustes</h1>
                 <p className="text-muted-foreground font-medium">Gerencie sua conta e preferências da plataforma.</p>
               </div>
 
@@ -412,14 +413,40 @@ function DashboardContent() {
         </AnimatePresence>
       </main>
 
-      <footer className="max-w-[1400px] mx-auto px-6 py-12 flex flex-col sm:flex-row items-center justify-between gap-6 border-t border-border/30 mt-12">
-        <p className="text-[10px] font-black uppercase tracking-widest text-slate-400">© 2024 Konnexy</p>
-        <div className="flex items-center gap-6">
-           <Link href="/terms" className="text-[10px] font-black uppercase tracking-widest text-slate-400 hover:text-primary">Termos</Link>
-           <Link href="/privacy" className="text-[10px] font-black uppercase tracking-widest text-slate-400 hover:text-primary">Privacidade</Link>
-        </div>
-      </footer>
+        <footer className="max-w-[1400px] mx-auto px-6 py-12 flex flex-col sm:flex-row items-center justify-between gap-6 border-t border-border/30 mt-12 pb-32 lg:pb-12 text-center sm:text-left">
+          <p className="text-[10px] font-black uppercase tracking-widest text-slate-400">© 2024 Konnexy</p>
+          <div className="flex items-center gap-6">
+             <Link href="/terms" className="text-[10px] font-black uppercase tracking-widest text-slate-400 hover:text-primary">Termos</Link>
+             <Link href="/privacy" className="text-[10px] font-black uppercase tracking-widest text-slate-400 hover:text-primary">Privacidade</Link>
+          </div>
+        </footer>
+      </div>
+
+    {/* Mobile Tab Navigation */}
+    <div className="lg:hidden fixed bottom-6 left-6 right-6 z-50">
+      <nav className="glass shadow-2xl rounded-[2rem] p-1.5 flex items-center justify-between border border-white/20">
+        {[
+          { id: 'editor', label: 'Editor', icon: LayoutDashboard },
+          { id: 'analytics', label: 'Stats', icon: Zap },
+          { id: 'settings', label: 'Ajustes', icon: Palette }
+        ].map((tab) => (
+          <button
+            key={tab.id}
+            onClick={() => setActiveTab(tab.id as any)}
+            className={cn(
+              "flex-1 flex flex-col items-center gap-1 py-3 px-2 rounded-2xl transition-all",
+              activeTab === tab.id 
+                ? "bg-slate-900 dark:bg-white text-white dark:text-slate-900 shadow-xl" 
+                : "text-muted-foreground/60 hover:text-foreground"
+            )}
+          >
+            <tab.icon className="w-5 h-5" />
+            <span className="text-[10px] font-black uppercase tracking-widest">{tab.label}</span>
+          </button>
+        ))}
+      </nav>
     </div>
+    </>
   );
 }
 

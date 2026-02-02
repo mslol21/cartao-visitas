@@ -45,7 +45,7 @@ export function Hero() {
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ delay: 0.1, duration: 0.8 }}
-              className="text-5xl md:text-8xl font-black tracking-tighter leading-[0.9]"
+              className="text-4xl sm:text-5xl md:text-8xl font-black tracking-tighter leading-[1] md:leading-[0.9]"
             >
               Seu Sucesso Começa <br />
               Com Um <span className="gradient-text">Link Único.</span>
@@ -68,7 +68,7 @@ export function Hero() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.5 }}
-            className="flex flex-wrap items-center justify-center gap-8 py-4 px-8 border-y border-border/10"
+            className="flex flex-wrap items-center justify-center gap-4 sm:gap-8 py-4 px-8 border-y border-border/10"
           >
             <div className="flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-muted-foreground">
                <ShieldCheck className="w-4 h-4 text-primary" /> Perfil Verificado
@@ -86,15 +86,15 @@ export function Hero() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.4 }}
-            className="flex flex-col sm:flex-row items-center justify-center gap-4"
+            className="flex flex-col sm:flex-row items-center justify-center gap-4 w-full sm:w-auto px-6 sm:px-0"
           >
-            <Button asChild variant="hero" size="xl" className="h-20 px-10 rounded-[2rem] text-lg font-black shadow-2xl shadow-primary/30 group">
+            <Button asChild variant="hero" size="xl" className="w-full sm:w-auto h-16 sm:h-20 px-10 rounded-2xl sm:rounded-[2rem] text-lg font-black shadow-2xl shadow-primary/30 group">
               <Link href="/signup">
                 Começar Gratuitamente
                 <ArrowRight className="w-6 h-6 ml-3 transition-transform group-hover:translate-x-2" />
               </Link>
             </Button>
-            <Button asChild variant="outline" size="xl" className="h-20 px-10 rounded-[2rem] text-lg font-black border-2 hover:bg-slate-50 dark:hover:bg-slate-900 shadow-xl transition-all">
+            <Button asChild variant="outline" size="xl" className="w-full sm:w-auto h-16 sm:h-20 px-10 rounded-2xl sm:rounded-[2rem] text-lg font-black border-2 hover:bg-slate-50 dark:hover:bg-slate-900 shadow-xl transition-all">
               <a href="#como-funciona">
                 Ver Demonstração
               </a>

@@ -57,7 +57,7 @@ export function Pricing() {
       <div className="container relative z-10 px-6">
         <div className="text-center max-w-3xl mx-auto mb-20 space-y-4">
            <div className="text-[10px] font-black uppercase tracking-[0.4em] text-primary">Preços</div>
-           <h2 className="text-4xl md:text-6xl font-black tracking-tighter">
+           <h2 className="text-3xl sm:text-4xl md:text-6xl font-black tracking-tighter leading-tight">
              Simplicidade que <br />
              <span className="gradient-text">escala seu negócio.</span>
            </h2>
@@ -74,7 +74,7 @@ export function Pricing() {
               whileInView={{ opacity: 1, scale: 1 }}
               viewport={{ once: true }}
               transition={{ delay: index * 0.1 }}
-              className={`relative p-12 rounded-[3rem] border-2 transition-all duration-300 flex flex-col ${
+              className={`relative p-8 sm:p-12 rounded-[2.5rem] sm:rounded-[3rem] border-2 transition-all duration-300 flex flex-col ${
                 plan.popular
                   ? 'border-primary bg-white dark:bg-slate-900 shadow-[0_40px_100px_-20px_rgba(59,130,246,0.2)]'
                   : 'border-border/50 bg-white/50 dark:bg-slate-900/50 backdrop-blur-sm'
@@ -100,8 +100,8 @@ export function Pricing() {
 
               <div className="mb-10 text-center">
                 <div className="flex items-start justify-center">
-                  <span className="text-2xl font-bold mt-2">R$</span>
-                  <span className="text-8xl font-black tracking-tighter">{plan.price}</span>
+                  <span className="text-xl sm:text-2xl font-bold mt-2">R$</span>
+                  <span className="text-6xl sm:text-8xl font-black tracking-tighter">{plan.price}</span>
                 </div>
                 <div className="text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground/60">Por Mês • Sem fidelidade</div>
               </div>

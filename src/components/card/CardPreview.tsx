@@ -122,10 +122,10 @@ export function CardPreview({ data, showBranding = true }: CardPreviewProps) {
 
           {/* Identity & Visual Hierarchy */}
           <div className="text-center mb-8 w-full">
-            <h1 className="text-2xl font-bold tracking-tight text-slate-900 dark:text-white mb-1 capitalize">
+            <h1 className="text-xl sm:text-2xl font-bold tracking-tight text-slate-900 dark:text-white mb-1 capitalize break-words">
               {data.name || 'Seu Nome'}
             </h1>
-            <p className="text-slate-600 dark:text-slate-400 text-sm font-medium leading-relaxed px-4">
+            <p className="text-slate-600 dark:text-slate-400 text-sm font-medium leading-relaxed px-4 break-words">
               {data.tagline || 'Sua profissão ou frase de impacto'}
             </p>
             

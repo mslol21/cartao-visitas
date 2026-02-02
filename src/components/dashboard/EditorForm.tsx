@@ -184,11 +184,11 @@ export function EditorForm({ initialData, onSubmit, onChange, isPro = false }: E
       </div>
 
       <Tabs defaultValue="basic" className="w-full">
-        <TabsList className="grid w-full grid-cols-4 h-12 rounded-2xl bg-slate-100/50 dark:bg-slate-800/50 p-1">
-          <TabsTrigger value="basic" className="rounded-xl data-[state=active]:shadow-sm">Perfil</TabsTrigger>
-          <TabsTrigger value="social" className="rounded-xl data-[state=active]:shadow-sm">Links</TabsTrigger>
-          <TabsTrigger value="visual" className="rounded-xl data-[state=active]:shadow-sm">Visual</TabsTrigger>
-          <TabsTrigger value="seo" className="rounded-xl data-[state=active]:shadow-sm">SEO</TabsTrigger>
+        <TabsList className="grid w-full grid-cols-2 sm:grid-cols-4 h-auto sm:h-12 rounded-2xl bg-slate-100/50 dark:bg-slate-800/50 p-1 gap-1">
+          <TabsTrigger value="basic" className="rounded-xl data-[state=active]:shadow-sm text-[10px] sm:text-xs py-2 sm:py-0">Perfil</TabsTrigger>
+          <TabsTrigger value="social" className="rounded-xl data-[state=active]:shadow-sm text-[10px] sm:text-xs py-2 sm:py-0">Links</TabsTrigger>
+          <TabsTrigger value="visual" className="rounded-xl data-[state=active]:shadow-sm text-[10px] sm:text-xs py-2 sm:py-0">Visual</TabsTrigger>
+          <TabsTrigger value="seo" className="rounded-xl data-[state=active]:shadow-sm text-[10px] sm:text-xs py-2 sm:py-0">SEO</TabsTrigger>
         </TabsList>
 
         <div className="mt-8 space-y-6">
