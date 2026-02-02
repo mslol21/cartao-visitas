@@ -107,3 +107,31 @@ export async function verifyCheckoutSession(sessionId: string) {
     return { error: error.message };
   }
 }
+
+export async function forceSyncProPlan() {
+  try {
+    const supabase = await createClient();
+    const { data: { user } } = await supabase.auth.getUser();
+
+    if (!user) return { error: 'Faça login' };
+
+    // 1. Procurar sessões pagas deste usuário no Stripe
+    const sessions = await stripe.checkout.sessions.list({
+      limit: 5,
+      customer_details: { email: user.email! }
+    });
+
+    const hasPaidSession = sessions.data.some(s => s.payment_status === 'paid' || s.status === 'complete');
+
+    if (hasPaidSession) {
+      const { createAdminClient } = await import('@/utils/supabase/admin');
+      const admin = createAdminClient();
+      await admin.from('profiles').update({ plan: 'pro' }).eq('user_id', user.id);
+      return { success: true };
+    }
+
+    return { error: 'Nenhuma assinatura ativa encontrada no Stripe' };
+  } catch (error: any) {
+    return { error: error.message };
+  }
+}

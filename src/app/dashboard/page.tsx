@@ -27,7 +27,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { cn } from "@/lib/utils";
 
 import { Logo } from '@/components/brand/Logo';
-import { verifyCheckoutSession } from '@/app/actions/checkout';
+import { verifyCheckoutSession, forceSyncProPlan } from '@/app/actions/checkout';
 import { useSearchParams } from 'next/navigation';
 
 function DashboardContent() {
@@ -39,6 +39,7 @@ function DashboardContent() {
   const [activeTab, setActiveTab] = useState<'editor' | 'analytics' | 'settings'>('editor');
   const [currentData, setCurrentData] = useState<Partial<Profile>>({});
   const [copied, setCopied] = useState(false);
+  const [isSyncing, setIsSyncing] = useState(false);
 
   useEffect(() => {
     if (profile) {
@@ -358,6 +359,33 @@ function DashboardContent() {
                     Plano {isPro ? 'Pro' : 'Free'}
                   </div>
                 </div>
+
+                {!isPro && (
+                   <div className="p-8 border-b border-border/50 flex items-center justify-between group cursor-pointer hover:bg-slate-50 transition-colors"
+                     onClick={async () => {
+                        setIsSyncing(true);
+                        toast.loading('Sincronizando com Stripe...');
+                        const res = await forceSyncProPlan();
+                        toast.dismiss();
+                        if (res.success) {
+                          toast.success('Plano PRO ativado com sucesso!');
+                          await refetch();
+                        } else {
+                          toast.error(res.error || 'Nenhuma assinatura encontrada.');
+                        }
+                        setIsSyncing(false);
+                     }}
+                   >
+                     <div>
+                       <p className="font-bold flex items-center gap-2">
+                         Sincronizar Assinatura
+                         {isSyncing && <Loader2 className="w-3 h-3 animate-spin" />}
+                       </p>
+                       <p className="text-xs text-muted-foreground italic">Já assinou e ainda está no Free? Clique para sincronizar.</p>
+                     </div>
+                     <Zap className="w-4 h-4 text-primary opacity-0 group-hover:opacity-100 transition-opacity" />
+                   </div>
+                )}
                 
                 <div className="p-8 space-y-6">
                   <div className="flex items-center justify-between group cursor-pointer" onClick={() => router.push('/pricing')}>
