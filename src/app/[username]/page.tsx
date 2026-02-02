@@ -2,6 +2,7 @@ import { createClient } from '@/utils/supabase/server';
 import { ProfileClientWrapper } from '@/components/card/ProfileClientWrapper';
 import { Metadata } from 'next';
 import { notFound } from 'next/navigation';
+import { trackEvent } from '@/app/actions/analytics';
 
 interface Props {
   params: Promise<{ username: string }>;
@@ -54,6 +55,9 @@ export default async function PublicPage({ params }: Props) {
     .single();
 
   if (!profile) notFound();
+
+  // Rastrear visualização de página (silenciosamente no servidor)
+  trackEvent(profile.id, 'page_view').catch(console.error);
 
   const themeColor = profile.theme_color || '#3b82f6';
 

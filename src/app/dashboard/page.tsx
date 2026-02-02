@@ -28,8 +28,16 @@ import { cn } from "@/lib/utils";
 
 import { Logo } from '@/components/brand/Logo';
 import { verifyCheckoutSession, forceSyncProPlan } from '@/app/actions/checkout';
+import { getProfileAnalytics } from '@/app/actions/analytics';
 
 type DashboardTab = 'editor' | 'analytics' | 'settings';
+
+interface AnalyticsData {
+  visits: number;
+  clicks: number;
+  whatsappClicks: number;
+  conversionRate: number;
+}
 
 function DashboardContent() {
   const router = useRouter();
@@ -39,6 +47,8 @@ function DashboardContent() {
   
   const [activeTab, setActiveTab] = useState<DashboardTab>('editor');
   const [currentData, setCurrentData] = useState<Partial<Profile>>({});
+  const [analytics, setAnalytics] = useState<AnalyticsData | null>(null);
+  const [loadingAnalytics, setLoadingAnalytics] = useState(false);
   const [copied, setCopied] = useState(false);
   const [isSyncing, setIsSyncing] = useState(false);
 
@@ -47,6 +57,18 @@ function DashboardContent() {
       setCurrentData(profile);
     }
   }, [profile]);
+
+  useEffect(() => {
+    const fetchStats = async () => {
+      if (activeTab === 'analytics' && profile?.id && profile.plan === 'pro') {
+        setLoadingAnalytics(true);
+        const stats = await getProfileAnalytics(profile.id);
+        setAnalytics(stats);
+        setLoadingAnalytics(false);
+      }
+    };
+    fetchStats();
+  }, [activeTab, profile]);
 
   useEffect(() => {
     if (!authLoading && !user) {
@@ -310,29 +332,36 @@ function DashboardContent() {
                 </div>
               ) : (
                 <div className="grid md:grid-cols-3 gap-6">
-                  {/* Mock Stats for Pro */}
-                  {[
-                    { label: 'Visitas Totais', value: '1.242', change: '+12%', icon: Eye },
-                    { label: 'Cliques no WhatsApp', value: '384', change: '+5%', icon: MessageCircle },
-                    { label: 'Taxa de Conversão', value: '31%', change: '+2%', icon: Zap },
-                  ].map((stat, i) => (
-                    <div key={i} className="bg-white dark:bg-slate-900 p-8 rounded-[2rem] border border-border/50 shadow-sm space-y-4">
-                      <div className="flex items-center justify-between">
-                        <div className="w-10 h-10 rounded-xl bg-slate-50 dark:bg-slate-800 flex items-center justify-center">
-                          <stat.icon className="w-5 h-5 text-primary" />
-                        </div>
-                        <span className="text-[10px] font-bold text-green-500 bg-green-500/10 px-2 py-1 rounded-full">{stat.change}</span>
-                      </div>
-                      <div>
-                        <p className="text-xs font-bold text-muted-foreground uppercase tracking-widest">{stat.label}</p>
-                        <p className="text-3xl font-black mt-1">{stat.value}</p>
-                      </div>
+                  {loadingAnalytics ? (
+                    <div className="md:col-span-3 flex items-center justify-center p-20">
+                      <Loader2 className="w-8 h-8 animate-spin text-primary/40" />
                     </div>
-                  ))}
-                  
-                  <div className="md:col-span-3 bg-white dark:bg-slate-900 p-12 rounded-[2.5rem] border border-border/50 text-center">
-                    <p className="text-muted-foreground font-medium italic">Gráfico detalhado em desenvolvimento...</p>
-                  </div>
+                  ) : (
+                    <>
+                      {[
+                        { label: 'Visitas Totais', value: analytics?.visits || 0, icon: Eye, color: 'text-blue-500' },
+                        { label: 'Cliques no WhatsApp', value: analytics?.whatsappClicks || 0, icon: MessageCircle, color: 'text-green-500' },
+                        { label: 'Taxa de Conversão', value: `${analytics?.conversionRate || 0}%`, icon: Zap, color: 'text-yellow-500' },
+                      ].map((stat, i) => (
+                        <div key={i} className="bg-white dark:bg-slate-900 p-8 rounded-[2rem] border border-border/50 shadow-sm space-y-4">
+                          <div className="flex items-center justify-between">
+                            <div className="w-10 h-10 rounded-xl bg-slate-50 dark:bg-slate-800 flex items-center justify-center">
+                              <stat.icon className={cn("w-5 h-5", stat.color)} />
+                            </div>
+                            <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Real Time</span>
+                          </div>
+                          <div>
+                            <p className="text-xs font-bold text-muted-foreground uppercase tracking-widest">{stat.label}</p>
+                            <p className="text-3xl font-black mt-1">{stat.value}</p>
+                          </div>
+                        </div>
+                      ))}
+                      
+                      <div className="md:col-span-3 bg-white dark:bg-slate-900 p-12 rounded-[2.5rem] border border-border/50 text-center">
+                        <p className="text-muted-foreground font-medium italic">Gráficos de evolução em desenvolvimento...</p>
+                      </div>
+                    </>
+                  )}
                 </div>
               )}
             </motion.div>

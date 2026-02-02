@@ -26,6 +26,7 @@ export function LivePreview({ data }: LivePreviewProps) {
         <CardPreview
           data={data}
           showBranding={data.plan !== 'pro'}
+          suppressTracking={true}
         />
       </PhoneFrame>
       

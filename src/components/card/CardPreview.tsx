@@ -26,26 +26,33 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import { trackEvent, AnalyticsEventType } from '@/app/actions/analytics';
 
 interface CardPreviewProps {
   data: Partial<Profile>;
   showBranding?: boolean;
+  suppressTracking?: boolean;
 }
 
-export function CardPreview({ data, showBranding = true }: CardPreviewProps) {
+export function CardPreview({ data, showBranding = true, suppressTracking = false }: CardPreviewProps) {
   const isPro = data.plan === 'pro';
+
+  const handleTrackClick = async (type: AnalyticsEventType) => {
+    if (suppressTracking || !data.id) return;
+    await trackEvent(data.id, type);
+  };
   
   const whatsappLink = data.whatsapp
     ? `https://wa.me/${data.whatsapp.replace(/\D/g, '')}?text=${encodeURIComponent(`Olá! Vi seu perfil no ConnectCard e gostaria de ${isPro ? 'solicitar um orçamento' : 'conversar'} sobre seus serviços.`)}`
     : '#';
 
   const socialLinks = [
-    { id: 'instagram', icon: Instagram, value: data.instagram, url: `https://instagram.com/${data.instagram}`, label: 'Instagram' },
-    { id: 'linkedin', icon: Linkedin, value: data.linkedin, url: `https://linkedin.com/in/${data.linkedin}`, label: 'LinkedIn' },
-    { id: 'facebook', icon: Facebook, value: data.facebook, url: `https://facebook.com/${data.facebook}`, label: 'Facebook' },
-    { id: 'twitter', icon: Twitter, value: data.twitter, url: `https://twitter.com/${data.twitter}`, label: 'Twitter' },
-    { id: 'youtube', icon: Youtube, value: data.youtube, url: `https://youtube.com/@${data.youtube}`, label: 'YouTube' },
-    { id: 'website', icon: Globe, value: data.website, url: data.website?.startsWith('http') ? data.website : `https://${data.website}`, label: 'Website' },
+    { id: 'instagram', icon: Instagram, value: data.instagram, url: `https://instagram.com/${data.instagram}`, label: 'Instagram', trackType: 'click_instagram' as const },
+    { id: 'linkedin', icon: Linkedin, value: data.linkedin, url: `https://linkedin.com/in/${data.linkedin}`, label: 'LinkedIn', trackType: 'click_linkedin' as const },
+    { id: 'facebook', icon: Facebook, value: data.facebook, url: `https://facebook.com/${data.facebook}`, label: 'Facebook', trackType: 'click_facebook' as const },
+    { id: 'twitter', icon: Twitter, value: data.twitter, url: `https://twitter.com/${data.twitter}`, label: 'Twitter', trackType: 'click_twitter' as const },
+    { id: 'youtube', icon: Youtube, value: data.youtube, url: `https://youtube.com/@${data.youtube}`, label: 'YouTube', trackType: 'click_youtube' as const },
+    { id: 'website', icon: Globe, value: data.website, url: data.website?.startsWith('http') ? data.website : `https://${data.website}`, label: 'Website', trackType: 'click_website' as const },
   ];
 
   // All valid links (those with a value)
@@ -214,6 +221,7 @@ export function CardPreview({ data, showBranding = true }: CardPreviewProps) {
                   className="w-full h-[70px] rounded-[1.25rem] bg-[#25D366] hover:bg-[#20ba5a] text-white font-black text-lg shadow-[0_15px_30px_-5px_rgba(37,211,102,0.3)] border-b-[6px] border-[#128C7E] transition-all flex items-center justify-center gap-3 active:border-b-0 active:translate-y-1"
                   asChild
                   aria-label={isPro ? 'Solicitar Orçamento via WhatsApp' : 'Conversar via WhatsApp'}
+                  onClick={() => handleTrackClick('click_whatsapp')}
                 >
                   <a href={whatsappLink} target="_blank" rel="noopener noreferrer">
                     <MessageCircle className="w-7 h-7 fill-white flex-shrink-0" />
@@ -240,6 +248,7 @@ export function CardPreview({ data, showBranding = true }: CardPreviewProps) {
                         target={isDisabled ? undefined : "_blank"}
                         rel={isDisabled ? undefined : "noopener noreferrer"}
                         aria-label={isDisabled ? `${social.label} (Disponível no Pro)` : `Visitar ${social.label}`}
+                        onClick={() => !isDisabled && handleTrackClick(social.trackType)}
                         className={cn(
                           "w-12 h-12 flex items-center justify-center rounded-2xl bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-slate-600 dark:text-slate-300 hover:text-primary transition-all shadow-sm relative overflow-hidden",
                           isDisabled && "opacity-40 cursor-not-allowed grayscale"
