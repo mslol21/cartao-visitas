@@ -236,6 +236,32 @@ export function EditorForm({ initialData, onSubmit, onChange, isPro = false }: E
 
               <div className="grid grid-cols-2 gap-4">
                 <div className="space-y-2">
+                  <Label className="text-xs font-bold uppercase tracking-wider opacity-60">CEP (Auto-preencher)</Label>
+                  <div className="relative">
+                    <Input
+                      onChange={async (e) => {
+                        const cep = e.target.value.replace(/\D/g, '');
+                        if (cep.length === 8) {
+                          try {
+                            const res = await fetch(`https://viacep.com.br/ws/${cep}/json/`);
+                            const data = await res.json();
+                            if (!data.erro) {
+                              handleChange('city', `${data.localidade}, ${data.uf}`);
+                            } else {
+                              toast.error('CEP não encontrado');
+                            }
+                          } catch (err) {
+                            toast.error('Erro ao buscar CEP');
+                          }
+                        }
+                      }}
+                      placeholder="00000-000"
+                      className="rounded-2xl h-12"
+                      maxLength={9}
+                    />
+                  </div>
+                </div>
+                <div className="space-y-2">
                   <Label className="text-xs font-bold uppercase tracking-wider opacity-60">Cidade / Estado</Label>
                   <Input
                     value={formData.city || ''}
@@ -244,31 +270,31 @@ export function EditorForm({ initialData, onSubmit, onChange, isPro = false }: E
                     className="rounded-2xl h-12"
                   />
                 </div>
-                <div className="space-y-2">
-                  <Label className="text-xs font-bold uppercase tracking-wider opacity-60">Username (URL)</Label>
-                  <div className="relative">
-                    <Input
-                      value={formData.username || ''}
-                      onChange={(e) => handleChange('username', e.target.value.toLowerCase().replace(/[^a-z0-9-]/g, ''))}
-                      placeholder="seu.nome"
-                      className={cn(
-                        "rounded-2xl h-12 pr-10",
-                        usernameStatus === 'taken' && "border-red-500 focus-visible:ring-red-500",
-                        usernameStatus === 'available' && "border-green-500 focus-visible:ring-green-500"
-                      )}
-                    />
-                    <div className="absolute right-3 top-1/2 -translate-y-1/2">
-                      {usernameStatus === 'checking' && <Loader2 className="w-4 h-4 animate-spin text-muted-foreground" />}
-                      {usernameStatus === 'available' && <Check className="w-4 h-4 text-green-500" />}
-                      {usernameStatus === 'taken' && <X className="w-4 h-4 text-red-500" />}
-                    </div>
+              </div>
+              <div className="space-y-2">
+                <Label className="text-xs font-bold uppercase tracking-wider opacity-60">Username (URL)</Label>
+                <div className="relative">
+                  <Input
+                    value={formData.username || ''}
+                    onChange={(e) => handleChange('username', e.target.value.toLowerCase().replace(/[^a-z0-9-]/g, ''))}
+                    placeholder="seu.nome"
+                    className={cn(
+                      "rounded-2xl h-12 pr-10",
+                      usernameStatus === 'taken' && "border-red-500 focus-visible:ring-red-500",
+                      usernameStatus === 'available' && "border-green-500 focus-visible:ring-green-500"
+                    )}
+                  />
+                  <div className="absolute right-3 top-1/2 -translate-y-1/2">
+                    {usernameStatus === 'checking' && <Loader2 className="w-4 h-4 animate-spin text-muted-foreground" />}
+                    {usernameStatus === 'available' && <Check className="w-4 h-4 text-green-500" />}
+                    {usernameStatus === 'taken' && <X className="w-4 h-4 text-red-500" />}
                   </div>
-                  {usernameStatus === 'taken' && (
-                    <p className="text-[10px] font-bold text-red-500 uppercase tracking-widest mt-1 ml-1">
-                      Este link já está em uso
-                    </p>
-                  )}
                 </div>
+                {usernameStatus === 'taken' && (
+                  <p className="text-[10px] font-bold text-red-500 uppercase tracking-widest mt-1 ml-1">
+                    Este link já está em uso
+                  </p>
+                )}
               </div>
             </div>
 
@@ -301,12 +327,12 @@ export function EditorForm({ initialData, onSubmit, onChange, isPro = false }: E
             <div className="space-y-4">
               <div className="space-y-2">
                 <Label className="text-[#25D366] font-bold flex items-center gap-2">
-                  <MessageCircle className="w-4 h-4" /> WhatsApp para Contato
+                  <MessageCircle className="w-4 h-4" /> WhatsApp (DDD + Número)
                 </Label>
                 <Input
                   value={formData.whatsapp || ''}
                   onChange={(e) => handleChange('whatsapp', e.target.value.replace(/\D/g, ''))}
-                  placeholder="5511999999999"
+                  placeholder="Ex: 11999999999"
                   className="rounded-2xl h-12 border-[#25D366]/30 focus-visible:ring-[#25D366]"
                 />
               </div>
