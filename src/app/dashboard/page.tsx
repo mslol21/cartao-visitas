@@ -27,11 +27,14 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { cn } from "@/lib/utils";
 
 import { Logo } from '@/components/brand/Logo';
+import { verifyCheckoutSession } from '@/app/actions/checkout';
+import { useSearchParams } from 'next/navigation';
 
 function DashboardContent() {
   const router = useRouter();
   const { user, loading: authLoading, signOut } = useAuth();
-  const { profile, loading: profileLoading, updateProfile } = useProfile();
+  const { profile, loading: profileLoading, updateProfile, refetch } = useProfile();
+  const searchParams = useSearchParams();
   
   const [activeTab, setActiveTab] = useState<'editor' | 'analytics' | 'settings'>('editor');
   const [currentData, setCurrentData] = useState<Partial<Profile>>({});
@@ -48,6 +51,30 @@ function DashboardContent() {
       router.push('/login');
     }
   }, [user, authLoading, router]);
+
+  // Fail-safe: Verificação manual se o webhook falhar
+  useEffect(() => {
+    const sessionId = searchParams.get('session_id');
+    const success = searchParams.get('success');
+
+    if (success === 'true' && sessionId && profile && profile.plan === 'free') {
+      const verify = async () => {
+        toast.loading('Confirmando sua assinatura PRO...');
+        const result = await verifyCheckoutSession(sessionId);
+        
+        toast.dismiss();
+        if (result.success) {
+          toast.success('Parabéns! Sua conta agora é PRO.');
+          await refetch();
+          // Limpa a URL
+          router.replace('/dashboard');
+        } else {
+          console.error('Falha na verificação manual:', result.error);
+        }
+      };
+      verify();
+    }
+  }, [searchParams, profile, refetch, router]);
 
   const handleSignOut = async () => {
     await signOut();
@@ -369,5 +396,15 @@ function DashboardContent() {
 }
 
 export default function DashboardPage() {
-  return <DashboardContent />;
+  return (
+    <Suspense fallback={
+       <div className="min-h-screen flex items-center justify-center bg-background">
+          <Loader2 className="w-8 h-8 animate-spin text-primary" />
+       </div>
+    }>
+      <DashboardContent />
+    </Suspense>
+  );
 }
+
+import { Suspense } from 'react';

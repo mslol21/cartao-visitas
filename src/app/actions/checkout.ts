@@ -54,7 +54,7 @@ export async function createCheckoutSession(manualToken?: string) {
         },
       ],
       mode: 'subscription',
-      success_url: `${origin}/dashboard?success=true`,
+      success_url: `${origin}/dashboard?success=true&session_id={CHECKOUT_SESSION_ID}`,
       cancel_url: `${origin}/dashboard?canceled=true`,
       metadata: {
         userId: user.id,
@@ -66,5 +66,44 @@ export async function createCheckoutSession(manualToken?: string) {
   } catch (error: any) {
     console.error('Stripe error:', error);
     return { error: 'Falha na conexão com o checkout: ' + error.message };
+  }
+}
+
+export async function verifyCheckoutSession(sessionId: string) {
+  try {
+    const supabase = await createClient();
+    const { data: { user } } = await supabase.auth.getUser();
+
+    if (!user) {
+      return { error: 'Usuário não autenticado' };
+    }
+
+    // 1. Verificar a sessão no Stripe
+    const session = await stripe.checkout.sessions.retrieve(sessionId);
+    
+    // 2. Validar se a sessão pertence ao usuário e foi paga
+    if (session.metadata?.userId !== user.id) {
+      return { error: 'Sessão inválida para este usuário' };
+    }
+
+    if (session.payment_status === 'paid' || session.status === 'complete') {
+      // 3. Atualizar o plano usando o admin client para garantir sucesso
+      const { createAdminClient } = await import('@/utils/supabase/admin');
+      const adminSupabase = createAdminClient();
+      
+      const { error: updateError } = await adminSupabase
+        .from('profiles')
+        .update({ plan: 'pro' })
+        .eq('user_id', user.id);
+
+      if (updateError) throw updateError;
+      
+      return { success: true };
+    }
+
+    return { error: 'Pagamento ainda não confirmado no Stripe' };
+  } catch (error: any) {
+    console.error('Verify session error:', error);
+    return { error: error.message };
   }
 }
