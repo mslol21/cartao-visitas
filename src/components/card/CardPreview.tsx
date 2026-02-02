@@ -63,9 +63,12 @@ export function CardPreview({ data, showBranding = true, suppressTracking = fals
   const validSocialLinks = socialLinks.filter(s => s.value);
   
   // Logic: Pro sees everything. Free sees only 1st and others are disabled.
-  const activeServicesLimit = isPro ? 20 : 3;
+  const activeServicesLimit = isPro ? 20 : 5; // Increased limit for better grid demo
   const services = data.services?.filter(s => s.trim() !== '') || [];
-  const activeServices = services.slice(0, activeServicesLimit);
+  const activeServicesArr = services.slice(0, activeServicesLimit);
+  
+  const mainService = activeServicesArr[0];
+  const secondaryServices = activeServicesArr.slice(1);
 
   const handleShare = (e: React.MouseEvent) => {
     e.preventDefault();
@@ -92,14 +95,28 @@ export function CardPreview({ data, showBranding = true, suppressTracking = fals
         <div className={cn(
           "relative bg-white dark:bg-slate-950 overflow-hidden rounded-[2.5rem] transition-all duration-500",
           isPro 
-            ? "border-2 border-primary/10 shadow-[0_40px_80px_-15px_rgba(59,130,246,0.15)] ring-1 ring-primary/5" 
+            ? "border-2 border-primary/10 shadow-[0_50px_100px_-20px_rgba(0,0,0,0.25)] ring-1 ring-primary/5" 
             : "border border-slate-200 dark:border-slate-800 shadow-sm"
         )}>
-          {/* Texture Overlay for Pro */}
+          {/* Pro Background Enhancements */}
           {isPro && (
-            <div className="absolute inset-0 opacity-[0.03] pointer-events-none" 
-                 style={{ backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%239C92AC' fill-opacity='0.4'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")` }} 
-            />
+            <>
+              {/* Subtle Animated Gradient Background for Body */}
+              <div className="absolute inset-0 opacity-[0.03] transition-opacity duration-1000">
+                <div className="absolute top-0 right-0 w-64 h-64 bg-primary blur-[100px] rounded-full animate-pulse" />
+                <div className="absolute bottom-0 left-0 w-64 h-64 bg-blue-600 blur-[100px] rounded-full animate-pulse-slow" />
+              </div>
+              
+              {/* Pattern Texture Overlay */}
+              <div className="absolute inset-0 opacity-[0.05] pointer-events-none mix-blend-overlay" 
+                   style={{ backgroundImage: `url("data:image/svg+xml,%3Csvg width='20' height='20' viewBox='0 0 20 20' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%239C92AC' fill-opacity='0.4' fill-rule='evenodd'%3E%3Ccircle cx='3' cy='3' r='3'/%3E%3Ccircle cx='13' cy='13' r='3'/%3E%3C/g%3E%3C/svg%3E")` }} 
+              />
+              
+              {/* Large Subtle Illustrative Icon */}
+              <div className="absolute -bottom-10 -right-10 opacity-10 blur-sm pointer-events-none">
+                <Sparkles className="w-64 h-64 text-slate-400 rotate-12" />
+              </div>
+            </>
           )}
           
           {/* Header */}
@@ -118,16 +135,20 @@ export function CardPreview({ data, showBranding = true, suppressTracking = fals
                 <div className="absolute inset-0 opacity-20 bg-[radial-gradient(circle_at_30%_20%,_white_0%,_transparent_60%)]" />
                 <div className="absolute top-0 inset-x-0 h-full bg-gradient-to-b from-black/20 to-transparent" />
                 
-                <div className="absolute top-4 right-5 flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-black/20 backdrop-blur-md border border-white/20 text-white text-[10px] font-bold uppercase tracking-[0.2em] shadow-lg">
+                {/* Decorative Elements for Pro */}
+                <div className="absolute -top-4 -left-4 w-24 h-24 bg-white/10 rounded-full blur-2xl" />
+                <div className="absolute top-2 left-6 w-12 h-1 bg-white/20 rounded-full blur-sm" />
+                
+                <div className="absolute top-4 right-5 flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-black/30 backdrop-blur-xl border border-white/20 text-white text-[10px] font-black uppercase tracking-[0.2em] shadow-2xl">
                   <BadgeCheck className="w-3.5 h-3.5 text-blue-400" />
-                  Pro
+                  Premium
                 </div>
               </>
             )}
             
             {!isPro && (
               <div className="absolute top-4 right-5 px-3 py-1 rounded-full bg-slate-200/50 text-slate-500 text-[9px] font-bold uppercase tracking-wider">
-                Plano Gratuito
+                Digital Free
               </div>
             )}
           </div>
@@ -142,7 +163,7 @@ export function CardPreview({ data, showBranding = true, suppressTracking = fals
                 className={cn(
                   "w-28 h-28 rounded-[2rem] bg-white dark:bg-slate-900 p-1.5 relative overflow-hidden transition-all duration-500",
                   isPro 
-                    ? "shadow-[0_20px_40px_-10px_rgba(59,130,246,0.3)] ring-4 ring-primary/20 ring-offset-4 ring-offset-white dark:ring-offset-slate-950" 
+                    ? "shadow-[0_25px_50px_-12px_rgba(0,0,0,0.4)] ring-4 ring-primary/30 ring-offset-4 ring-offset-white dark:ring-offset-slate-950" 
                     : "shadow-md border border-slate-100 dark:border-slate-800"
                 )}
               >
@@ -191,58 +212,104 @@ export function CardPreview({ data, showBranding = true, suppressTracking = fals
 
             {/* Identity & Visual Hierarchy */}
             <div className="text-center mb-8 w-full">
-              <h1 className="text-xl sm:text-2xl font-bold tracking-tight text-slate-900 dark:text-white mb-1 capitalize break-words">
+              <h1 className="text-xl sm:text-2xl font-black tracking-tight text-slate-900 dark:text-white mb-1 capitalize break-words">
                 {data.name || 'Seu Nome'}
               </h1>
-              <p className="text-slate-600 dark:text-slate-400 text-sm font-medium leading-relaxed px-4 break-words">
+              <p className="text-slate-600 dark:text-slate-400 text-sm font-bold leading-relaxed px-4 break-words opacity-80">
                 {data.tagline || 'Sua profissão ou frase de impacto'}
               </p>
               
               {data.city && (
-                <div className="flex items-center justify-center gap-1.5 mt-3 text-[11px] font-semibold text-slate-400 dark:text-slate-500 uppercase tracking-wider text-center px-4">
+                <div className="flex items-center justify-center gap-1.5 mt-3 text-[11px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-[0.2em] text-center px-4">
                   <MapPin className="w-3 h-3 flex-shrink-0" />
                   <span className="truncate">{data.city}</span>
                 </div>
               )}
             </div>
 
-            {/* Specialty Chips */}
-            {activeServices.length > 0 && (
-              <div className="flex flex-wrap justify-center gap-2 mb-8 px-2">
-                <AnimatePresence>
-                  {activeServices.map((service, i) => (
-                    <motion.span
-                      key={i}
-                      initial={{ opacity: 0, scale: 0.9 }}
-                      animate={{ opacity: 1, scale: 1 }}
-                      transition={{ delay: 0.1 * i }}
+            {/* Structured Services Section */}
+            {activeServicesArr.length > 0 && (
+              <div className="w-full mb-8">
+                <div className="flex items-center gap-2 mb-4 px-1">
+                  <div className="h-[1px] flex-1 bg-slate-100 dark:bg-slate-800" />
+                  <span className="text-[10px] font-black uppercase tracking-[0.3em] text-slate-400">Serviços</span>
+                  <div className="h-[1px] flex-1 bg-slate-100 dark:bg-slate-800" />
+                </div>
+                
+                {/* Main Service (Featured) */}
+                {mainService && (() => {
+                  const getServiceIcon = (text: string) => {
+                    const t = text.toLowerCase();
+                    if (t.includes('advoc') || t.includes('direit') || t.includes('jurid')) return <Globe className="w-6 h-6" />;
+                    if (t.includes('saud') || t.includes('medic') || t.includes('dentist') || t.includes('psico')) return <BadgeCheck className="w-6 h-6" />;
+                    if (t.includes('tech') || t.includes('dev') || t.includes('soft') || t.includes('ti')) return <Globe className="w-6 h-6" />;
+                    if (t.includes('market') || t.includes('venda') || t.includes('social')) return <Send className="w-6 h-6" />;
+                    return <Sparkles className="w-6 h-6" />;
+                  };
+
+                  return (
+                    <motion.div
+                      initial={{ opacity: 0, y: 10 }}
+                      animate={{ opacity: 1, y: 0 }}
                       className={cn(
-                        "px-3 py-1.5 rounded-xl border text-[11px] font-bold whitespace-nowrap transition-all",
+                        "w-full p-4 mb-3 rounded-2xl flex items-center justify-between group transition-all duration-300",
                         isPro 
-                          ? "bg-primary/5 border-primary/20 text-primary"
-                          : "bg-slate-50 dark:bg-slate-900 border-slate-200 dark:border-slate-800 text-slate-600 dark:text-slate-300"
+                          ? "bg-slate-50 dark:bg-white/5 border border-slate-200 dark:border-white/10 shadow-sm hover:shadow-md hover:-translate-y-0.5"
+                          : "bg-slate-50 dark:bg-slate-900 border border-slate-100 dark:border-slate-800"
                       )}
                     >
-                      {service.charAt(0).toUpperCase() + service.slice(1).toLowerCase()}
-                    </motion.span>
-                  ))}
-                  {!isPro && services.length > 3 && (
-                    <Tooltip>
-                      <TooltipTrigger asChild>
-                        <motion.span
-                          initial={{ opacity: 0, scale: 0.9 }}
-                          animate={{ opacity: 1, scale: 1 }}
-                          className="px-3 py-1.5 rounded-xl bg-slate-100 dark:bg-slate-800 border border-dashed border-slate-300 dark:border-slate-700 text-[11px] font-bold text-slate-400 cursor-help"
-                        >
-                          +{services.length - 3} mais
-                        </motion.span>
-                      </TooltipTrigger>
-                      <TooltipContent>
-                        <p>Disponível no Plano Pro</p>
-                      </TooltipContent>
-                    </Tooltip>
-                  )}
-                </AnimatePresence>
+                      <div className="flex items-center gap-4">
+                        <div className={cn(
+                          "w-12 h-12 rounded-xl flex items-center justify-center transition-colors",
+                          isPro ? "bg-primary/10 text-primary" : "bg-slate-200 dark:bg-slate-800 text-slate-400"
+                        )}>
+                          {getServiceIcon(mainService)}
+                        </div>
+                        <div className="flex flex-col">
+                          <span className="text-[9px] font-black uppercase tracking-widest text-primary mb-0.5">Destaque</span>
+                          <span className="text-sm font-black text-slate-900 dark:text-white">{mainService}</span>
+                        </div>
+                      </div>
+                    </motion.div>
+                  );
+                })()}
+
+                {/* Secondary Services Grid */}
+                {secondaryServices.length > 0 && (
+                  <div className="grid grid-cols-2 gap-3 pb-2">
+                    {secondaryServices.map((service, i) => (
+                      <motion.div
+                        key={i}
+                        initial={{ opacity: 0, scale: 0.95 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        transition={{ delay: 0.1 + (i * 0.05) }}
+                        className={cn(
+                          "p-3 rounded-2xl flex flex-col gap-2 transition-all duration-300",
+                          isPro 
+                            ? "bg-white dark:bg-white/5 border border-slate-200 dark:border-white/10 shadow-sm hover:shadow-md hover:-translate-y-0.5"
+                            : "bg-slate-50/50 dark:bg-slate-900 border border-slate-100 dark:border-slate-800"
+                        )}
+                      >
+                        <div className={cn(
+                          "w-8 h-8 rounded-lg flex items-center justify-center",
+                          isPro ? "bg-slate-100 dark:bg-white/10 text-slate-500" : "bg-slate-200/50 dark:bg-slate-800 text-slate-400"
+                        )}>
+                          <div className="w-1.5 h-1.5 rounded-full bg-current" />
+                        </div>
+                        <span className="text-xs font-bold text-slate-700 dark:text-slate-300 line-clamp-2 leading-tight">
+                          {service}
+                        </span>
+                      </motion.div>
+                    ))}
+                    
+                    {/* Upgrade Placeholder for Free */}
+                    {!isPro && services.length > 5 && (
+                      <div className="p-3 rounded-2xl border-2 border-dashed border-slate-100 dark:border-slate-800 flex items-center justify-center bg-slate-50/20">
+                         <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest">+{services.length - 5} Mais</span>
+                      </div>
+                    )}
+                  </div>
+                )}
               </div>
             )}
 
@@ -260,21 +327,21 @@ export function CardPreview({ data, showBranding = true, suppressTracking = fals
                   className={cn(
                     "w-full h-[72px] rounded-2xl font-black text-lg transition-all flex items-center justify-center gap-3",
                     isPro 
-                      ? "bg-gradient-to-r from-[#25D366] to-[#128C7E] text-white shadow-[0_20px_40px_-10px_rgba(37,211,102,0.4)] border-b-4 border-[#0d6157] hover:brightness-110 active:border-b-0 active:translate-y-1"
-                      : "bg-slate-100 hover:bg-slate-200 text-slate-900 border border-slate-200 shadow-none grayscale-[0.5]"
+                      ? "bg-gradient-to-r from-[#25D366] to-[#128C7E] text-white shadow-[0_30px_60px_-10px_rgba(37,211,102,0.4)] border-b-4 border-[#0d6157] hover:brightness-110 active:border-b-0 active:translate-y-1"
+                      : "bg-slate-900 hover:bg-slate-800 text-white shadow-none border-0"
                   )}
                   asChild
                   aria-label={isPro ? 'Solicitar Orçamento via WhatsApp' : 'Conversar via WhatsApp'}
                   onClick={() => handleTrackClick('click_whatsapp')}
                 >
                   <a href={whatsappLink} target="_blank" rel="noopener noreferrer">
-                    <MessageCircle className={cn("w-7 h-7 flex-shrink-0", isPro ? "fill-white" : "fill-slate-500")} />
+                    <MessageCircle className={cn("w-7 h-7 flex-shrink-0", isPro ? "fill-white" : "fill-white/80")} />
                     <div className="text-left flex flex-col leading-tight">
-                      <span className={cn("text-[10px] uppercase tracking-widest font-bold", isPro ? "opacity-80" : "text-slate-500")}>
+                      <span className={cn("text-[10px] uppercase tracking-[0.2em] font-black", isPro ? "opacity-80" : "opacity-60")}>
                         {isPro ? 'Contato Premium' : 'Contato'}
                       </span>
-                      <span className={!isPro ? 'text-slate-700 font-bold' : ''}>
-                        {isPro ? 'Solicitar Orçamento' : 'Chamar no WhatsApp'}
+                      <span className="font-black">
+                        {isPro ? 'Solicitar Orçamento' : 'WhatsApp'}
                       </span>
                     </div>
                   </a>
@@ -300,8 +367,8 @@ export function CardPreview({ data, showBranding = true, suppressTracking = fals
                         className={cn(
                           "w-12 h-12 flex items-center justify-center rounded-2xl transition-all shadow-sm relative overflow-hidden",
                           isPro 
-                            ? "bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-slate-600 dark:text-slate-300 hover:text-primary hover:border-primary/30"
-                            : "bg-slate-50 border border-slate-100 text-slate-600 dark:text-slate-400",
+                            ? "bg-white dark:bg-white/5 border border-slate-200 dark:border-white/10 text-slate-600 dark:text-slate-300 hover:text-primary hover:border-primary/30"
+                            : "bg-slate-100/50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-slate-400 dark:text-slate-500",
                           isDisabled && "opacity-40 cursor-not-allowed grayscale"
                         )}
                       >
@@ -341,7 +408,7 @@ export function CardPreview({ data, showBranding = true, suppressTracking = fals
                     "w-12 h-12 flex items-center justify-center rounded-2xl transition-all flex-shrink-0",
                     isPro
                       ? "bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800"
-                      : "bg-slate-50 border border-slate-100 text-slate-400"
+                      : "bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-slate-400 dark:text-slate-500"
                   )}
                 >
                   <Share2 className="w-5 h-5" />
@@ -368,12 +435,14 @@ export function CardPreview({ data, showBranding = true, suppressTracking = fals
 
         {/* Pro Upsell (Only for Free cards when viewed by owner/preview) */}
         {!isPro && showBranding && (
-          <div className="mt-4 px-4 py-3 rounded-2xl bg-primary/5 border border-primary/10 flex items-center justify-between gap-3">
-            <div className="flex items-center gap-2">
-              <Sparkles className="w-4 h-4 text-primary" />
-              <span className="text-[11px] font-semibold text-slate-600">Remova a marca e use cores personalizadas</span>
+          <div className="mt-4 px-4 py-3 rounded-[1.5rem] bg-slate-900 border border-primary/20 flex flex-col sm:flex-row items-center justify-between gap-3 shadow-2xl">
+            <div className="flex items-center gap-3">
+              <div className="w-8 h-8 rounded-xl bg-primary/10 flex items-center justify-center">
+                 <Sparkles className="w-4 h-4 text-primary" />
+              </div>
+              <span className="text-[10px] font-black uppercase tracking-widest text-slate-300">Upgrade para design premium</span>
             </div>
-            <Button variant="ghost" size="sm" className="h-7 px-3 text-[10px] font-bold text-primary hover:bg-primary/10" asChild>
+            <Button variant="hero" size="sm" className="h-8 px-4 text-[10px] font-black rounded-xl bg-primary text-white" asChild>
               <a href="/pricing">Ver Pro</a>
             </Button>
           </div>
