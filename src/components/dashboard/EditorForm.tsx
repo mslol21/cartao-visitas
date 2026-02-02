@@ -161,7 +161,7 @@ export function EditorForm({ initialData, onSubmit, onChange, isPro = false }: E
     handleChange('services', services);
   };
 
-  const maxServices = isPro ? 20 : 3;
+  const maxServices = isPro ? 20 : 1;
 
   return (
     <div className="space-y-6">
@@ -309,24 +309,27 @@ export function EditorForm({ initialData, onSubmit, onChange, isPro = false }: E
                 />
               </div>
 
-              <div className="space-y-2">
-                <Label className="flex items-center gap-2 opacity-60"><Instagram className="w-4 h-4" /> Instagram</Label>
-                <Input
-                  value={formData.instagram || ''}
-                  onChange={(e) => handleChange('instagram', e.target.value.replace('@', ''))}
-                  placeholder="seu.insta"
-                  className="rounded-2xl h-12"
-                />
-              </div>
-
               {!isPro ? (
                 <div className="p-6 rounded-3xl bg-primary/5 border border-primary/20 text-center space-y-3">
-                  <Linkedin className="w-8 h-8 text-primary/40 mx-auto" />
-                  <p className="text-xs font-bold text-slate-600 dark:text-slate-400">Linkedin, Facebook, TikTok e YouTube são exclusivos para usuários <span className="text-primary font-black">PRO</span>.</p>
-                  <Button variant="outline" size="sm" className="rounded-xl h-8 text-[10px] font-black uppercase">Fazer Upgrade</Button>
+                  <Instagram className="w-8 h-8 text-primary/40 mx-auto" />
+                  <p className="text-xs font-bold text-slate-600 dark:text-slate-400">
+                    Instagram, Linkedin, Facebook e outras redes são exclusivos para usuários <span className="text-primary font-black">PRO</span>.
+                  </p>
+                  <Button asChild variant="outline" size="sm" className="rounded-xl h-8 text-[10px] font-black uppercase">
+                    <Link href="/pricing">Fazer Upgrade</Link>
+                  </Button>
                 </div>
               ) : (
                 <div className="grid gap-4">
+                  <div className="space-y-2">
+                    <Label className="flex items-center gap-2 opacity-60"><Instagram className="w-4 h-4" /> Instagram</Label>
+                    <Input
+                      value={formData.instagram || ''}
+                      onChange={(e) => handleChange('instagram', e.target.value.replace('@', ''))}
+                      placeholder="seu.insta"
+                      className="rounded-2xl h-12"
+                    />
+                  </div>
                   <div className="space-y-2">
                     <Label className="flex items-center gap-2 opacity-60"><Linkedin className="w-4 h-4" /> LinkedIn</Label>
                     <Input
