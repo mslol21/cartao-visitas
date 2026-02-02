@@ -39,7 +39,7 @@ interface CardPreviewProps {
   isDownloadMode?: boolean;
 }
 
-export function CardPreview({ data, showBranding = true, suppressTracking = false }: CardPreviewProps) {
+export function CardPreview({ data, showBranding = true, suppressTracking = false, isDownloadMode = false }: CardPreviewProps) {
   const isPro = data.plan === 'pro';
 
   const handleTrackClick = async (type: AnalyticsEventType) => {
