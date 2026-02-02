@@ -62,9 +62,14 @@ function DashboardContent() {
     const fetchStats = async () => {
       if (activeTab === 'analytics' && profile?.id && profile.plan === 'pro') {
         setLoadingAnalytics(true);
-        const stats = await getProfileAnalytics(profile.id);
-        setAnalytics(stats);
-        setLoadingAnalytics(false);
+        try {
+          const stats = await getProfileAnalytics(profile.id);
+          setAnalytics(stats);
+        } catch (err) {
+          console.error('Dashboard Stats Fetch Error:', err);
+        } finally {
+          setLoadingAnalytics(false);
+        }
       }
     };
     fetchStats();
