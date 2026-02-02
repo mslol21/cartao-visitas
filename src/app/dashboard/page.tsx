@@ -20,7 +20,9 @@ import {
   Zap,
   MessageCircle,
   ArrowLeft,
-  LayoutDashboard
+  LayoutDashboard,
+  Palette,
+  Settings
 } from 'lucide-react';
 import { toast } from 'sonner';
 import { motion, AnimatePresence } from 'framer-motion';
