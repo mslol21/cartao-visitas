@@ -1,7 +1,7 @@
 "use client";
 
-import { useState, useEffect } from 'react';
-import { useRouter } from 'next/navigation';
+import { useState, useEffect, Suspense } from 'react';
+import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import { useAuth } from '@/hooks/useAuth';
 import { useProfile } from '@/hooks/useProfile';
@@ -19,10 +19,8 @@ import {
   Eye,
   Zap,
   MessageCircle,
-  ArrowLeft,
   LayoutDashboard,
   Palette,
-  Settings
 } from 'lucide-react';
 import { toast } from 'sonner';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -30,7 +28,8 @@ import { cn } from "@/lib/utils";
 
 import { Logo } from '@/components/brand/Logo';
 import { verifyCheckoutSession, forceSyncProPlan } from '@/app/actions/checkout';
-import { useSearchParams } from 'next/navigation';
+
+type DashboardTab = 'editor' | 'analytics' | 'settings';
 
 function DashboardContent() {
   const router = useRouter();
@@ -38,7 +37,7 @@ function DashboardContent() {
   const { profile, loading: profileLoading, updateProfile, refetch } = useProfile();
   const searchParams = useSearchParams();
   
-  const [activeTab, setActiveTab] = useState<'editor' | 'analytics' | 'settings'>('editor');
+  const [activeTab, setActiveTab] = useState<DashboardTab>('editor');
   const [currentData, setCurrentData] = useState<Partial<Profile>>({});
   const [copied, setCopied] = useState(false);
   const [isSyncing, setIsSyncing] = useState(false);
@@ -434,7 +433,7 @@ function DashboardContent() {
         ].map((tab) => (
           <button
             key={tab.id}
-            onClick={() => setActiveTab(tab.id as any)}
+            onClick={() => setActiveTab(tab.id as DashboardTab)}
             className={cn(
               "flex-1 flex flex-col items-center gap-1 py-3 px-2 rounded-2xl transition-all",
               activeTab === tab.id 
@@ -463,5 +462,3 @@ export default function DashboardPage() {
     </Suspense>
   );
 }
-
-import { Suspense } from 'react';

@@ -87,9 +87,10 @@ export function AuthForm({ mode }: AuthFormProps) {
           window.location.href = '/dashboard';
         }
       }
-    } catch (err: any) {
-      console.error('❌ Erro inesperado no handleSubmit:', err);
-      toast.error(err.message || 'Ocorreu um erro inesperado. Tente novamente.');
+    } catch (err: unknown) {
+      const error = err as Error;
+      console.error('❌ Erro inesperado no handleSubmit:', error);
+      toast.error(error.message || 'Ocorreu um erro inesperado. Tente novamente.');
     } finally {
       setLoading(false);
     }

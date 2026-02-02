@@ -64,13 +64,14 @@ export function useProfile() {
       setProfile(prev => prev ? { ...prev, ...formData } as Profile : null);
       
       return { error: null };
-    } catch (error: any) {
-      if (error.code === '23505') {
+    } catch (error: unknown) {
+      const err = error as { code?: string };
+      if (err.code === '23505') {
         toast.error('Este username já está em uso. Escolha outro.');
       } else {
         toast.error('Erro ao atualizar perfil');
       }
-      return { error };
+      return { error: error as Error };
     }
   };
 

@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState, createContext, useContext, ReactNode, useMemo } from 'react';
-import { User, Session } from '@supabase/supabase-js';
+import { User, Session, AuthError } from '@supabase/supabase-js';
 import { createClient } from '@/utils/supabase/client';
 import { useRouter } from 'next/navigation';
 
@@ -9,8 +9,8 @@ interface AuthContextType {
   user: User | null;
   session: Session | null;
   loading: boolean;
-  signUp: (email: string, password: string) => Promise<{ error: any }>;
-  signIn: (email: string, password: string) => Promise<{ error: any }>;
+  signUp: (email: string, password: string) => Promise<{ error: AuthError | Error | null }>;
+  signIn: (email: string, password: string) => Promise<{ error: AuthError | Error | null }>;
   signOut: () => Promise<void>;
 }
 
@@ -74,13 +74,14 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
       console.log('✅ Login realizado com sucesso! Sessão:', !!data.session);
       return { error: null };
-    } catch (err: any) {
-      console.error('🔥 Erro Crítico durante o fetch de login:', err);
+    } catch (err: unknown) {
+      const error = err as Error;
+      console.error('🔥 Erro Crítico durante o fetch de login:', error);
       // Se for FetchError, pode ser o URL errado ou bloqueio de rede
-      if (err.name === 'FetchError') {
+      if (error.name === 'FetchError') {
         console.error('⚠️ Detalhe: Falha de rede. Verifique se o URL do Supabase no .env está correto.');
       }
-      return { error: err };
+      return { error };
     }
   };
 

@@ -25,10 +25,10 @@ export async function createClient() {
         getAll() {
           return cookieStore.getAll()
         },
-        setAll(cookiesToSet: { name: string; value: string; options: any }[]) {
+        setAll(cookiesToSet: { name: string; value: string; options: Record<string, unknown> }[]) {
           cookiesToSet.forEach(({ name, value, options }) => {
             try {
-              cookieStore.set(name, value, options)
+              cookieStore.set(name, value, options as any)
             } catch (error) {
               // Safe to ignore in Server Components
             }

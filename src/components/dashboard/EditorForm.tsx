@@ -29,6 +29,7 @@ import { ProfileFormData } from '@/types/profile';
 import { createClient } from '@/utils/supabase/client';
 import { toast } from 'sonner';
 import { cn } from '@/lib/utils';
+import Link from 'next/link';
 
 interface EditorFormProps {
   initialData: Partial<ProfileFormData>;
@@ -105,7 +106,7 @@ export function EditorForm({ initialData, onSubmit, onChange, isPro = false }: E
     return () => clearTimeout(timer);
   }, [formData, onSubmit, usernameStatus]);
 
-  const handleChange = (field: keyof ProfileFormData, value: any) => {
+  const handleChange = (field: keyof ProfileFormData, value: string | string[] | undefined) => {
     const updated = { ...formData, [field]: value };
     setFormData(updated);
     onChange(updated);
@@ -138,8 +139,9 @@ export function EditorForm({ initialData, onSubmit, onChange, isPro = false }: E
 
       handleChange('photo_url', publicUrl);
       toast.success('Foto carregada!');
-    } catch (error: any) {
-      toast.error('Erro ao carregar foto: ' + error.message);
+    } catch (error: unknown) {
+      const err = error as Error;
+      toast.error('Erro ao carregar foto: ' + err.message);
     } finally {
       setUploading(false);
     }

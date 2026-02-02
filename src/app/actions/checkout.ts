@@ -63,9 +63,10 @@ export async function createCheckoutSession(manualToken?: string) {
     });
 
     return { url: checkoutSession.url };
-  } catch (error: any) {
-    console.error('Stripe error:', error);
-    return { error: 'Falha na conexão com o checkout: ' + error.message };
+  } catch (error: unknown) {
+    const err = error as Error;
+    console.error('Stripe error:', err);
+    return { error: 'Falha na conexão com o checkout: ' + err.message };
   }
 }
 
@@ -102,9 +103,10 @@ export async function verifyCheckoutSession(sessionId: string) {
     }
 
     return { error: 'Pagamento ainda não confirmado no Stripe' };
-  } catch (error: any) {
-    console.error('Verify session error:', error);
-    return { error: error.message };
+  } catch (error: unknown) {
+    const err = error as Error;
+    console.error('Verify session error:', err);
+    return { error: err.message };
   }
 }
 
@@ -131,7 +133,8 @@ export async function forceSyncProPlan() {
     }
 
     return { error: 'Nenhuma assinatura ativa encontrada no Stripe' };
-  } catch (error: any) {
-    return { error: error.message };
+  } catch (error: unknown) {
+    const err = error as Error;
+    return { error: err.message };
   }
 }

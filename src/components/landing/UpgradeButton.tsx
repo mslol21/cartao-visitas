@@ -33,7 +33,7 @@ export function UpgradeButton() {
       } else {
         toast.error(result.error || 'Erro ao criar sessão de checkout');
       }
-    } catch (error: any) {
+    } catch (error: unknown) {
       toast.error('Erro ao processar pagamento');
     } finally {
       setLoading(false);

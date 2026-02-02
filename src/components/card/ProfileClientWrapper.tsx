@@ -4,9 +4,10 @@ import { motion } from 'framer-motion';
 import Link from 'next/link';
 import { CardPreview } from './CardPreview';
 import { Profile } from '@/types/profile';
+import Image from 'next/image';
 
 interface ProfileClientWrapperProps {
-  profile: Partial<Profile>;
+  profile: Profile;
   themeColor: string;
 }
 
@@ -45,8 +46,13 @@ export function ProfileClientWrapper({ profile, themeColor }: ProfileClientWrapp
           >
             <div className="flex -space-x-1.5">
               {[1, 2, 3].map((i) => (
-                <div key={i} className="w-5 h-5 rounded-full border-2 border-white dark:border-slate-800 bg-slate-100 dark:bg-slate-700 overflow-hidden">
-                  <img src={`https://api.dicebear.com/7.x/avataaars/svg?seed=${i + 123}`} alt="User" />
+                <div key={i} className="w-5 h-5 rounded-full border-2 border-white dark:border-slate-800 bg-slate-100 dark:bg-slate-700 overflow-hidden relative">
+                  <Image 
+                    src={`https://api.dicebear.com/7.x/avataaars/svg?seed=${i + 123}`} 
+                    alt={`User ${i}`} 
+                    fill
+                    className="object-cover"
+                  />
                 </div>
               ))}
             </div>
