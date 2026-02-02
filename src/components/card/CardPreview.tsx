@@ -197,7 +197,7 @@ export function CardPreview({ data, showBranding = true, suppressTracking = fals
         >
           {/* Pro Background Video */}
           {isPro && data.background_video_url && (
-            <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none opacity-40">
+            <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none opacity-30 blur-sm">
               <video 
                 key={data.background_video_url}
                 autoPlay 
@@ -208,7 +208,7 @@ export function CardPreview({ data, showBranding = true, suppressTracking = fals
               >
                 <source src={data.background_video_url} type="video/mp4" />
               </video>
-              <div className="absolute inset-0 bg-black/20" />
+              <div className="absolute inset-0 bg-black/40" />
             </div>
           )}
 
