@@ -25,9 +25,20 @@ export async function trackEvent(profileId: string, eventType: AnalyticsEventTyp
 }
 
 export async function getProfileAnalytics(profileId: string) {
+  if (!profileId) {
+    console.error('getProfileAnalytics: profileId is missing');
+    return { visits: 0, clicks: 0, whatsappClicks: 0, conversionRate: 0 };
+  }
+
   try {
     const supabase = await createClient();
     
+    // Test connection
+    const { data: authTest, error: authError } = await supabase.auth.getUser();
+    if (authError || !authTest.user) {
+      console.warn('Analytics: User not authenticated in server action');
+    }
+
     // Total visits (page_view)
     const { count: visits, error: visitError } = await supabase
       .from('analytics')
@@ -35,7 +46,10 @@ export async function getProfileAnalytics(profileId: string) {
       .eq('profile_id', profileId)
       .eq('event_type', 'page_view');
 
-    if (visitError) throw visitError;
+    if (visitError) {
+      console.error('Analytics Fetch Error (visits):', visitError);
+      // Don't throw, just return what we have
+    }
 
     // Total clicks (anything that is not page_view)
     const { count: clicks, error: clickError } = await supabase
@@ -44,7 +58,7 @@ export async function getProfileAnalytics(profileId: string) {
       .eq('profile_id', profileId)
       .neq('event_type', 'page_view');
 
-    if (clickError) throw clickError;
+    if (clickError) console.error('Analytics Fetch Error (clicks):', clickError);
 
     // Specific WhatsApp clicks
     const { count: whatsappClicks, error: waError } = await supabase
@@ -53,18 +67,20 @@ export async function getProfileAnalytics(profileId: string) {
       .eq('profile_id', profileId)
       .eq('event_type', 'click_whatsapp');
 
-    if (waError) throw waError;
+    if (waError) console.error('Analytics Fetch Error (whatsapp):', waError);
 
-    const conversionRate = visits && visits > 0 ? Math.round((clicks || 0) / visits * 100) : 0;
+    const v = visits || 0;
+    const c = clicks || 0;
+    const conversionRate = v > 0 ? Math.round((c / v) * 100) : 0;
 
     return {
-      visits: visits || 0,
-      clicks: clicks || 0,
+      visits: v,
+      clicks: c,
       whatsappClicks: whatsappClicks || 0,
       conversionRate
     };
   } catch (error) {
-    console.error('Error fetching analytics:', error);
+    console.error('Critical Error in getProfileAnalytics:', error);
     return { visits: 0, clicks: 0, whatsappClicks: 0, conversionRate: 0 };
   }
 }
