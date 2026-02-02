@@ -115,7 +115,7 @@ export async function forceSyncProPlan() {
     const supabase = await createClient();
     const { data: { user } } = await supabase.auth.getUser();
 
-    if (!user) return { error: 'Faça login' };
+    if (!user) return { error: 'Sessão não encontrada ou expirada. Faça login no Konnexy novamente.' };
 
     // 1. Procurar sessões pagas deste usuário no Stripe
     const sessions = await stripe.checkout.sessions.list({

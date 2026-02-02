@@ -10,6 +10,9 @@ export async function createClient() {
   // Se as chaves não existirem (comum durante o build do Vercel), 
   // retornamos um fallback seguro para não quebrar a compilação
   if (!supabaseUrl || !supabaseKey) {
+    if (process.env.NODE_ENV === 'production') {
+      console.warn('CRITICAL: Supabase keys missing in production!');
+    }
     return createServerClient(
       'https://placeholder.supabase.co',
       'placeholder',
