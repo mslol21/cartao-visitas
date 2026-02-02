@@ -14,7 +14,12 @@ import {
   Send,
   ExternalLink,
   Lock,
-  Sparkles
+  Sparkles,
+  Download,
+  Image as ImageIcon,
+  MoreVertical,
+  UserPlus,
+  FileText
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Profile } from '@/types/profile';
@@ -37,7 +42,6 @@ import { trackEvent, AnalyticsEventType } from '@/app/actions/analytics';
 import { toast } from 'sonner';
 import html2canvas from 'html2canvas';
 import { jsPDF } from 'jspdf';
-import { Download, Image as ImageIcon, Share2, MoreVertical, UserPlus, FileText } from 'lucide-react';
 
 interface CardPreviewProps {
   data: Partial<Profile>;
