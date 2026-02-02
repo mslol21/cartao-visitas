@@ -47,7 +47,7 @@ export function CardPreview({ data, showBranding = true, suppressTracking = fals
   const formattedWhatsapp = cleanWhatsapp.startsWith('55') ? cleanWhatsapp : `55${cleanWhatsapp}`;
   
   const whatsappLink = cleanWhatsapp
-    ? `https://wa.me/${formattedWhatsapp}?text=${encodeURIComponent(`Olá! Vi seu perfil no ConnectCard e gostaria de ${isPro ? 'solicitar um orçamento' : 'conversar'} sobre seus serviços.`)}`
+    ? `https://wa.me/${formattedWhatsapp}?text=${encodeURIComponent(`Olá! Vi seu perfil na Konnexy e gostaria de ${isPro ? 'solicitar um orçamento' : 'conversar'} sobre seus serviços.`)}`
     : '#';
 
   const socialLinks = [
@@ -71,7 +71,7 @@ export function CardPreview({ data, showBranding = true, suppressTracking = fals
     e.preventDefault();
     if (navigator.share) {
       navigator.share({
-        title: data.name || 'ConnectCard',
+        title: data.name || 'Konnexy',
         text: data.tagline || 'Confira meu perfil profissional',
         url: typeof window !== 'undefined' ? window.location.href : '',
       });
