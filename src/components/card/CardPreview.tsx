@@ -28,19 +28,55 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { trackEvent, AnalyticsEventType } from '@/app/actions/analytics';
+import html2canvas from 'html2canvas';
+import { jsPDF } from 'jspdf';
+import { Download } from 'lucide-react';
 
 interface CardPreviewProps {
   data: Partial<Profile>;
   showBranding?: boolean;
   suppressTracking?: boolean;
+  isDownloadMode?: boolean;
 }
 
 export function CardPreview({ data, showBranding = true, suppressTracking = false }: CardPreviewProps) {
   const isPro = data.plan === 'pro';
 
   const handleTrackClick = async (type: AnalyticsEventType) => {
-    if (suppressTracking || !data.id) return;
+    if (suppressTracking || !data.id || isDownloadMode) return;
     await trackEvent(data.id, type);
+  };
+
+  const handleDownloadPDF = async () => {
+    const cardElement = document.getElementById('digital-card-content');
+    if (!cardElement) return;
+
+    toast.loading('Gerando seu cartão PDF profissional...');
+    
+    try {
+      const canvas = await html2canvas(cardElement, {
+        scale: 3,
+        useCORS: true,
+        logging: false,
+        backgroundColor: null
+      });
+      
+      const imgData = canvas.toDataURL('image/png');
+      const pdf = new jsPDF({
+        orientation: 'portrait',
+        unit: 'mm',
+        format: [85, 150] // Custom vertical format
+      });
+      
+      pdf.addImage(imgData, 'PNG', 0, 0, 85, 150);
+      pdf.save(`Konnexy_${data.name || 'Card'}.pdf`);
+      toast.success('Cartão baixado com sucesso!');
+    } catch (err) {
+      console.error(err);
+      toast.error('Erro ao gerar PDF');
+    } finally {
+      toast.dismiss();
+    }
   };
   
   const cleanWhatsapp = data.whatsapp?.replace(/\D/g, '') || '';
@@ -90,14 +126,17 @@ export function CardPreview({ data, showBranding = true, suppressTracking = fals
           duration: isPro ? 0.8 : 0.4, 
           ease: isPro ? [0.16, 1, 0.3, 1] : "easeOut" 
         }}
-        className="w-full max-w-[380px] mx-auto group/card"
+        className={cn("w-full max-w-[380px] mx-auto group/card", isDownloadMode && "m-0")}
       >
-        <div className={cn(
-          "relative bg-white dark:bg-slate-950 overflow-hidden rounded-[2.5rem] transition-all duration-500",
-          isPro 
-            ? "border-2 border-primary/10 shadow-[0_50px_100px_-20px_rgba(0,0,0,0.25)] ring-1 ring-primary/5" 
-            : "border border-slate-200 dark:border-slate-800 shadow-sm"
-        )}>
+        <div 
+          id="digital-card-content"
+          className={cn(
+            "relative bg-white dark:bg-slate-950 overflow-hidden rounded-[2.5rem] transition-all duration-500",
+            isPro 
+              ? "border-2 border-primary/10 shadow-[0_50px_100px_-20px_rgba(0,0,0,0.25)] ring-1 ring-primary/5" 
+              : "border border-slate-200 dark:border-slate-800 shadow-sm"
+          )}
+        >
           {/* Pro Background Enhancements */}
           {isPro && (
             <>
@@ -122,11 +161,10 @@ export function CardPreview({ data, showBranding = true, suppressTracking = fals
           {/* Header */}
           <div 
             className={cn(
-              "h-28 relative overflow-hidden transition-all duration-700",
-              !isPro && "saturate-50"
+              "h-28 relative overflow-hidden transition-all duration-700"
             )}
             style={{ 
-              backgroundColor: !isPro ? '#f1f5f9' : (data.theme_color || '#3b82f6'),
+              backgroundColor: data.theme_color || (isPro ? '#3b82f6' : '#f1f5f9'),
               backgroundImage: isPro ? `linear-gradient(135deg, ${data.theme_color || '#3b82f6'} 0%, #1e293b 100%)` : 'none'
             }}
           >
@@ -261,12 +299,12 @@ export function CardPreview({ data, showBranding = true, suppressTracking = fals
                       <div className="flex items-center gap-4">
                         <div className={cn(
                           "w-12 h-12 rounded-xl flex items-center justify-center transition-colors",
-                          isPro ? "bg-primary/10 text-primary" : "bg-slate-200 dark:bg-slate-800 text-slate-400"
-                        )}>
+                          isPro ? "bg-primary/10" : "bg-slate-200 dark:bg-slate-800 text-slate-400"
+                        )} style={{ color: isPro ? (data.theme_color || '#3b82f6') : undefined }}>
                           {getServiceIcon(mainService)}
                         </div>
                         <div className="flex flex-col">
-                          <span className="text-[9px] font-black uppercase tracking-widest text-primary mb-0.5">Destaque</span>
+                          <span className="text-[9px] font-black uppercase tracking-widest mb-0.5" style={{ color: data.theme_color || '#3b82f6' }}>Destaque</span>
                           <span className="text-sm font-black text-slate-900 dark:text-white">{mainService}</span>
                         </div>
                       </div>
@@ -327,9 +365,13 @@ export function CardPreview({ data, showBranding = true, suppressTracking = fals
                   className={cn(
                     "w-full h-[72px] rounded-2xl font-black text-lg transition-all flex items-center justify-center gap-3",
                     isPro 
-                      ? "bg-gradient-to-r from-[#25D366] to-[#128C7E] text-white shadow-[0_30px_60px_-10px_rgba(37,211,102,0.4)] border-b-4 border-[#0d6157] hover:brightness-110 active:border-b-0 active:translate-y-1"
+                      ? "text-white shadow-xl hover:brightness-110 active:translate-y-1"
                       : "bg-slate-900 hover:bg-slate-800 text-white shadow-none border-0"
                   )}
+                  style={{ 
+                    backgroundColor: isPro ? (data.theme_color || '#25D366') : undefined,
+                    boxShadow: isPro ? `0 20px 40px -10px ${data.theme_color}44` : undefined
+                  }}
                   asChild
                   aria-label={isPro ? 'Solicitar Orçamento via WhatsApp' : 'Conversar via WhatsApp'}
                   onClick={() => handleTrackClick('click_whatsapp')}
@@ -407,12 +449,22 @@ export function CardPreview({ data, showBranding = true, suppressTracking = fals
                   className={cn(
                     "w-12 h-12 flex items-center justify-center rounded-2xl transition-all flex-shrink-0",
                     isPro
-                      ? "bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800"
-                      : "bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-slate-400 dark:text-slate-500"
+                      ? "bg-slate-50 dark:bg-slate-901 border border-slate-200 dark:border-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800"
+                      : "bg-slate-50 dark:bg-slate-901 border border-slate-200 dark:border-slate-800 text-slate-400 dark:text-slate-500"
                   )}
                 >
                   <Share2 className="w-5 h-5" />
                 </button>
+
+                {isPro && (
+                  <button
+                    onClick={handleDownloadPDF}
+                    aria-label="Baixar PDF"
+                    className="w-12 h-12 flex items-center justify-center rounded-2xl transition-all flex-shrink-0 bg-white dark:bg-slate-900 border-2 border-primary/20 text-primary hover:bg-primary hover:text-white"
+                  >
+                    <Download className="w-5 h-5" />
+                  </button>
+                )}
               </div>
             </div>
           </div>
