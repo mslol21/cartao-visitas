@@ -56,20 +56,31 @@ export function CardPreview({ data, showBranding = true, suppressTracking = fals
     
     try {
       const canvas = await html2canvas(cardElement, {
-        scale: 3,
+        scale: 5, // Aumentado para máxima nitidez em telas de alta densidade
         useCORS: true,
         logging: false,
-        backgroundColor: null
+        backgroundColor: null,
+        allowTaint: true,
+        imageTimeout: 0,
+        onclone: (clonedDoc) => {
+          // Garante que o elemento clonado esteja visível e com as dimensões corretas
+          const el = clonedDoc.getElementById('digital-card-content');
+          if (el) {
+            el.style.transform = 'none';
+            el.style.boxShadow = 'none'; // Sombras complexas podem borrar no canvas, o Pro ja tem ring
+          }
+        }
       });
       
-      const imgData = canvas.toDataURL('image/png');
+      const imgData = canvas.toDataURL('image/png', 1.0);
       const pdf = new jsPDF({
         orientation: 'portrait',
         unit: 'mm',
-        format: [85, 150] // Custom vertical format
+        format: [85, 150],
+        compress: true // Ativa compressão para manter o arquivo leve sem perder qualidade visual
       });
       
-      pdf.addImage(imgData, 'PNG', 0, 0, 85, 150);
+      pdf.addImage(imgData, 'PNG', 0, 0, 85, 150, undefined, 'FAST');
       pdf.save(`Konnexy_${data.name || 'Card'}.pdf`);
       toast.success('Cartão baixado com sucesso!');
     } catch (err) {
