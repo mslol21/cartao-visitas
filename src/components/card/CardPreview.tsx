@@ -28,6 +28,7 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { trackEvent, AnalyticsEventType } from '@/app/actions/analytics';
+import { toast } from 'sonner';
 import html2canvas from 'html2canvas';
 import { jsPDF } from 'jspdf';
 import { Download } from 'lucide-react';
