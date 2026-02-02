@@ -305,7 +305,7 @@ export function CardPreview({ data, showBranding = true, suppressTracking = fals
                         </div>
                         <div className="flex flex-col">
                           <span className="text-[9px] font-black uppercase tracking-widest mb-0.5" style={{ color: data.theme_color || '#3b82f6' }}>Destaque</span>
-                          <span className="text-sm font-black text-slate-900 dark:text-white">{mainService}</span>
+                          <span className="text-sm font-black text-slate-900 dark:text-white uppercase">{mainService}</span>
                         </div>
                       </div>
                     </motion.div>
@@ -334,7 +334,7 @@ export function CardPreview({ data, showBranding = true, suppressTracking = fals
                         )}>
                           <div className="w-1.5 h-1.5 rounded-full bg-current" />
                         </div>
-                        <span className="text-xs font-bold text-slate-700 dark:text-slate-300 line-clamp-2 leading-tight">
+                        <span className="text-xs font-bold text-slate-700 dark:text-slate-300 line-clamp-2 leading-tight uppercase">
                           {service}
                         </span>
                       </motion.div>
