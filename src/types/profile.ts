@@ -21,6 +21,9 @@ export interface Profile {
   seo_title: string | null;
   seo_description: string | null;
   theme_color: string;
+  theme_style: 'standard' | 'oled' | 'glass' | 'minimalist';
+  font_family: string;
+  background_video_url: string | null;
   created_at: string;
   updated_at: string;
 }
@@ -44,4 +47,7 @@ export interface ProfileFormData {
   seo_title?: string | null;
   seo_description?: string | null;
   theme_color?: string;
+  theme_style?: 'standard' | 'oled' | 'glass' | 'minimalist';
+  font_family?: string;
+  background_video_url?: string | null;
 }

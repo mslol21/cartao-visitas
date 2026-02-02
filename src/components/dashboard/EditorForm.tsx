@@ -23,9 +23,15 @@ import {
   Smartphone,
   Search,
   Palette,
-  Layout
+  Layout,
+  Type,
+  Video,
+  Layers,
+  Sparkles as SparklesIcon,
+  QrCode as QrIcon
 } from 'lucide-react';
-import { ProfileFormData } from '@/types/profile';
+import { QRCodeCustomizer } from './QRCodeCustomizer';
+import { Profile, ProfileFormData } from '@/types/profile';
 import { createClient } from '@/utils/supabase/client';
 import { toast } from 'sonner';
 import { cn } from '@/lib/utils';
@@ -191,6 +197,10 @@ export function EditorForm({ initialData, onSubmit, onChange, isPro = false }: E
           <TabsTrigger value="social" className="rounded-xl data-[state=active]:shadow-sm text-[10px] sm:text-xs py-2 sm:py-0">Links</TabsTrigger>
           <TabsTrigger value="visual" className="rounded-xl data-[state=active]:shadow-sm text-[10px] sm:text-xs py-2 sm:py-0">Visual</TabsTrigger>
           <TabsTrigger value="seo" className="rounded-xl data-[state=active]:shadow-sm text-[10px] sm:text-xs py-2 sm:py-0">SEO</TabsTrigger>
+          <TabsTrigger value="qrcode" className="rounded-xl data-[state=active]:shadow-sm text-[10px] sm:text-xs py-2 sm:py-0 flex items-center gap-1">
+            QR Code
+            {!isPro && <SparklesIcon className="w-2 h-2 text-primary" />}
+          </TabsTrigger>
         </TabsList>
 
         <div className="mt-8 space-y-6">
@@ -408,6 +418,82 @@ export function EditorForm({ initialData, onSubmit, onChange, isPro = false }: E
                 className="rounded-2xl h-12"
               />
             </div>
+
+            <div className="h-[1px] bg-border/50 my-6" />
+
+            <div className="space-y-6">
+              <div className="flex items-center justify-between">
+                <Label className="flex items-center gap-2 font-black uppercase tracking-widest text-[10px]"><Layers className="w-4 h-4 text-primary" /> Estilo do Tema</Label>
+                {!isPro && <span className="text-[10px] bg-primary/10 text-primary px-2 py-1 rounded-full font-black">PRO</span>}
+              </div>
+              
+              <div className={cn("grid grid-cols-2 gap-3", !isPro && "opacity-40 pointer-events-none")}>
+                {[
+                  { id: 'standard', label: 'Padrão', desc: 'Limpo e moderno' },
+                  { id: 'oled', label: 'OLED Dark', desc: 'Preto profundo' },
+                  { id: 'glass', label: 'Glassmorphism', desc: 'Efeito de vidro' },
+                  { id: 'minimalist', label: 'Minimalist', desc: 'Foco no conteúdo' }
+                ].map((style) => (
+                  <button
+                    key={style.id}
+                    onClick={() => handleChange('theme_style', style.id as any)}
+                    className={cn(
+                      "p-4 rounded-2xl border-2 text-left transition-all hover:border-primary/50",
+                      formData.theme_style === style.id ? "border-primary bg-primary/5 shadow-md" : "border-border/50 bg-card"
+                    )}
+                  >
+                    <p className="text-xs font-bold">{style.label}</p>
+                    <p className="text-[10px] opacity-60">{style.desc}</p>
+                  </button>
+                ))}
+              </div>
+              {!isPro && (
+                <Link href="/pricing" className="text-[10px] text-primary font-bold hover:underline block mt-2 text-center">
+                  Faça upgrade para desbloquear temas premium
+                </Link>
+              )}
+            </div>
+
+            <div className="space-y-4">
+              <div className="flex items-center justify-between">
+                <Label className="flex items-center gap-2 font-black uppercase tracking-widest text-[10px]"><Type className="w-4 h-4 text-primary" /> Tipografia Premium</Label>
+                {!isPro && <span className="text-[10px] bg-primary/10 text-primary px-2 py-1 rounded-full font-black">PRO</span>}
+              </div>
+              
+              <div className={cn("grid grid-cols-2 gap-3", !isPro && "opacity-40 pointer-events-none")}>
+                {['Inter', 'Outfit', 'Playfair Display', 'Sora', 'Plus Jakarta Sans', 'Bento'].map((font) => (
+                  <button
+                    key={font}
+                    onClick={() => handleChange('font_family', font)}
+                    className={cn(
+                      "p-3 rounded-xl border-2 transition-all text-center text-sm",
+                      formData.font_family === font ? "border-primary bg-primary/5 font-bold" : "border-border/50"
+                    )}
+                    style={{ fontFamily: font }}
+                  >
+                    {font}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            <div className="space-y-4">
+              <div className="flex items-center justify-between">
+                <Label className="flex items-center gap-2 font-black uppercase tracking-widest text-[10px]"><Video className="w-4 h-4 text-primary" /> Fundo em Vídeo</Label>
+                {!isPro && <span className="text-[10px] bg-primary/10 text-primary px-2 py-1 rounded-full font-black">PRO</span>}
+              </div>
+              <div className={cn(!isPro && "opacity-40 pointer-events-none")}>
+                <Input
+                  value={formData.background_video_url || ''}
+                  onChange={(e) => handleChange('background_video_url', e.target.value)}
+                  placeholder="URL do vídeo (ex: YouTube, Vimeo ou mp4 direto)"
+                  className="rounded-2xl h-12"
+                />
+                <p className="text-[10px] text-muted-foreground mt-2 ml-1">
+                  Recomendado usar loops curtos e sutis para não distrair o visitante.
+                </p>
+              </div>
+            </div>
           </TabsContent>
 
           <TabsContent value="seo" className="space-y-6 mt-0">
@@ -439,6 +525,22 @@ export function EditorForm({ initialData, onSubmit, onChange, isPro = false }: E
                   />
                 </div>
               </div>
+            )}
+          </TabsContent>
+          <TabsContent value="qrcode" className="space-y-6 mt-0">
+            {!isPro ? (
+              <div className="p-10 rounded-3xl bg-slate-50 dark:bg-slate-900 border-2 border-dashed border-slate-200 dark:border-slate-800 text-center space-y-4">
+                <QrIcon className="w-12 h-12 text-slate-300 mx-auto" />
+                <h3 className="text-lg font-bold text-slate-900 dark:text-white">QR Code Personalizado bloqueado</h3>
+                <p className="text-sm text-muted-foreground leading-relaxed">
+                  Usuários PRO podem baixar o QR Code do perfil com sua foto no centro e nas cores da sua marca para usar em materiais impressos.
+                </p>
+                <Button asChild className="rounded-2xl px-8 h-12 font-black uppercase tracking-widest text-[10px]">
+                  <Link href="/pricing">Quero meu QR Code Pro</Link>
+                </Button>
+              </div>
+            ) : (
+              <QRCodeCustomizer profile={formData as any} />
             )}
           </TabsContent>
         </div>

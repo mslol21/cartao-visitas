@@ -129,6 +129,16 @@ export function CardPreview({ data, showBranding = true, suppressTracking = fals
     }
   };
 
+  const getThemeClasses = () => {
+    if (!isPro) return "bg-white dark:bg-slate-950";
+    switch (data.theme_style) {
+      case 'oled': return "bg-black text-white border-white/10";
+      case 'glass': return "bg-white/5 backdrop-blur-3xl border-white/20";
+      case 'minimalist': return "bg-white text-slate-900 border-slate-100 shadow-none";
+      default: return "bg-white dark:bg-slate-950";
+    }
+  };
+
   return (
     <TooltipProvider>
       <motion.div 
@@ -139,18 +149,43 @@ export function CardPreview({ data, showBranding = true, suppressTracking = fals
           ease: isPro ? [0.16, 1, 0.3, 1] : "easeOut" 
         }}
         className={cn("w-full max-w-[380px] mx-auto group/card", isDownloadMode && "m-0")}
+        style={{ fontFamily: isPro ? data.font_family : 'inherit' }}
       >
+        {/* Font Loader for Pro */}
+        {isPro && data.font_family && (
+          <style dangerouslySetInnerHTML={{ __html: `
+            @import url('https://fonts.googleapis.com/css2?family=${data.font_family.replace(/ /g, '+')}:wght@400;700;900&display=swap');
+          `}} />
+        )}
+
         <div 
           id="digital-card-content"
           className={cn(
-            "relative bg-white dark:bg-slate-950 overflow-hidden rounded-[2.5rem] transition-all duration-500",
+            "relative overflow-hidden rounded-[2.5rem] transition-all duration-500",
+            getThemeClasses(),
             isPro 
               ? "border-2 border-primary/10 shadow-[0_50px_100px_-20px_rgba(0,0,0,0.25)] ring-1 ring-primary/5" 
               : "border border-slate-200 dark:border-slate-800 shadow-sm"
           )}
         >
+          {/* Pro Background Video */}
+          {isPro && data.background_video_url && (
+            <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none opacity-40">
+              <video 
+                autoPlay 
+                muted 
+                loop 
+                playsInline 
+                className="w-full h-full object-cover"
+              >
+                <source src={data.background_video_url} type="video/mp4" />
+              </video>
+              <div className="absolute inset-0 bg-black/20" />
+            </div>
+          )}
+
           {/* Pro Background Enhancements */}
-          {isPro && (
+          {isPro && !data.background_video_url && data.theme_style !== 'minimalist' && (
             <>
               {/* Subtle Animated Gradient Background for Body */}
               <div className="absolute inset-0 opacity-[0.03] transition-opacity duration-1000">
@@ -173,11 +208,14 @@ export function CardPreview({ data, showBranding = true, suppressTracking = fals
           {/* Header */}
           <div 
             className={cn(
-              "h-28 relative overflow-hidden transition-all duration-700"
+              "h-28 relative overflow-hidden transition-all duration-700",
+              data.theme_style === 'glass' && "bg-transparent backdrop-blur-sm"
             )}
             style={{ 
-              backgroundColor: data.theme_color || (isPro ? '#3b82f6' : '#f1f5f9'),
-              backgroundImage: isPro ? `linear-gradient(135deg, ${data.theme_color || '#3b82f6'} 0%, #1e293b 100%)` : 'none'
+              backgroundColor: data.theme_style === 'glass' ? undefined : (data.theme_color || (isPro ? '#3b82f6' : '#f1f5f9')),
+              backgroundImage: isPro && data.theme_style !== 'minimalist' && data.theme_style !== 'glass' 
+                ? `linear-gradient(135deg, ${data.theme_color || '#3b82f6'} 0%, #1e293b 100%)` 
+                : 'none'
             }}
           >
             {isPro && (
