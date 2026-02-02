@@ -1,6 +1,6 @@
 
 import { stripe } from '@/lib/stripe';
-import { createClient } from '@/utils/supabase/server';
+import { createAdminClient } from '@/utils/supabase/admin';
 import { headers } from 'next/headers';
 import { NextResponse } from 'next/server';
 
@@ -24,13 +24,17 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: `Webhook Error: ${err.message}` }, { status: 400 });
   }
 
-  const supabase = await createClient();
+  console.log('🔔 Webhook recebido:', event.type);
+
+  const supabase = createAdminClient();
 
   // Handle the event
   switch (event.type) {
-    case 'checkout.session.completed':
-      const session = event.data.object;
-      const userId = session.metadata.userId;
+    case 'checkout.session.completed': {
+      const session = event.data.object as any;
+      const userId = session.metadata?.userId;
+
+      console.log('✅ Checkout completo para usuário:', userId);
 
       if (userId) {
         const { error } = await supabase
@@ -39,10 +43,15 @@ export async function POST(request: Request) {
           .eq('user_id', userId);
         
         if (error) {
-          console.error('Error updating profile to pro:', error);
+          console.error('❌ Erro ao atualizar perfil para pro:', error);
+        } else {
+          console.log('✨ Perfil atualizado para PRO com sucesso!');
         }
+      } else {
+        console.error('⚠️ userId não encontrado nos metadados da sessão');
       }
       break;
+    }
     
     // Add more events if needed (customer.subscription.deleted, etc.)
     default:
