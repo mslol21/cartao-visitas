@@ -172,6 +172,7 @@ export function CardPreview({ data, showBranding = true, suppressTracking = fals
           {isPro && data.background_video_url && (
             <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none opacity-40">
               <video 
+                key={data.background_video_url}
                 autoPlay 
                 muted 
                 loop 

@@ -51,6 +51,7 @@ export function EditorForm({ initialData, onSubmit, onChange, isPro = false }: E
   const [newService, setNewService] = useState('');
   const [usernameStatus, setUsernameStatus] = useState<'idle' | 'checking' | 'available' | 'taken'>('idle');
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const videoInputRef = useRef<HTMLInputElement>(null);
   const supabase = createClient();
   const firstRender = useRef(true);
 
@@ -148,6 +149,47 @@ export function EditorForm({ initialData, onSubmit, onChange, isPro = false }: E
     } catch (error: unknown) {
       const err = error as Error;
       toast.error('Erro ao carregar foto: ' + err.message);
+    } finally {
+      setUploading(false);
+    }
+  };
+
+  const handleVideoUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    // Aumentar o limite para vídeo (ex: 10MB)
+    if (file.size > 10 * 1024 * 1024) {
+      toast.error('Vídeo muito grande. Máximo 10MB.');
+      return;
+    }
+
+    if (!file.type.startsWith('video/')) {
+      toast.error('Por favor, selecione um arquivo de vídeo (mp4, webm, etc).');
+      return;
+    }
+
+    setUploading(true);
+    try {
+      const fileExt = file.name.split('.').pop();
+      const fileName = `${Math.random().toString(36).substring(2)}.${fileExt}`;
+      const filePath = `videos/${fileName}`;
+
+      const { error: uploadError } = await supabase.storage
+        .from('avatars') // Usando o mesmo bucket por simplicidade, Supabase aceita qualquer arquivo
+        .upload(filePath, file);
+
+      if (uploadError) throw uploadError;
+
+      const { data: { publicUrl } } = supabase.storage
+        .from('avatars')
+        .getPublicUrl(filePath);
+
+      handleChange('background_video_url', publicUrl);
+      toast.success('Vídeo de fundo carregado!');
+    } catch (error: unknown) {
+      const err = error as Error;
+      toast.error('Erro ao carregar vídeo: ' + err.message);
     } finally {
       setUploading(false);
     }
@@ -479,18 +521,56 @@ export function EditorForm({ initialData, onSubmit, onChange, isPro = false }: E
 
             <div className="space-y-4">
               <div className="flex items-center justify-between">
-                <Label className="flex items-center gap-2 font-black uppercase tracking-widest text-[10px]"><Video className="w-4 h-4 text-primary" /> Fundo em Vídeo</Label>
+                <Label className="flex items-center gap-2 font-black uppercase tracking-widest text-[10px]"><Video className="w-4 h-4 text-primary" /> Vídeo de Fundo</Label>
                 {!isPro && <span className="text-[10px] bg-primary/10 text-primary px-2 py-1 rounded-full font-black">PRO</span>}
               </div>
-              <div className={cn(!isPro && "opacity-40 pointer-events-none")}>
-                <Input
-                  value={formData.background_video_url || ''}
-                  onChange={(e) => handleChange('background_video_url', e.target.value)}
-                  placeholder="URL do vídeo (ex: YouTube, Vimeo ou mp4 direto)"
-                  className="rounded-2xl h-12"
+              <div className={cn("space-y-3", !isPro && "opacity-40 pointer-events-none")}>
+                <input
+                  type="file"
+                  ref={videoInputRef}
+                  onChange={handleVideoUpload}
+                  accept="video/*"
+                  className="hidden"
                 />
-                <p className="text-[10px] text-muted-foreground mt-2 ml-1">
-                  Recomendado usar loops curtos e sutis para não distrair o visitante.
+                
+                {formData.background_video_url ? (
+                  <div className="relative group/video rounded-2xl overflow-hidden border border-border">
+                    <video 
+                      src={formData.background_video_url} 
+                      className="w-full h-32 object-cover opacity-60"
+                      muted
+                      loop
+                    />
+                    <div className="absolute inset-0 flex items-center justify-center bg-black/20 opacity-0 group-hover/video:opacity-100 transition-opacity">
+                      <Button 
+                        variant="destructive" 
+                        size="sm" 
+                        className="rounded-xl h-9"
+                        onClick={() => handleChange('background_video_url', null)}
+                      >
+                        <X className="w-4 h-4 mr-2" /> Remover
+                      </Button>
+                    </div>
+                  </div>
+                ) : (
+                  <Button 
+                    variant="outline" 
+                    className="w-full h-24 border-2 border-dashed rounded-[2rem] flex flex-col gap-2 hover:border-primary/50 hover:bg-primary/5 p-0"
+                    disabled={uploading}
+                    onClick={() => videoInputRef.current?.click()}
+                  >
+                    {uploading ? (
+                      <Loader2 className="w-6 h-6 animate-spin text-primary" />
+                    ) : (
+                      <>
+                        <Upload className="w-6 h-6 text-muted-foreground" />
+                        <span className="text-[10px] font-black uppercase tracking-widest">Enviar Vídeo (MP4)</span>
+                      </>
+                    )}
+                  </Button>
+                )}
+                <p className="text-[10px] text-muted-foreground ml-1">
+                  Máximo 10MB. Recomendamos vídeos curtos (5-10s) e leves para melhor carregamento.
                 </p>
               </div>
             </div>
