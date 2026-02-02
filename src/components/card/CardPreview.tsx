@@ -31,7 +31,7 @@ import { trackEvent, AnalyticsEventType } from '@/app/actions/analytics';
 import { toast } from 'sonner';
 import html2canvas from 'html2canvas';
 import { jsPDF } from 'jspdf';
-import { Download } from 'lucide-react';
+import { Download, Image as ImageIcon } from 'lucide-react';
 
 interface CardPreviewProps {
   data: Partial<Profile>;
@@ -82,10 +82,37 @@ export function CardPreview({ data, showBranding = true, suppressTracking = fals
       
       pdf.addImage(imgData, 'PNG', 0, 0, 85, 150, undefined, 'FAST');
       pdf.save(`Konnexy_${data.name || 'Card'}.pdf`);
-      toast.success('Cartão baixado com sucesso!');
+      toast.success('PDF baixado!');
     } catch (err) {
       console.error(err);
       toast.error('Erro ao gerar PDF');
+    } finally {
+      toast.dismiss();
+    }
+  };
+
+  const handleDownloadPNG = async () => {
+    const cardElement = document.getElementById('digital-card-content');
+    if (!cardElement) return;
+
+    toast.loading('Gerando imagem de alta qualidade...');
+    
+    try {
+      const canvas = await html2canvas(cardElement, {
+        scale: 4, // Ultra alta resolução
+        useCORS: true,
+        logging: false,
+        backgroundColor: null,
+      });
+      
+      const link = document.createElement('a');
+      link.download = `Konnexy_${data.name || 'Card'}.png`;
+      link.href = canvas.toDataURL('image/png', 1.0);
+      link.click();
+      toast.success('Imagem salva!');
+    } catch (err) {
+      console.error(err);
+      toast.error('Erro ao gerar imagem');
     } finally {
       toast.dismiss();
     }
@@ -494,6 +521,38 @@ export function CardPreview({ data, showBranding = true, suppressTracking = fals
                   })}
                 </div>
                 
+                {/* PRO Controls: Download PDF & PNG */}
+                  {isPro && !isDownloadMode && (
+                    <div className="flex gap-2">
+                      <Tooltip>
+                        <TooltipTrigger asChild>
+                          <Button 
+                            variant="outline" 
+                            size="icon"
+                            onClick={handleDownloadPNG}
+                            className="bg-white/10 border-white/20 text-white hover:bg-white/20 rounded-xl"
+                          >
+                            <ImageIcon className="w-4 h-4" />
+                          </Button>
+                        </TooltipTrigger>
+                        <TooltipContent>Baixar PNG (3k)</TooltipContent>
+                      </Tooltip>
+
+                      <Tooltip>
+                        <TooltipTrigger asChild>
+                          <Button 
+                            variant="outline" 
+                            size="icon"
+                            onClick={handleDownloadPDF}
+                            className="bg-white/10 border-white/20 text-white hover:bg-white/20 rounded-xl"
+                          >
+                            <Download className="w-4 h-4" />
+                          </Button>
+                        </TooltipTrigger>
+                        <TooltipContent>Baixar PDF</TooltipContent>
+                      </Tooltip>
+                    </div>
+                  )}
                 <button
                   onClick={handleShare}
                   aria-label="Compartilhar Cartão"
