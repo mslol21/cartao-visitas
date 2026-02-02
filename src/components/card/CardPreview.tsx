@@ -13,7 +13,8 @@ import {
   BadgeCheck,
   Send,
   ExternalLink,
-  Lock
+  Lock,
+  Sparkles
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Profile } from '@/types/profile';
@@ -80,25 +81,53 @@ export function CardPreview({ data, showBranding = true, suppressTracking = fals
   return (
     <TooltipProvider>
       <motion.div 
-        initial={{ opacity: 0, y: 30 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+        initial={isPro ? { opacity: 0, y: 30, scale: 0.95 } : { opacity: 0, y: 10 }}
+        animate={{ opacity: 1, y: 0, scale: 1 }}
+        transition={{ 
+          duration: isPro ? 0.8 : 0.4, 
+          ease: isPro ? [0.16, 1, 0.3, 1] : "easeOut" 
+        }}
         className="w-full max-w-[380px] mx-auto group/card"
       >
-        <div className="relative bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-800/50 shadow-[0_30px_60px_-15px_rgba(0,0,0,0.15)] overflow-hidden rounded-[2.5rem]">
+        <div className={cn(
+          "relative bg-white dark:bg-slate-950 overflow-hidden rounded-[2.5rem] transition-all duration-500",
+          isPro 
+            ? "border-2 border-primary/10 shadow-[0_40px_80px_-15px_rgba(59,130,246,0.15)] ring-1 ring-primary/5" 
+            : "border border-slate-200 dark:border-slate-800 shadow-sm"
+        )}>
+          {/* Texture Overlay for Pro */}
+          {isPro && (
+            <div className="absolute inset-0 opacity-[0.03] pointer-events-none" 
+                 style={{ backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%239C92AC' fill-opacity='0.4'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")` }} 
+            />
+          )}
           
-          {/* Premium Header */}
+          {/* Header */}
           <div 
-            className="h-28 relative overflow-hidden"
-            style={{ backgroundColor: data.theme_color || '#3b82f6' }}
+            className={cn(
+              "h-28 relative overflow-hidden transition-all duration-700",
+              !isPro && "saturate-50"
+            )}
+            style={{ 
+              backgroundColor: !isPro ? '#f1f5f9' : (data.theme_color || '#3b82f6'),
+              backgroundImage: isPro ? `linear-gradient(135deg, ${data.theme_color || '#3b82f6'} 0%, #1e293b 100%)` : 'none'
+            }}
           >
-            <div className="absolute inset-0 opacity-10 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-white via-transparent to-transparent" />
-            <div className="absolute top-0 inset-x-0 h-full bg-gradient-to-b from-black/20 to-transparent" />
-            
             {isPro && (
-              <div className="absolute top-4 right-5 flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-white text-[9px] font-bold uppercase tracking-[0.15em]">
-                <BadgeCheck className="w-3 h-3 text-blue-400" />
-                Pro Member
+              <>
+                <div className="absolute inset-0 opacity-20 bg-[radial-gradient(circle_at_30%_20%,_white_0%,_transparent_60%)]" />
+                <div className="absolute top-0 inset-x-0 h-full bg-gradient-to-b from-black/20 to-transparent" />
+                
+                <div className="absolute top-4 right-5 flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-black/20 backdrop-blur-md border border-white/20 text-white text-[10px] font-bold uppercase tracking-[0.2em] shadow-lg">
+                  <BadgeCheck className="w-3.5 h-3.5 text-blue-400" />
+                  Pro
+                </div>
+              </>
+            )}
+            
+            {!isPro && (
+              <div className="absolute top-4 right-5 px-3 py-1 rounded-full bg-slate-200/50 text-slate-500 text-[9px] font-bold uppercase tracking-wider">
+                Plano Gratuito
               </div>
             )}
           </div>
@@ -106,18 +135,20 @@ export function CardPreview({ data, showBranding = true, suppressTracking = fals
           {/* Profile Content Area */}
           <div className="px-6 pb-10 -mt-14 relative z-10 flex flex-col items-center">
             
-            {/* Avatar with Enhanced Shadow/Border */}
+            {/* Avatar */}
             <div className="relative mb-6">
               <motion.div 
-                whileHover={{ scale: 1.02 }}
+                whileHover={isPro ? { scale: 1.05 } : {}}
                 className={cn(
-                  "w-28 h-28 rounded-[2rem] bg-white dark:bg-slate-900 shadow-[0_10px_40px_-10px_rgba(0,0,0,0.2)] dark:shadow-none p-1.5 relative overflow-hidden",
-                  isPro && "ring-4 ring-primary/20 ring-offset-4 ring-offset-white dark:ring-offset-slate-950"
+                  "w-28 h-28 rounded-[2rem] bg-white dark:bg-slate-900 p-1.5 relative overflow-hidden transition-all duration-500",
+                  isPro 
+                    ? "shadow-[0_20px_40px_-10px_rgba(59,130,246,0.3)] ring-4 ring-primary/20 ring-offset-4 ring-offset-white dark:ring-offset-slate-950" 
+                    : "shadow-md border border-slate-100 dark:border-slate-800"
                 )}
               >
                 {/* Glow for Pro */}
                 {isPro && (
-                  <div className="absolute inset-0 bg-gradient-to-tr from-primary/20 to-transparent animate-pulse" />
+                  <div className="absolute inset-0 bg-gradient-to-tr from-primary/30 to-transparent animate-pulse" />
                 )}
                 
                 <div className="w-full h-full rounded-[1.7rem] overflow-hidden bg-slate-100 dark:bg-slate-800 flex items-center justify-center border border-slate-100 dark:border-slate-700/50">
@@ -185,7 +216,12 @@ export function CardPreview({ data, showBranding = true, suppressTracking = fals
                       initial={{ opacity: 0, scale: 0.9 }}
                       animate={{ opacity: 1, scale: 1 }}
                       transition={{ delay: 0.1 * i }}
-                      className="px-3 py-1.5 rounded-xl bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-[11px] font-bold text-slate-600 dark:text-slate-300 whitespace-nowrap"
+                      className={cn(
+                        "px-3 py-1.5 rounded-xl border text-[11px] font-bold whitespace-nowrap transition-all",
+                        isPro 
+                          ? "bg-primary/5 border-primary/20 text-primary"
+                          : "bg-slate-50 dark:bg-slate-900 border-slate-200 dark:border-slate-800 text-slate-600 dark:text-slate-300"
+                      )}
                     >
                       {service.charAt(0).toUpperCase() + service.slice(1).toLowerCase()}
                     </motion.span>
@@ -214,23 +250,32 @@ export function CardPreview({ data, showBranding = true, suppressTracking = fals
             <div className="w-full space-y-4">
               {/* Main Conversion Button (WhatsApp) */}
               <motion.div 
-                whileHover={{ scale: 1.02 }} 
-                whileTap={{ scale: 0.98 }}
+                whileHover={isPro ? { scale: 1.02, y: -2 } : {}} 
+                whileTap={isPro ? { scale: 0.98 } : {}}
                 className="w-full"
               >
                 <Button
                   variant="default"
                   size="lg"
-                  className="w-full h-[70px] rounded-[1.25rem] bg-[#25D366] hover:bg-[#20ba5a] text-white font-black text-lg shadow-[0_15px_30px_-5px_rgba(37,211,102,0.3)] border-b-[6px] border-[#128C7E] transition-all flex items-center justify-center gap-3 active:border-b-0 active:translate-y-1"
+                  className={cn(
+                    "w-full h-[72px] rounded-2xl font-black text-lg transition-all flex items-center justify-center gap-3",
+                    isPro 
+                      ? "bg-gradient-to-r from-[#25D366] to-[#128C7E] text-white shadow-[0_20px_40px_-10px_rgba(37,211,102,0.4)] border-b-4 border-[#0d6157] hover:brightness-110 active:border-b-0 active:translate-y-1"
+                      : "bg-slate-100 hover:bg-slate-200 text-slate-900 border border-slate-200 shadow-none grayscale-[0.5]"
+                  )}
                   asChild
                   aria-label={isPro ? 'Solicitar Orçamento via WhatsApp' : 'Conversar via WhatsApp'}
                   onClick={() => handleTrackClick('click_whatsapp')}
                 >
                   <a href={whatsappLink} target="_blank" rel="noopener noreferrer">
-                    <MessageCircle className="w-7 h-7 fill-white flex-shrink-0" />
+                    <MessageCircle className={cn("w-7 h-7 flex-shrink-0", isPro ? "fill-white" : "fill-slate-500")} />
                     <div className="text-left flex flex-col leading-tight">
-                      <span className="text-[10px] uppercase tracking-widest opacity-80 font-bold">Contato direto</span>
-                      <span>{isPro ? 'Solicitar Orçamento' : 'Chamar no WhatsApp'}</span>
+                      <span className={cn("text-[10px] uppercase tracking-widest font-bold", isPro ? "opacity-80" : "text-slate-500")}>
+                        {isPro ? 'Contato Premium' : 'Contato'}
+                      </span>
+                      <span className={!isPro ? 'text-slate-700 font-bold' : ''}>
+                        {isPro ? 'Solicitar Orçamento' : 'Chamar no WhatsApp'}
+                      </span>
                     </div>
                   </a>
                 </Button>
@@ -253,7 +298,10 @@ export function CardPreview({ data, showBranding = true, suppressTracking = fals
                         aria-label={isDisabled ? `${social.label} (Disponível no Pro)` : `Visitar ${social.label}`}
                         onClick={() => !isDisabled && handleTrackClick(social.trackType)}
                         className={cn(
-                          "w-12 h-12 flex items-center justify-center rounded-2xl bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-slate-600 dark:text-slate-300 hover:text-primary transition-all shadow-sm relative overflow-hidden",
+                          "w-12 h-12 flex items-center justify-center rounded-2xl transition-all shadow-sm relative overflow-hidden",
+                          isPro 
+                            ? "bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-slate-600 dark:text-slate-300 hover:text-primary hover:border-primary/30"
+                            : "bg-slate-50 border border-slate-100 text-slate-600 dark:text-slate-400",
                           isDisabled && "opacity-40 cursor-not-allowed grayscale"
                         )}
                       >
@@ -262,6 +310,9 @@ export function CardPreview({ data, showBranding = true, suppressTracking = fals
                           <div className="absolute top-0 right-0 bg-slate-900 text-white p-0.5 rounded-bl-lg">
                             <Lock className="w-2.5 h-2.5" />
                           </div>
+                        )}
+                        {isPro && (
+                           <div className="absolute inset-0 bg-gradient-to-tr from-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
                         )}
                       </motion.a>
                     );
@@ -286,7 +337,12 @@ export function CardPreview({ data, showBranding = true, suppressTracking = fals
                 <button
                   onClick={handleShare}
                   aria-label="Compartilhar Cartão"
-                  className="w-12 h-12 flex items-center justify-center rounded-2xl bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition-all flex-shrink-0"
+                  className={cn(
+                    "w-12 h-12 flex items-center justify-center rounded-2xl transition-all flex-shrink-0",
+                    isPro
+                      ? "bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800"
+                      : "bg-slate-50 border border-slate-100 text-slate-400"
+                  )}
                 >
                   <Share2 className="w-5 h-5" />
                 </button>
@@ -302,13 +358,26 @@ export function CardPreview({ data, showBranding = true, suppressTracking = fals
             )}>
               {!isPro && (
                 <a href="/" className="group inline-flex items-center gap-1.5 text-[9px] uppercase font-black tracking-[0.2em] text-slate-400 hover:text-primary transition-colors">
-                  Powered by 
-                  <span className="text-slate-900 dark:text-white group-hover:text-primary transition-colors">Konnexy</span>
+                  Crie o seu em 
+                  <span className="text-slate-900 dark:text-white group-hover:text-primary transition-colors">Konnexy.com</span>
                 </a>
               )}
             </div>
           )}
         </div>
+
+        {/* Pro Upsell (Only for Free cards when viewed by owner/preview) */}
+        {!isPro && showBranding && (
+          <div className="mt-4 px-4 py-3 rounded-2xl bg-primary/5 border border-primary/10 flex items-center justify-between gap-3">
+            <div className="flex items-center gap-2">
+              <Sparkles className="w-4 h-4 text-primary" />
+              <span className="text-[11px] font-semibold text-slate-600">Remova a marca e use cores personalizadas</span>
+            </div>
+            <Button variant="ghost" size="sm" className="h-7 px-3 text-[10px] font-bold text-primary hover:bg-primary/10" asChild>
+              <a href="/pricing">Ver Pro</a>
+            </Button>
+          </div>
+        )}
       </motion.div>
     </TooltipProvider>
   );
