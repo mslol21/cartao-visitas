@@ -157,12 +157,16 @@ export function CardPreview({ data, showBranding = true, suppressTracking = fals
   };
 
   const getThemeClasses = () => {
+    const hasVideo = !!data.background_video_url && isPro;
     if (!isPro) return "bg-white dark:bg-slate-950";
+    
     switch (data.theme_style) {
       case 'oled': return "bg-black text-white border-white/10";
       case 'glass': return "bg-white/5 backdrop-blur-3xl border-white/20";
       case 'minimalist': return "bg-white text-slate-900 border-slate-100 shadow-none";
-      default: return "bg-white dark:bg-slate-950";
+      default: 
+        if (hasVideo) return "bg-black/20 backdrop-blur-2xl text-white border-white/10";
+        return "bg-white dark:bg-slate-950 text-slate-900 dark:text-white";
     }
   };
 
@@ -328,10 +332,20 @@ export function CardPreview({ data, showBranding = true, suppressTracking = fals
 
             {/* Identity & Visual Hierarchy */}
             <div className="text-center mb-8 w-full">
-              <h1 className="text-xl sm:text-2xl font-black tracking-tight text-slate-900 dark:text-white mb-1 capitalize break-words">
+              <h1 
+                className={cn(
+                  "text-xl sm:text-2xl font-black tracking-tight mb-1 capitalize break-words",
+                  (isPro && (data.background_video_url || data.theme_style === 'oled' || data.theme_style === 'glass')) ? "text-white drop-shadow-[0_2px_4px_rgba(0,0,0,0.5)]" : "text-slate-900 dark:text-white"
+                )}
+              >
                 {data.name || 'Seu Nome'}
               </h1>
-              <p className="text-slate-600 dark:text-slate-400 text-sm font-bold leading-relaxed px-4 break-words opacity-80">
+              <p 
+                className={cn(
+                  "text-sm font-bold leading-relaxed px-4 break-words",
+                  (isPro && (data.background_video_url || data.theme_style === 'oled' || data.theme_style === 'glass')) ? "text-white/80 drop-shadow-[0_1px_2px_rgba(0,0,0,0.5)]" : "text-slate-600 dark:text-slate-400 opacity-80"
+                )}
+              >
                 {data.tagline || 'Sua profissão ou frase de impacto'}
               </p>
               
@@ -370,7 +384,9 @@ export function CardPreview({ data, showBranding = true, suppressTracking = fals
                       className={cn(
                         "w-full p-4 mb-3 rounded-2xl flex items-center justify-between group transition-all duration-300",
                         isPro 
-                          ? "bg-slate-50 dark:bg-white/5 border border-slate-200 dark:border-white/10 shadow-sm hover:shadow-md hover:-translate-y-0.5"
+                          ? (data.background_video_url 
+                              ? "bg-white/10 backdrop-blur-xl border border-white/20 shadow-xl hover:bg-white/15" 
+                              : "bg-slate-50 dark:bg-white/5 border border-slate-200 dark:border-white/10 shadow-sm hover:shadow-md")
                           : "bg-slate-50 dark:bg-slate-900 border border-slate-100 dark:border-slate-800"
                       )}
                     >
@@ -402,7 +418,9 @@ export function CardPreview({ data, showBranding = true, suppressTracking = fals
                         className={cn(
                           "p-3 rounded-2xl flex flex-col gap-2 transition-all duration-300",
                           isPro 
-                            ? "bg-white dark:bg-white/5 border border-slate-200 dark:border-white/10 shadow-sm hover:shadow-md hover:-translate-y-0.5"
+                            ? (data.background_video_url 
+                                ? "bg-white/10 backdrop-blur-xl border border-white/20 shadow-xl hover:bg-white/15" 
+                                : "bg-white dark:bg-white/5 border border-slate-200 dark:border-white/10 shadow-sm hover:shadow-md")
                             : "bg-slate-50/50 dark:bg-slate-900 border border-slate-100 dark:border-slate-800"
                         )}
                       >
