@@ -27,11 +27,17 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import { trackEvent, AnalyticsEventType } from '@/app/actions/analytics';
 import { toast } from 'sonner';
 import html2canvas from 'html2canvas';
 import { jsPDF } from 'jspdf';
-import { Download, Image as ImageIcon } from 'lucide-react';
+import { Download, Image as ImageIcon, Share2, MoreVertical, UserPlus, FileText } from 'lucide-react';
 
 interface CardPreviewProps {
   data: Partial<Profile>;
@@ -116,6 +122,27 @@ export function CardPreview({ data, showBranding = true, suppressTracking = fals
     } finally {
       toast.dismiss();
     }
+  };
+
+  const handleSaveContact = () => {
+    // Basic vCard generation
+    const vcard = `BEGIN:VCARD
+VERSION:3.0
+FN:${data.name || 'Contato'}
+ORG:${data.tagline || ''}
+TEL;TYPE=CELL:${formattedWhatsapp}
+URL:${typeof window !== 'undefined' ? window.location.href : ''}
+END:VCARD`;
+
+    const blob = new Blob([vcard], { type: 'text/vcard' });
+    const url = window.URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.setAttribute('download', `${data.name || 'contato'}.vcf`);
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    toast.success('Contato pronto para salvar!');
   };
   
   const cleanWhatsapp = data.whatsapp?.replace(/\D/g, '') || '';
@@ -539,60 +566,56 @@ export function CardPreview({ data, showBranding = true, suppressTracking = fals
                   })}
                 </div>
                 
-                {/* PRO Controls: Download PDF & PNG */}
-                  {isPro && !isDownloadMode && (
-                    <div className="flex gap-2">
-                      <Tooltip>
-                        <TooltipTrigger asChild>
-                          <Button 
-                            variant="outline" 
-                            size="icon"
-                            onClick={handleDownloadPNG}
-                            className="bg-white/10 border-white/20 text-white hover:bg-white/20 rounded-xl"
-                          >
-                            <ImageIcon className="w-4 h-4" />
-                          </Button>
-                        </TooltipTrigger>
-                        <TooltipContent>Baixar PNG (3k)</TooltipContent>
-                      </Tooltip>
+                <div className="flex items-center gap-2">
+                  <DropdownMenu>
+                    <DropdownMenuTrigger asChild>
+                      <button
+                        aria-label="Opções de Compartilhamento"
+                        className={cn(
+                          "w-12 h-12 flex items-center justify-center rounded-2xl transition-all shadow-sm",
+                          isPro 
+                            ? "bg-white dark:bg-white/5 border border-slate-200 dark:border-white/10 text-slate-600 dark:text-slate-300"
+                            : "bg-slate-100/50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-slate-400"
+                        )}
+                      >
+                        <Download className="w-5 h-5" />
+                      </button>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent align="end" className="w-56 rounded-2xl p-2 border-slate-200 dark:border-white/10">
+                      <DropdownMenuItem onClick={handleSaveContact} className="rounded-xl flex items-center gap-2 h-11 cursor-pointer">
+                        <UserPlus className="w-4 h-4 text-blue-500" />
+                        <span className="font-bold text-xs uppercase tracking-widest">Salvar aos Contatos</span>
+                      </DropdownMenuItem>
+                      
+                      {isPro && (
+                        <>
+                          <DropdownMenuItem onClick={handleDownloadPNG} className="rounded-xl flex items-center gap-2 h-11 cursor-pointer">
+                            <ImageIcon className="w-4 h-4 text-emerald-500" />
+                            <span className="font-bold text-xs uppercase tracking-widest">Baixar Imagem (PNG)</span>
+                          </DropdownMenuItem>
+                          
+                          <DropdownMenuItem onClick={handleDownloadPDF} className="rounded-xl flex items-center gap-2 h-11 cursor-pointer">
+                            <FileText className="w-4 h-4 text-rose-500" />
+                            <span className="font-bold text-xs uppercase tracking-widest">Baixar PDF</span>
+                          </DropdownMenuItem>
+                        </>
+                      )}
+                    </DropdownMenuContent>
+                  </DropdownMenu>
 
-                      <Tooltip>
-                        <TooltipTrigger asChild>
-                          <Button 
-                            variant="outline" 
-                            size="icon"
-                            onClick={handleDownloadPDF}
-                            className="bg-white/10 border-white/20 text-white hover:bg-white/20 rounded-xl"
-                          >
-                            <Download className="w-4 h-4" />
-                          </Button>
-                        </TooltipTrigger>
-                        <TooltipContent>Baixar PDF</TooltipContent>
-                      </Tooltip>
-                    </div>
-                  )}
-                <button
-                  onClick={handleShare}
-                  aria-label="Compartilhar Cartão"
-                  className={cn(
-                    "w-12 h-12 flex items-center justify-center rounded-2xl transition-all flex-shrink-0",
-                    isPro
-                      ? "bg-slate-50 dark:bg-slate-901 border border-slate-200 dark:border-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800"
-                      : "bg-slate-50 dark:bg-slate-901 border border-slate-200 dark:border-slate-800 text-slate-400 dark:text-slate-500"
-                  )}
-                >
-                  <Share2 className="w-5 h-5" />
-                </button>
-
-                {isPro && (
                   <button
-                    onClick={handleDownloadPDF}
-                    aria-label="Baixar PDF"
-                    className="w-12 h-12 flex items-center justify-center rounded-2xl transition-all flex-shrink-0 bg-white dark:bg-slate-900 border-2 border-primary/20 text-primary hover:bg-primary hover:text-white"
+                    onClick={handleShare}
+                    aria-label="Compartilhar Cartão"
+                    className={cn(
+                      "group w-14 h-14 flex items-center justify-center rounded-[1.4rem] transition-all flex-shrink-0 shadow-lg",
+                      isPro
+                        ? "bg-primary text-white hover:brightness-110"
+                        : "bg-slate-900 text-white"
+                    )}
                   >
-                    <Download className="w-5 h-5" />
+                    <Share2 className="w-6 h-6 group-hover:scale-110 transition-transform" />
                   </button>
-                )}
+                </div>
               </div>
             </div>
           </div>
