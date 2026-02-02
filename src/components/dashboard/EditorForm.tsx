@@ -546,7 +546,7 @@ export function EditorForm({ initialData, onSubmit, onChange, isPro = false }: E
                         variant="destructive" 
                         size="sm" 
                         className="rounded-xl h-9"
-                        onClick={() => handleChange('background_video_url', null)}
+                        onClick={() => handleChange('background_video_url', undefined)}
                       >
                         <X className="w-4 h-4 mr-2" /> Remover
                       </Button>
