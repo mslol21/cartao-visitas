@@ -259,9 +259,13 @@ export function EditorForm({ initialData, onSubmit, onChange, isPro = false }: E
 
   const addService = () => {
     if (!newService.trim()) return;
-    const services = [...(formData.services || []), { name: newService.trim(), icon: 'Sparkles' }];
-    if (services.length <= (isPro ? 20 : 3)) {
-      handleChange('services', services);
+    const currentServices = (formData.services || []).map(s => 
+      typeof s === 'string' ? { name: s, icon: 'Sparkles' } : s
+    );
+    const updatedServices = [...currentServices, { name: newService.trim(), icon: 'Sparkles' }];
+    
+    if (updatedServices.length <= (isPro ? 20 : 3)) {
+      handleChange('services', updatedServices);
       setNewService('');
     } else {
       toast.error(isPro ? 'Máximo de 20 serviços' : 'Upgrade para Pro para adicionar mais serviços');
@@ -270,13 +274,19 @@ export function EditorForm({ initialData, onSubmit, onChange, isPro = false }: E
 
   const updateServiceIcon = (index: number, iconName: string) => {
     if (!isPro) return;
-    const services = [...(formData.services || [])];
-    services[index] = { ...services[index], icon: iconName };
-    handleChange('services', services);
+    const services = (formData.services || []).map(s => 
+      typeof s === 'string' ? { name: s, icon: 'Sparkles' } : s
+    );
+    if (services[index]) {
+      services[index] = { ...services[index], icon: iconName };
+      handleChange('services', services);
+    }
   };
 
   const removeService = (index: number) => {
-    const services = (formData.services || []).filter((_, i) => i !== index);
+    const services = (formData.services || [])
+      .map(s => typeof s === 'string' ? { name: s, icon: 'Sparkles' } : s)
+      .filter((_, i) => i !== index);
     handleChange('services', services);
   };
 
