@@ -27,89 +27,103 @@ export async function trackEvent(profileId: string, eventType: AnalyticsEventTyp
 // Mover imports para o topo para evitar problemas com dynamic imports em Server Actions
 import { createAdminClient } from '@/utils/supabase/admin';
 
-export async function getProfileAnalytics(profileId: string) {
+export interface AnalyticsData {
+  visits: number;
+  clicks: number;
+  whatsappClicks: number;
+  conversionRate: number;
+  breakdown: Record<string, number>;
+  dailyStats: { date: string; count: number }[];
+}
+
+export async function getProfileAnalytics(profileId: string): Promise<AnalyticsData> {
   console.log('--- Servindo Analytics para:', profileId);
   
+  const emptyResult: AnalyticsData = { 
+    visits: 0, 
+    clicks: 0, 
+    whatsappClicks: 0, 
+    conversionRate: 0, 
+    breakdown: {}, 
+    dailyStats: [] 
+  };
+
   if (!profileId) {
     console.error('getProfileAnalytics: profileId vazia');
-    return { visits: 0, clicks: 0, whatsappClicks: 0, conversionRate: 0, error: 'ID ausente' };
+    return emptyResult;
   }
 
   try {
-    // 1. Verificar chaves antes de tudo
     const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
     const serviceKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
 
     if (!supabaseUrl || !serviceKey) {
       console.error('CRÍTICO: Chaves de Admin do Supabase ausentes no servidor!');
-      return { visits: 0, clicks: 0, whatsappClicks: 0, conversionRate: 0, error: 'Configuração incompleta' };
+      return emptyResult;
     }
 
     const { data: { user } } = await (await createClient()).auth.getUser();
     if (!user) {
       console.error('Analytics: Usuário não autenticado');
-      return { visits: 0, clicks: 0, whatsappClicks: 0, conversionRate: 0, error: 'Não autenticado' };
+      return emptyResult;
     }
 
-    // 2. Usar Admin Client
     const admin = createAdminClient();
 
-    // 3. Buscar tudo em paralelo de forma segura
-    console.log('Iniciando queries de contagem...');
+    // 1. Fetch total counts
+    const { data: allEvents, error: eventsError } = await admin
+      .from('analytics')
+      .select('event_type, created_at')
+      .eq('profile_id', profileId);
+
+    if (eventsError) throw eventsError;
+
+    if (!allEvents || allEvents.length === 0) {
+      return emptyResult;
+    }
+
+    const visits = allEvents.filter(e => e.event_type === 'page_view').length;
+    const clicks = allEvents.filter(e => e.event_type !== 'page_view').length;
+    const whatsappClicks = allEvents.filter(e => e.event_type === 'click_whatsapp').length;
     
-    // Contagem de visitas (page_view)
-    const visitsPromise = admin
-      .from('analytics')
-      .select('id', { count: 'exact', head: true })
-      .eq('profile_id', profileId)
-      .eq('event_type', 'page_view');
+    // 2. Breakdown by event type
+    const breakdown: Record<string, number> = {};
+    allEvents.forEach(e => {
+      if (e.event_type !== 'page_view') {
+        const type = e.event_type.replace('click_', '');
+        breakdown[type] = (breakdown[type] || 0) + 1;
+      }
+    });
 
-    // Contagem de cliques gerais (excluindo page_view)
-    const clicksPromise = admin
-      .from('analytics')
-      .select('id', { count: 'exact', head: true })
-      .eq('profile_id', profileId)
-      .neq('event_type', 'page_view');
+    // 3. Daily stats (last 7 days)
+    const dailyStatsMap: Record<string, number> = {};
+    const sevenDaysAgo = new Date();
+    sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
 
-    // Contagem específica de WhatsApp
-    const waPromise = admin
-      .from('analytics')
-      .select('id', { count: 'exact', head: true })
-      .eq('profile_id', profileId)
-      .eq('event_type', 'click_whatsapp');
+    allEvents.forEach(e => {
+      const date = new Date(e.created_at).toLocaleDateString('pt-BR', { day: '2-digit', month: '2-digit' });
+      if (new Date(e.created_at) >= sevenDaysAgo) {
+        dailyStatsMap[date] = (dailyStatsMap[date] || 0) + 1;
+      }
+    });
 
-    const [visitsRes, clicksRes, waRes] = await Promise.all([
-      visitsPromise,
-      clicksPromise,
-      waPromise
-    ]);
+    const dailyStats = Object.entries(dailyStatsMap)
+      .map(([date, count]) => ({ date, count }))
+      .sort((a, b) => a.date.localeCompare(b.date));
 
-    if (visitsRes.error) console.error('Erro visitas:', visitsRes.error);
-    if (clicksRes.error) console.error('Erro cliques:', clicksRes.error);
-    if (waRes.error) console.error('Erro whatsapp:', waRes.error);
-
-    const v = visitsRes.count || 0;
-    const c = clicksRes.count || 0;
-    const w = waRes.count || 0;
-    
-    const conversionRate = v > 0 ? Math.round((c / v) * 100) : 0;
-
-    console.log(`Resultados para ${profileId}: Visitas=${v}, Cliques=${c}`);
+    const conversionRate = visits > 0 ? Math.round((clicks / visits) * 100) : 0;
 
     return {
-      visits: v,
-      clicks: c,
-      whatsappClicks: w,
-      conversionRate
+      visits,
+      clicks,
+      whatsappClicks,
+      conversionRate,
+      breakdown,
+      dailyStats
     };
   } catch (err: any) {
     console.error('ERRO FATAL ANALYTICS:', err);
-    return { 
-      visits: 0, 
-      clicks: 0, 
-      whatsappClicks: 0, 
-      conversionRate: 0,
-      error: err.message 
-    };
+    return emptyResult;
   }
 }
+

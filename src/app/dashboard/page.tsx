@@ -21,7 +21,27 @@ import {
   MessageCircle,
   LayoutDashboard,
   Palette,
+  MousePointer2,
+  TrendingUp,
+  Globe,
+  Instagram,
+  Linkedin,
+  Facebook,
+  Twitter,
+  Youtube,
+  Link2
 } from 'lucide-react';
+import { 
+  BarChart, 
+  Bar, 
+  XAxis, 
+  YAxis, 
+  CartesianGrid, 
+  Tooltip, 
+  ResponsiveContainer,
+  Cell
+} from 'recharts';
+import { ChartContainer, ChartTooltip, ChartTooltipContent } from '@/components/ui/chart';
 import { toast } from 'sonner';
 import { motion, AnimatePresence } from 'framer-motion';
 import { cn } from "@/lib/utils";
@@ -37,6 +57,8 @@ interface AnalyticsData {
   clicks: number;
   whatsappClicks: number;
   conversionRate: number;
+  breakdown: Record<string, number>;
+  dailyStats: { date: string; count: number }[];
 }
 
 function DashboardContent() {
@@ -336,34 +358,142 @@ function DashboardContent() {
                   </div>
                 </div>
               ) : (
-                <div className="grid md:grid-cols-3 gap-6">
+                <div className="space-y-6">
                   {loadingAnalytics ? (
-                    <div className="md:col-span-3 flex items-center justify-center p-20">
+                    <div className="flex items-center justify-center p-20">
                       <Loader2 className="w-8 h-8 animate-spin text-primary/40" />
                     </div>
                   ) : (
                     <>
-                      {[
-                        { label: 'Visitas Totais', value: analytics?.visits || 0, icon: Eye, color: 'text-blue-500' },
-                        { label: 'Cliques no WhatsApp', value: analytics?.whatsappClicks || 0, icon: MessageCircle, color: 'text-green-500' },
-                        { label: 'Taxa de Conversão', value: `${analytics?.conversionRate || 0}%`, icon: Zap, color: 'text-yellow-500' },
-                      ].map((stat, i) => (
-                        <div key={i} className="bg-white dark:bg-slate-900 p-8 rounded-[2rem] border border-border/50 shadow-sm space-y-4">
-                          <div className="flex items-center justify-between">
-                            <div className="w-10 h-10 rounded-xl bg-slate-50 dark:bg-slate-800 flex items-center justify-center">
-                              <stat.icon className={cn("w-5 h-5", stat.color)} />
+                      {/* Summary Cards */}
+                      <div className="grid md:grid-cols-4 gap-4">
+                        {[
+                          { label: 'Visitas Totais', value: analytics?.visits || 0, icon: Eye, color: 'text-blue-500', bg: 'bg-blue-500/10' },
+                          { label: 'Cliques Totais', value: analytics?.clicks || 0, icon: MousePointer2, color: 'text-purple-500', bg: 'bg-purple-500/10' },
+                          { label: 'Cliques WhatsApp', value: analytics?.whatsappClicks || 0, icon: MessageCircle, color: 'text-green-500', bg: 'bg-green-500/10' },
+                          { label: 'Conversão', value: `${analytics?.conversionRate || 0}%`, icon: TrendingUp, color: 'text-orange-500', bg: 'bg-orange-500/10' },
+                        ].map((stat, i) => (
+                          <div key={i} className="bg-white dark:bg-slate-900 p-6 rounded-3xl border border-slate-200/50 dark:border-slate-800/50 shadow-sm space-y-3">
+                            <div className="flex items-center justify-between">
+                              <div className={cn("w-10 h-10 rounded-xl flex items-center justify-center", stat.bg)}>
+                                <stat.icon className={cn("w-5 h-5", stat.color)} />
+                              </div>
+                              <span className="text-[9px] font-black text-slate-400 uppercase tracking-widest">Geral</span>
                             </div>
-                            <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Real Time</span>
+                            <div>
+                              <p className="text-[10px] font-black text-muted-foreground uppercase tracking-widest">{stat.label}</p>
+                              <p className="text-2xl font-black tracking-tight mt-0.5">{stat.value}</p>
+                            </div>
                           </div>
+                        ))}
+                      </div>
+
+                      <div className="grid lg:grid-cols-[1fr,350px] gap-6">
+                        {/* Daily Evolution Chart */}
+                        <div className="bg-white dark:bg-slate-900 p-8 rounded-[2.5rem] border border-slate-200/50 dark:border-slate-800/50 shadow-sm space-y-6">
                           <div>
-                            <p className="text-xs font-bold text-muted-foreground uppercase tracking-widest">{stat.label}</p>
-                            <p className="text-3xl font-black mt-1">{stat.value}</p>
+                            <h3 className="text-sm font-black uppercase tracking-widest text-slate-500 mb-1">Evolução de Cliques</h3>
+                            <p className="text-xs text-muted-foreground">Desempenho dos últimos 7 dias</p>
+                          </div>
+                          
+                          <div className="h-[300px] w-full">
+                            <ResponsiveContainer width="100%" height="100%">
+                              <BarChart data={analytics?.dailyStats || []}>
+                                <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="rgba(0,0,0,0.05)" />
+                                <XAxis 
+                                  dataKey="date" 
+                                  axisLine={false} 
+                                  tickLine={false} 
+                                  tick={{ fontSize: 10, fontWeight: 700 }}
+                                  dy={10}
+                                />
+                                <YAxis 
+                                  hide 
+                                />
+                                <Tooltip 
+                                  cursor={{ fill: 'rgba(0,0,0,0.02)' }}
+                                  content={({ active, payload }) => {
+                                    if (active && payload && payload.length) {
+                                      return (
+                                        <div className="bg-slate-900 text-white px-3 py-2 rounded-xl border border-white/10 shadow-2xl">
+                                          <p className="text-[10px] font-black uppercase tracking-widest opacity-60 mb-1">{payload[0].payload.date}</p>
+                                          <p className="text-sm font-black">{payload[0].value} Cliques</p>
+                                        </div>
+                                      );
+                                    }
+                                    return null;
+                                  }}
+                                />
+                                <Bar 
+                                  dataKey="count" 
+                                  radius={[6, 6, 6, 6]} 
+                                  barSize={32}
+                                >
+                                  {(analytics?.dailyStats || []).map((_, index) => (
+                                    <Cell key={`cell-${index}`} fill={index === (analytics?.dailyStats.length || 0) - 1 ? '#3b82f6' : '#94a3b8'} fillOpacity={index === (analytics?.dailyStats.length || 0) - 1 ? 1 : 0.2} />
+                                  ))}
+                                </Bar>
+                              </BarChart>
+                            </ResponsiveContainer>
                           </div>
                         </div>
-                      ))}
-                      
-                      <div className="md:col-span-3 bg-white dark:bg-slate-900 p-12 rounded-[2.5rem] border border-border/50 text-center">
-                        <p className="text-muted-foreground font-medium italic">Gráficos de evolução em desenvolvimento...</p>
+
+                        {/* Breakdown List */}
+                        <div className="bg-white dark:bg-slate-900 p-8 rounded-[2.5rem] border border-slate-200/50 dark:border-slate-800/50 shadow-sm flex flex-col">
+                          <h3 className="text-sm font-black uppercase tracking-widest text-slate-500 mb-6">Origem dos Cliques</h3>
+                          
+                          <div className="space-y-4 flex-1">
+                            {analytics?.breakdown && Object.entries(analytics.breakdown).length > 0 ? (
+                              Object.entries(analytics.breakdown)
+                                .sort((a, b) => b[1] - a[1])
+                                .map(([key, value]) => {
+                                  const Icon = {
+                                    whatsapp: MessageCircle,
+                                    instagram: Instagram,
+                                    linkedin: Linkedin,
+                                    facebook: Facebook,
+                                    twitter: Twitter,
+                                    youtube: Youtube,
+                                    website: Globe,
+                                    cta: Zap
+                                  }[key] || Link2;
+                                  
+                                  const color = {
+                                    whatsapp: 'text-green-500 bg-green-500/10',
+                                    instagram: 'text-pink-500 bg-pink-500/10',
+                                    linkedin: 'text-blue-600 bg-blue-600/10',
+                                    facebook: 'text-blue-800 bg-blue-800/10',
+                                    twitter: 'text-sky-400 bg-sky-400/10',
+                                    youtube: 'text-red-600 bg-red-600/10',
+                                    website: 'text-slate-600 bg-slate-600/10',
+                                    cta: 'text-amber-500 bg-amber-500/10'
+                                  }[key] || 'text-slate-400 bg-slate-400/10';
+
+                                  return (
+                                    <div key={key} className="flex items-center justify-between p-3 rounded-2xl hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors group">
+                                      <div className="flex items-center gap-3">
+                                        <div className={cn("w-9 h-9 rounded-xl flex items-center justify-center", color.split(' ')[1])}>
+                                          <Icon className={cn("w-4 h-4", color.split(' ')[0])} />
+                                        </div>
+                                        <span className="text-xs font-bold capitalize">{key}</span>
+                                      </div>
+                                      <span className="text-xs font-black px-2 py-1 rounded-lg bg-slate-100 dark:bg-slate-800 group-hover:bg-white transition-colors">{value}</span>
+                                    </div>
+                                  );
+                                })
+                            ) : (
+                              <div className="flex flex-col items-center justify-center py-10 opacity-30 text-center">
+                                <MousePointer2 className="w-8 h-8 mb-2" />
+                                <p className="text-[10px] font-black uppercase tracking-widest">Sem cliques ainda</p>
+                              </div>
+                            )}
+                          </div>
+
+                          <div className="mt-6 pt-6 border-t border-slate-100 dark:border-slate-800">
+                             <p className="text-[10px] text-muted-foreground uppercase tracking-widest font-bold">Total do período</p>
+                             <p className="text-xl font-black mt-1">{analytics?.clicks || 0} Cliques</p>
+                          </div>
+                        </div>
                       </div>
                     </>
                   )}
