@@ -19,7 +19,34 @@ import {
   Image as ImageIcon,
   MoreVertical,
   UserPlus,
-  FileText
+  FileText,
+  Star,
+  Briefcase,
+  Code,
+  Paintbrush,
+  Utensils,
+  ShoppingBag,
+  Heart,
+  User,
+  Settings,
+  Cpu,
+  Hammer,
+  Wrench,
+  Scissors,
+  Music,
+  Video,
+  GraduationCap,
+  Stethoscope,
+  Scale,
+  Calculator,
+  Building2,
+  Rocket,
+  Zap,
+  Target,
+  Users,
+  Award,
+  Camera,
+  Smartphone
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Profile } from '@/types/profile';
@@ -170,11 +197,18 @@ END:VCARD`;
   
   // Logic: Pro sees everything. Free sees only 1st and others are disabled.
   const activeServicesLimit = isPro ? 20 : 5; // Increased limit for better grid demo
-  const services = data.services?.filter(s => s.trim() !== '') || [];
+  const services = data.services?.map(s => typeof s === 'string' ? { name: s, icon: 'Sparkles' } : s).filter(s => s.name?.trim() !== '') || [];
   const activeServicesArr = services.slice(0, activeServicesLimit);
   
   const mainService = activeServicesArr[0];
   const secondaryServices = activeServicesArr.slice(1);
+
+  const ICON_MAP: Record<string, any> = {
+    Sparkles, Star, Briefcase, Code, Paintbrush, Camera, Utensils, ShoppingBag, 
+    Heart, User, Settings, MessageCircle, Globe, Cpu, Smartphone, Hammer, 
+    Wrench, Scissors, Music, Video, GraduationCap, Stethoscope, Scale, 
+    Calculator, Building2, Rocket, Zap, Target, Users, Award
+  };
 
   const handleShare = (e: React.MouseEvent) => {
     e.preventDefault();
@@ -399,12 +433,21 @@ END:VCARD`;
                 
                 {/* Main Service (Featured) */}
                 {mainService && (() => {
-                  const getServiceIcon = (text: string) => {
-                    const t = text.toLowerCase();
-                    if (t.includes('advoc') || t.includes('direit') || t.includes('jurid')) return <Globe className="w-6 h-6" />;
-                    if (t.includes('saud') || t.includes('medic') || t.includes('dentist') || t.includes('psico')) return <BadgeCheck className="w-6 h-6" />;
-                    if (t.includes('tech') || t.includes('dev') || t.includes('soft') || t.includes('ti')) return <Globe className="w-6 h-6" />;
-                    if (t.includes('market') || t.includes('venda') || t.includes('social')) return <Send className="w-6 h-6" />;
+                  const getServiceIcon = () => {
+                    // 1. Se o Pro escolheu um ícone, usa ele
+                    if (isPro && mainService.icon && ICON_MAP[mainService.icon]) {
+                      const Icon = ICON_MAP[mainService.icon];
+                      return <Icon className="w-6 h-6" />;
+                    }
+
+                    // 2. Fallback automático por palavra-chave
+                    const t = mainService.name.toLowerCase();
+                    if (t.includes('advoc') || t.includes('direit') || t.includes('jurid')) return <Scale className="w-6 h-6" />;
+                    if (t.includes('saud') || t.includes('medic') || t.includes('dentist') || t.includes('psico')) return <Stethoscope className="w-6 h-6" />;
+                    if (t.includes('tech') || t.includes('dev') || t.includes('soft') || t.includes('ti')) return <Code className="w-6 h-6" />;
+                    if (t.includes('market') || t.includes('venda') || t.includes('social')) return <Target className="w-6 h-6" />;
+                    if (t.includes('comida') || t.includes('restaurante') || t.includes('chef')) return <Utensils className="w-6 h-6" />;
+                    
                     return <Sparkles className="w-6 h-6" />;
                   };
 
@@ -426,11 +469,11 @@ END:VCARD`;
                           "w-12 h-12 rounded-xl flex items-center justify-center transition-colors",
                           isPro ? "bg-primary/10" : "bg-slate-200 dark:bg-slate-800 text-slate-400"
                         )} style={{ color: isPro ? (data.theme_color || '#3b82f6') : undefined }}>
-                          {getServiceIcon(mainService)}
+                          {getServiceIcon()}
                         </div>
                         <div className="flex flex-col">
                           <span className="text-[9px] font-black uppercase tracking-widest mb-0.5" style={{ color: data.theme_color || '#3b82f6' }}>Destaque</span>
-                          <span className="text-sm font-black text-slate-900 dark:text-white uppercase">{mainService}</span>
+                          <span className="text-sm font-black text-slate-900 dark:text-white uppercase">{mainService.name}</span>
                         </div>
                       </div>
                     </motion.div>
@@ -459,10 +502,17 @@ END:VCARD`;
                           "w-8 h-8 rounded-lg flex items-center justify-center",
                           isPro ? "bg-slate-100 dark:bg-white/10 text-slate-500" : "bg-slate-200/50 dark:bg-slate-800 text-slate-400"
                         )}>
-                          <div className="w-1.5 h-1.5 rounded-full bg-current" />
+                          {isPro && service.icon && ICON_MAP[service.icon] ? (
+                            (() => {
+                              const Icon = ICON_MAP[service.icon];
+                              return <Icon className="w-4 h-4" />;
+                            })()
+                          ) : (
+                            <div className="w-1.5 h-1.5 rounded-full bg-current" />
+                          )}
                         </div>
                         <span className="text-xs font-bold text-slate-700 dark:text-slate-300 line-clamp-2 leading-tight uppercase">
-                          {service}
+                          {service.name}
                         </span>
                       </motion.div>
                     ))}

@@ -1,3 +1,8 @@
+export interface ServiceItem {
+  name: string;
+  icon?: string;
+}
+
 export interface Profile {
   id: string;
   user_id: string;
@@ -14,7 +19,7 @@ export interface Profile {
   youtube: string | null;
   website: string | null;
   city: string | null;
-  services: string[];
+  services: ServiceItem[];
   cta_text: string;
   plan: 'free' | 'pro';
   verified: boolean;
@@ -42,7 +47,7 @@ export interface ProfileFormData {
   youtube?: string | null;
   website?: string | null;
   city?: string | null;
-  services?: string[];
+  services?: ServiceItem[];
   cta_text?: string;
   seo_title?: string | null;
   seo_description?: string | null;
