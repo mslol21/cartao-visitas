@@ -28,8 +28,37 @@ import {
   Video,
   Layers,
   Sparkles as SparklesIcon,
-  QrCode as QrIcon
+  QrCode as QrIcon,
+  Star,
+  Briefcase,
+  Code,
+  Paintbrush,
+  Utensils,
+  ShoppingBag,
+  Heart,
+  User,
+  Settings,
+  Cpu,
+  Hammer,
+  Wrench,
+  Scissors,
+  Music,
+  GraduationCap,
+  Stethoscope,
+  Scale,
+  Calculator,
+  Building2,
+  Rocket,
+  Zap,
+  Target,
+  Users,
+  Award
 } from 'lucide-react';
+import { 
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
 import { QRCodeCustomizer } from './QRCodeCustomizer';
 import { Profile, ProfileFormData } from '@/types/profile';
 import { createClient } from '@/utils/supabase/client';
@@ -113,7 +142,7 @@ export function EditorForm({ initialData, onSubmit, onChange, isPro = false }: E
     return () => clearTimeout(timer);
   }, [formData, onSubmit, usernameStatus]);
 
-  const handleChange = (field: keyof ProfileFormData, value: string | string[] | undefined) => {
+  const handleChange = <T extends keyof ProfileFormData>(field: T, value: ProfileFormData[T]) => {
     const updated = { ...formData, [field]: value };
     setFormData(updated);
     onChange(updated);
@@ -195,15 +224,55 @@ export function EditorForm({ initialData, onSubmit, onChange, isPro = false }: E
     }
   };
 
+  const AVAILABLE_ICONS = [
+    { name: 'Sparkles', icon: SparklesIcon },
+    { name: 'Star', icon: Star },
+    { name: 'Briefcase', icon: Briefcase },
+    { name: 'Code', icon: Code },
+    { name: 'Paintbrush', icon: Paintbrush },
+    { name: 'Camera', icon: Camera },
+    { name: 'Utensils', icon: Utensils },
+    { name: 'ShoppingBag', icon: ShoppingBag },
+    { name: 'Heart', icon: Heart },
+    { name: 'User', icon: User },
+    { name: 'Settings', icon: Settings },
+    { name: 'MessageCircle', icon: MessageCircle },
+    { name: 'Globe', icon: Globe },
+    { name: 'Cpu', icon: Cpu },
+    { name: 'Smartphone', icon: Smartphone },
+    { name: 'Hammer', icon: Hammer },
+    { name: 'Wrench', icon: Wrench },
+    { name: 'Scissors', icon: Scissors },
+    { name: 'Music', icon: Music },
+    { name: 'Video', icon: Video },
+    { name: 'GraduationCap', icon: GraduationCap },
+    { name: 'Stethoscope', icon: Stethoscope },
+    { name: 'Scale', icon: Scale },
+    { name: 'Calculator', icon: Calculator },
+    { name: 'Building2', icon: Building2 },
+    { name: 'Rocket', icon: Rocket },
+    { name: 'Zap', icon: Zap },
+    { name: 'Target', icon: Target },
+    { name: 'Users', icon: Users },
+    { name: 'Award', icon: Award },
+  ];
+
   const addService = () => {
     if (!newService.trim()) return;
-    const services = [...(formData.services || []), newService.trim()];
+    const services = [...(formData.services || []), { name: newService.trim(), icon: 'Sparkles' }];
     if (services.length <= (isPro ? 20 : 3)) {
       handleChange('services', services);
       setNewService('');
     } else {
       toast.error(isPro ? 'Máximo de 20 serviços' : 'Upgrade para Pro para adicionar mais serviços');
     }
+  };
+
+  const updateServiceIcon = (index: number, iconName: string) => {
+    if (!isPro) return;
+    const services = [...(formData.services || [])];
+    services[index] = { ...services[index], icon: iconName };
+    handleChange('services', services);
   };
 
   const removeService = (index: number) => {
@@ -364,13 +433,61 @@ export function EditorForm({ initialData, onSubmit, onChange, isPro = false }: E
                   <Plus className="w-5 h-5" />
                 </Button>
               </div>
-              <div className="flex flex-wrap gap-2">
-                {formData.services?.map((service, i) => (
-                  <span key={i} className="inline-flex items-center gap-2 px-4 py-2 bg-slate-100 dark:bg-slate-800 rounded-xl text-xs font-bold">
-                    {service}
-                    <X className="w-3 h-3 cursor-pointer opacity-50 hover:opacity-100" onClick={() => removeService(i)} />
-                  </span>
-                ))}
+              <div className="flex flex-col gap-2">
+                {formData.services?.map((serviceItem, i) => {
+                  const service = typeof serviceItem === 'string' ? { name: serviceItem, icon: 'Sparkles' } : serviceItem;
+                  return (
+                    <div key={i} className="flex items-center gap-3 p-3 bg-slate-100 dark:bg-slate-800/40 rounded-2xl group/item">
+                      {/* Icon Picker (Pro Only) */}
+                      {isPro ? (
+                        <Popover>
+                          <PopoverTrigger asChild>
+                            <Button variant="ghost" size="icon" className="h-10 w-10 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-white/5 hover:border-primary/50 transition-colors">
+                              {(() => {
+                                const Icon = AVAILABLE_ICONS.find(idx => idx.name === service.icon)?.icon || SparklesIcon;
+                                return <Icon className="w-5 h-5 text-primary" />;
+                              })()}
+                            </Button>
+                          </PopoverTrigger>
+                        <PopoverContent className="w-[280px] p-3 rounded-2xl" align="start">
+                          <div className="grid grid-cols-5 gap-2">
+                            {AVAILABLE_ICONS.map((iconData) => (
+                              <Button
+                                key={iconData.name}
+                                variant="ghost"
+                                size="icon"
+                                className={cn(
+                                  "h-10 w-10 rounded-lg",
+                                  service.icon === iconData.name && "bg-primary/10 text-primary"
+                                )}
+                                onClick={() => updateServiceIcon(i, iconData.name)}
+                              >
+                                <iconData.icon className="w-5 h-5" />
+                              </Button>
+                            ))}
+                          </div>
+                        </PopoverContent>
+                      </Popover>
+                    ) : (
+                      <div className="h-10 w-10 rounded-xl bg-slate-200 dark:bg-slate-800 flex items-center justify-center">
+                        <SparklesIcon className="w-5 h-5 text-slate-400" />
+                      </div>
+                    )}
+
+                    <div className="flex-1">
+                      <p className="text-xs font-bold uppercase tracking-wide">{service.name}</p>
+                    </div>
+
+                    <Button 
+                      variant="ghost" 
+                      size="icon" 
+                      onClick={() => removeService(i)}
+                      className="h-8 w-8 rounded-lg opacity-0 group-hover/item:opacity-100 hover:bg-red-500/10 hover:text-red-500 transition-all"
+                    >
+                      <X className="w-4 h-4" />
+                    </Button>
+                  </div>
+                )})}
               </div>
             </div>
           </TabsContent>
