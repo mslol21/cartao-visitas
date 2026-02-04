@@ -11,9 +11,11 @@ import {
   Globe,
   PenTool,
   Play,
-  ShieldCheck
+  ShieldCheck,
+  Sparkles
 } from 'lucide-react';
 import { motion } from 'framer-motion';
+import { cn } from '@/lib/utils';
 
 const features = [
   {
@@ -25,6 +27,8 @@ const features = [
     icon: Play,
     title: 'Perfil com Fundo em Vídeo',
     description: 'Vá além das fotos estáticas. No Plano Pro, você pode subir vídeos de até 10 segundos que rodam em loop no fundo do seu perfil, criando uma conexão imediata e profissional com seu cliente.',
+    badge: 'Premium',
+    featured: true
   },
   {
     icon: Target,
@@ -55,6 +59,7 @@ const features = [
     icon: ShieldCheck,
     title: 'Perfil Verificado',
     description: 'Passe mais confiança para o seu cliente final. O selo de verificado no seu perfil Konnexy mostra que você é um profissional sério e estabelecido, aumentando as chances de fechar o orçamento logo no primeiro contato.',
+    badge: 'Confiança'
   },
 ];
 
@@ -82,13 +87,28 @@ export function Features() {
               viewport={{ once: true }}
               transition={{ delay: index * 0.1 }}
               whileHover={{ y: -5 }}
-              className="group p-10 rounded-[2.5rem] bg-slate-50 dark:bg-slate-900 border border-border/50 transition-all duration-300 relative overflow-hidden"
+              className={cn(
+                "group p-10 rounded-[2.5rem] transition-all duration-300 relative overflow-hidden",
+                feature.featured 
+                  ? "bg-primary/5 border-primary/20 shadow-[0_30px_60px_-15px_rgba(59,130,246,0.1)]" 
+                  : "bg-slate-50 dark:bg-slate-900 border border-border/50"
+              )}
             >
+              {feature.badge && (
+                <div className="absolute top-8 left-10 flex items-center gap-1.5 px-3 py-1 rounded-full bg-primary/10 text-primary text-[9px] font-black uppercase tracking-widest z-20">
+                  <Sparkles className="w-2.5 h-2.5" />
+                  {feature.badge}
+                </div>
+              )}
+              
               <div className="absolute top-0 right-0 p-8 opacity-[0.03] group-hover:scale-125 transition-transform">
                  <feature.icon className="w-32 h-32" />
               </div>
-              <div className="w-16 h-16 rounded-2xl bg-white dark:bg-slate-800 shadow-xl flex items-center justify-center mb-8 group-hover:scale-110 transition-transform">
-                <feature.icon className="w-8 h-8 text-primary" />
+              <div className={cn(
+                "w-16 h-16 rounded-2xl shadow-xl flex items-center justify-center mb-8 group-hover:scale-110 transition-transform",
+                feature.badge ? "bg-primary text-white" : "bg-white dark:bg-slate-800"
+              )}>
+                <feature.icon className={cn("w-8 h-8", feature.badge ? "text-white" : "text-primary")} />
               </div>
               <h3 className="text-xl font-bold mb-3 tracking-tight">
                 {feature.title}
