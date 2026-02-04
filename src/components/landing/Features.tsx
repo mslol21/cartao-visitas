@@ -9,7 +9,9 @@ import {
   Target,
   BarChart3,
   Globe,
-  PenTool
+  PenTool,
+  Play,
+  ShieldCheck
 } from 'lucide-react';
 import { motion } from 'framer-motion';
 
@@ -18,6 +20,11 @@ const features = [
     icon: Smartphone,
     title: 'Mobile-First Experience',
     description: 'Projetado especificamente para o comportamento do usuário mobile. Carregamento instantâneo em qualquer dispositivo.',
+  },
+  {
+    icon: Play,
+    title: 'Perfil com Fundo em Vídeo',
+    description: 'Vá além das fotos estáticas. No Plano Pro, você pode subir vídeos de até 10 segundos que rodam em loop no fundo do seu perfil, criando uma conexão imediata e profissional com seu cliente.',
   },
   {
     icon: Target,
@@ -43,6 +50,11 @@ const features = [
     icon: PenTool,
     title: 'Customização Total',
     description: 'Altere cores, serviços, links e fotos em tempo real. Seu cartão evolui junto com o seu negócio.',
+  },
+  {
+    icon: ShieldCheck,
+    title: 'Perfil Verificado',
+    description: 'Passe mais confiança para o seu cliente final. O selo de verificado no seu perfil Konnexy mostra que você é um profissional sério e estabelecido, aumentando as chances de fechar o orçamento logo no primeiro contato.',
   },
 ];
 
