@@ -3,13 +3,14 @@
 import { motion } from 'framer-motion';
 import { Play, Sparkles, Crown, Check, X } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import Image from 'next/image';
 
 const comparisonData = [
   {
     plan: 'Free',
     title: 'Plano Free',
     subtitle: 'Comece sua jornada',
-    videoSrc: '/videos/1000032569.mp4',
+    imageSrc: '/videos/1000032806.png',
     highlights: [
       { text: 'Link público básico', included: true },
       { text: 'Marca d\'água Konnexy', included: true },
@@ -26,7 +27,7 @@ const comparisonData = [
     plan: 'Pro',
     title: 'Plano Pro',
     subtitle: 'Destaque-se profissionalmente',
-    videoSrc: '/videos/1000032568.mp4',
+    imageSrc: '/videos/1000032805.png',
     highlights: [
       { text: 'Fundo em Vídeo Premium', included: true },
       { text: 'Sem marca d\'água', included: true },
@@ -151,28 +152,20 @@ export function PlanComparison() {
                   </p>
                 </div>
 
-                {/* Video Container */}
+                {/* Image Container */}
                 <div className="relative mb-8 rounded-2xl overflow-hidden bg-slate-900 aspect-[9/16] max-w-[280px] mx-auto shadow-2xl">
                   {/* Phone Frame Effect */}
                   <div className="absolute inset-0 z-10 pointer-events-none">
                     <div className="absolute top-0 left-1/2 -translate-x-1/2 w-32 h-6 bg-slate-900 rounded-b-3xl" />
                   </div>
                   
-                  <video
-                    src={item.videoSrc}
-                    autoPlay
-                    loop
-                    muted
-                    playsInline
-                    className="w-full h-full object-cover"
+                  <Image
+                    src={item.imageSrc}
+                    alt={`${item.title} Screenshot`}
+                    fill
+                    className="object-cover"
+                    priority={item.featured}
                   />
-                  
-                  {/* Play Icon Overlay */}
-                  <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity bg-black/20 backdrop-blur-sm">
-                    <div className="w-16 h-16 rounded-full bg-white/90 flex items-center justify-center">
-                      <Play className="w-8 h-8 text-slate-900 ml-1" fill="currentColor" />
-                    </div>
-                  </div>
                 </div>
 
                 {/* Highlights */}
