@@ -2,16 +2,10 @@
 
 import { 
   Smartphone, 
-  Share2, 
   MessageCircle, 
-  Palette, 
-  Zap, 
   Target,
   BarChart3,
-  Globe,
-  PenTool,
-  Play,
-  ShieldCheck,
+  Video,
   Sparkles
 } from 'lucide-react';
 import { motion } from 'framer-motion';
@@ -20,46 +14,31 @@ import { cn } from '@/lib/utils';
 const features = [
   {
     icon: Smartphone,
-    title: 'Mobile-First Experience',
-    description: 'Projetado especificamente para o comportamento do usuário mobile. Carregamento instantâneo em qualquer dispositivo.',
+    title: 'Mobile First',
+    description: 'Criado para funcionar perfeitamente no celular.',
   },
   {
-    icon: Play,
-    title: 'Perfil com Fundo em Vídeo',
-    description: 'Vá além das fotos estáticas. No Plano Pro, você pode subir vídeos de até 10 segundos que rodam em loop no fundo do seu perfil, criando uma conexão imediata e profissional com seu cliente.',
-    badge: 'Premium',
-    featured: true
+    icon: MessageCircle,
+    title: 'Botão direto para WhatsApp',
+    description: 'Leve o cliente direto para a conversa.',
   },
   {
     icon: Target,
-    title: 'Foco em Conversão',
-    description: 'Botões estrategicamente posicionados para levar seu cliente direto ao fechamento via WhatsApp ou Site.',
+    title: 'Perfil profissional personalizado',
+    description: 'Mostre quem você é e o que faz de forma clara.',
   },
   {
     icon: BarChart3,
-    title: 'Analytics Avançado',
-    description: 'Acompanhe quantos cliques e visitas seu cartão recebe. Saiba exatamente de onde vem seu tráfego.',
+    title: 'Analytics (Plano Pro)',
+    description: 'Veja quantas pessoas acessaram seu cartão.',
+    badge: 'Pro'
   },
   {
-    icon: Palette,
-    title: 'Design Premium',
-    description: 'Estética minimalista e moderna. Cause uma primeira impressão poderosa sem precisar contratar um designer.',
-  },
-  {
-    icon: Globe,
-    title: 'SEO Profissional',
-    description: 'Seu perfil indexado corretamente no Google para que clientes te encontrem localmente com facilidade.',
-  },
-  {
-    icon: PenTool,
-    title: 'Customização Total',
-    description: 'Altere cores, serviços, links e fotos em tempo real. Seu cartão evolui junto com o seu negócio.',
-  },
-  {
-    icon: ShieldCheck,
-    title: 'Perfil Verificado',
-    description: 'Passe mais confiança para o seu cliente final. O selo de verificado no seu perfil Konnexy mostra que você é um profissional sério e estabelecido, aumentando as chances de fechar o orçamento logo no primeiro contato.',
-    badge: 'Confiança'
+    icon: Video,
+    title: 'Fundo em vídeo (Plano Pro)',
+    description: 'Destaque-se com um visual moderno e profissional.',
+    badge: 'Pro',
+    featured: true
   },
 ];
 

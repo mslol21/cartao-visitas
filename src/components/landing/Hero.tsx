@@ -27,28 +27,16 @@ export function Hero() {
       <div className="container relative z-10 px-6 py-20">
         <div className="max-w-5xl mx-auto text-center space-y-12">
           
-          {/* Badge */}
-          <motion.div 
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="inline-flex items-center gap-3 px-6 py-2 rounded-full glass border border-primary/20 shadow-2xl shadow-primary/10"
-          >
-            <div className="w-2 h-2 rounded-full bg-primary animate-pulse" />
-            <span className="text-[10px] font-black uppercase tracking-[0.3em] text-primary">
-              Plataforma Premium de Networking
-            </span>
-          </motion.div>
-
           {/* Main Heading */}
           <div className="space-y-6">
             <motion.h1 
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ delay: 0.1, duration: 0.8 }}
-              className="text-4xl sm:text-5xl md:text-8xl font-black tracking-tighter leading-[1] md:leading-[0.9]"
+              className="text-4xl sm:text-5xl md:text-7xl font-black tracking-tighter leading-[1.1]"
             >
-              Seu Sucesso Começa <br />
-              Com Um <span className="gradient-text">Link Único.</span>
+              Cartão de visitas digital <br />
+              <span className="gradient-text">para autônomos</span>
             </motion.h1>
 
             <motion.p 
@@ -57,28 +45,28 @@ export function Hero() {
               transition={{ delay: 0.3 }}
               className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto font-medium leading-relaxed"
             >
-              Transformamos seu contato em uma experiência premium. 
-              Crie seu cartão de visita digital em segundos e conecte-se 
-              com o mundo de forma profissional e escalável.
+              Crie em minutos, compartilhe pelo WhatsApp e passe mais profissionalismo para seus clientes.
             </motion.p>
           </div>
 
-          {/* Social Proof & Features */}
+          {/* Quick Benefits */}
           <motion.div 
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.5 }}
-            className="flex flex-wrap items-center justify-center gap-4 sm:gap-8 py-4 px-8 border-y border-border/10"
+            className="flex flex-wrap items-center justify-center gap-x-6 gap-y-3 py-4"
           >
-            <div className="flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-muted-foreground">
-               <ShieldCheck className="w-4 h-4 text-primary" /> Perfil Verificado
-            </div>
-            <div className="flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-muted-foreground">
-               <Zap className="w-4 h-4 text-primary fill-current" /> Instant Setup
-            </div>
-            <div className="flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-muted-foreground">
-               <Smartphone className="w-4 h-4 text-primary" /> Mobile First
-            </div>
+            {[
+              "Passe seu contato com 1 clique",
+              "Feche clientes direto no WhatsApp",
+              "Nunca fique sem cartão",
+              "Atualize quando quiser"
+            ].map((benefit, i) => (
+              <div key={i} className="flex items-center gap-2 text-sm font-bold text-slate-700 dark:text-slate-300">
+                 <div className="w-1.5 h-1.5 rounded-full bg-primary" />
+                 {benefit}
+              </div>
+            ))}
           </motion.div>
 
           {/* CTAs */}
@@ -86,40 +74,17 @@ export function Hero() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.4 }}
-            className="flex flex-col sm:flex-row items-center justify-center gap-4 w-full sm:w-auto px-6 sm:px-0"
+            className="flex flex-col items-center gap-4"
           >
-            <Button asChild variant="hero" size="xl" className="w-full sm:w-auto h-16 sm:h-20 px-10 rounded-2xl sm:rounded-[2rem] text-lg font-black shadow-2xl shadow-primary/30 group">
+            <Button asChild variant="hero" size="xl" className="w-full sm:w-auto h-16 sm:h-20 px-12 rounded-2xl sm:rounded-[2rem] text-xl font-black shadow-2xl shadow-primary/30 group hover:scale-105 transition-transform duration-300">
               <Link href="/signup">
-                Começar Gratuitamente
+                Criar cartão grátis agora
                 <ArrowRight className="w-6 h-6 ml-3 transition-transform group-hover:translate-x-2" />
               </Link>
             </Button>
-            <Button asChild variant="outline" size="xl" className="w-full sm:w-auto h-16 sm:h-20 px-10 rounded-2xl sm:rounded-[2rem] text-lg font-black border-2 hover:bg-slate-50 dark:hover:bg-slate-900 shadow-xl transition-all">
-              <a href="#como-funciona">
-                Ver Demonstração
-              </a>
-            </Button>
-          </motion.div>
-
-          {/* Platform Stat */}
-          <motion.div 
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.8 }}
-            className="pt-10 flex flex-col items-center gap-4"
-          >
-            <div className="flex -space-x-3">
-              {[1, 2, 3, 4, 5].map((i) => (
-                <div key={i} className="w-12 h-12 rounded-2xl bg-slate-200 dark:bg-slate-800 border-4 border-slate-50 dark:border-slate-950 flex items-center justify-center text-xs font-black">
-                   {String.fromCharCode(64 + i)}
-                </div>
-              ))}
-              <div className="w-12 h-12 rounded-2xl bg-primary text-white border-4 border-slate-50 dark:border-slate-950 flex items-center justify-center text-[10px] font-black">
-                +2k
-              </div>
-            </div>
-            <p className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">
-               Junte-se a <span className="text-foreground">2240+ profissionais</span> de elite
+            
+            <p className="text-xs font-bold uppercase tracking-wider text-muted-foreground/60">
+              Sem cartão de crédito • Criado em menos de 2 minutos
             </p>
           </motion.div>
         </div>
