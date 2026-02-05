@@ -267,39 +267,42 @@ END:VCARD`;
               : "border border-slate-200 dark:border-slate-800 shadow-sm bg-white dark:bg-slate-950"
           )}
         >
-          {/* --- TOP SECTION (Video/Header + Identity) --- */}
-          <div className="relative w-full p-6 pt-12 pb-16 flex flex-col items-center text-center shrink-0 overflow-hidden">
-            
-            {/* Background Layer */}
-            <div className="absolute inset-0 z-0">
-               {isPro && data.background_video_url ? (
-                 <>
-                   <video 
-                     src={data.background_video_url}
-                     autoPlay 
-                     muted 
-                     loop 
-                     playsInline 
-                     className="w-full h-full object-cover"
-                   />
-                   <div className="absolute inset-0 bg-black/40 backdrop-blur-[2px]" />
-                 </>
-               ) : (
-                 <div 
-                   className="w-full h-full transition-colors duration-500"
-                   style={{ 
-                     backgroundColor: data.theme_color || (isPro ? '#0f172a' : '#f1f5f9'),
-                     backgroundImage: isPro && !data.theme_color ? 'linear-gradient(to bottom right, #0f172a, #1e293b)' : undefined
-                   }}
+          {/* --- BACKGROUND LAYER (Full Card) --- */}
+          <div className="absolute inset-0 z-0">
+             {isPro && data.background_video_url ? (
+               <>
+                 <video 
+                   src={data.background_video_url}
+                   autoPlay 
+                   muted 
+                   loop 
+                   playsInline 
+                   className="w-full h-full object-cover"
                  />
-               )}
-               
-               {/* Decorative Gradient overlays for Pro Non-Video */}
-               {isPro && !data.background_video_url && (
-                  <div className="absolute inset-0 bg-gradient-to-br from-primary/20 to-transparent mix-blend-overlay" />
-               )}
-            </div>
+                 {/* Dark overlay for readability */}
+                 <div className="absolute inset-0 bg-black/40 backdrop-blur-[1px]" />
+                 {/* Gradient fade at bottom for text contrast if needed */}
+                 <div className="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-black/80 to-transparent" />
+               </>
+             ) : (
+               <div 
+                 className="w-full h-full transition-colors duration-500"
+                 style={{ 
+                   backgroundColor: data.theme_color || (isPro ? '#0f172a' : '#f1f5f9'),
+                   backgroundImage: isPro && !data.theme_color ? 'linear-gradient(to bottom right, #0f172a, #1e293b)' : undefined
+                 }}
+               >
+                 {/* Decorative Gradient overlays for Pro Non-Video */}
+                 {isPro && (
+                    <div className="absolute inset-0 bg-gradient-to-br from-primary/20 to-transparent mix-blend-overlay" />
+                 )}
+               </div>
+             )}
+          </div>
 
+          {/* --- TOP SECTION (Identity) --- */}
+          <div className="relative w-full p-6 pt-12 pb-8 flex flex-col items-center text-center shrink-0 z-10 transition-all">
+            
             {/* Badges */}
             <div className="absolute top-4 right-5 z-20">
                {isPro ? (
@@ -320,13 +323,18 @@ END:VCARD`;
                <motion.div 
                  whileHover={isPro ? { scale: 1.05 } : {}}
                  className={cn(
-                   "w-28 h-28 rounded-[2rem] p-1.5 relative overflow-hidden transition-all duration-500 mb-5",
+                   "w-28 h-28 rounded-full p-1.5 relative overflow-hidden transition-all duration-500 mb-5",
                    isPro 
-                     ? "bg-white/10 backdrop-blur-md shadow-2xl ring-1 ring-white/20" 
+                     ? "bg-white/10 backdrop-blur-md shadow-2xl" 
                      : "bg-white shadow-xl"
                  )}
+                 style={{
+                    backgroundColor: isPro && data.theme_color ? `${data.theme_color}10` : undefined,
+                    border: isPro && data.theme_color ? `2px solid ${data.theme_color}` : '1px solid rgba(255,255,255,0.2)',
+                    boxShadow: isPro && data.theme_color ? `0 8px 32px -4px ${data.theme_color}40` : undefined
+                 }}
                >
-                 <div className="w-full h-full rounded-[1.7rem] overflow-hidden bg-slate-100 dark:bg-slate-800 flex items-center justify-center relative">
+                 <div className="w-full h-full rounded-full overflow-hidden bg-slate-100 dark:bg-slate-800 flex items-center justify-center relative">
                    {data.photo_url ? (
                      <Image
                        src={data.photo_url}
@@ -344,7 +352,7 @@ END:VCARD`;
                  </div>
                  {/* Verified Badge */}
                  {isPro && (
-                    <div className="absolute -bottom-1 -right-1 bg-blue-500 text-white rounded-xl p-1 shadow-lg border-2 border-transparent z-20">
+                    <div className="absolute -bottom-1 -right-1 bg-blue-500 text-white rounded-full p-1.5 shadow-lg border-2 border-transparent z-20">
                       <BadgeCheck className="w-3.5 h-3.5" />
                     </div>
                  )}
@@ -378,8 +386,11 @@ END:VCARD`;
 
           {/* --- BOTTOM SECTION (Actions & Services) --- */}
           <div className={cn(
-            "relative flex-1 -mt-8 rounded-t-[2.5rem] p-6 pt-10 z-10 flex flex-col gap-8",
-            isPro ? "bg-white/90 dark:bg-slate-950/90 backdrop-blur-xl" : "bg-slate-50 dark:bg-slate-950"
+            "relative flex-1 p-6 pt-4 z-10 flex flex-col gap-8",
+            // If Pro + Video, use transparent background for continuity. Else, maintain the sheet look if desired or full color.
+            isPro && data.background_video_url 
+              ? "bg-transparent" // Seamless, video continues
+              : (isPro ? "bg-white/90 dark:bg-slate-950/90 backdrop-blur-xl rounded-t-[2.5rem] -mt-8" : "bg-slate-50 dark:bg-slate-950 rounded-t-[2.5rem] -mt-8")
           )}>
             {/* Action Stack */}
             <div className="w-full space-y-4">
@@ -392,102 +403,123 @@ END:VCARD`;
                   variant="default"
                   size="lg"
                   className={cn(
-                    "w-full h-[72px] rounded-2xl font-black text-lg transition-all flex items-center justify-center gap-3",
+                    "w-full h-14 rounded-2xl font-black text-base transition-all flex items-center justify-center gap-3",
                     isPro 
                       ? "text-white shadow-xl hover:brightness-110 active:translate-y-1"
                       : "bg-slate-900 hover:bg-slate-800 text-white shadow-none border-0"
                   )}
                   style={{ 
                     backgroundColor: isPro ? (data.theme_color || '#25D366') : undefined,
-                    boxShadow: isPro ? `0 20px 40px -10px ${data.theme_color}44` : undefined
+                    boxShadow: isPro ? `0 10px 30px -10px ${data.theme_color}44` : undefined
                   }}
                   asChild
                   aria-label={isPro ? 'Solicitar Orçamento via WhatsApp' : 'Conversar via WhatsApp'}
                   onClick={() => handleTrackClick('click_whatsapp')}
                 >
                   <a href={whatsappLink} target="_blank" rel="noopener noreferrer">
-                    <MessageCircle className={cn("w-7 h-7 flex-shrink-0", isPro ? "fill-white" : "fill-white/80")} />
-                    <div className="text-left flex flex-col leading-tight">
-                      <span className={cn("text-[10px] uppercase tracking-[0.2em] font-black", isPro ? "opacity-80" : "opacity-60")}>
-                        {isPro ? 'Contato Premium' : 'Contato'}
-                      </span>
-                      <span className="font-black">
-                        {isPro ? 'Solicitar Orçamento' : 'WhatsApp'}
-                      </span>
-                    </div>
+                    <MessageCircle className={cn("w-6 h-6 flex-shrink-0", isPro ? "fill-white" : "fill-white/80")} />
+                    <span className="font-black uppercase tracking-wider">
+                       {isPro ? 'Solicitar Orçamento' : 'WhatsApp'}
+                    </span>
                   </a>
                 </Button>
               </motion.div>
 
-              {/* Social Links Bar */}
-              <div className="flex items-center justify-between gap-2.5 pt-1">
-                <div className="flex flex-wrap items-center gap-2.5">
-                  {validSocialLinks.map((social, index) => {
-                    const isDisabled = !isPro && index > 0;
-                    
-                    const LinkContent = (
-                      <motion.a
-                        key={social.id}
-                        whileHover={isDisabled ? {} : { y: -3 }}
-                        whileTap={isDisabled ? {} : { scale: 0.9 }}
-                        href={isDisabled ? '#' : social.url}
-                        target={isDisabled ? undefined : "_blank"}
-                        rel={isDisabled ? undefined : "noopener noreferrer"}
-                        aria-label={isDisabled ? `${social.label}` : `Visitar ${social.label}`}
-                        onClick={() => !isDisabled && handleTrackClick(social.trackType)}
-                        className={cn(
-                          "w-12 h-12 flex items-center justify-center rounded-2xl transition-all shadow-sm relative overflow-hidden",
-                          isPro 
-                            ? "bg-slate-100 dark:bg-white/5 border border-slate-200 dark:border-white/10 text-slate-600 dark:text-slate-300 hover:text-white hover:bg-primary hover:border-primary"
-                            : "bg-slate-200/50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-slate-400",
-                          isDisabled && "opacity-40 cursor-not-allowed grayscale"
-                        )}
-                      >
-                        <social.icon className="w-5 h-5 flex-shrink-0" />
-                        {isDisabled && <Lock className="absolute top-1 right-1 w-2.5 h-2.5 text-slate-500" />}
-                      </motion.a>
-                    );
-
-                    if (isDisabled) {
-                      return (
-                         <Tooltip key={social.id}>
-                           <TooltipTrigger asChild>{LinkContent}</TooltipTrigger>
-                           <TooltipContent><p>Disponível no Plano Pro</p></TooltipContent>
-                         </Tooltip>
-                      );
-                    }
-                    return LinkContent;
-                  })}
-                </div>
-                
-                <div className="flex items-center gap-2">
-                   <DropdownMenu>
-                    <DropdownMenuTrigger asChild>
-                      <button className={cn(
-                        "w-12 h-12 flex items-center justify-center rounded-2xl transition-all shadow-sm",
-                        isPro ? "bg-slate-100 dark:bg-white/5 border border-slate-200 dark:border-white/10 text-slate-600 dark:text-slate-300" : "bg-slate-200/50 text-slate-400"
-                      )}>
-                        <Download className="w-5 h-5" />
-                      </button>
-                    </DropdownMenuTrigger>
-                    <DropdownMenuContent align="end" className="w-56 rounded-2xl p-2">
-                      <DropdownMenuItem onClick={handleSaveContact} className="rounded-xl h-11 cursor-pointer font-bold">Salvar Contato</DropdownMenuItem>
-                      {isPro && (
-                        <>
-                          <DropdownMenuItem onClick={handleDownloadPNG} className="rounded-xl h-11 cursor-pointer font-bold">Baixar PNG</DropdownMenuItem>
-                          <DropdownMenuItem onClick={handleDownloadPDF} className="rounded-xl h-11 cursor-pointer font-bold">Baixar PDF</DropdownMenuItem>
-                        </>
+              {/* Social Navbar */}
+              <div className="flex items-center justify-center gap-2 pt-1">
+                {/* Visible Social Icons (Max 3) */}
+                {validSocialLinks.slice(0, 3).map((social, index) => {
+                  const isDisabled = !isPro && index > 0;
+                  
+                  const LinkContent = (
+                    <motion.a
+                      key={social.id}
+                      whileHover={isDisabled ? {} : { y: -3 }}
+                      whileTap={isDisabled ? {} : { scale: 0.9 }}
+                      href={isDisabled ? '#' : social.url}
+                      target={isDisabled ? undefined : "_blank"}
+                      rel={isDisabled ? undefined : "noopener noreferrer"}
+                      aria-label={isDisabled ? `${social.label}` : `Visitar ${social.label}`}
+                      onClick={() => !isDisabled && handleTrackClick(social.trackType)}
+                      className={cn(
+                        "w-12 h-12 flex items-center justify-center rounded-2xl transition-all shadow-sm relative overflow-hidden",
+                        isPro 
+                          ? "bg-white/10 backdrop-blur-xl border border-white/20 text-white hover:bg-white/20"
+                          : "bg-slate-200/50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-slate-400",
+                        isDisabled && "opacity-40 cursor-not-allowed grayscale"
                       )}
-                    </DropdownMenuContent>
-                  </DropdownMenu>
+                    >
+                      <social.icon className="w-5 h-5 flex-shrink-0" />
+                      {isDisabled && <Lock className="absolute top-1 right-1 w-2.5 h-2.5 text-slate-500" />}
+                    </motion.a>
+                  );
 
-                  <button onClick={handleShare} className={cn(
-                    "w-14 h-14 flex items-center justify-center rounded-[1.4rem] transition-all shadow-lg text-white",
-                    isPro ? "bg-primary hover:brightness-110" : "bg-slate-900"
-                  )}>
-                    <Share2 className="w-6 h-6" />
-                  </button>
-                </div>
+                  if (isDisabled) {
+                    return (
+                       <Tooltip key={social.id}>
+                         <TooltipTrigger asChild>{LinkContent}</TooltipTrigger>
+                         <TooltipContent><p>Disponível no Plano Pro</p></TooltipContent>
+                       </Tooltip>
+                    );
+                  }
+                  return LinkContent;
+                })}
+
+                {/* 'More' Button (Navbar Style) */}
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <button className={cn(
+                      "w-12 h-12 flex items-center justify-center rounded-2xl transition-all shadow-sm",
+                      isPro ? "bg-white/10 backdrop-blur-xl border border-white/20 text-white hover:bg-white/20" : "bg-slate-200/50 text-slate-400"
+                    )}>
+                      <MoreVertical className="w-5 h-5" />
+                    </button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent align="end" className="w-64 rounded-2xl p-2 bg-white/95 dark:bg-slate-950/95 backdrop-blur-2xl">
+                    
+                    {/* Remaining Socials */}
+                    {validSocialLinks.length > 3 && (
+                      <>
+                        <div className="px-2 py-1.5 text-[10px] font-black uppercase tracking-wider opacity-50">Redes Sociais</div>
+                        <div className="grid grid-cols-4 gap-1 mb-2">
+                          {validSocialLinks.slice(3).map((social) => (
+                             <DropdownMenuItem key={social.id} asChild className="p-0 bg-transparent focus:bg-transparent justify-center">
+                               <a 
+                                 href={social.url} 
+                                 target="_blank" 
+                                 rel="noopener noreferrer"
+                                 className="w-12 h-12 rounded-xl bg-slate-100 dark:bg-white/5 flex items-center justify-center text-slate-600 dark:text-slate-300 hover:bg-primary hover:text-white transition-colors"
+                                 onClick={() => handleTrackClick(social.trackType)}
+                               >
+                                 <social.icon className="w-5 h-5" />
+                               </a>
+                             </DropdownMenuItem>
+                          ))}
+                        </div>
+                        <div className="h-px bg-slate-200 dark:bg-white/10 my-1" />
+                      </>
+                    )}
+
+                    <DropdownMenuItem onClick={handleSaveContact} className="rounded-xl h-10 cursor-pointer font-bold">
+                       <UserPlus className="w-4 h-4 mr-2" /> Salvar Contato
+                    </DropdownMenuItem>
+                    <DropdownMenuItem onClick={handleShare} className="rounded-xl h-10 cursor-pointer font-bold">
+                       <Share2 className="w-4 h-4 mr-2" /> Compartilhar Perfil
+                    </DropdownMenuItem>
+                    
+                    {isPro && (
+                      <>
+                        <div className="h-px bg-slate-200 dark:bg-white/10 my-1" />
+                        <DropdownMenuItem onClick={handleDownloadPNG} className="rounded-xl h-10 cursor-pointer font-bold">
+                          <ImageIcon className="w-4 h-4 mr-2" /> Baixar Imagem (PNG)
+                        </DropdownMenuItem>
+                        <DropdownMenuItem onClick={handleDownloadPDF} className="rounded-xl h-10 cursor-pointer font-bold">
+                          <FileText className="w-4 h-4 mr-2" /> Baixar PDF
+                        </DropdownMenuItem>
+                      </>
+                    )}
+                  </DropdownMenuContent>
+                </DropdownMenu>
               </div>
             </div>
 
@@ -495,8 +527,8 @@ END:VCARD`;
             {activeServicesArr.length > 0 && (
               <div className="w-full">
                 <div className="flex items-center gap-3 mb-5">
-                  <span className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400">Serviços</span>
-                  <div className="h-[1px] flex-1 bg-slate-200 dark:bg-slate-800" />
+                  <span className={cn("text-[10px] font-black uppercase tracking-[0.2em]", isPro && data.background_video_url ? "text-white/60" : "text-slate-400")}>Serviços</span>
+                  <div className={cn("h-[1px] flex-1", isPro && data.background_video_url ? "bg-white/20" : "bg-slate-200 dark:bg-slate-800")} />
                 </div>
                 
                 {mainService && (
@@ -504,33 +536,28 @@ END:VCARD`;
                      initial={{ opacity: 0, y: 10 }}
                      animate={{ opacity: 1, y: 0 }}
                      className={cn(
-                       "w-full p-5 rounded-3xl flex items-center gap-4 mb-3 transition-colors",
+                       "w-full px-4 py-3 rounded-full flex items-center gap-3 mb-3 transition-colors",
                        isPro 
-                         ? "bg-slate-50 dark:bg-white/5 border border-slate-200 dark:border-white/5 shadow-sm"
+                         ? "bg-white/10 backdrop-blur-xl border border-white/20 shadow-lg"
                          : "bg-white border border-slate-100"
                      )}
                    >
-                     <div className={cn("w-12 h-12 rounded-2xl flex items-center justify-center text-white shadow-lg", isPro ? "bg-primary" : "bg-slate-900")}>
-                        <Sparkles className="w-6 h-6" />
+                     <div className={cn("w-8 h-8 rounded-full flex items-center justify-center text-white shadow-lg shrink-0", isPro ? "bg-primary" : "bg-slate-900")}>
+                        <Sparkles className="w-4 h-4" />
                      </div>
-                     <div>
-                       <span className="text-[9px] font-black uppercase tracking-[0.1em] text-primary mb-0.5 block">Destaque</span>
-                       <span className="font-black text-slate-900 dark:text-white uppercase leading-tight">{mainService.name}</span>
-                     </div>
+                     <span className={cn("font-black uppercase leading-tight text-sm", isPro ? "text-white" : "text-slate-900")}>{mainService.name}</span>
                    </motion.div>
                 )}
 
                 {secondaryServices.length > 0 && (
-                  <div className="grid grid-cols-2 gap-3">
+                  <div className="flex flex-col gap-2">
                     {secondaryServices.map((service, i) => (
                        <div key={i} className={cn(
-                         "p-4 rounded-2xl flex flex-col gap-2 border",
-                         isPro ? "bg-white/50 dark:bg-white/5 border-slate-200 dark:border-white/5" : "bg-slate-50 border-slate-100"
+                         "w-full px-4 py-3 rounded-full flex items-center gap-3 border transition-colors",
+                         isPro ? "bg-white/5 backdrop-blur-md border-white/10 hover:bg-white/10" : "bg-slate-50 border-slate-100"
                        )}>
-                          <div className="w-8 h-8 rounded-lg bg-slate-100 dark:bg-white/10 flex items-center justify-center">
-                            <span className="w-1.5 h-1.5 rounded-full bg-slate-400" />
-                          </div>
-                          <span className="text-xs font-bold leading-tight uppercase text-slate-700 dark:text-slate-300">{service.name}</span>
+                          <div className={cn("w-2 h-2 rounded-full", isPro ? "bg-white/50" : "bg-slate-300")} />
+                          <span className={cn("text-xs font-bold leading-tight uppercase", isPro ? "text-white" : "text-slate-700 dark:text-slate-300")}>{service.name}</span>
                        </div>
                     ))}
                   </div>
@@ -541,8 +568,9 @@ END:VCARD`;
             {/* Branding Footer */}
             {showBranding && (
                <div className="mt-auto py-6 text-center">
-                 <a href="/" className="inline-flex items-center gap-1.5 text-[10px] uppercase font-black tracking-[0.2em] text-slate-400 hover:text-primary transition-colors opacity-60 hover:opacity-100">
-                   Criado com <span className="text-slate-900 dark:text-white">Konnexy</span>
+                 <a href="/" className={cn("inline-flex items-center gap-1.5 text-[10px] uppercase font-black tracking-[0.2em] transition-colors opacity-60 hover:opacity-100", 
+                   isPro && data.background_video_url ? "text-white/60 hover:text-white" : "text-slate-400 hover:text-primary")}>
+                   Criado com <span className={cn(isPro && data.background_video_url ? "text-white" : "text-slate-900 dark:text-white")}>Konnexy</span>
                  </a>
                </div>
             )}
