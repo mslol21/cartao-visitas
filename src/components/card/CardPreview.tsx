@@ -46,7 +46,8 @@ import {
   Users,
   Award,
   Camera,
-  Smartphone
+  Smartphone,
+  Link
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Profile } from '@/types/profile';
@@ -187,9 +188,10 @@ END:VCARD`;
     { id: 'instagram', icon: Instagram, value: data.instagram, url: `https://instagram.com/${data.instagram}`, label: 'Instagram', trackType: 'click_instagram' as const },
     { id: 'linkedin', icon: Linkedin, value: data.linkedin, url: `https://linkedin.com/in/${data.linkedin}`, label: 'LinkedIn', trackType: 'click_linkedin' as const },
     { id: 'facebook', icon: Facebook, value: data.facebook, url: `https://facebook.com/${data.facebook}`, label: 'Facebook', trackType: 'click_facebook' as const },
+    { id: 'tiktok', icon: Music, value: data.tiktok, url: `https://tiktok.com/@${data.tiktok}`, label: 'TikTok', trackType: 'click_tiktok' as const },
     { id: 'twitter', icon: Twitter, value: data.twitter, url: `https://twitter.com/${data.twitter}`, label: 'Twitter', trackType: 'click_twitter' as const },
     { id: 'youtube', icon: Youtube, value: data.youtube, url: `https://youtube.com/@${data.youtube}`, label: 'YouTube', trackType: 'click_youtube' as const },
-    { id: 'website', icon: Globe, value: data.website, url: data.website?.startsWith('http') ? data.website : `https://${data.website}`, label: 'Website', trackType: 'click_website' as const },
+    { id: 'website', icon: Link, value: data.website, url: data.website?.startsWith('http') ? data.website : `https://${data.website}`, label: 'Site', trackType: 'click_website' as const },
   ];
 
   // All valid links (those with a value)
