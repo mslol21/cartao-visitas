@@ -7,11 +7,11 @@ import { PlanComparison } from "@/components/landing/PlanComparison";
 import { Pricing } from "@/components/landing/Pricing";
 import { Footer } from "@/components/landing/Footer";
 import { 
-  ProblemSection, 
-  AboutSection, 
-  WhyChooseSection, 
+  WhatIsSection, 
+  HowItWorksSection, 
   TargetAudienceSection, 
-  TrustSection, 
+  WhyChooseSection, 
+  FAQSection,
   FinalCTASection 
 } from "@/components/landing/Sections";
 
@@ -20,14 +20,14 @@ export default function LandingPage() {
     <main className="min-h-screen">
       <Navbar />
       <Hero />
-      <ProblemSection />
-      <AboutSection />
+      <WhatIsSection />
+      <HowItWorksSection />
+      <TargetAudienceSection />
       <WhyChooseSection />
       <Features />
-      <TargetAudienceSection />
       <PlanComparison />
       <Pricing />
-      <TrustSection />
+      <FAQSection />
       <FinalCTASection />
       <Footer />
     </main>

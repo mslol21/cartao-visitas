@@ -261,179 +261,128 @@ END:VCARD`;
         <div 
           id="digital-card-content"
           className={cn(
-            "relative overflow-hidden rounded-[2.5rem] transition-all duration-500",
-            getThemeClasses(),
+            "relative overflow-hidden rounded-[2.5rem] transition-all duration-500 flex flex-col min-h-[600px]",
             isPro 
               ? "border-2 border-primary/20 shadow-[0_40px_100px_-20px_rgba(59,130,246,0.3)] shadow-[inset_0_0_60px_rgba(59,130,246,0.1)]" 
-              : "border border-slate-200 dark:border-slate-800 shadow-sm"
+              : "border border-slate-200 dark:border-slate-800 shadow-sm bg-white dark:bg-slate-950"
           )}
         >
-          {/* Pro Background Video */}
-          {isPro && data.background_video_url && (
-            <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none opacity-30 blur-sm">
-              <video 
-                key={data.background_video_url}
-                autoPlay 
-                muted 
-                loop 
-                playsInline 
-                className="w-full h-full object-cover"
-              >
-                <source src={data.background_video_url} type="video/mp4" />
-              </video>
-              <div className="absolute inset-0 bg-black/40" />
-            </div>
-          )}
-
-          {/* Pro Background Enhancements */}
-          {isPro && !data.background_video_url && data.theme_style !== 'minimalist' && (
-            <>
-               {/* Aesthetic Gradient Background matching PlanComparison */}
-              <div className={cn(
-                "absolute inset-0 opacity-40 bg-gradient-to-br from-blue-600/20 via-purple-600/10 to-transparent pointer-events-none mix-blend-screen",
-              )} />
-
-              {/* Subtle Animated Gradient Background for Body */}
-              <div className="absolute inset-0 opacity-[0.03] transition-opacity duration-1000">
-                <div className="absolute top-0 right-0 w-64 h-64 bg-primary blur-[100px] rounded-full animate-pulse" />
-                <div className="absolute bottom-0 left-0 w-64 h-64 bg-blue-600 blur-[100px] rounded-full animate-pulse-slow" />
-              </div>
-              
-              {/* Pattern Texture Overlay */}
-              <div className="absolute inset-0 opacity-[0.05] pointer-events-none mix-blend-overlay" 
-                   style={{ backgroundImage: `url("data:image/svg+xml,%3Csvg width='20' height='20' viewBox='0 0 20 20' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%239C92AC' fill-opacity='0.4' fill-rule='evenodd'%3E%3Ccircle cx='3' cy='3' r='3'/%3E%3Ccircle cx='13' cy='13' r='3'/%3E%3C/g%3E%3C/svg%3E")` }} 
-              />
-              
-              {/* Large Subtle Illustrative Icon */}
-              <div className="absolute -bottom-10 -right-10 opacity-10 blur-sm pointer-events-none">
-                <Sparkles className="w-64 h-64 text-slate-400 rotate-12" />
-              </div>
-            </>
-          )}
-          
-          {/* Header */}
-          <div 
-            className={cn(
-              "h-28 relative overflow-hidden transition-all duration-700",
-              data.theme_style === 'glass' && "bg-transparent backdrop-blur-sm"
-            )}
-            style={{ 
-              backgroundColor: data.theme_style === 'glass' ? undefined : (data.theme_color || (isPro ? '#3b82f6' : '#f1f5f9')),
-              backgroundImage: isPro && data.theme_style !== 'minimalist' && data.theme_style !== 'glass' 
-                ? `linear-gradient(135deg, ${data.theme_color || '#3b82f6'} 0%, #1e293b 100%)` 
-                : 'none'
-            }}
-          >
-            {isPro && (
-              <>
-                <div className="absolute inset-0 opacity-20 bg-[radial-gradient(circle_at_30%_20%,_white_0%,_transparent_60%)]" />
-                <div className="absolute top-0 inset-x-0 h-full bg-gradient-to-b from-black/20 to-transparent" />
-                
-                {/* Decorative Elements for Pro */}
-                <div className="absolute -top-4 -left-4 w-24 h-24 bg-white/10 rounded-full blur-2xl" />
-                <div className="absolute top-2 left-6 w-12 h-1 bg-white/20 rounded-full blur-sm" />
-                
-                <div className="absolute top-4 right-5 flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-black/30 backdrop-blur-xl border border-white/20 text-white text-[10px] font-black uppercase tracking-[0.2em] shadow-2xl">
-                  <BadgeCheck className="w-3.5 h-3.5 text-blue-400" />
-                  Premium
-                </div>
-              </>
-            )}
+          {/* --- TOP SECTION (Video/Header + Identity) --- */}
+          <div className="relative w-full p-6 pt-12 pb-16 flex flex-col items-center text-center shrink-0 overflow-hidden">
             
-            {!isPro && (
-              <div className="absolute top-4 right-5 px-3 py-1 rounded-full bg-slate-200/50 text-slate-500 text-[9px] font-bold uppercase tracking-wider">
-                Digital Free
-              </div>
-            )}
+            {/* Background Layer */}
+            <div className="absolute inset-0 z-0">
+               {isPro && data.background_video_url ? (
+                 <>
+                   <video 
+                     src={data.background_video_url}
+                     autoPlay 
+                     muted 
+                     loop 
+                     playsInline 
+                     className="w-full h-full object-cover"
+                   />
+                   <div className="absolute inset-0 bg-black/40 backdrop-blur-[2px]" />
+                 </>
+               ) : (
+                 <div 
+                   className="w-full h-full transition-colors duration-500"
+                   style={{ 
+                     backgroundColor: data.theme_color || (isPro ? '#0f172a' : '#f1f5f9'),
+                     backgroundImage: isPro && !data.theme_color ? 'linear-gradient(to bottom right, #0f172a, #1e293b)' : undefined
+                   }}
+                 />
+               )}
+               
+               {/* Decorative Gradient overlays for Pro Non-Video */}
+               {isPro && !data.background_video_url && (
+                  <div className="absolute inset-0 bg-gradient-to-br from-primary/20 to-transparent mix-blend-overlay" />
+               )}
+            </div>
+
+            {/* Badges */}
+            <div className="absolute top-4 right-5 z-20">
+               {isPro ? (
+                  <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-black/30 backdrop-blur-xl border border-white/20 text-white text-[10px] font-black uppercase tracking-[0.2em] shadow-lg">
+                    <BadgeCheck className="w-3.5 h-3.5 text-blue-400" />
+                    Premium
+                  </div>
+               ) : (
+                  <div className="px-3 py-1 rounded-full bg-slate-200/50 text-slate-500 text-[9px] font-bold uppercase tracking-wider backdrop-blur-md">
+                    Digital Free
+                  </div>
+               )}
+            </div>
+
+            {/* Identity Content */}
+            <div className="relative z-10 flex flex-col items-center w-full max-w-[90%]">
+               {/* Avatar */}
+               <motion.div 
+                 whileHover={isPro ? { scale: 1.05 } : {}}
+                 className={cn(
+                   "w-28 h-28 rounded-[2rem] p-1.5 relative overflow-hidden transition-all duration-500 mb-5",
+                   isPro 
+                     ? "bg-white/10 backdrop-blur-md shadow-2xl ring-1 ring-white/20" 
+                     : "bg-white shadow-xl"
+                 )}
+               >
+                 <div className="w-full h-full rounded-[1.7rem] overflow-hidden bg-slate-100 dark:bg-slate-800 flex items-center justify-center relative">
+                   {data.photo_url ? (
+                     <Image
+                       src={data.photo_url}
+                       alt={data.name || 'Avatar'}
+                       width={112}
+                       height={112}
+                       className="w-full h-full object-cover"
+                       priority
+                     />
+                   ) : (
+                     <span className="text-3xl font-bold text-slate-400">
+                       {data.name?.charAt(0) || '?'}
+                     </span>
+                   )}
+                 </div>
+                 {/* Verified Badge */}
+                 {isPro && (
+                    <div className="absolute -bottom-1 -right-1 bg-blue-500 text-white rounded-xl p-1 shadow-lg border-2 border-transparent z-20">
+                      <BadgeCheck className="w-3.5 h-3.5" />
+                    </div>
+                 )}
+               </motion.div>
+
+               {/* Name & Text */}
+               <h1 className={cn(
+                 "text-2xl font-black tracking-tight mb-2 capitalize leading-tight",
+                 (isPro || data.background_video_url) ? "text-white drop-shadow-md" : (data.theme_color ? "text-white drop-shadow-md" : "text-slate-900")
+               )}>
+                 {data.name || 'Seu Nome'}
+               </h1>
+               <p className={cn(
+                 "text-sm font-bold leading-relaxed opacity-90 mb-2 max-w-[280px]",
+                 (isPro || data.background_video_url) ? "text-white/90 drop-shadow-sm" : (data.theme_color ? "text-white/90" : "text-slate-600")
+               )}>
+                 {data.tagline || 'Sua profissão ou frase de impacto'}
+               </p>
+               
+               {data.city && (
+                 <div className={cn(
+                   "flex items-center gap-1.5 text-[10px] font-black uppercase tracking-[0.2em]",
+                   (isPro || data.background_video_url) ? "text-white/60" : (data.theme_color ? "text-white/60" : "text-slate-400")
+                 )}>
+                   <MapPin className="w-3 h-3" />
+                   {data.city}
+                 </div>
+               )}
+            </div>
           </div>
 
-          {/* Profile Content Area */}
-          <div className="px-6 pb-10 -mt-14 relative z-10 flex flex-col items-center">
-            
-            {/* Avatar */}
-            <div className="relative mb-6">
-              <motion.div 
-                whileHover={isPro ? { scale: 1.05 } : {}}
-                className={cn(
-                  "w-28 h-28 rounded-[2rem] bg-white dark:bg-slate-900 p-1.5 relative overflow-hidden transition-all duration-500",
-                  isPro 
-                    ? "shadow-[0_25px_50px_-12px_rgba(0,0,0,0.4)] ring-4 ring-primary/30 ring-offset-4 ring-offset-white dark:ring-offset-slate-950" 
-                    : "shadow-md border border-slate-100 dark:border-slate-800"
-                )}
-              >
-                {/* Glow for Pro */}
-                {isPro && (
-                  <div className="absolute inset-0 bg-gradient-to-tr from-primary/30 to-transparent animate-pulse" />
-                )}
-                
-                <div className="w-full h-full rounded-[1.7rem] overflow-hidden bg-slate-100 dark:bg-slate-800 flex items-center justify-center border border-slate-100 dark:border-slate-700/50">
-                  {data.photo_url ? (
-                    <Image
-                      src={data.photo_url}
-                      alt={data.name || 'Avatar'}
-                      width={112}
-                      height={112}
-                      className="w-full h-full object-cover"
-                      priority
-                    />
-                  ) : (
-                    <span className="text-3xl font-bold text-slate-400">
-                      {data.name?.charAt(0) || '?'}
-                    </span>
-                  )}
-                </div>
-              </motion.div>
-              
-              {/* Verified Badge Overlay (Pro Only) */}
-              {isPro && (
-                <motion.div 
-                  initial={{ scale: 0, opacity: 0 }}
-                  animate={{ scale: 1, opacity: 1 }}
-                  transition={{ delay: 0.4 }}
-                  className="absolute -bottom-1 -right-1 bg-blue-500 text-white rounded-xl p-1.5 shadow-lg border-2 border-white dark:border-slate-900 z-20"
-                >
-                  <Tooltip>
-                    <TooltipTrigger asChild>
-                      <BadgeCheck className="w-4 h-4" />
-                    </TooltipTrigger>
-                    <TooltipContent>
-                      <p>Profissional Verificado</p>
-                    </TooltipContent>
-                  </Tooltip>
-                </motion.div>
-              )}
-            </div>
-
-            {/* Identity & Visual Hierarchy */}
-            <div className="text-center mb-8 w-full">
-              <h1 
-                className={cn(
-                  "text-xl sm:text-2xl font-black tracking-tight mb-1 capitalize break-words",
-                  (isPro && (data.background_video_url || data.theme_style === 'oled' || data.theme_style === 'glass')) ? "text-white drop-shadow-[0_2px_4px_rgba(0,0,0,0.5)]" : "text-slate-900 dark:text-white"
-                )}
-              >
-                {data.name || 'Seu Nome'}
-              </h1>
-              <p 
-                className={cn(
-                  "text-sm font-bold leading-relaxed px-4 break-words",
-                  (isPro && (data.background_video_url || data.theme_style === 'oled' || data.theme_style === 'glass')) ? "text-white/80 drop-shadow-[0_1px_2px_rgba(0,0,0,0.5)]" : "text-slate-600 dark:text-slate-400 opacity-80"
-                )}
-              >
-                {data.tagline || 'Sua profissão ou frase de impacto'}
-              </p>
-              
-              {data.city && (
-                <div className="flex items-center justify-center gap-1.5 mt-3 text-[11px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-[0.2em] text-center px-4">
-                  <MapPin className="w-3 h-3 flex-shrink-0" />
-                  <span className="truncate">{data.city}</span>
-                </div>
-              )}
-            </div>
-
-            {/* Action Stack (Moved Up for better UX) */}
-            <div className="w-full space-y-4 mb-8">
-              {/* Main Conversion Button (WhatsApp) */}
+          {/* --- BOTTOM SECTION (Actions & Services) --- */}
+          <div className={cn(
+            "relative flex-1 -mt-8 rounded-t-[2.5rem] p-6 pt-10 z-10 flex flex-col gap-8",
+            isPro ? "bg-white/90 dark:bg-slate-950/90 backdrop-blur-xl" : "bg-slate-50 dark:bg-slate-950"
+          )}>
+            {/* Action Stack */}
+            <div className="w-full space-y-4">
               <motion.div 
                 whileHover={isPro ? { scale: 1.02, y: -2 } : {}} 
                 whileTap={isPro ? { scale: 0.98 } : {}}
@@ -471,7 +420,7 @@ END:VCARD`;
               </motion.div>
 
               {/* Social Links Bar */}
-              <div className="flex items-center justify-between gap-2.5 pt-2">
+              <div className="flex items-center justify-between gap-2.5 pt-1">
                 <div className="flex flex-wrap items-center gap-2.5">
                   {validSocialLinks.map((social, index) => {
                     const isDisabled = !isPro && index > 0;
@@ -479,227 +428,128 @@ END:VCARD`;
                     const LinkContent = (
                       <motion.a
                         key={social.id}
-                        whileHover={isDisabled ? {} : { y: -3, backgroundColor: 'var(--slate-100)' }}
+                        whileHover={isDisabled ? {} : { y: -3 }}
                         whileTap={isDisabled ? {} : { scale: 0.9 }}
                         href={isDisabled ? '#' : social.url}
                         target={isDisabled ? undefined : "_blank"}
                         rel={isDisabled ? undefined : "noopener noreferrer"}
-                        aria-label={isDisabled ? `${social.label} (Disponível no Pro)` : `Visitar ${social.label}`}
+                        aria-label={isDisabled ? `${social.label}` : `Visitar ${social.label}`}
                         onClick={() => !isDisabled && handleTrackClick(social.trackType)}
                         className={cn(
                           "w-12 h-12 flex items-center justify-center rounded-2xl transition-all shadow-sm relative overflow-hidden",
                           isPro 
-                            ? "bg-white dark:bg-white/5 border border-slate-200 dark:border-white/10 text-slate-600 dark:text-slate-300 hover:text-primary hover:border-primary/30"
-                            : "bg-slate-100/50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-slate-400 dark:text-slate-500",
+                            ? "bg-slate-100 dark:bg-white/5 border border-slate-200 dark:border-white/10 text-slate-600 dark:text-slate-300 hover:text-white hover:bg-primary hover:border-primary"
+                            : "bg-slate-200/50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-slate-400",
                           isDisabled && "opacity-40 cursor-not-allowed grayscale"
                         )}
                       >
                         <social.icon className="w-5 h-5 flex-shrink-0" />
-                        {isDisabled && (
-                          <div className="absolute top-0 right-0 bg-slate-900 text-white p-0.5 rounded-bl-lg">
-                            <Lock className="w-2.5 h-2.5" />
-                          </div>
-                        )}
-                        {isPro && (
-                          <div className="absolute inset-0 bg-gradient-to-tr from-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
-                        )}
+                        {isDisabled && <Lock className="absolute top-1 right-1 w-2.5 h-2.5 text-slate-500" />}
                       </motion.a>
                     );
 
                     if (isDisabled) {
                       return (
-                        <Tooltip key={social.id}>
-                          <TooltipTrigger asChild>
-                            {LinkContent}
-                          </TooltipTrigger>
-                          <TooltipContent>
-                            <p>Disponível no Plano Pro</p>
-                          </TooltipContent>
-                        </Tooltip>
+                         <Tooltip key={social.id}>
+                           <TooltipTrigger asChild>{LinkContent}</TooltipTrigger>
+                           <TooltipContent><p>Disponível no Plano Pro</p></TooltipContent>
+                         </Tooltip>
                       );
                     }
-
                     return LinkContent;
                   })}
                 </div>
                 
                 <div className="flex items-center gap-2">
-                  <DropdownMenu>
+                   <DropdownMenu>
                     <DropdownMenuTrigger asChild>
-                      <button
-                        aria-label="Opções de Compartilhamento"
-                        className={cn(
-                          "w-12 h-12 flex items-center justify-center rounded-2xl transition-all shadow-sm",
-                          isPro 
-                            ? "bg-white dark:bg-white/5 border border-slate-200 dark:border-white/10 text-slate-600 dark:text-slate-300"
-                            : "bg-slate-100/50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-slate-400"
-                        )}
-                      >
+                      <button className={cn(
+                        "w-12 h-12 flex items-center justify-center rounded-2xl transition-all shadow-sm",
+                        isPro ? "bg-slate-100 dark:bg-white/5 border border-slate-200 dark:border-white/10 text-slate-600 dark:text-slate-300" : "bg-slate-200/50 text-slate-400"
+                      )}>
                         <Download className="w-5 h-5" />
                       </button>
                     </DropdownMenuTrigger>
-                    <DropdownMenuContent align="end" className="w-56 rounded-2xl p-2 border-slate-200 dark:border-white/10">
-                      <DropdownMenuItem onClick={handleSaveContact} className="rounded-xl flex items-center gap-2 h-11 cursor-pointer">
-                        <UserPlus className="w-4 h-4 text-blue-500" />
-                        <span className="font-bold text-xs uppercase tracking-widest">Salvar aos Contatos</span>
-                      </DropdownMenuItem>
-                      
+                    <DropdownMenuContent align="end" className="w-56 rounded-2xl p-2">
+                      <DropdownMenuItem onClick={handleSaveContact} className="rounded-xl h-11 cursor-pointer font-bold">Salvar Contato</DropdownMenuItem>
                       {isPro && (
                         <>
-                          <DropdownMenuItem onClick={handleDownloadPNG} className="rounded-xl flex items-center gap-2 h-11 cursor-pointer">
-                            <ImageIcon className="w-4 h-4 text-emerald-500" />
-                            <span className="font-bold text-xs uppercase tracking-widest">Baixar Imagem (PNG)</span>
-                          </DropdownMenuItem>
-                          
-                          <DropdownMenuItem onClick={handleDownloadPDF} className="rounded-xl flex items-center gap-2 h-11 cursor-pointer">
-                            <FileText className="w-4 h-4 text-rose-500" />
-                            <span className="font-bold text-xs uppercase tracking-widest">Baixar PDF</span>
-                          </DropdownMenuItem>
+                          <DropdownMenuItem onClick={handleDownloadPNG} className="rounded-xl h-11 cursor-pointer font-bold">Baixar PNG</DropdownMenuItem>
+                          <DropdownMenuItem onClick={handleDownloadPDF} className="rounded-xl h-11 cursor-pointer font-bold">Baixar PDF</DropdownMenuItem>
                         </>
                       )}
                     </DropdownMenuContent>
                   </DropdownMenu>
 
-                  <button
-                    onClick={handleShare}
-                    aria-label="Compartilhar Cartão"
-                    className={cn(
-                      "group w-14 h-14 flex items-center justify-center rounded-[1.4rem] transition-all flex-shrink-0 shadow-lg",
-                      isPro
-                        ? "bg-primary text-white hover:brightness-110"
-                        : "bg-slate-900 text-white"
-                    )}
-                  >
-                    <Share2 className="w-6 h-6 group-hover:scale-110 transition-transform" />
+                  <button onClick={handleShare} className={cn(
+                    "w-14 h-14 flex items-center justify-center rounded-[1.4rem] transition-all shadow-lg text-white",
+                    isPro ? "bg-primary hover:brightness-110" : "bg-slate-900"
+                  )}>
+                    <Share2 className="w-6 h-6" />
                   </button>
                 </div>
               </div>
             </div>
 
-            {/* Structured Services Section */}
+            {/* Services */}
             {activeServicesArr.length > 0 && (
-              <div className="w-full mb-8">
-                <div className="flex items-center gap-2 mb-4 px-1">
-                  <div className="h-[1px] flex-1 bg-slate-100 dark:bg-slate-800" />
-                  <span className="text-[10px] font-black uppercase tracking-[0.3em] text-slate-400">Serviços</span>
-                  <div className="h-[1px] flex-1 bg-slate-100 dark:bg-slate-800" />
+              <div className="w-full">
+                <div className="flex items-center gap-3 mb-5">
+                  <span className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400">Serviços</span>
+                  <div className="h-[1px] flex-1 bg-slate-200 dark:bg-slate-800" />
                 </div>
                 
-                {/* Main Service (Featured) */}
-                {mainService && (() => {
-                  const getServiceIcon = () => {
-                    // 1. Se o Pro escolheu um ícone, usa ele
-                    if (isPro && mainService.icon && ICON_MAP[mainService.icon]) {
-                      const Icon = ICON_MAP[mainService.icon];
-                      return <Icon className="w-6 h-6" />;
-                    }
+                {mainService && (
+                   <motion.div
+                     initial={{ opacity: 0, y: 10 }}
+                     animate={{ opacity: 1, y: 0 }}
+                     className={cn(
+                       "w-full p-5 rounded-3xl flex items-center gap-4 mb-3 transition-colors",
+                       isPro 
+                         ? "bg-slate-50 dark:bg-white/5 border border-slate-200 dark:border-white/5 shadow-sm"
+                         : "bg-white border border-slate-100"
+                     )}
+                   >
+                     <div className={cn("w-12 h-12 rounded-2xl flex items-center justify-center text-white shadow-lg", isPro ? "bg-primary" : "bg-slate-900")}>
+                        <Sparkles className="w-6 h-6" />
+                     </div>
+                     <div>
+                       <span className="text-[9px] font-black uppercase tracking-[0.1em] text-primary mb-0.5 block">Destaque</span>
+                       <span className="font-black text-slate-900 dark:text-white uppercase leading-tight">{mainService.name}</span>
+                     </div>
+                   </motion.div>
+                )}
 
-                    // 2. Fallback automático por palavra-chave
-                    const t = mainService.name.toLowerCase();
-                    if (t.includes('advoc') || t.includes('direit') || t.includes('jurid')) return <Scale className="w-6 h-6" />;
-                    if (t.includes('saud') || t.includes('medic') || t.includes('dentist') || t.includes('psico')) return <Stethoscope className="w-6 h-6" />;
-                    if (t.includes('tech') || t.includes('dev') || t.includes('soft') || t.includes('ti')) return <Code className="w-6 h-6" />;
-                    if (t.includes('market') || t.includes('venda') || t.includes('social')) return <Target className="w-6 h-6" />;
-                    if (t.includes('comida') || t.includes('restaurante') || t.includes('chef')) return <Utensils className="w-6 h-6" />;
-                    
-                    return <Sparkles className="w-6 h-6" />;
-                  };
-
-                  return (
-                    <motion.div
-                      initial={{ opacity: 0, y: 10 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      className={cn(
-                        "w-full p-4 mb-3 rounded-2xl flex items-center justify-between group transition-all duration-300",
-                        isPro 
-                          ? (data.background_video_url 
-                              ? "bg-white/10 backdrop-blur-xl border border-white/20 shadow-xl hover:bg-white/15" 
-                              : "bg-slate-50 dark:bg-white/5 border border-slate-200 dark:border-white/10 shadow-sm hover:shadow-md")
-                          : "bg-slate-50 dark:bg-slate-900 border border-slate-100 dark:border-slate-800"
-                      )}
-                    >
-                      <div className="flex items-center gap-4">
-                        <div className={cn(
-                          "w-12 h-12 rounded-xl flex items-center justify-center transition-colors",
-                          isPro ? "bg-primary/10" : "bg-slate-200 dark:bg-slate-800 text-slate-400"
-                        )} style={{ color: isPro ? (data.theme_color || '#3b82f6') : undefined }}>
-                          {getServiceIcon()}
-                        </div>
-                        <div className="flex flex-col">
-                          <span className="text-[9px] font-black uppercase tracking-widest mb-0.5" style={{ color: data.theme_color || '#3b82f6' }}>Destaque</span>
-                          <span className="text-sm font-black text-slate-900 dark:text-white uppercase">{mainService.name}</span>
-                        </div>
-                      </div>
-                    </motion.div>
-                  );
-                })()}
-
-                {/* Secondary Services Grid */}
                 {secondaryServices.length > 0 && (
-                  <div className="grid grid-cols-2 gap-3 pb-2">
+                  <div className="grid grid-cols-2 gap-3">
                     {secondaryServices.map((service, i) => (
-                      <motion.div
-                        key={i}
-                        initial={{ opacity: 0, scale: 0.95 }}
-                        animate={{ opacity: 1, scale: 1 }}
-                        transition={{ delay: 0.1 + (i * 0.05) }}
-                        className={cn(
-                          "p-3 rounded-2xl flex flex-col gap-2 transition-all duration-300",
-                          isPro 
-                            ? (data.background_video_url 
-                                ? "bg-white/10 backdrop-blur-xl border border-white/20 shadow-xl hover:bg-white/15" 
-                                : "bg-white dark:bg-white/5 border border-slate-200 dark:border-white/10 shadow-sm hover:shadow-md")
-                            : "bg-slate-50/50 dark:bg-slate-900 border border-slate-100 dark:border-slate-800"
-                        )}
-                      >
-                        <div className={cn(
-                          "w-8 h-8 rounded-lg flex items-center justify-center",
-                          isPro ? "bg-slate-100 dark:bg-white/10 text-slate-500" : "bg-slate-200/50 dark:bg-slate-800 text-slate-400"
-                        )}>
-                          {isPro && service.icon && ICON_MAP[service.icon] ? (
-                            (() => {
-                              const Icon = ICON_MAP[service.icon];
-                              return <Icon className="w-4 h-4" />;
-                            })()
-                          ) : (
-                            <div className="w-1.5 h-1.5 rounded-full bg-current" />
-                          )}
-                        </div>
-                        <span className="text-xs font-bold text-slate-700 dark:text-slate-300 line-clamp-2 leading-tight uppercase">
-                          {service.name}
-                        </span>
-                      </motion.div>
+                       <div key={i} className={cn(
+                         "p-4 rounded-2xl flex flex-col gap-2 border",
+                         isPro ? "bg-white/50 dark:bg-white/5 border-slate-200 dark:border-white/5" : "bg-slate-50 border-slate-100"
+                       )}>
+                          <div className="w-8 h-8 rounded-lg bg-slate-100 dark:bg-white/10 flex items-center justify-center">
+                            <span className="w-1.5 h-1.5 rounded-full bg-slate-400" />
+                          </div>
+                          <span className="text-xs font-bold leading-tight uppercase text-slate-700 dark:text-slate-300">{service.name}</span>
+                       </div>
                     ))}
-                    
-                    {/* Upgrade Placeholder for Free */}
-                    {!isPro && services.length > 5 && (
-                      <div className="p-3 rounded-2xl border-2 border-dashed border-slate-100 dark:border-slate-800 flex items-center justify-center bg-slate-50/20">
-                         <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest">+{services.length - 5} Mais</span>
-                      </div>
-                    )}
                   </div>
                 )}
               </div>
             )}
+            
+            {/* Branding Footer */}
+            {showBranding && (
+               <div className="mt-auto py-6 text-center">
+                 <a href="/" className="inline-flex items-center gap-1.5 text-[10px] uppercase font-black tracking-[0.2em] text-slate-400 hover:text-primary transition-colors opacity-60 hover:opacity-100">
+                   Criado com <span className="text-slate-900 dark:text-white">Konnexy</span>
+                 </a>
+               </div>
+            )}
           </div>
-
-          {/* Branding Footer */}
-          {showBranding && (
-            <div className={cn(
-              "py-4 text-center border-t transition-all",
-              isPro ? "opacity-0 h-0 p-0 overflow-hidden pointer-events-none" : "bg-slate-50/50 dark:bg-slate-950/50 border-slate-100 dark:border-slate-900"
-            )}>
-              {!isPro && (
-                <a href="/" className="group inline-flex items-center gap-1.5 text-[9px] uppercase font-black tracking-[0.2em] text-slate-400 hover:text-primary transition-colors">
-                  Crie o seu em 
-                  <span className="text-slate-900 dark:text-white group-hover:text-primary transition-colors">Konnexy.com</span>
-                </a>
-              )}
-            </div>
-          )}
         </div>
 
-        {/* Pro Upsell (Only for Free cards when viewed by owner/preview) */}
+        {/* Pro Upsell */}
         {!isPro && showBranding && (
           <div className="mt-4 px-4 py-3 rounded-[1.5rem] bg-slate-900 border border-primary/20 flex flex-col sm:flex-row items-center justify-between gap-3 shadow-2xl">
             <div className="flex items-center gap-3">

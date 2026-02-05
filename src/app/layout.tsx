@@ -17,11 +17,11 @@ const jakarta = Plus_Jakarta_Sans({
 
 export const metadata: Metadata = {
   title: {
-    default: "Konnexy | Networking Digital de Elite",
+    default: "Cartão de Visitas Digital Grátis para Autônomos | Konnexy",
     template: "%s | Konnexy"
   },
-  description: "A plataforma nº 1 para criação de cartões de visita digitais focados em conversão e SEO profissional.",
-  keywords: ["cartão de visita digital", "link no whatsapp", "bio link profissional", "marketing digital", "networking", "saas", "konnexy"],
+  description: "Crie seu cartão de visitas digital grátis em minutos. Ideal para autônomos e liberais. Compartilhe no WhatsApp e feche mais negócios com a Konnexy.",
+  keywords: ["cartão de visitas digital", "cartão de visitas virtual", "cartão de visitas online", "cartão de visitas digital grátis", "cartão de visitas digital WhatsApp", "cartão digital para autônomos"],
   authors: [{ name: "Konnexy Team" }],
   creator: "Konnexy",
   icons: {
@@ -32,14 +32,14 @@ export const metadata: Metadata = {
     type: "website",
     locale: "pt_BR",
     url: "https://konnexy.io",
-    title: "Konnexy | Networking Digital de Elite",
-    description: "Crie seu cartão de visita digital em segundos e conquiste mais clientes.",
+    title: "Cartão de Visitas Digital Grátis para Autônomos | Konnexy",
+    description: "Crie seu cartão de visitas digital grátis em minutos. Ideal para autônomos e liberais. Compartilhe no WhatsApp e feche mais negócios com a Konnexy.",
     siteName: "Konnexy",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Konnexy | Networking Digital de Elite",
-    description: "Cartão de visita digital focado em conversão.",
+    title: "Cartão de Visitas Digital Grátis para Autônomos | Konnexy",
+    description: "Crie seu cartão de visitas digital grátis em minutos. Ideal para autônomos e liberais.",
   },
   robots: "index, follow",
 };

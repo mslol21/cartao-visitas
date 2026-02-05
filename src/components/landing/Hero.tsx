@@ -35,17 +35,20 @@ export function Hero() {
               transition={{ delay: 0.1, duration: 0.8 }}
               className="text-4xl sm:text-5xl md:text-7xl font-black tracking-tighter leading-[1.1]"
             >
-              Cartão de visitas digital <br />
-              <span className="gradient-text">para autônomos</span>
+              Crie seu <br className="hidden sm:block" />
+              <span className="gradient-text">Cartão de Visitas Digital</span> <br />
+              Grátis e Profissional
             </motion.h1>
 
             <motion.p 
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 0.3 }}
-              className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto font-medium leading-relaxed"
+              className="text-lg md:text-xl text-muted-foreground max-w-3xl mx-auto font-medium leading-relaxed"
             >
-              Crie em minutos, compartilhe pelo WhatsApp e passe mais profissionalismo para seus clientes.
+              A Konnexy é a solução ideal para autônomos e prestadores de serviço que querem vender mais. 
+              Tenha um <strong>cartão de visitas virtual</strong>, interativo e pronto para compartilhar no WhatsApp. 
+              Sem taxas, sem complicação.
             </motion.p>
           </div>
 
@@ -57,10 +60,10 @@ export function Hero() {
             className="flex flex-wrap items-center justify-center gap-x-6 gap-y-3 py-4"
           >
             {[
-              "Passe seu contato com 1 clique",
-              "Feche clientes direto no WhatsApp",
-              "Nunca fique sem cartão",
-              "Atualize quando quiser"
+              "100% Gratuito para começar",
+              "Botão direto para WhatsApp",
+              "Visual incrível no celular",
+              "Link único na bio"
             ].map((benefit, i) => (
               <div key={i} className="flex items-center gap-2 text-sm font-bold text-slate-700 dark:text-slate-300">
                  <div className="w-1.5 h-1.5 rounded-full bg-primary" />

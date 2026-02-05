@@ -3,117 +3,122 @@
 import { motion } from 'framer-motion';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
-import { ArrowRight, Check, X, Smartphone, Zap, UserCheck, BarChart3, Video, ShieldCheck } from 'lucide-react';
+import { 
+  ArrowRight, 
+  Check, 
+  Settings, 
+  Share2, 
+  UserPlus, 
+  HelpCircle,
+  Smartphone,
+  Zap,
+  Globe,
+  ChevronDown
+} from 'lucide-react';
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
 
-export function ProblemSection() {
+export function WhatIsSection() {
   return (
     <section className="py-24 bg-white dark:bg-slate-950">
       <div className="container px-6">
-        <div className="max-w-4xl mx-auto text-center space-y-8">
-          <motion.h2 
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="text-3xl md:text-5xl font-black tracking-tight"
-          >
-            Ainda usa cartão físico ou <br />
-            <span className="text-red-500">PDF no WhatsApp?</span>
-          </motion.h2>
+        <div className="max-w-4xl mx-auto flex flex-col md:flex-row items-center gap-12">
+          <div className="flex-1 space-y-6">
+            <motion.h2 
+              initial={{ opacity: 0, x: -20 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              className="text-3xl md:text-4xl font-black tracking-tight"
+            >
+              O que é um <br />
+              <span className="text-primary">Cartão de Visitas Digital?</span>
+            </motion.h2>
+            
+            <motion.div 
+              initial={{ opacity: 0, x: -20 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.2 }}
+              className="text-lg text-slate-600 dark:text-slate-400 font-medium leading-relaxed space-y-4"
+            >
+              <p>
+                É a evolução do cartão de papel. Em vez de entregar um papel que vai para o lixo, você envia um 
+                <strong className="text-foreground"> link interativo </strong> 
+                onde seu cliente pode te chamar no WhatsApp, ver seu portfólio, ou salvar seu contato com um clique.
+              </p>
+              <p>
+                O <strong>card digital para autônomos</strong> da Konnexy funciona como um mini site otimizado para celular. 
+                É leve, carrega na hora e você pode atualizar quando quiser, sem gastar com impressões.
+              </p>
+            </motion.div>
+          </div>
           
-          <motion.div 
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.2 }}
-            className="text-lg text-muted-foreground font-medium leading-relaxed max-w-2xl mx-auto"
-          >
-            <p className="mb-4">
-              Autônomos perdem clientes todos os dias por não terem uma apresentação profissional.
-              Cartão acaba, contato se perde e a primeira impressão não volta.
-            </p>
-            <p className="text-foreground font-bold">
-              A Konnexy resolve isso com um cartão de visitas digital simples, bonito e sempre disponível no celular.
-            </p>
-          </motion.div>
+          <div className="flex-1 flex justify-center">
+             <div className="relative w-full max-w-sm aspect-square bg-slate-100 dark:bg-slate-900 rounded-[2rem] flex items-center justify-center">
+                <Smartphone className="w-32 h-32 text-slate-200 dark:text-slate-800" />
+                <div className="absolute inset-0 bg-gradient-to-tr from-primary/10 to-transparent rounded-[2rem]" />
+             </div>
+          </div>
         </div>
       </div>
     </section>
   );
 }
 
-export function AboutSection() {
-  return (
-    <section className="py-24 bg-slate-50 dark:bg-slate-900/50">
-      <div className="container px-6">
-        <div className="max-w-4xl mx-auto text-center space-y-8">
-          <motion.h2 
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="text-3xl md:text-5xl font-black tracking-tight"
-          >
-            Seu cartão de visitas, <br />
-            <span className="gradient-text">sempre no celular</span>
-          </motion.h2>
-          
-          <motion.div 
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.2 }}
-            className="text-lg text-muted-foreground font-medium leading-relaxed max-w-2xl mx-auto"
-          >
-            <p className="mb-4">
-              Com a Konnexy, você cria um link profissional único com seus dados, serviços e botão direto para contato.
-            </p>
-            <p className="text-foreground font-bold">
-              Basta compartilhar o link e pronto. Sem papel, sem complicação.
-            </p>
-          </motion.div>
-        </div>
-      </div>
-    </section>
-  );
-}
-
-export function WhyChooseSection() {
-  const benefits = [
-    "Aparência profissional em qualquer lugar",
-    "Link único para compartilhar no WhatsApp, Instagram ou QR Code",
-    "Cliente fala com você em 1 clique",
-    "Atualize seus dados sem refazer cartão",
-    "Funciona em qualquer celular"
+export function HowItWorksSection() {
+  const steps = [
+    { 
+      icon: UserPlus, 
+      title: "1. Crie sua conta grátis", 
+      desc: "Cadastre-se rapidinho apenas com seu nome e email." 
+    },
+    { 
+      icon: Settings, 
+      title: "2. Personalize seu perfil", 
+      desc: "Adicione foto, WhatsApp, redes sociais e escolha um tema." 
+    },
+    { 
+      icon: Share2, 
+      title: "3. Comece a compartilhar", 
+      desc: "Envie seu link exclusivo para clientes e feche negócios." 
+    }
   ];
 
   return (
-    <section className="py-24 bg-white dark:bg-slate-950">
+    <section className="py-24 bg-slate-50 dark:bg-slate-900/50">
       <div className="container px-6">
-        <div className="max-w-4xl mx-auto">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-5xl font-black tracking-tight mb-6">
-              Por que autônomos escolhem a <span className="text-primary">Konnexy?</span>
-            </h2>
-          </div>
-          
-          <div className="grid sm:grid-cols-1 md:grid-cols-2 gap-6 max-w-3xl mx-auto">
-            {benefits.map((benefit, i) => (
-              <motion.div 
-                key={i}
-                initial={{ opacity: 0, x: -20 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: i * 0.1 }}
-                className="flex items-center gap-4 p-4 rounded-2xl bg-slate-50 dark:bg-slate-900 border border-slate-100 dark:border-slate-800"
-              >
-                <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
-                  <Check className="w-4 h-4 text-primary" />
-                </div>
-                <span className="font-bold text-slate-700 dark:text-slate-300">
-                  {benefit}
-                </span>
-              </motion.div>
-            ))}
-          </div>
+        <div className="max-w-4xl mx-auto text-center mb-16">
+          <h2 className="text-3xl md:text-5xl font-black tracking-tight mb-4">
+            Como funciona a Konnexy
+          </h2>
+          <p className="text-muted-foreground text-lg">
+            Seu cartão online pronto em 3 passos simples
+          </p>
+        </div>
+
+        <div className="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
+          {steps.map((step, i) => (
+             <motion.div 
+               key={i}
+               initial={{ opacity: 0, y: 20 }}
+               whileInView={{ opacity: 1, y: 0 }}
+               viewport={{ once: true }}
+               transition={{ delay: i * 0.2 }}
+               className="bg-white dark:bg-slate-950 p-8 rounded-3xl shadow-lg border border-slate-100 dark:border-slate-900 relative"
+             >
+               <div className="w-14 h-14 rounded-2xl bg-primary/10 text-primary flex items-center justify-center mb-6">
+                 <step.icon className="w-7 h-7" />
+               </div>
+               <h3 className="text-xl font-bold mb-3">{step.title}</h3>
+               <p className="text-muted-foreground leading-relaxed">
+                 {step.desc}
+               </p>
+             </motion.div>
+          ))}
         </div>
       </div>
     </section>
@@ -122,24 +127,26 @@ export function WhyChooseSection() {
 
 export function TargetAudienceSection() {
   const audience = [
-    "Corretores",
-    "Prestadores de serviço",
-    "Designers e freelancers",
-    "Consultores",
-    "Vendedores",
-    "Profissionais liberais"
+    "Autônomos e Freelancers",
+    "Corretores de Imóveis",
+    "Advogados e Consultores",
+    "Vendedores e Representantes",
+    "Profissionais de Saúde",
+    "Prestadores de Serviço"
   ];
 
   return (
-    <section className="py-24 bg-slate-50 dark:bg-slate-900/50">
+    <section className="py-24 bg-white dark:bg-slate-950">
       <div className="container px-6">
         <div className="max-w-4xl mx-auto text-center">
-          <h2 className="text-3xl md:text-5xl font-black tracking-tight mb-8">
-            Ideal para quem <br />
-            <span className="gradient-text">trabalha por conta própria</span>
+          <h2 className="text-3xl md:text-5xl font-black tracking-tight mb-6">
+            Para quem é a <span className="text-primary">Konnexy?</span>
           </h2>
+          <p className="text-lg text-muted-foreground mb-12 max-w-2xl mx-auto">
+            Desenvolvemos o <span className="font-bold text-foreground">cartão de visitas digital perfeito</span> para quem precisa vender e se conectar rápido.
+          </p>
           
-          <div className="flex flex-wrap justify-center gap-4 max-w-3xl mx-auto mb-10">
+          <div className="flex flex-wrap justify-center gap-4">
             {audience.map((item, i) => (
               <motion.div 
                 key={i}
@@ -147,51 +154,118 @@ export function TargetAudienceSection() {
                 whileInView={{ opacity: 1, scale: 1 }}
                 viewport={{ once: true }}
                 transition={{ delay: i * 0.05 }}
-                className="px-6 py-3 rounded-full bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 shadow-sm font-bold text-slate-700 dark:text-slate-300"
+                className="px-6 py-4 rounded-xl bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 font-bold text-slate-700 dark:text-slate-300 flex items-center gap-2"
               >
+                <Check className="w-4 h-4 text-primary" />
                 {item}
               </motion.div>
             ))}
           </div>
-          
-          <p className="text-lg font-medium text-muted-foreground">
-            Se você vive de contato, a Konnexy é pra você.
-          </p>
         </div>
       </div>
     </section>
   );
 }
 
-export function TrustSection() {
+export function WhyChooseSection() {
+  const benefits = [
+    {
+      title: "100% Otimizado para WhatsApp",
+      desc: "Seu cliente abre o cartão rápido e te chama em 1 clique."
+    },
+    {
+      title: "Sempre Atualizado",
+      desc: "Mudou de número? Atualize o cartão digital sem gastar nada."
+    },
+    {
+      title: "Aparência Profissional",
+      desc: "Mostre que você leva seu trabalho a sério com um design premium."
+    },
+    {
+      title: "Grátis de Verdade",
+      desc: "Comece sem pagar nada. O plano Free é vitalício."
+    }
+  ];
+
+  return (
+    <section className="py-24 bg-slate-50 dark:bg-slate-900/50">
+      <div className="container px-6">
+        <div className="max-w-5xl mx-auto">
+          <div className="text-center mb-16">
+            <h2 className="text-3xl md:text-5xl font-black tracking-tight mb-6">
+              Por que escolher a Konnexy?
+            </h2>
+          </div>
+          
+          <div className="grid md:grid-cols-2 gap-6">
+            {benefits.map((b, i) => (
+              <motion.div 
+                key={i}
+                initial={{ opacity: 0, x: -20 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: i * 0.1 }}
+                className="flex gap-4 p-6 rounded-3xl bg-white dark:bg-slate-950 border border-slate-100 dark:border-slate-900"
+              >
+                <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
+                  <Check className="w-5 h-5 text-primary" />
+                </div>
+                <div>
+                  <h3 className="font-bold text-lg mb-1">{b.title}</h3>
+                  <p className="text-muted-foreground text-sm">{b.desc}</p>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+export function FAQSection() {
+  const faqs = [
+    {
+      question: "O cartão de visitas digital é realmente grátis?",
+      answer: "Sim! Na Konnexy você pode criar seu cartão digital gratuito e usar para sempre. Oferecemos também um plano Pro para quem quer recursos extras, como fundo em vídeo e analytics."
+    },
+    {
+      question: "Como compartilho meu cartão de visitas?",
+      answer: "Você recebe um link exclusivo (ex: konnexy.io/seunome). Você pode colocar esse link na bio do Instagram, enviar pelo WhatsApp ou gerar um QR Code."
+    },
+    {
+      question: "Funciona em iPhone e Android?",
+      answer: "Funciona perfeitamente em qualquer celular. Seu cartão é um site otimizado que abre direto no navegador, sem precisar instalar aplicativos."
+    },
+    {
+      question: "Posso alterar minhas informações depois?",
+      answer: "Com certeza. Diferente do cartão de papel, o cartão virtual permite que você edite telefone, foto e serviços a qualquer momento pelo nosso painel."
+    }
+  ];
+
   return (
     <section className="py-24 bg-white dark:bg-slate-950">
       <div className="container px-6">
-        <div className="max-w-4xl mx-auto text-center">
-          <h2 className="text-3xl md:text-5xl font-black tracking-tight mb-12">
-            Simples, rápido e seguro
-          </h2>
-          
-          <div className="flex flex-col md:flex-row justify-center items-center gap-8 md:gap-16">
-            <div className="flex flex-col items-center gap-4">
-              <div className="w-16 h-16 rounded-2xl bg-primary/10 flex items-center justify-center text-primary">
-                <ShieldCheck className="w-8 h-8" />
-              </div>
-              <p className="font-bold max-w-[200px]">Sem cartão de crédito para começar</p>
-            </div>
-            <div className="flex flex-col items-center gap-4">
-               <div className="w-16 h-16 rounded-2xl bg-primary/10 flex items-center justify-center text-primary">
-                <Zap className="w-8 h-8" />
-              </div>
-              <p className="font-bold max-w-[200px]">Criado em menos de 2 minutos</p>
-            </div>
-            <div className="flex flex-col items-center gap-4">
-               <div className="w-16 h-16 rounded-2xl bg-primary/10 flex items-center justify-center text-primary">
-                <UserCheck className="w-8 h-8" />
-              </div>
-              <p className="font-bold max-w-[200px]">Feito para autônomos no Brasil</p>
-            </div>
+        <div className="max-w-3xl mx-auto">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl md:text-5xl font-black tracking-tight flex items-center justify-center gap-3">
+              <HelpCircle className="w-8 h-8 md:w-10 md:h-10 text-primary" />
+              Dúvidas Frequentes
+            </h2>
           </div>
+
+          <Accordion type="single" collapsible className="w-full">
+            {faqs.map((faq, i) => (
+              <AccordionItem key={i} value={`item-${i}`}>
+                <AccordionTrigger className="text-left font-bold text-lg py-6">
+                  {faq.question}
+                </AccordionTrigger>
+                <AccordionContent className="text-muted-foreground text-base leading-relaxed pb-6">
+                  {faq.answer}
+                </AccordionContent>
+              </AccordionItem>
+            ))}
+          </Accordion>
         </div>
       </div>
     </section>
@@ -205,18 +279,18 @@ export function FinalCTASection() {
       <div className="container relative z-10 px-6">
         <div className="max-w-4xl mx-auto text-center space-y-8">
           <h2 className="text-4xl md:text-6xl font-black tracking-tighter">
-            Comece agora seu <br />
-            <span className="gradient-text">cartão de visitas digital</span>
+            Pare de perder clientes. <br />
+            <span className="gradient-text">Comece agora sem custo.</span>
           </h2>
           
           <p className="text-lg md:text-xl text-muted-foreground font-medium max-w-2xl mx-auto">
-            Crie seu cartão gratuitamente e comece a passar mais profissionalismo hoje.
+            Junte-se a milhares de autônomos que modernizaram sua apresentação com a Konnexy.
           </p>
           
           <div className="pt-4">
             <Button asChild variant="hero" size="xl" className="w-full sm:w-auto h-16 sm:h-20 px-12 rounded-2xl sm:rounded-[2rem] text-xl font-black shadow-2xl shadow-primary/30 group hover:scale-105 transition-transform duration-300">
               <Link href="/signup">
-                Criar cartão grátis agora
+                Criar cartão grátis em minutos
                 <ArrowRight className="w-6 h-6 ml-3 transition-transform group-hover:translate-x-2" />
               </Link>
             </Button>
