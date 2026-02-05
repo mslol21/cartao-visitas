@@ -226,13 +226,16 @@ END:VCARD`;
     if (!isPro) return "bg-white dark:bg-slate-950";
     
     switch (data.theme_style) {
-      case 'oled': return "bg-black text-white border-white/10";
-      case 'glass': return "bg-white/5 backdrop-blur-3xl border-white/20";
-      case 'minimalist': return "bg-white text-slate-900 border-slate-100 shadow-none";
+      case 'oled': 
+        return "bg-black text-white border-white/10 shadow-[inset_0_0_120px_rgba(59,130,246,0.15)]"; // Added blue glow to darkness
+      case 'glass': 
+        return "bg-white/10 backdrop-blur-3xl border-white/20 shadow-[inset_0_0_40px_rgba(255,255,255,0.1)]";
+      case 'minimalist': 
+        return "bg-white text-slate-900 border-slate-100 shadow-none";
       default: 
         if (hasVideo) return "bg-black/20 backdrop-blur-2xl text-white border-white/10";
-        // Updated to match PlanComparison aesthetic: Glassy + Gradient
-        return "bg-white/90 dark:bg-slate-900/90 backdrop-blur-xl text-slate-900 dark:text-white";
+        // Ultra Premium Default
+        return "bg-slate-900/80 backdrop-blur-3xl text-white border-white/10 shadow-[inset_0_0_60px_rgba(59,130,246,0.1)]";
     }
   };
 
@@ -287,8 +290,7 @@ END:VCARD`;
             <>
                {/* Aesthetic Gradient Background matching PlanComparison */}
               <div className={cn(
-                "absolute inset-0 opacity-50 bg-gradient-to-br from-primary/5 to-purple-50 dark:from-primary/10 dark:to-purple-900/20 pointer-events-none",
-                data.theme_style === 'oled' && "opacity-0"
+                "absolute inset-0 opacity-40 bg-gradient-to-br from-blue-600/20 via-purple-600/10 to-transparent pointer-events-none mix-blend-screen",
               )} />
 
               {/* Subtle Animated Gradient Background for Body */}
@@ -429,6 +431,151 @@ END:VCARD`;
               )}
             </div>
 
+            {/* Action Stack (Moved Up for better UX) */}
+            <div className="w-full space-y-4 mb-8">
+              {/* Main Conversion Button (WhatsApp) */}
+              <motion.div 
+                whileHover={isPro ? { scale: 1.02, y: -2 } : {}} 
+                whileTap={isPro ? { scale: 0.98 } : {}}
+                className="w-full"
+              >
+                <Button
+                  variant="default"
+                  size="lg"
+                  className={cn(
+                    "w-full h-[72px] rounded-2xl font-black text-lg transition-all flex items-center justify-center gap-3",
+                    isPro 
+                      ? "text-white shadow-xl hover:brightness-110 active:translate-y-1"
+                      : "bg-slate-900 hover:bg-slate-800 text-white shadow-none border-0"
+                  )}
+                  style={{ 
+                    backgroundColor: isPro ? (data.theme_color || '#25D366') : undefined,
+                    boxShadow: isPro ? `0 20px 40px -10px ${data.theme_color}44` : undefined
+                  }}
+                  asChild
+                  aria-label={isPro ? 'Solicitar Orçamento via WhatsApp' : 'Conversar via WhatsApp'}
+                  onClick={() => handleTrackClick('click_whatsapp')}
+                >
+                  <a href={whatsappLink} target="_blank" rel="noopener noreferrer">
+                    <MessageCircle className={cn("w-7 h-7 flex-shrink-0", isPro ? "fill-white" : "fill-white/80")} />
+                    <div className="text-left flex flex-col leading-tight">
+                      <span className={cn("text-[10px] uppercase tracking-[0.2em] font-black", isPro ? "opacity-80" : "opacity-60")}>
+                        {isPro ? 'Contato Premium' : 'Contato'}
+                      </span>
+                      <span className="font-black">
+                        {isPro ? 'Solicitar Orçamento' : 'WhatsApp'}
+                      </span>
+                    </div>
+                  </a>
+                </Button>
+              </motion.div>
+
+              {/* Social Links Bar */}
+              <div className="flex items-center justify-between gap-2.5 pt-2">
+                <div className="flex flex-wrap items-center gap-2.5">
+                  {validSocialLinks.map((social, index) => {
+                    const isDisabled = !isPro && index > 0;
+                    
+                    const LinkContent = (
+                      <motion.a
+                        key={social.id}
+                        whileHover={isDisabled ? {} : { y: -3, backgroundColor: 'var(--slate-100)' }}
+                        whileTap={isDisabled ? {} : { scale: 0.9 }}
+                        href={isDisabled ? '#' : social.url}
+                        target={isDisabled ? undefined : "_blank"}
+                        rel={isDisabled ? undefined : "noopener noreferrer"}
+                        aria-label={isDisabled ? `${social.label} (Disponível no Pro)` : `Visitar ${social.label}`}
+                        onClick={() => !isDisabled && handleTrackClick(social.trackType)}
+                        className={cn(
+                          "w-12 h-12 flex items-center justify-center rounded-2xl transition-all shadow-sm relative overflow-hidden",
+                          isPro 
+                            ? "bg-white dark:bg-white/5 border border-slate-200 dark:border-white/10 text-slate-600 dark:text-slate-300 hover:text-primary hover:border-primary/30"
+                            : "bg-slate-100/50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-slate-400 dark:text-slate-500",
+                          isDisabled && "opacity-40 cursor-not-allowed grayscale"
+                        )}
+                      >
+                        <social.icon className="w-5 h-5 flex-shrink-0" />
+                        {isDisabled && (
+                          <div className="absolute top-0 right-0 bg-slate-900 text-white p-0.5 rounded-bl-lg">
+                            <Lock className="w-2.5 h-2.5" />
+                          </div>
+                        )}
+                        {isPro && (
+                          <div className="absolute inset-0 bg-gradient-to-tr from-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+                        )}
+                      </motion.a>
+                    );
+
+                    if (isDisabled) {
+                      return (
+                        <Tooltip key={social.id}>
+                          <TooltipTrigger asChild>
+                            {LinkContent}
+                          </TooltipTrigger>
+                          <TooltipContent>
+                            <p>Disponível no Plano Pro</p>
+                          </TooltipContent>
+                        </Tooltip>
+                      );
+                    }
+
+                    return LinkContent;
+                  })}
+                </div>
+                
+                <div className="flex items-center gap-2">
+                  <DropdownMenu>
+                    <DropdownMenuTrigger asChild>
+                      <button
+                        aria-label="Opções de Compartilhamento"
+                        className={cn(
+                          "w-12 h-12 flex items-center justify-center rounded-2xl transition-all shadow-sm",
+                          isPro 
+                            ? "bg-white dark:bg-white/5 border border-slate-200 dark:border-white/10 text-slate-600 dark:text-slate-300"
+                            : "bg-slate-100/50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-slate-400"
+                        )}
+                      >
+                        <Download className="w-5 h-5" />
+                      </button>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent align="end" className="w-56 rounded-2xl p-2 border-slate-200 dark:border-white/10">
+                      <DropdownMenuItem onClick={handleSaveContact} className="rounded-xl flex items-center gap-2 h-11 cursor-pointer">
+                        <UserPlus className="w-4 h-4 text-blue-500" />
+                        <span className="font-bold text-xs uppercase tracking-widest">Salvar aos Contatos</span>
+                      </DropdownMenuItem>
+                      
+                      {isPro && (
+                        <>
+                          <DropdownMenuItem onClick={handleDownloadPNG} className="rounded-xl flex items-center gap-2 h-11 cursor-pointer">
+                            <ImageIcon className="w-4 h-4 text-emerald-500" />
+                            <span className="font-bold text-xs uppercase tracking-widest">Baixar Imagem (PNG)</span>
+                          </DropdownMenuItem>
+                          
+                          <DropdownMenuItem onClick={handleDownloadPDF} className="rounded-xl flex items-center gap-2 h-11 cursor-pointer">
+                            <FileText className="w-4 h-4 text-rose-500" />
+                            <span className="font-bold text-xs uppercase tracking-widest">Baixar PDF</span>
+                          </DropdownMenuItem>
+                        </>
+                      )}
+                    </DropdownMenuContent>
+                  </DropdownMenu>
+
+                  <button
+                    onClick={handleShare}
+                    aria-label="Compartilhar Cartão"
+                    className={cn(
+                      "group w-14 h-14 flex items-center justify-center rounded-[1.4rem] transition-all flex-shrink-0 shadow-lg",
+                      isPro
+                        ? "bg-primary text-white hover:brightness-110"
+                        : "bg-slate-900 text-white"
+                    )}
+                  >
+                    <Share2 className="w-6 h-6 group-hover:scale-110 transition-transform" />
+                  </button>
+                </div>
+              </div>
+            </div>
+
             {/* Structured Services Section */}
             {activeServicesArr.length > 0 && (
               <div className="w-full mb-8">
@@ -534,151 +681,6 @@ END:VCARD`;
                 )}
               </div>
             )}
-
-            {/* Action Stack */}
-            <div className="w-full space-y-4">
-              {/* Main Conversion Button (WhatsApp) */}
-              <motion.div 
-                whileHover={isPro ? { scale: 1.02, y: -2 } : {}} 
-                whileTap={isPro ? { scale: 0.98 } : {}}
-                className="w-full"
-              >
-                <Button
-                  variant="default"
-                  size="lg"
-                  className={cn(
-                    "w-full h-[72px] rounded-2xl font-black text-lg transition-all flex items-center justify-center gap-3",
-                    isPro 
-                      ? "text-white shadow-xl hover:brightness-110 active:translate-y-1"
-                      : "bg-slate-900 hover:bg-slate-800 text-white shadow-none border-0"
-                  )}
-                  style={{ 
-                    backgroundColor: isPro ? (data.theme_color || '#25D366') : undefined,
-                    boxShadow: isPro ? `0 20px 40px -10px ${data.theme_color}44` : undefined
-                  }}
-                  asChild
-                  aria-label={isPro ? 'Solicitar Orçamento via WhatsApp' : 'Conversar via WhatsApp'}
-                  onClick={() => handleTrackClick('click_whatsapp')}
-                >
-                  <a href={whatsappLink} target="_blank" rel="noopener noreferrer">
-                    <MessageCircle className={cn("w-7 h-7 flex-shrink-0", isPro ? "fill-white" : "fill-white/80")} />
-                    <div className="text-left flex flex-col leading-tight">
-                      <span className={cn("text-[10px] uppercase tracking-[0.2em] font-black", isPro ? "opacity-80" : "opacity-60")}>
-                        {isPro ? 'Contato Premium' : 'Contato'}
-                      </span>
-                      <span className="font-black">
-                        {isPro ? 'Solicitar Orçamento' : 'WhatsApp'}
-                      </span>
-                    </div>
-                  </a>
-                </Button>
-              </motion.div>
-
-              {/* Social Links Bar */}
-              <div className="flex items-center justify-between gap-2.5 pt-2">
-                <div className="flex flex-wrap items-center gap-2.5">
-                  {validSocialLinks.map((social, index) => {
-                    const isDisabled = !isPro && index > 0;
-                    
-                    const LinkContent = (
-                      <motion.a
-                        key={social.id}
-                        whileHover={isDisabled ? {} : { y: -3, backgroundColor: 'var(--slate-100)' }}
-                        whileTap={isDisabled ? {} : { scale: 0.9 }}
-                        href={isDisabled ? '#' : social.url}
-                        target={isDisabled ? undefined : "_blank"}
-                        rel={isDisabled ? undefined : "noopener noreferrer"}
-                        aria-label={isDisabled ? `${social.label} (Disponível no Pro)` : `Visitar ${social.label}`}
-                        onClick={() => !isDisabled && handleTrackClick(social.trackType)}
-                        className={cn(
-                          "w-12 h-12 flex items-center justify-center rounded-2xl transition-all shadow-sm relative overflow-hidden",
-                          isPro 
-                            ? "bg-white dark:bg-white/5 border border-slate-200 dark:border-white/10 text-slate-600 dark:text-slate-300 hover:text-primary hover:border-primary/30"
-                            : "bg-slate-100/50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-slate-400 dark:text-slate-500",
-                          isDisabled && "opacity-40 cursor-not-allowed grayscale"
-                        )}
-                      >
-                        <social.icon className="w-5 h-5 flex-shrink-0" />
-                        {isDisabled && (
-                          <div className="absolute top-0 right-0 bg-slate-900 text-white p-0.5 rounded-bl-lg">
-                            <Lock className="w-2.5 h-2.5" />
-                          </div>
-                        )}
-                        {isPro && (
-                           <div className="absolute inset-0 bg-gradient-to-tr from-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
-                        )}
-                      </motion.a>
-                    );
-
-                    if (isDisabled) {
-                      return (
-                        <Tooltip key={social.id}>
-                          <TooltipTrigger asChild>
-                            {LinkContent}
-                          </TooltipTrigger>
-                          <TooltipContent>
-                            <p>Disponível no Plano Pro</p>
-                          </TooltipContent>
-                        </Tooltip>
-                      );
-                    }
-
-                    return LinkContent;
-                  })}
-                </div>
-                
-                <div className="flex items-center gap-2">
-                  <DropdownMenu>
-                    <DropdownMenuTrigger asChild>
-                      <button
-                        aria-label="Opções de Compartilhamento"
-                        className={cn(
-                          "w-12 h-12 flex items-center justify-center rounded-2xl transition-all shadow-sm",
-                          isPro 
-                            ? "bg-white dark:bg-white/5 border border-slate-200 dark:border-white/10 text-slate-600 dark:text-slate-300"
-                            : "bg-slate-100/50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-slate-400"
-                        )}
-                      >
-                        <Download className="w-5 h-5" />
-                      </button>
-                    </DropdownMenuTrigger>
-                    <DropdownMenuContent align="end" className="w-56 rounded-2xl p-2 border-slate-200 dark:border-white/10">
-                      <DropdownMenuItem onClick={handleSaveContact} className="rounded-xl flex items-center gap-2 h-11 cursor-pointer">
-                        <UserPlus className="w-4 h-4 text-blue-500" />
-                        <span className="font-bold text-xs uppercase tracking-widest">Salvar aos Contatos</span>
-                      </DropdownMenuItem>
-                      
-                      {isPro && (
-                        <>
-                          <DropdownMenuItem onClick={handleDownloadPNG} className="rounded-xl flex items-center gap-2 h-11 cursor-pointer">
-                            <ImageIcon className="w-4 h-4 text-emerald-500" />
-                            <span className="font-bold text-xs uppercase tracking-widest">Baixar Imagem (PNG)</span>
-                          </DropdownMenuItem>
-                          
-                          <DropdownMenuItem onClick={handleDownloadPDF} className="rounded-xl flex items-center gap-2 h-11 cursor-pointer">
-                            <FileText className="w-4 h-4 text-rose-500" />
-                            <span className="font-bold text-xs uppercase tracking-widest">Baixar PDF</span>
-                          </DropdownMenuItem>
-                        </>
-                      )}
-                    </DropdownMenuContent>
-                  </DropdownMenu>
-
-                  <button
-                    onClick={handleShare}
-                    aria-label="Compartilhar Cartão"
-                    className={cn(
-                      "group w-14 h-14 flex items-center justify-center rounded-[1.4rem] transition-all flex-shrink-0 shadow-lg",
-                      isPro
-                        ? "bg-primary text-white hover:brightness-110"
-                        : "bg-slate-900 text-white"
-                    )}
-                  >
-                    <Share2 className="w-6 h-6 group-hover:scale-110 transition-transform" />
-                  </button>
-                </div>
-              </div>
-            </div>
           </div>
 
           {/* Branding Footer */}
