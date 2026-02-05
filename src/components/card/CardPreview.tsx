@@ -263,12 +263,18 @@ END:VCARD`;
           className={cn(
             "relative overflow-hidden rounded-[2.5rem] transition-all duration-500 flex flex-col min-h-[600px]",
             isPro 
-              ? "border-2 border-primary/20 shadow-[0_40px_100px_-20px_rgba(59,130,246,0.3)] shadow-[inset_0_0_60px_rgba(59,130,246,0.1)]" 
+              ? "bg-slate-950 border-2 border-primary/20 shadow-[0_40px_100px_-20px_rgba(59,130,246,0.3)] shadow-[inset_0_0_60px_rgba(59,130,246,0.1)]" 
               : "border border-slate-200 dark:border-slate-800 shadow-sm bg-white dark:bg-slate-950"
           )}
         >
-          {/* --- BACKGROUND LAYER (Full Card) --- */}
-          <div className="absolute inset-0 z-0">
+          {/* --- BACKGROUND LAYER (Video with Fade Out) --- */}
+          <div 
+            className="absolute top-0 inset-x-0 h-[85%] z-0"
+            style={isPro && data.background_video_url ? {
+              maskImage: 'linear-gradient(to bottom, black 60%, transparent 100%)',
+              WebkitMaskImage: 'linear-gradient(to bottom, black 60%, transparent 100%)'
+            } : undefined}
+          >
              {isPro && data.background_video_url ? (
                <>
                  <video 
@@ -281,8 +287,8 @@ END:VCARD`;
                  />
                  {/* Dark overlay for readability */}
                  <div className="absolute inset-0 bg-black/40 backdrop-blur-[1px]" />
-                 {/* Gradient fade at bottom for text contrast if needed */}
-                 <div className="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-black/80 to-transparent" />
+                 {/* Internal Gradient for extra smoothness at the very bottom edge of video */}
+                 <div className="absolute inset-x-0 bottom-0 h-32 bg-gradient-to-t from-slate-950 to-transparent opacity-80" />
                </>
              ) : (
                <div 
@@ -358,29 +364,36 @@ END:VCARD`;
                  )}
                </motion.div>
 
-               {/* Name & Text */}
-               <h1 className={cn(
-                 "text-2xl font-black tracking-tight mb-2 capitalize leading-tight",
-                 (isPro || data.background_video_url) ? "text-white drop-shadow-md" : (data.theme_color ? "text-white drop-shadow-md" : "text-slate-900")
+               {/* Identity Text Block */}
+               <div className={cn(
+                  "flex flex-col items-center px-6 py-4 rounded-[1.5rem] mt-2 transition-all w-full backdrop-blur-sm",
+                  isPro 
+                    ? "bg-black/20 border border-white/10 shadow-sm"
+                    : "bg-slate-50/80 dark:bg-slate-900/80 border border-slate-200/50 dark:border-slate-800/50"
                )}>
-                 {data.name || 'Seu Nome'}
-               </h1>
-               <p className={cn(
-                 "text-sm font-bold leading-relaxed opacity-90 mb-2 max-w-[280px]",
-                 (isPro || data.background_video_url) ? "text-white/90 drop-shadow-sm" : (data.theme_color ? "text-white/90" : "text-slate-600")
-               )}>
-                 {data.tagline || 'Sua profissão ou frase de impacto'}
-               </p>
-               
-               {data.city && (
-                 <div className={cn(
-                   "flex items-center gap-1.5 text-[10px] font-black uppercase tracking-[0.2em]",
-                   (isPro || data.background_video_url) ? "text-white/60" : (data.theme_color ? "text-white/60" : "text-slate-400")
+                 <h1 className={cn(
+                   "text-2xl font-black tracking-tight mb-1 capitalize leading-tight text-center",
+                   isPro ? "text-white drop-shadow-sm" : "text-slate-900 dark:text-white"
                  )}>
-                   <MapPin className="w-3 h-3" />
-                   {data.city}
-                 </div>
-               )}
+                   {data.name || 'Seu Nome'}
+                 </h1>
+                 <p className={cn(
+                   "text-sm font-bold leading-relaxed opacity-90 mb-3 text-center max-w-[260px]",
+                   isPro ? "text-white/80" : "text-slate-600 dark:text-slate-400"
+                 )}>
+                   {data.tagline || 'Sua profissão ou frase de impacto'}
+                 </p>
+                 
+                 {data.city && (
+                   <div className={cn(
+                     "flex items-center gap-1.5 text-[10px] font-black uppercase tracking-[0.2em] py-1 px-3 rounded-full",
+                     isPro ? "bg-white/10 text-white/70" : "bg-slate-200/50 dark:bg-slate-800 text-slate-500"
+                   )}>
+                     <MapPin className="w-3 h-3" />
+                     {data.city}
+                   </div>
+                 )}
+               </div>
             </div>
           </div>
 
