@@ -231,7 +231,8 @@ END:VCARD`;
       case 'minimalist': return "bg-white text-slate-900 border-slate-100 shadow-none";
       default: 
         if (hasVideo) return "bg-black/20 backdrop-blur-2xl text-white border-white/10";
-        return "bg-white dark:bg-slate-950 text-slate-900 dark:text-white";
+        // Updated to match PlanComparison aesthetic: Glassy + Gradient
+        return "bg-white/90 dark:bg-slate-900/90 backdrop-blur-xl text-slate-900 dark:text-white";
     }
   };
 
@@ -260,7 +261,7 @@ END:VCARD`;
             "relative overflow-hidden rounded-[2.5rem] transition-all duration-500",
             getThemeClasses(),
             isPro 
-              ? "border-2 border-primary/10 shadow-[0_50px_100px_-20px_rgba(0,0,0,0.25)] ring-1 ring-primary/5" 
+              ? "border-2 border-primary/20 shadow-[0_40px_100px_-20px_rgba(59,130,246,0.3)] shadow-[inset_0_0_60px_rgba(59,130,246,0.1)]" 
               : "border border-slate-200 dark:border-slate-800 shadow-sm"
           )}
         >
@@ -284,6 +285,12 @@ END:VCARD`;
           {/* Pro Background Enhancements */}
           {isPro && !data.background_video_url && data.theme_style !== 'minimalist' && (
             <>
+               {/* Aesthetic Gradient Background matching PlanComparison */}
+              <div className={cn(
+                "absolute inset-0 opacity-50 bg-gradient-to-br from-primary/5 to-purple-50 dark:from-primary/10 dark:to-purple-900/20 pointer-events-none",
+                data.theme_style === 'oled' && "opacity-0"
+              )} />
+
               {/* Subtle Animated Gradient Background for Body */}
               <div className="absolute inset-0 opacity-[0.03] transition-opacity duration-1000">
                 <div className="absolute top-0 right-0 w-64 h-64 bg-primary blur-[100px] rounded-full animate-pulse" />
