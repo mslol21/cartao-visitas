@@ -52,7 +52,6 @@ import {
   Zap,
   Target,
   Users,
-  Users,
   Award,
   Image as ImageIcon
 } from 'lucide-react';
