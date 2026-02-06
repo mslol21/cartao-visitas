@@ -52,7 +52,9 @@ import {
   Zap,
   Target,
   Users,
-  Award
+  Users,
+  Award,
+  Image as ImageIcon
 } from 'lucide-react';
 import { 
   Popover,
@@ -188,18 +190,20 @@ export function EditorForm({ initialData, onSubmit, onChange, isPro = false }: E
     }
   };
 
-  const handleVideoUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleBackgroundUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
 
-    // Aumentar o limite para vídeo (ex: 10MB)
     if (file.size > 10 * 1024 * 1024) {
-      toast.error('Vídeo muito grande. Máximo 10MB.');
+      toast.error('Arquivo muito grande. Máximo 10MB.');
       return;
     }
 
-    if (!file.type.startsWith('video/')) {
-      toast.error('Por favor, selecione um arquivo de vídeo (mp4, webm, etc).');
+    const isVideo = file.type.startsWith('video/');
+    const isImage = file.type.startsWith('image/');
+
+    if (!isVideo && !isImage) {
+      toast.error('Formato inválido. Use MP4, WebM, PNG, JPG ou WEBP.');
       return;
     }
 
@@ -207,10 +211,10 @@ export function EditorForm({ initialData, onSubmit, onChange, isPro = false }: E
     try {
       const fileExt = file.name.split('.').pop();
       const fileName = `${Math.random().toString(36).substring(2)}.${fileExt}`;
-      const filePath = `videos/${fileName}`;
+      const filePath = `backgrounds/${fileName}`;
 
       const { error: uploadError } = await supabase.storage
-        .from('avatars') // Usando o mesmo bucket por simplicidade, Supabase aceita qualquer arquivo
+        .from('avatars')
         .upload(filePath, file);
 
       if (uploadError) throw uploadError;
@@ -220,10 +224,10 @@ export function EditorForm({ initialData, onSubmit, onChange, isPro = false }: E
         .getPublicUrl(filePath);
 
       handleChange('background_video_url', publicUrl);
-      toast.success('Vídeo de fundo carregado!');
+      toast.success('Fundo atualizado com sucesso!');
     } catch (error: unknown) {
       const err = error as Error;
-      toast.error('Erro ao carregar vídeo: ' + err.message);
+      toast.error('Erro ao carregar arquivo: ' + err.message);
     } finally {
       setUploading(false);
     }
@@ -665,26 +669,34 @@ export function EditorForm({ initialData, onSubmit, onChange, isPro = false }: E
 
             <div className="space-y-4">
               <div className="flex items-center justify-between">
-                <Label className="flex items-center gap-2 font-black uppercase tracking-widest text-[10px]"><Video className="w-4 h-4 text-primary" /> Vídeo de Fundo</Label>
+                <Label className="flex items-center gap-2 font-black uppercase tracking-widest text-[10px]"><ImageIcon className="w-4 h-4 text-primary" /> Fundo Personalizado</Label>
                 {!isPro && <span className="text-[10px] bg-primary/10 text-primary px-2 py-1 rounded-full font-black">PRO</span>}
               </div>
               <div className={cn("space-y-3", !isPro && "opacity-40 pointer-events-none")}>
                 <input
                   type="file"
                   ref={videoInputRef}
-                  onChange={handleVideoUpload}
-                  accept="video/*"
+                  onChange={handleBackgroundUpload}
+                  accept="video/*,image/*"
                   className="hidden"
                 />
                 
                 {formData.background_video_url ? (
                   <div className="relative group/video rounded-2xl overflow-hidden border border-border">
-                    <video 
-                      src={formData.background_video_url} 
-                      className="w-full h-32 object-cover opacity-60"
-                      muted
-                      loop
-                    />
+                    {formData.background_video_url.match(/\.(mp4|webm|ogg|mov)$/i) ? (
+                      <video 
+                        src={formData.background_video_url} 
+                        className="w-full h-32 object-cover opacity-60"
+                        muted
+                        loop
+                      />
+                    ) : (
+                      <img 
+                        src={formData.background_video_url} 
+                        className="w-full h-32 object-cover opacity-60"
+                        alt="Background Preview"
+                      />
+                    )}
                     <div className="absolute inset-0 flex items-center justify-center bg-black/20 opacity-0 group-hover/video:opacity-100 transition-opacity">
                       <Button 
                         variant="destructive" 
@@ -708,13 +720,13 @@ export function EditorForm({ initialData, onSubmit, onChange, isPro = false }: E
                     ) : (
                       <>
                         <Upload className="w-6 h-6 text-muted-foreground" />
-                        <span className="text-[10px] font-black uppercase tracking-widest">Enviar Vídeo (MP4)</span>
+                        <span className="text-[10px] font-black uppercase tracking-widest">Enviar Foto ou Vídeo</span>
                       </>
                     )}
                   </Button>
                 )}
                 <p className="text-[10px] text-muted-foreground ml-1">
-                  Máximo 10MB. Recomendamos vídeos curtos (5-10s) e leves para melhor carregamento.
+                  Máximo 10MB. Suporta vídeos (MP4) e imagens (JPG, PNG).
                 </p>
               </div>
             </div>

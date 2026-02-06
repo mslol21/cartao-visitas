@@ -279,14 +279,22 @@ END:VCARD`;
           >
              {isPro && data.background_video_url ? (
                <>
-                 <video 
-                   src={data.background_video_url}
-                   autoPlay 
-                   muted 
-                   loop 
-                   playsInline 
-                   className="w-full h-full object-cover"
-                 />
+                 {data.background_video_url.match(/\.(mp4|webm|ogg|mov)$/i) ? (
+                   <video 
+                     src={data.background_video_url}
+                     autoPlay 
+                     muted 
+                     loop 
+                     playsInline 
+                     className="w-full h-full object-cover"
+                   />
+                 ) : (
+                   <img 
+                     src={data.background_video_url}
+                     alt="Background"
+                     className="w-full h-full object-cover"
+                   />
+                 )}
                  {/* Dark overlay for readability */}
                  <div className="absolute inset-0 bg-black/40 backdrop-blur-[1px]" />
                  {/* Internal Gradient for extra smoothness at the very bottom edge of video */}
