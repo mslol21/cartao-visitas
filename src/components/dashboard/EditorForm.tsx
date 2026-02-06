@@ -454,7 +454,7 @@ export function EditorForm({ initialData, onSubmit, onChange, isPro = false }: E
                   )}
                 />
               </div>
-            </div>
+
 
             <div className="space-y-3">
               <Label className="text-xs font-bold uppercase tracking-wider opacity-60">Meus Serviços ({formData.services?.length || 0}/{maxServices})</Label>
