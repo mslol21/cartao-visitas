@@ -121,26 +121,31 @@ export function EditorForm({ initialData, onSubmit, onChange, isPro = false }: E
     return () => clearTimeout(debounce);
   }, [formData.username, initialData.username, supabase]);
 
-  useEffect(() => {
-    if (firstRender.current) {
-      firstRender.current = false;
+  const handleSave = async () => {
+    if (!formData.username?.trim()) {
+      toast.error('O Username (URL) é obrigatório!');
+      return;
+    }
+    if (!formData.whatsapp?.trim()) {
+      toast.error('O WhatsApp é obrigatório!');
+      return;
+    }
+    
+    if (usernameStatus === 'taken') {
+      toast.error('Este Username já está em uso!');
       return;
     }
 
-    // Don't autosave if the username is taken
-    if (usernameStatus === 'taken') return;
-
-    const timer = setTimeout(async () => {
-      setIsSaving(true);
-      try {
-        await onSubmit(formData);
-      } finally {
-        setIsSaving(false);
-      }
-    }, 1500);
-
-    return () => clearTimeout(timer);
-  }, [formData, onSubmit, usernameStatus]);
+    setIsSaving(true);
+    try {
+      await onSubmit(formData);
+      toast.success('Alterações salvas com sucesso!');
+    } catch (error) {
+      toast.error('Erro ao salvar alterações.');
+    } finally {
+      setIsSaving(false);
+    }
+  };
 
   const handleChange = <T extends keyof ProfileFormData>(field: T, value: ProfileFormData[T]) => {
     const updated = { ...formData, [field]: value };
@@ -299,17 +304,23 @@ export function EditorForm({ initialData, onSubmit, onChange, isPro = false }: E
           <Layout className="w-4 h-4" />
           Configurações do Cartão
         </h2>
-        {isSaving ? (
-          <span className="text-[10px] bg-primary/10 text-primary px-2 py-1 rounded-full flex items-center gap-1 animate-pulse">
-            <Loader2 className="w-3 h-3 animate-spin" />
-            Salvando...
-          </span>
-        ) : (
-          <span className="text-[10px] text-muted-foreground flex items-center gap-1">
-            <Check className="w-3 h-3 text-green-500" />
-            Sincronizado
-          </span>
-        )}
+        <Button 
+          onClick={handleSave} 
+          disabled={isSaving || usernameStatus === 'checking'}
+          className="rounded-full font-bold shadow-lg shadow-primary/20"
+        >
+          {isSaving ? (
+            <>
+              <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+              Salvando...
+            </>
+          ) : (
+            <>
+              <Check className="w-4 h-4 mr-2" />
+              Salvar Alterações
+            </>
+          )}
+        </Button>
       </div>
 
       <Tabs defaultValue="basic" className="w-full">
@@ -429,6 +440,22 @@ export function EditorForm({ initialData, onSubmit, onChange, isPro = false }: E
               </div>
             </div>
 
+              <div className="space-y-2">
+                <Label className="text-[#25D366] font-bold flex items-center gap-2">
+                  <MessageCircle className="w-4 h-4" /> WhatsApp (Obrigatório)
+                </Label>
+                <Input
+                  value={formData.whatsapp || ''}
+                  onChange={(e) => handleChange('whatsapp', e.target.value.replace(/\D/g, ''))}
+                  placeholder="Ex: 5511999999999"
+                  className={cn(
+                    "rounded-2xl h-12 border-[#25D366]/30 focus-visible:ring-[#25D366]",
+                    !formData.whatsapp && "border-red-300"
+                  )}
+                />
+              </div>
+            </div>
+
             <div className="space-y-3">
               <Label className="text-xs font-bold uppercase tracking-wider opacity-60">Meus Serviços ({formData.services?.length || 0}/{maxServices})</Label>
               <div className="flex gap-2">
@@ -504,17 +531,7 @@ export function EditorForm({ initialData, onSubmit, onChange, isPro = false }: E
 
           <TabsContent value="social" className="space-y-4 mt-0">
             <div className="space-y-4">
-              <div className="space-y-2">
-                <Label className="text-[#25D366] font-bold flex items-center gap-2">
-                  <MessageCircle className="w-4 h-4" /> WhatsApp (DDD + Número)
-                </Label>
-                <Input
-                  value={formData.whatsapp || ''}
-                  onChange={(e) => handleChange('whatsapp', e.target.value.replace(/\D/g, ''))}
-                  placeholder="Ex: 11999999999"
-                  className="rounded-2xl h-12 border-[#25D366]/30 focus-visible:ring-[#25D366]"
-                />
-              </div>
+
 
               {!isPro ? (
                 <div className="p-6 rounded-3xl bg-primary/5 border border-primary/20 text-center space-y-3">
