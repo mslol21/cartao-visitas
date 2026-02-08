@@ -4,6 +4,8 @@ import "./globals.css";
 import { Toaster } from "@/components/ui/sonner";
 import { AuthProvider } from "@/hooks/useAuth";
 import { ThemeProvider } from "@/components/providers/theme-provider";
+import { StructuredData } from "@/components/seo/StructuredData";
+import { generateOrganizationSchema } from "@/lib/seo/structured-data";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -55,6 +57,7 @@ export default function RootLayout({
   return (
     <html lang="pt-BR" className="scroll-smooth" suppressHydrationWarning>
       <body className={`${inter.variable} ${jakarta.variable} font-sans antialiased overflow-x-hidden`}>
+        <StructuredData data={generateOrganizationSchema()} />
         <ThemeProvider
           attribute="class"
           defaultTheme="dark"
