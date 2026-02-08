@@ -16,6 +16,7 @@ const jakarta = Plus_Jakarta_Sans({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL('https://konnexy.com.br'),
   title: {
     default: "Cartão de Visitas Digital Grátis para Autônomos | Konnexy",
     template: "%s | Konnexy"
@@ -31,7 +32,7 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     locale: "pt_BR",
-    url: "https://konnexy.io",
+    url: "https://konnexy.com.br",
     title: "Cartão de Visitas Digital Grátis para Autônomos | Konnexy",
     description: "Crie seu cartão de visitas digital grátis em minutos. Ideal para autônomos e liberais. Compartilhe no WhatsApp e feche mais negócios com a Konnexy.",
     siteName: "Konnexy",
