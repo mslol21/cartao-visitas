@@ -345,14 +345,46 @@ export function EditorForm({ initialData, onSubmit, onChange, isPro = false }: E
       </div>
 
       <Tabs defaultValue="basic" className="w-full">
-        <TabsList className="grid w-full grid-cols-2 sm:grid-cols-4 h-auto sm:h-12 rounded-2xl bg-slate-100/50 dark:bg-slate-800/50 p-1 gap-1">
-          <TabsTrigger value="basic" className="rounded-xl data-[state=active]:shadow-sm text-[10px] sm:text-xs py-2 sm:py-0">Perfil</TabsTrigger>
-          <TabsTrigger value="social" className="rounded-xl data-[state=active]:shadow-sm text-[10px] sm:text-xs py-2 sm:py-0">Links</TabsTrigger>
-          <TabsTrigger value="visual" className="rounded-xl data-[state=active]:shadow-sm text-[10px] sm:text-xs py-2 sm:py-0">Visual</TabsTrigger>
-          <TabsTrigger value="seo" className="rounded-xl data-[state=active]:shadow-sm text-[10px] sm:text-xs py-2 sm:py-0">SEO</TabsTrigger>
-          <TabsTrigger value="qrcode" className="rounded-xl data-[state=active]:shadow-sm text-[10px] sm:text-xs py-2 sm:py-0 flex items-center gap-1">
-            QR Code
-            {!isPro && <SparklesIcon className="w-2 h-2 text-primary" />}
+        <TabsList className="grid w-full grid-cols-2 sm:grid-cols-5 h-auto p-1.5 gap-2 bg-slate-100 dark:bg-slate-900/50 rounded-2xl border border-slate-200 dark:border-slate-800">
+          <TabsTrigger 
+            value="basic" 
+            className="data-[state=active]:bg-primary data-[state=active]:text-white data-[state=active]:shadow-lg transition-all duration-300 rounded-xl py-3 text-xs font-black uppercase tracking-wider flex items-center justify-center gap-2 hover:bg-white dark:hover:bg-slate-800"
+          >
+            <User className="w-4 h-4" /> 
+            <span className="truncate">Perfil</span>
+          </TabsTrigger>
+          
+          <TabsTrigger 
+            value="social" 
+            className="data-[state=active]:bg-primary data-[state=active]:text-white data-[state=active]:shadow-lg transition-all duration-300 rounded-xl py-3 text-xs font-black uppercase tracking-wider flex items-center justify-center gap-2 hover:bg-white dark:hover:bg-slate-800"
+          >
+            <LinkIcon className="w-4 h-4" /> 
+            <span className="truncate">Links</span>
+          </TabsTrigger>
+          
+          <TabsTrigger 
+            value="visual" 
+            className="data-[state=active]:bg-primary data-[state=active]:text-white data-[state=active]:shadow-lg transition-all duration-300 rounded-xl py-3 text-xs font-black uppercase tracking-wider flex items-center justify-center gap-2 hover:bg-white dark:hover:bg-slate-800"
+          >
+            <Palette className="w-4 h-4" /> 
+            <span className="truncate">Visual</span>
+          </TabsTrigger>
+          
+          <TabsTrigger 
+            value="seo" 
+            className="data-[state=active]:bg-primary data-[state=active]:text-white data-[state=active]:shadow-lg transition-all duration-300 rounded-xl py-3 text-xs font-black uppercase tracking-wider flex items-center justify-center gap-2 hover:bg-white dark:hover:bg-slate-800"
+          >
+            <Search className="w-4 h-4" /> 
+            <span className="truncate">SEO</span>
+          </TabsTrigger>
+          
+          <TabsTrigger 
+            value="qrcode" 
+            className="col-span-2 sm:col-span-1 data-[state=active]:bg-primary data-[state=active]:text-white data-[state=active]:shadow-lg transition-all duration-300 rounded-xl py-3 text-xs font-black uppercase tracking-wider flex items-center justify-center gap-2 hover:bg-white dark:hover:bg-slate-800"
+          >
+            <QrIcon className="w-4 h-4" /> 
+            <span className="truncate">QR Code</span>
+            {!isPro && <SparklesIcon className="w-3 h-3 text-yellow-500 fill-yellow-500 animate-pulse ml-0.5" />}
           </TabsTrigger>
         </TabsList>
 
