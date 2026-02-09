@@ -196,6 +196,7 @@ END:VCARD`;
 
   // All valid links (those with a value)
   const validSocialLinks = socialLinks.filter(s => s.value);
+  const customLinks = data.custom_links || [];
   
   // Logic: Pro sees everything. Free sees only 1st and others are disabled.
   const activeServicesLimit = isPro ? 20 : 5; // Increased limit for better grid demo
@@ -585,6 +586,37 @@ END:VCARD`;
                     ))}
                   </div>
                 )}
+              </div>
+            )}
+
+            {/* Custom Links (Pro Only) */}
+            {isPro && customLinks.length > 0 && (
+              <div className="w-full space-y-3">
+                <div className="flex items-center gap-3 mb-2">
+                  <span className={cn("text-[10px] font-black uppercase tracking-[0.2em]", data.background_video_url ? "text-white/60" : "text-slate-400")}>Links Úteis</span>
+                  <div className={cn("h-[1px] flex-1", data.background_video_url ? "bg-white/20" : "bg-slate-200 dark:bg-slate-800")} />
+                </div>
+                <div className="grid gap-3">
+                  {customLinks.map((link, i) => (
+                    <motion.a
+                      key={i}
+                      whileHover={{ scale: 1.02 }}
+                      whileTap={{ scale: 0.98 }}
+                      href={link.url.startsWith('http') ? link.url : `https://${link.url}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className={cn(
+                        "w-full px-6 py-4 rounded-2xl flex items-center justify-between gap-3 border transition-all text-sm font-bold shadow-sm",
+                        data.background_video_url 
+                          ? "bg-white/10 backdrop-blur-xl border-white/20 text-white hover:bg-white/20" 
+                          : "bg-white border-slate-100 hover:border-primary/30 text-slate-800"
+                      )}
+                    >
+                      <span className="truncate">{link.title}</span>
+                      <ExternalLink className="w-4 h-4 opacity-40 shrink-0" />
+                    </motion.a>
+                  ))}
+                </div>
               </div>
             )}
             

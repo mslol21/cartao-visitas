@@ -79,10 +79,10 @@ export function Hero() {
             transition={{ delay: 0.4 }}
             className="flex flex-col items-center gap-4"
           >
-            <Button asChild variant="hero" size="xl" className="w-full sm:w-auto h-16 sm:h-20 px-12 rounded-2xl sm:rounded-[2rem] text-xl font-black shadow-2xl shadow-primary/30 group hover:scale-105 transition-transform duration-300">
-              <Link href="/signup">
+            <Button asChild variant="hero" size="xl" className="w-full sm:w-auto h-auto min-h-[4rem] sm:h-20 px-6 sm:px-12 py-4 sm:py-0 rounded-2xl sm:rounded-[2rem] text-sm sm:text-lg md:text-xl font-black shadow-2xl shadow-primary/30 group hover:scale-105 transition-transform duration-300">
+              <Link href="/signup" className="flex items-center justify-center gap-2">
                 Criar cartão grátis agora
-                <ArrowRight className="w-6 h-6 ml-3 transition-transform group-hover:translate-x-2" />
+                <ArrowRight className="w-5 h-5 sm:w-6 sm:h-6 transition-transform group-hover:translate-x-2" />
               </Link>
             </Button>
             

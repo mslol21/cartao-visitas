@@ -53,7 +53,8 @@ import {
   Target,
   Users,
   Award,
-  Image as ImageIcon
+  Image as ImageIcon,
+  Link as LinkIcon
 } from 'lucide-react';
 import { 
   Popover,
@@ -230,6 +231,23 @@ export function EditorForm({ initialData, onSubmit, onChange, isPro = false }: E
     } finally {
       setUploading(false);
     }
+  };
+
+  const [newCustomLink, setNewCustomLink] = useState({ title: '', url: '' });
+
+  const addCustomLink = () => {
+    if (!newCustomLink.title || !newCustomLink.url) {
+      toast.error('Preencha o título e a URL do link!');
+      return;
+    }
+    const currentLinks = formData.custom_links || [];
+    handleChange('custom_links', [...currentLinks, newCustomLink]);
+    setNewCustomLink({ title: '', url: '' });
+  };
+
+  const removeCustomLink = (index: number) => {
+    const currentLinks = formData.custom_links || [];
+    handleChange('custom_links', currentLinks.filter((_, i) => i !== index));
   };
 
   const AVAILABLE_ICONS = [
@@ -534,8 +552,6 @@ export function EditorForm({ initialData, onSubmit, onChange, isPro = false }: E
 
           <TabsContent value="social" className="space-y-4 mt-0">
             <div className="space-y-4">
-
-
               {!isPro ? (
                 <div className="p-6 rounded-3xl bg-primary/5 border border-primary/20 text-center space-y-3">
                   <Instagram className="w-8 h-8 text-primary/40 mx-auto" />
@@ -548,32 +564,116 @@ export function EditorForm({ initialData, onSubmit, onChange, isPro = false }: E
                 </div>
               ) : (
                 <div className="grid gap-4">
-                  <div className="space-y-2">
-                    <Label className="flex items-center gap-2 opacity-60"><Instagram className="w-4 h-4" /> Instagram</Label>
-                    <Input
-                      value={formData.instagram || ''}
-                      onChange={(e) => handleChange('instagram', e.target.value.replace('@', ''))}
-                      placeholder="seu.insta"
-                      className="rounded-2xl h-12"
-                    />
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div className="space-y-2">
+                      <Label className="flex items-center gap-2 opacity-60"><Instagram className="w-4 h-4" /> Instagram</Label>
+                      <Input
+                        value={formData.instagram || ''}
+                        onChange={(e) => handleChange('instagram', e.target.value.replace('@', ''))}
+                        placeholder="seu.insta"
+                        className="rounded-2xl h-12"
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <Label className="flex items-center gap-2 opacity-60"><Linkedin className="w-4 h-4" /> LinkedIn</Label>
+                      <Input
+                        value={formData.linkedin || ''}
+                        onChange={(e) => handleChange('linkedin', e.target.value)}
+                        placeholder="perfil-linkedin"
+                        className="rounded-2xl h-12"
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <Label className="flex items-center gap-2 opacity-60"><Facebook className="w-4 h-4" /> Facebook</Label>
+                      <Input
+                        value={formData.facebook || ''}
+                        onChange={(e) => handleChange('facebook', e.target.value)}
+                        placeholder="facebook.com/voce"
+                        className="rounded-2xl h-12"
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <Label className="flex items-center gap-2 opacity-60"><Music className="w-4 h-4" /> TikTok</Label>
+                      <Input
+                        value={formData.tiktok || ''}
+                        onChange={(e) => handleChange('tiktok', e.target.value.replace('@', ''))}
+                        placeholder="tiktok.com/@voce"
+                        className="rounded-2xl h-12"
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <Label className="flex items-center gap-2 opacity-60"><Youtube className="w-4 h-4" /> YouTube</Label>
+                      <Input
+                        value={formData.youtube || ''}
+                        onChange={(e) => handleChange('youtube', e.target.value)}
+                        placeholder="canal"
+                        className="rounded-2xl h-12"
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <Label className="flex items-center gap-2 opacity-60"><Twitter className="w-4 h-4" /> Twitter / X</Label>
+                      <Input
+                        value={formData.twitter || ''}
+                        onChange={(e) => handleChange('twitter', e.target.value.replace('@', ''))}
+                        placeholder="seu_perfil"
+                        className="rounded-2xl h-12"
+                      />
+                    </div>
+                    <div className="space-y-2 md:col-span-2">
+                      <Label className="flex items-center gap-2 opacity-60"><Globe className="w-4 h-4" /> Website Profissional</Label>
+                      <Input
+                        value={formData.website || ''}
+                        onChange={(e) => handleChange('website', e.target.value)}
+                        placeholder="https://seu-site.com"
+                        className="rounded-2xl h-12"
+                      />
+                    </div>
                   </div>
-                  <div className="space-y-2">
-                    <Label className="flex items-center gap-2 opacity-60"><Linkedin className="w-4 h-4" /> LinkedIn</Label>
-                    <Input
-                      value={formData.linkedin || ''}
-                      onChange={(e) => handleChange('linkedin', e.target.value)}
-                      placeholder="perfil-linkedin"
-                      className="rounded-2xl h-12"
-                    />
-                  </div>
-                  <div className="space-y-2">
-                    <Label className="flex items-center gap-2 opacity-60"><Youtube className="w-4 h-4" /> YouTube</Label>
-                    <Input
-                      value={formData.youtube || ''}
-                      onChange={(e) => handleChange('youtube', e.target.value)}
-                      placeholder="canal"
-                      className="rounded-2xl h-12"
-                    />
+
+                  <div className="h-px bg-border/50 my-4" />
+
+                  <div className="space-y-4">
+                    <Label className="text-xs font-bold uppercase tracking-wider opacity-60 flex items-center gap-2">
+                      <Plus className="w-4 h-4" /> Links Personalizados (Ex: Portfólio, Agenda, etc)
+                    </Label>
+                    
+                    <div className="grid grid-cols-1 sm:grid-cols-[1fr_1fr_auto] gap-2">
+                      <Input
+                        value={newCustomLink.title}
+                        onChange={(e) => setNewCustomLink({ ...newCustomLink, title: e.target.value })}
+                        placeholder="Título (ex: Meu Portfólio)"
+                        className="rounded-2xl h-12"
+                      />
+                      <Input
+                        value={newCustomLink.url}
+                        onChange={(e) => setNewCustomLink({ ...newCustomLink, url: e.target.value })}
+                        placeholder="URL (ex: https://...)"
+                        className="rounded-2xl h-12"
+                      />
+                      <Button type="button" onClick={addCustomLink} className="h-12 w-12 rounded-2xl">
+                        <Plus className="w-5 h-5" />
+                      </Button>
+                    </div>
+
+                    <div className="flex flex-col gap-2">
+                      {(formData.custom_links || []).map((link, i) => (
+                        <div key={i} className="flex items-center gap-3 p-3 bg-slate-100 dark:bg-slate-800/40 rounded-2xl group/link">
+                          <LinkIcon className="w-4 h-4 text-primary" />
+                          <div className="flex-1 min-w-0">
+                            <p className="text-xs font-bold uppercase tracking-wide truncate">{link.title}</p>
+                            <p className="text-[10px] opacity-60 truncate">{link.url}</p>
+                          </div>
+                          <Button 
+                            variant="ghost" 
+                            size="icon" 
+                            onClick={() => removeCustomLink(i)}
+                            className="h-8 w-8 rounded-lg opacity-0 group-hover/link:opacity-100 hover:bg-red-500/10 hover:text-red-500 transition-all"
+                          >
+                            <X className="w-4 h-4" />
+                          </Button>
+                        </div>
+                      ))}
+                    </div>
                   </div>
                 </div>
               )}

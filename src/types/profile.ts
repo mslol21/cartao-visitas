@@ -3,6 +3,11 @@ export interface ServiceItem {
   icon?: string;
 }
 
+export interface CustomLink {
+  title: string;
+  url: string;
+}
+
 export interface Profile {
   id: string;
   user_id: string;
@@ -18,6 +23,7 @@ export interface Profile {
   twitter: string | null;
   youtube: string | null;
   website: string | null;
+  custom_links?: CustomLink[];
   city: string | null;
   services: ServiceItem[];
   cta_text: string;
@@ -46,6 +52,7 @@ export interface ProfileFormData {
   twitter?: string | null;
   youtube?: string | null;
   website?: string | null;
+  custom_links?: CustomLink[];
   city?: string | null;
   services?: ServiceItem[];
   cta_text?: string;
