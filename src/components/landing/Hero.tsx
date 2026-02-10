@@ -1,4 +1,4 @@
-o "use client";
+"use client";
 
 import { ArrowRight, Sparkles, Smartphone, ShieldCheck, Zap } from 'lucide-react';
 import { Button } from '@/components/ui/button';
