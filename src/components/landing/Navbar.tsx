@@ -72,7 +72,7 @@ export function Navbar() {
                 </Button>
                 <Button asChild variant="hero" className="rounded-2xl h-11 px-6 shadow-xl shadow-primary/10 transition-all">
                   <Link href="/signup">
-                    Criar Cartão
+                    Começar Grátis
                     <ArrowRight className="w-4 h-4 ml-2" />
                   </Link>
                 </Button>
@@ -121,7 +121,7 @@ export function Navbar() {
                       <Link href="/login" onClick={() => setIsOpen(false)}>Entrar</Link>
                     </Button>
                     <Button asChild variant="hero" size="lg" className="rounded-2xl w-full">
-                      <Link href="/signup" onClick={() => setIsOpen(false)}>Criar Conta Grátis</Link>
+                      <Link href="/signup" onClick={() => setIsOpen(false)}>Começar Grátis</Link>
                     </Button>
                   </>
                 )}

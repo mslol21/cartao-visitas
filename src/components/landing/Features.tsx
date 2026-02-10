@@ -14,29 +14,29 @@ import { cn } from '@/lib/utils';
 const features = [
   {
     icon: Smartphone,
-    title: 'Mobile First',
-    description: 'Criado para funcionar perfeitamente no celular.',
+    title: 'Feito para o Celular',
+    description: 'Seu cartão abre na hora e funciona perfeitamente em qualquer smartphone.',
   },
   {
     icon: MessageCircle,
-    title: 'Botão direto para WhatsApp',
-    description: 'Leve o cliente direto para a conversa.',
+    title: 'Venda pelo WhatsApp',
+    description: 'Um botão direto para o cliente te chamar sem precisar salvar seu número.',
   },
   {
     icon: Target,
-    title: 'Perfil profissional personalizado',
-    description: 'Mostre quem você é e o que faz de forma clara.',
+    title: 'Sua Marca em Destaque',
+    description: 'Passe uma imagem muito mais profissional do que um simples papel.',
   },
   {
     icon: BarChart3,
-    title: 'Analytics (Plano Pro)',
-    description: 'Veja quantas pessoas acessaram seu cartão.',
+    title: 'Saiba quem te visita',
+    description: 'Veja quantas pessoas acessaram seu perfil e se interessaram pelo seu trabalho.',
     badge: 'Pro'
   },
   {
     icon: Video,
-    title: 'Fundo em vídeo (Plano Pro)',
-    description: 'Destaque-se com um visual moderno e profissional.',
+    title: 'Visual que Impressiona',
+    description: 'Use fundos em vídeo para se destacar da concorrência e prender a atenção.',
     badge: 'Pro',
     featured: true
   },
@@ -47,13 +47,13 @@ export function Features() {
     <section id="como-funciona" className="py-32 relative overflow-hidden bg-white dark:bg-slate-950">
       <div className="container relative z-10 px-6">
         <div className="text-center max-w-3xl mx-auto mb-20 space-y-4">
-          <div className="text-[10px] font-black uppercase tracking-[0.4em] text-primary">Funcionalidades</div>
+          <div className="text-[10px] font-black uppercase tracking-[0.4em] text-primary">Vantagens</div>
           <h2 className="text-4xl md:text-6xl font-black tracking-tighter">
-            Muito mais que um <br /> 
-            <span className="gradient-text">simples link na bio.</span>
+            O seu networking <br /> 
+            <span className="gradient-text">merece um upgrade.</span>
           </h2>
           <p className="text-muted-foreground text-lg font-medium">
-            Entregamos a infraestrutura completa para você gerenciar sua presença digital profissional.
+            Passe confiança imediata para seus clientes com um perfil digital moderno e facilite o fechamento de novos negócios.
           </p>
         </div>
 

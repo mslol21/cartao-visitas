@@ -10,42 +10,42 @@ const plans = [
   {
     name: 'Plano Free',
     price: '0',
-    description: 'Ideal para começar',
+    description: 'Teste seu cartão agora',
     features: [
       { text: 'Cartão de visitas digital', excluded: false },
-      { text: 'Link público compartilhável', excluded: false },
-      { text: 'Botão WhatsApp (50 cliques/mês)', excluded: false },
-      { text: '1 especialidade', excluded: false },
-      { text: 'Marca Konnexy no cartão', excluded: false },
+      { text: 'Link personalizado', excluded: false },
+      { text: 'Botão WhatsApp (até 50 cliques)', excluded: false },
+      { text: '1 especialidade/serviço', excluded: false },
+      { text: 'Com marca Konnexy', excluded: false },
       { text: 'WhatsApp ilimitado', excluded: true },
       { text: 'Sem marca d\'água', excluded: true },
-      { text: 'Analytics completo', excluded: true },
-      { text: 'Fundo em vídeo', excluded: true },
+      { text: 'Estatísticas de acesso', excluded: true },
+      { text: 'Fundo em vídeo premium', excluded: true },
     ],
-    cta: 'Criar cartão grátis',
+    cta: 'Começar grátis',
     href: '/signup',
     popular: false,
-    subText: 'Comece agora mesmo',
+    subText: 'Crie seu link em 2 minutos',
   },
   {
     name: 'Plano Pro',
     price: '19',
-    description: 'Recomendado para autônomos',
+    description: 'Para quem quer vender mais',
     features: [
-      { text: 'Tudo do Free', excluded: false },
-      { text: 'WhatsApp ilimitado', excluded: false },
-      { text: 'Sem marca d’água', excluded: false },
+      { text: 'Tudo do Free e mais:', excluded: false },
+      { text: 'Contatos e WhatsApp ilimitados', excluded: false },
+      { text: 'Sem logo Konnexy (Sua marca)', excluded: false },
       { text: 'Redes sociais ilimitadas', excluded: false },
       { text: 'Até 20 especialidades', excluded: false },
-      { text: 'Analytics completo', excluded: false },
+      { text: 'Estatísticas completas', excluded: false },
       { text: 'Fundo em vídeo premium', excluded: false },
-      { text: 'Selo profissional verificado', excluded: false },
+      { text: 'Selo de perfil verificado', excluded: false },
       { text: 'Suporte prioritário', excluded: false },
     ],
-    cta: 'Virar Pro agora',
+    cta: 'Ser Profissional agora',
     href: '/pricing',
     popular: true,
-    subText: 'Sem fidelidade • Cancele quando quiser',
+    subText: 'O investimento que se paga sozinho',
   },
 ];
 
@@ -64,11 +64,11 @@ export function Pricing() {
              Preços
            </div>
            <h2 className="text-3xl sm:text-4xl md:text-6xl font-black tracking-tighter leading-tight">
-             Simplicidade que <br />
-             <span className="gradient-text">escala seu negócio.</span>
+             O visual profissional <br />
+             <span className="gradient-text">que você merece.</span>
            </h2>
            <p className="text-muted-foreground text-lg font-medium max-w-2xl mx-auto">
-             Escolha o plano que melhor se adapta ao momento da sua carreira.
+             Aumente suas vendas com um cartão digital que transmite confiança e facilita o contato dos seus clientes.
            </p>
         </div>
 

@@ -46,13 +46,12 @@ export function WhatIsSection() {
               className="text-lg text-slate-600 dark:text-slate-400 font-medium leading-relaxed space-y-4"
             >
               <p>
-                É a evolução do cartão de papel. Em vez de entregar um papel que vai para o lixo, você envia um 
-                <strong className="text-foreground"> link interativo </strong> 
-                onde seu cliente pode te chamar no WhatsApp, ver seu portfólio, ou salvar seu contato com um clique.
+                É o fim dos cartões de papel que são perdidos ou jogados fora. Com a Konnexy, você tem um 
+                <strong className="text-foreground"> link profissional </strong> 
+                onde seus clientes encontram tudo o que precisam para te contratar em um só lugar.
               </p>
               <p>
-                O <strong>card digital para autônomos</strong> da Konnexy funciona como um mini site otimizado para celular. 
-                É leve, carrega na hora e você pode atualizar quando quiser, sem gastar com impressões.
+                Funciona como um <strong>perfil digital inteligente</strong>: você compartilha pelo WhatsApp ou Instagram, o cliente salva seu contato na hora e já pode ver seus serviços sem precisar baixar nada.
               </p>
             </motion.div>
           </div>
@@ -73,18 +72,18 @@ export function HowItWorksSection() {
   const steps = [
     { 
       icon: UserPlus, 
-      title: "1. Crie sua conta grátis", 
-      desc: "Cadastre-se rapidinho apenas com seu nome e email." 
+      title: "1. Escolha seu nome", 
+      desc: "Crie sua conta em segundos e defina o link personalizado do seu cartão." 
     },
     { 
       icon: Settings, 
-      title: "2. Personalize seu perfil", 
-      desc: "Adicione foto, WhatsApp, redes sociais e escolha um tema." 
+      title: "2. Adicione seu WhatsApp", 
+      desc: "Coloque sua foto, redes sociais e os serviços que você oferece." 
     },
     { 
       icon: Share2, 
-      title: "3. Comece a compartilhar", 
-      desc: "Envie seu link exclusivo para clientes e feche negócios." 
+      title: "3. Comece a divulgar", 
+      desc: "Compartilhe seu link com novos clientes e facilite o fechamento de negócios." 
     }
   ];
 
@@ -140,10 +139,10 @@ export function TargetAudienceSection() {
       <div className="container px-6">
         <div className="max-w-4xl mx-auto text-center">
           <h2 className="text-3xl md:text-5xl font-black tracking-tight mb-6">
-            Para quem é a <span className="text-primary">Konnexy?</span>
+            Feito para quem <span className="text-primary">faz acontecer.</span>
           </h2>
           <p className="text-lg text-muted-foreground mb-12 max-w-2xl mx-auto">
-            Desenvolvemos o <span className="font-bold text-foreground">cartão de visitas digital perfeito</span> para quem precisa vender e se conectar rápido.
+            A Konnexy é a escolha de profissionais que entendem que a <span className="font-bold text-foreground">primeira impressão é a que vende.</span>
           </p>
           
           <div className="flex flex-wrap justify-center gap-4">
@@ -170,20 +169,20 @@ export function TargetAudienceSection() {
 export function WhyChooseSection() {
   const benefits = [
     {
-      title: "100% Otimizado para WhatsApp",
-      desc: "Seu cliente abre o cartão rápido e te chama em 1 clique."
+      title: "Agilidade no WhatsApp",
+      desc: "Seu cliente te chama com um clique, sem precisar salvar seu número antes."
     },
     {
-      title: "Sempre Atualizado",
-      desc: "Mudou de número? Atualize o cartão digital sem gastar nada."
+      title: "Economia Real",
+      desc: "Nunca mais gaste dinheiro com gráficas ou cartões que ficam desatualizados."
     },
     {
-      title: "Aparência Profissional",
-      desc: "Mostre que você leva seu trabalho a sério com um design premium."
+      title: "Confiança Imediata",
+      desc: "Passe uma imagem muito mais profissional e moderna para quem busca seus serviços."
     },
     {
-      title: "Grátis de Verdade",
-      desc: "Comece sem pagar nada. O plano Free é vitalício."
+      title: "Sempre com Você",
+      desc: "Seu cartão está no seu celular. Você nunca mais vai dizer 'esqueci meu cartão'."
     }
   ];
 
@@ -226,20 +225,20 @@ export function WhyChooseSection() {
 export function FAQSection() {
   const faqs = [
     {
-      question: "O cartão de visitas digital é realmente grátis?",
-      answer: "Sim! Na Konnexy você pode criar seu cartão digital gratuito e usar para sempre. Oferecemos também um plano Pro para quem quer recursos extras, como fundo em vídeo e analytics."
+      question: "É grátis de verdade?",
+      answer: "Sim! Você pode criar seu cartão profissional sem custo e usar por tempo ilimitado. Temos um plano Pro apenas para quem deseja recursos avançados de design e estatísticas."
     },
     {
-      question: "Como compartilho meu cartão de visitas?",
-      answer: "Você recebe um link exclusivo (ex: konnexy.io/seunome). Você pode colocar esse link na bio do Instagram, enviar pelo WhatsApp ou gerar um QR Code."
+      question: "Como eu envio para os clientes?",
+      answer: "Você terá um link único (ex: konnexy.com.br/seu-nome). É só copiar e colar na bio do Instagram ou enviar direto na conversa do WhatsApp."
     },
     {
-      question: "Funciona em iPhone e Android?",
-      answer: "Funciona perfeitamente em qualquer celular. Seu cartão é um site otimizado que abre direto no navegador, sem precisar instalar aplicativos."
+      question: "O cliente precisa baixar aplicativo?",
+      answer: "Ninguém precisa baixar nada. O cartão abre instantaneamente no navegador de qualquer celular (iPhone ou Android)."
     },
     {
-      question: "Posso alterar minhas informações depois?",
-      answer: "Com certeza. Diferente do cartão de papel, o cartão virtual permite que você edite telefone, foto e serviços a qualquer momento pelo nosso painel."
+      question: "Posso mudar meu telefone depois?",
+      answer: "Claro! Diferente do cartão impresso, aqui você altera foto, telefone ou serviços a qualquer momento e o link continua o mesmo."
     }
   ];
 
@@ -279,18 +278,18 @@ export function FinalCTASection() {
       <div className="container relative z-10 px-6">
         <div className="max-w-4xl mx-auto text-center space-y-8">
           <h2 className="text-4xl md:text-6xl font-black tracking-tighter">
-            Pare de perder clientes. <br />
-            <span className="gradient-text">Comece agora sem custo.</span>
+            Não perca mais nenhuma <br />
+            <span className="gradient-text">oportunidade de negócio.</span>
           </h2>
           
           <p className="text-lg md:text-xl text-muted-foreground font-medium max-w-2xl mx-auto">
-            Junte-se a milhares de autônomos que modernizaram sua apresentação com a Konnexy.
+            Junte-se a milhares de profissionais que já modernizaram sua forma de vender.
           </p>
           
           <div className="pt-4">
             <Button asChild variant="hero" size="xl" className="w-full sm:w-auto h-auto min-h-[4rem] sm:h-20 px-6 sm:px-12 py-4 sm:py-0 rounded-2xl sm:rounded-[2rem] text-sm sm:text-lg md:text-xl font-black shadow-2xl shadow-primary/30 group hover:scale-105 transition-transform duration-300">
               <Link href="/signup" className="flex items-center justify-center gap-2">
-                <span className="text-center">Criar cartão grátis em minutos</span>
+                <span className="text-center">Gerar meu link profissional</span>
                 <ArrowRight className="w-5 h-5 sm:w-6 sm:h-6 transition-transform group-hover:translate-x-2 shrink-0" />
               </Link>
             </Button>
