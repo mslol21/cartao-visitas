@@ -61,7 +61,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import { QRCodeCustomizer } from './QRCodeCustomizer';
+import { StyledQRCode } from '../StyledQRCode';
 import { Profile, ProfileFormData } from '@/types/profile';
 import { createClient } from '@/utils/supabase/client';
 import { toast } from 'sonner';
@@ -907,7 +907,13 @@ export function EditorForm({ initialData, onSubmit, onChange, isPro = false }: E
                 </Button>
               </div>
             ) : (
-              <QRCodeCustomizer profile={formData as any} />
+              <div className="max-w-md mx-auto">
+                <StyledQRCode 
+                  url={`${typeof window !== 'undefined' ? window.location.origin : ''}/${formData.username}`} 
+                  isPro={isPro} 
+                  username={formData.username || 'user'} 
+                />
+              </div>
             )}
           </TabsContent>
         </div>
