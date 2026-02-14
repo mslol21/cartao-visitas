@@ -49,6 +49,7 @@ import { cn } from "@/lib/utils";
 import { Logo } from '@/components/brand/Logo';
 import { verifyCheckoutSession, forceSyncProPlan } from '@/app/actions/checkout';
 import { getProfileAnalytics } from '@/app/actions/analytics';
+import { StyledQRCode } from '@/components/StyledQRCode';
 
 type DashboardTab = 'editor' | 'analytics' | 'settings';
 
@@ -291,6 +292,27 @@ function DashboardContent() {
                     isPro={isPro}
                   />
                 </div>
+
+                {/* QR Code Section */}
+                {profile?.username && (
+                  <div className="space-y-6">
+                    <div className="flex items-center gap-2 text-[10px] font-black uppercase tracking-[0.3em] text-primary">
+                      <span className="w-8 h-[2px] bg-primary rounded-full" />
+                      Compartilhamento
+                    </div>
+                    <div>
+                      <h2 className="text-2xl font-black tracking-tighter">Seu QR Code Profissional</h2>
+                      <p className="text-sm text-muted-foreground">Utilize este QR Code em seus materiais impressos para facilitar o acesso ao seu perfil.</p>
+                    </div>
+                    <div className="max-w-md">
+                      <StyledQRCode 
+                        url={`${typeof window !== 'undefined' ? window.location.origin : ''}/${profile.username}`} 
+                        isPro={isPro} 
+                        username={profile.username} 
+                      />
+                    </div>
+                  </div>
+                )}
               </div>
 
               {/* RIGHT: Visual Reference */}
