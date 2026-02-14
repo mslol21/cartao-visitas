@@ -3,13 +3,13 @@ import QRCodeStyling, { Options, DrawType, TypeNumber, Mode, ErrorCorrectionLeve
 /**
  * Retorna as configurações padronizadas do QR Code Konnexy
  */
-export const getQRCodeConfig = (url: string, isPro: boolean = false): Options => {
+export const getQRCodeConfig = (url: string, isPro: boolean = false, photoUrl?: string): Options => {
   return {
     width: 1000,
     height: 1000,
     type: "svg" as DrawType,
     data: url,
-    image: isPro ? "/logo-icon.svg" : undefined,
+    image: isPro ? (photoUrl || "/logo-icon.svg") : undefined,
     margin: 20,
     qrOptions: {
       typeNumber: 0 as TypeNumber,

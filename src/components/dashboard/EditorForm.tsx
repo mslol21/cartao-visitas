@@ -912,6 +912,7 @@ export function EditorForm({ initialData, onSubmit, onChange, isPro = false }: E
                   url={`${typeof window !== 'undefined' ? window.location.origin : ''}/${formData.username}`} 
                   isPro={isPro} 
                   username={formData.username || 'user'} 
+                  photoUrl={formData.photo_url || undefined}
                 />
               </div>
             )}

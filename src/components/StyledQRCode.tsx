@@ -20,9 +20,10 @@ interface StyledQRCodeProps {
   url: string;
   isPro?: boolean;
   username: string;
+  photoUrl?: string;
 }
 
-export const StyledQRCode: React.FC<StyledQRCodeProps> = ({ url, isPro = false, username }) => {
+export const StyledQRCode: React.FC<StyledQRCodeProps> = ({ url, isPro = false, username, photoUrl }) => {
   const [qrCode, setQrCode] = useState<QRCodeStyling | null>(null);
   const ref = useRef<HTMLDivElement>(null);
   const [isDownloading, setIsDownloading] = useState<string | null>(null);
@@ -35,7 +36,7 @@ export const StyledQRCode: React.FC<StyledQRCodeProps> = ({ url, isPro = false, 
       height: 1000,
       type: "svg" as DrawType,
       data: url,
-      image: isPro ? "/logo-icon.svg" : undefined,
+      image: isPro ? (photoUrl || "/logo-icon.svg") : undefined,
       margin: 20,
       qrOptions: {
         typeNumber: 0 as TypeNumber,
@@ -80,7 +81,7 @@ export const StyledQRCode: React.FC<StyledQRCodeProps> = ({ url, isPro = false, 
       ref.current.innerHTML = "";
       newQrCode.append(ref.current);
     }
-  }, [url, isPro]);
+  }, [url, isPro, photoUrl]);
 
   const onDownloadClick = async (extension: "png" | "svg") => {
     if (!qrCode) return;

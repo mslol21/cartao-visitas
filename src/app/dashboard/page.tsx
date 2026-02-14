@@ -309,6 +309,7 @@ function DashboardContent() {
                         url={`${typeof window !== 'undefined' ? window.location.origin : ''}/${profile.username}`} 
                         isPro={isPro} 
                         username={profile.username} 
+                        photoUrl={profile.photo_url || undefined}
                       />
                     </div>
                   </div>
