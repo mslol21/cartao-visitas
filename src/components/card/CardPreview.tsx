@@ -395,15 +395,38 @@ END:VCARD`;
                    {data.tagline || 'Sua profissão ou frase de impacto'}
                  </p>
                  
-                 {data.city && (
-                   <div className={cn(
-                     "flex items-center gap-1.5 text-[10px] font-black uppercase tracking-[0.2em] py-1 px-3 rounded-full",
-                     isPro ? "bg-white/10 text-white/70" : "bg-slate-200/50 dark:bg-slate-800 text-slate-500"
-                   )}>
-                     <MapPin className="w-3 h-3" />
-                     {data.city}
-                   </div>
-                 )}
+                 <div className="flex flex-wrap items-center justify-center gap-2 mt-1">
+                    {data.city && (
+                      <div className={cn(
+                        "flex items-center gap-1.5 text-[10px] font-black uppercase tracking-[0.2em] py-1 px-3 rounded-full",
+                        isPro ? "bg-white/10 text-white/70" : "bg-slate-200/50 dark:bg-slate-800 text-slate-500"
+                      )}>
+                        <MapPin className="w-3 h-3" />
+                        {data.city}
+                      </div>
+                    )}
+
+                    {data.address && (
+                      <div className={cn(
+                        "flex items-center gap-1.5 text-[10px] font-bold py-1 px-3 rounded-full border",
+                        isPro 
+                          ? "bg-white/5 border-white/10 text-white/80" 
+                          : "bg-white border-slate-200 text-slate-600"
+                      )}>
+                        <MapPin className="w-3 h-3 opacity-50" />
+                        <span className="opacity-80 truncate max-w-[150px]">{data.address}</span>
+                      </div>
+                    )}
+
+                    {isPro && data.service_area && (
+                      <div className={cn(
+                        "flex items-center gap-1.5 text-[10px] font-black uppercase tracking-[0.1em] py-1 px-3 rounded-full bg-primary/20 text-primary border border-primary/20",
+                      )}>
+                        <Target className="w-3 h-3" />
+                        {data.service_area}
+                      </div>
+                    )}
+                 </div>
                </div>
             </div>
           </div>

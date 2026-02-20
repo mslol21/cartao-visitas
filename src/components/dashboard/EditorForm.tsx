@@ -54,7 +54,9 @@ import {
   Users,
   Award,
   Image as ImageIcon,
-  Link as LinkIcon
+  Link as LinkIcon,
+  MapPin,
+  ShieldCheck
 } from 'lucide-react';
 import { 
   Popover,
@@ -466,6 +468,49 @@ export function EditorForm({ initialData, onSubmit, onChange, isPro = false }: E
                   />
                 </div>
               </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <Label className="text-xs font-bold uppercase tracking-wider opacity-60 flex items-center gap-2">
+                    Endereço Completo (Opcional)
+                  </Label>
+                  <Input
+                    value={formData.address || ''}
+                    onChange={(e) => handleChange('address', e.target.value)}
+                    placeholder="Av. Paulista, 1000 - Sala 12"
+                    className="rounded-2xl h-12"
+                  />
+                </div>
+                <div className="space-y-2 relative">
+                  <Label className="text-xs font-bold uppercase tracking-wider opacity-60 flex items-center gap-2">
+                    Região de Atendimento
+                    {!isPro && <SparklesIcon className="w-3 h-3 text-yellow-500 fill-yellow-500" />}
+                  </Label>
+                  <div className="relative">
+                    <Input
+                      value={formData.service_area || ''}
+                      onChange={(e) => isPro && handleChange('service_area', e.target.value)}
+                      placeholder={isPro ? "Ex: Toda Grande SP, Interior..." : "Exclusivo PRO"}
+                      disabled={!isPro}
+                      className={cn(
+                        "rounded-2xl h-12 pr-10",
+                        !isPro && "bg-slate-50 dark:bg-slate-900 border-dashed cursor-not-allowed opacity-60"
+                      )}
+                    />
+                    {!isPro && (
+                      <div className="absolute right-3 top-1/2 -translate-y-1/2">
+                        <Lock className="w-4 h-4 text-muted-foreground/40" />
+                      </div>
+                    )}
+                  </div>
+                  {!isPro && (
+                    <p className="text-[10px] font-medium text-amber-600 dark:text-amber-500 italic mt-1">
+                      Upgrade para PRO para informar sua região de atuação.
+                    </p>
+                  )}
+                </div>
+              </div>
+
               <div className="space-y-2">
                 <Label className="text-xs font-bold uppercase tracking-wider opacity-60">Username (URL)</Label>
                 <div className="relative">

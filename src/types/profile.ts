@@ -25,6 +25,8 @@ export interface Profile {
   website: string | null;
   custom_links?: CustomLink[];
   city: string | null;
+  address: string | null;
+  service_area: string | null;
   services: ServiceItem[];
   cta_text: string;
   plan: 'free' | 'pro';
@@ -54,6 +56,8 @@ export interface ProfileFormData {
   website?: string | null;
   custom_links?: CustomLink[];
   city?: string | null;
+  address?: string | null;
+  service_area?: string | null;
   services?: ServiceItem[];
   cta_text?: string;
   seo_title?: string | null;
