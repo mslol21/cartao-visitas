@@ -590,7 +590,10 @@ END:VCARD`;
                      )}
                    >
                      <div className={cn("w-8 h-8 rounded-full flex items-center justify-center text-white shadow-lg shrink-0", isPro ? "bg-primary" : "bg-slate-900")}>
-                        <Sparkles className="w-4 h-4" />
+                        {(() => {
+                          const Icon = ICON_MAP[mainService.icon || 'Sparkles'] || Sparkles;
+                          return <Icon className="w-4 h-4" />;
+                        })()}
                      </div>
                      <span className={cn("font-black uppercase leading-tight text-sm", isPro ? "text-white" : "text-slate-900")}>{mainService.name}</span>
                    </motion.div>
@@ -598,15 +601,20 @@ END:VCARD`;
 
                 {secondaryServices.length > 0 && (
                   <div className="flex flex-col gap-2">
-                    {secondaryServices.map((service, i) => (
-                       <div key={i} className={cn(
-                         "w-full px-4 py-3 rounded-full flex items-center gap-3 border transition-colors",
-                         isPro ? "bg-white/5 backdrop-blur-md border-white/10 hover:bg-white/10" : "bg-slate-50 border-slate-100"
-                       )}>
-                          <div className={cn("w-2 h-2 rounded-full", isPro ? "bg-white/50" : "bg-slate-300")} />
-                          <span className={cn("text-xs font-bold leading-tight uppercase", isPro ? "text-white" : "text-slate-700 dark:text-slate-300")}>{service.name}</span>
-                       </div>
-                    ))}
+                    {secondaryServices.map((service, i) => {
+                       const Icon = ICON_MAP[service.icon || 'Sparkles'] || Sparkles;
+                       return (
+                         <div key={i} className={cn(
+                           "w-full px-4 py-3 rounded-full flex items-center gap-3 border transition-colors",
+                           isPro ? "bg-white/5 backdrop-blur-md border-white/10 hover:bg-white/10" : "bg-slate-50 border-slate-100"
+                         )}>
+                            <div className={cn("w-6 h-6 rounded-lg flex items-center justify-center shrink-0", isPro ? "bg-white/10" : "bg-slate-100")}>
+                               <Icon className={cn("w-3.5 h-3.5", isPro ? "text-white/70" : "text-slate-500")} />
+                            </div>
+                            <span className={cn("text-xs font-bold leading-tight uppercase", isPro ? "text-white" : "text-slate-700 dark:text-slate-300")}>{service.name}</span>
+                         </div>
+                       );
+                    })}
                   </div>
                 )}
               </div>

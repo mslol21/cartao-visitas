@@ -56,7 +56,8 @@ import {
   Image as ImageIcon,
   Link as LinkIcon,
   MapPin,
-  ShieldCheck
+  ShieldCheck,
+  Lock
 } from 'lucide-react';
 import { 
   Popover,
