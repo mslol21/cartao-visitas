@@ -2,7 +2,7 @@
 
 import { createClient } from '@/utils/supabase/server';
 
-export type AnalyticsEventType = 'page_view' | 'click_whatsapp' | 'click_instagram' | 'click_linkedin' | 'click_facebook' | 'click_tiktok' | 'click_twitter' | 'click_youtube' | 'click_website' | 'click_cta';
+export type AnalyticsEventType = 'page_view' | 'click_whatsapp' | 'click_instagram' | 'click_linkedin' | 'click_facebook' | 'click_tiktok' | 'click_twitter' | 'click_youtube' | 'click_website' | 'click_cta' | 'click_address';
 
 export async function trackEvent(profileId: string, eventType: AnalyticsEventType, metadata: any = {}) {
   try {

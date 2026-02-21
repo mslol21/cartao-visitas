@@ -407,23 +407,29 @@ END:VCARD`;
                     )}
 
                     {data.address && (
-                      <div className={cn(
-                        "flex items-center gap-1.5 text-[10px] font-bold py-1 px-3 rounded-full border",
+                      <a 
+                        href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(data.address)}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        onClick={() => handleTrackClick('click_address')}
+                        className={cn(
+                        "flex items-center gap-1.5 text-[10px] font-bold py-1 px-3 rounded-full border transition-all hover:scale-105 active:scale-95",
                         isPro 
-                          ? "bg-white/5 border-white/10 text-white/80" 
-                          : "bg-white border-slate-200 text-slate-600"
+                          ? "bg-white/5 border-white/10 text-white/80 hover:bg-white/10" 
+                          : "bg-white border-slate-200 text-slate-600 hover:bg-slate-50"
                       )}>
                         <MapPin className="w-3 h-3 opacity-50" />
                         <span className="opacity-80 truncate max-w-[150px]">{data.address}</span>
-                      </div>
+                      </a>
                     )}
 
                     {isPro && data.service_area && (
                       <div className={cn(
-                        "flex items-center gap-1.5 text-[10px] font-black uppercase tracking-[0.1em] py-1 px-3 rounded-full bg-primary/20 text-primary border border-primary/20",
+                        "flex items-center gap-1.5 text-[10px] font-black uppercase tracking-[0.1em] py-1 px-3 rounded-full",
+                        "bg-amber-500/10 text-amber-500 border border-amber-500/20 shadow-[0_40px_100px_-20px_rgba(245,158,11,0.1)]"
                       )}>
                         <Target className="w-3 h-3" />
-                        {data.service_area}
+                        Região: {data.service_area}
                       </div>
                     )}
                  </div>
