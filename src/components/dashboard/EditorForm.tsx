@@ -88,6 +88,25 @@ export function EditorForm({ initialData, onSubmit, onChange, isPro = false }: E
   const videoInputRef = useRef<HTMLInputElement>(null);
   const supabase = createClient();
   const firstRender = useRef(true);
+  const [isDirty, setIsDirty] = useState(false);
+
+  // Auto-save logic
+  useEffect(() => {
+    if (firstRender.current) {
+      firstRender.current = false;
+      return;
+    }
+
+    if (!isDirty || isSaving) return;
+
+    const timer = setTimeout(() => {
+      if (usernameStatus === 'available' || usernameStatus === 'idle') {
+        handleSave(true);
+      }
+    }, 1500);
+
+    return () => clearTimeout(timer);
+  }, [formData, usernameStatus, isDirty, isSaving, handleSave]);
 
   useEffect(() => {
     setFormData(initialData);
@@ -126,36 +145,40 @@ export function EditorForm({ initialData, onSubmit, onChange, isPro = false }: E
     return () => clearTimeout(debounce);
   }, [formData.username, initialData.username, supabase]);
 
-  const handleSave = async () => {
+  const handleSave = useCallback(async (silent = false) => {
+    if (isSaving) return;
+    
     if (!formData.username?.trim()) {
-      toast.error('O Username (URL) é obrigatório!');
+      if (!silent) toast.error('O Username (URL) é obrigatório!');
       return;
     }
     if (!formData.whatsapp?.trim()) {
-      toast.error('O WhatsApp é obrigatório!');
+      if (!silent) toast.error('O WhatsApp é obrigatório!');
       return;
     }
     
     if (usernameStatus === 'taken') {
-      toast.error('Este Username já está em uso!');
+      if (!silent) toast.error('Este Username já está em uso!');
       return;
     }
 
     setIsSaving(true);
     try {
       await onSubmit(formData);
-      toast.success('Alterações salvas com sucesso!');
+      setIsDirty(false);
+      if (!silent) toast.success('Alterações salvas com sucesso!');
     } catch (error) {
-      toast.error('Erro ao salvar alterações.');
+      if (!silent) toast.error('Erro ao salvar alterações.');
     } finally {
       setIsSaving(false);
     }
-  };
+  }, [formData, usernameStatus, onSubmit, isSaving]);
 
   const handleChange = <T extends keyof ProfileFormData>(field: T, value: ProfileFormData[T]) => {
     const updated = { ...formData, [field]: value };
     setFormData(updated);
     onChange(updated);
+    setIsDirty(true);
   };
 
   const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -328,23 +351,40 @@ export function EditorForm({ initialData, onSubmit, onChange, isPro = false }: E
           <Layout className="w-4 h-4" />
           Configurações do Cartão
         </h2>
-        <Button 
-          onClick={handleSave} 
-          disabled={isSaving || usernameStatus === 'checking'}
-          className="rounded-full font-bold shadow-lg shadow-primary/20"
-        >
-          {isSaving ? (
-            <>
-              <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-              Salvando...
-            </>
-          ) : (
-            <>
-              <Check className="w-4 h-4 mr-2" />
-              Salvar Alterações
-            </>
+        <div className="flex items-center gap-3">
+          {isDirty && !isSaving && (
+            <span className="text-[10px] font-bold text-amber-500 uppercase tracking-widest animate-pulse">
+              Alterações pendentes...
+            </span>
           )}
-        </Button>
+          <Button 
+            onClick={() => handleSave(false)} 
+            disabled={isSaving || usernameStatus === 'checking'}
+            variant={isDirty ? "default" : "outline"}
+            className={cn(
+              "rounded-full font-bold shadow-lg transition-all duration-500",
+              !isDirty && !isSaving ? "opacity-50 grayscale" : "shadow-primary/20"
+            )}
+            size="sm"
+          >
+            {isSaving ? (
+              <>
+                <Loader2 className="w-3 h-3 mr-2 animate-spin" />
+                <span className="text-xs">Salvando...</span>
+              </>
+            ) : isDirty ? (
+              <>
+                <Check className="w-3 h-3 mr-2" />
+                <span className="text-xs">Salvar Agora</span>
+              </>
+            ) : (
+              <>
+                <Check className="w-3 h-3 mr-2 text-green-500" />
+                <span className="text-xs">Salvo!</span>
+              </>
+            )}
+          </Button>
+        </div>
       </div>
 
       <Tabs defaultValue="basic" className="w-full">
