@@ -90,6 +90,35 @@ export function EditorForm({ initialData, onSubmit, onChange, isPro = false }: E
   const firstRender = useRef(true);
   const [isDirty, setIsDirty] = useState(false);
 
+  const handleSave = useCallback(async (silent = false) => {
+    if (isSaving) return;
+    
+    if (!formData.username?.trim()) {
+      if (!silent) toast.error('O Username (URL) é obrigatório!');
+      return;
+    }
+    if (!formData.whatsapp?.trim()) {
+      if (!silent) toast.error('O WhatsApp é obrigatório!');
+      return;
+    }
+    
+    if (usernameStatus === 'taken') {
+      if (!silent) toast.error('Este Username já está em uso!');
+      return;
+    }
+
+    setIsSaving(true);
+    try {
+      await onSubmit(formData);
+      setIsDirty(false);
+      if (!silent) toast.success('Alterações salvas com sucesso!');
+    } catch (error) {
+      if (!silent) toast.error('Erro ao salvar alterações.');
+    } finally {
+      setIsSaving(false);
+    }
+  }, [formData, usernameStatus, onSubmit, isSaving]);
+
   // Auto-save logic
   useEffect(() => {
     if (firstRender.current) {
@@ -145,34 +174,6 @@ export function EditorForm({ initialData, onSubmit, onChange, isPro = false }: E
     return () => clearTimeout(debounce);
   }, [formData.username, initialData.username, supabase]);
 
-  const handleSave = useCallback(async (silent = false) => {
-    if (isSaving) return;
-    
-    if (!formData.username?.trim()) {
-      if (!silent) toast.error('O Username (URL) é obrigatório!');
-      return;
-    }
-    if (!formData.whatsapp?.trim()) {
-      if (!silent) toast.error('O WhatsApp é obrigatório!');
-      return;
-    }
-    
-    if (usernameStatus === 'taken') {
-      if (!silent) toast.error('Este Username já está em uso!');
-      return;
-    }
-
-    setIsSaving(true);
-    try {
-      await onSubmit(formData);
-      setIsDirty(false);
-      if (!silent) toast.success('Alterações salvas com sucesso!');
-    } catch (error) {
-      if (!silent) toast.error('Erro ao salvar alterações.');
-    } finally {
-      setIsSaving(false);
-    }
-  }, [formData, usernameStatus, onSubmit, isSaving]);
 
   const handleChange = <T extends keyof ProfileFormData>(field: T, value: ProfileFormData[T]) => {
     const updated = { ...formData, [field]: value };
