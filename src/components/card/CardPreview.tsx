@@ -643,14 +643,13 @@ END:VCARD`;
                       target="_blank"
                       rel="noopener noreferrer"
                       className={cn(
-                        "w-full px-6 py-4 rounded-2xl flex items-center justify-between gap-3 border transition-all text-sm font-bold shadow-sm",
+                        "w-full px-4 py-4 rounded-2xl flex items-center justify-center text-center gap-3 border transition-all text-sm font-bold shadow-sm",
                         data.background_video_url 
                           ? "bg-white/10 backdrop-blur-xl border-white/20 text-white hover:bg-white/20" 
                           : "bg-white border-slate-100 hover:border-primary/30 text-slate-800"
                       )}
                     >
                       <span className="truncate">{link.title}</span>
-                      <ExternalLink className="w-4 h-4 opacity-40 shrink-0" />
                     </motion.a>
                   ))}
                 </div>
