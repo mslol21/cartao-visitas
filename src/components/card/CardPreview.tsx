@@ -47,7 +47,11 @@ import {
   Award,
   Camera,
   Smartphone,
-  Link
+  Link,
+  Crown,
+  Plus,
+  Tag,
+  Shield
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Profile } from '@/types/profile';
@@ -230,17 +234,165 @@ END:VCARD`;
     
     switch (data.theme_style) {
       case 'oled': 
-        return "bg-black text-white border-white/10 shadow-[inset_0_0_120px_rgba(59,130,246,0.15)]"; // Added blue glow to darkness
+        return "bg-black text-white border-white/10 shadow-[inset_0_0_120px_rgba(59,130,246,0.15)]";
       case 'glass': 
         return "bg-white/10 backdrop-blur-3xl border-white/20 shadow-[inset_0_0_40px_rgba(255,255,255,0.1)]";
       case 'minimalist': 
         return "bg-white text-slate-900 border-slate-100 shadow-none";
       default: 
         if (hasVideo) return "bg-black/20 backdrop-blur-2xl text-white border-white/10";
-        // Ultra Premium Default
+        // Ultra Premium Default with Digital Texture
         return "bg-slate-900/80 backdrop-blur-3xl text-white border-white/10 shadow-[inset_0_0_60px_rgba(59,130,246,0.1)]";
     }
   };
+
+  const getProfessionConfig = () => {
+    if (!isPro) return null;
+    
+    switch (data.avatar_frame) {
+      case 'electrician':
+        return { 
+          gradient: 'linear-gradient(135deg, #fbbf24 0%, #000000 100%)', 
+          accent: '#fbbf24', 
+          label: 'Eletricista 24h',
+          cta: 'Chamar no WhatsApp',
+          shape: 'polygon(40% 0%, 100% 0%, 65% 45%, 95% 45%, 30% 100%, 45% 55%, 15% 55%)' // Raio Realista
+        };
+      case 'barber':
+        return { 
+          gradient: 'linear-gradient(135deg, #111 0%, #d4af37 100%)', 
+          accent: '#d4af37', 
+          label: 'Mestre da Lâmina',
+          cta: 'Agende seu horário',
+          shape: 'polygon(50% 50%, 80% 0%, 100% 0%, 55% 52%, 100% 100%, 80% 100%, 52% 55%, 35% 72%, 35% 92%, 25% 100%, 8% 100%, 0% 88%, 0% 68%, 18% 58%, 28% 58%, 32% 54%, 28% 50%, 12% 50%, 0% 38%, 0% 12%, 8% 0%, 25% 0%, 35% 8%, 35% 38%)' // Tesoura Realista baseada na imagem
+        };
+      case 'cleaner':
+        return { 
+          gradient: 'linear-gradient(135deg, #0ea5e9 0%, #e0f2fe 100%)', 
+          accent: '#0ea5e9', 
+          label: 'Brilho Máximo',
+          cta: 'Solicitar Faxina',
+          shape: 'polygon(50% 0%, 61% 39%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 39%)' 
+        };
+      case 'mechanic':
+        return { 
+          gradient: 'linear-gradient(135deg, #334155 0%, #f97316 100%)', 
+          accent: '#f97316', 
+          label: 'Turbo Mecânica',
+          cta: 'Pedir Orçamento',
+          shape: 'polygon(50% 0%, 62% 4%, 65% 15%, 82% 16%, 86% 26%, 96% 36%, 96% 46%, 100% 50%, 96% 54%, 96% 64%, 86% 74%, 82% 84%, 65% 84%, 62% 96%, 50% 100%, 38% 96%, 35% 84%, 18% 84%, 14% 74%, 4% 64%, 4% 54%, 0% 50%, 4% 46%, 4% 36%, 14% 26%, 18% 16%, 35% 15%, 38% 4%)' // Engrenagem Robusta baseada na imagem
+        };
+      case 'plumber':
+        return { 
+          gradient: 'linear-gradient(135deg, #1d4ed8 0%, #60a5fa 100%)', 
+          accent: '#2563eb', 
+          label: 'SOS Hidráulica',
+          cta: 'Falar com Encanador',
+          shape: 'polygon(50% 0%, 75% 15%, 90% 40%, 100% 65%, 90% 90%, 70% 100%, 30% 100%, 10% 90%, 0% 65%, 10% 40%, 25% 15%)' // Gota Mais Redonda
+        };
+      case 'health':
+        return { 
+          gradient: 'linear-gradient(135deg, #ef4444 0%, #fee2e2 100%)', 
+          accent: '#ef4444', 
+          label: 'Sempre com Você',
+          cta: 'Marcar agora',
+          shape: 'polygon(30% 0%, 70% 0%, 70% 30%, 100% 30%, 100% 70%, 70% 70%, 70% 100%, 30% 100%, 30% 70%, 0% 70%, 0% 30%, 30% 30%)' // Cruz
+        };
+      case 'law':
+        return { 
+          gradient: 'linear-gradient(135deg, #0f172a 0%, #eab308 100%)', 
+          accent: '#eab308', 
+          label: 'Defesa Especializada',
+          cta: 'Direito Já',
+          shape: 'polygon(10% 0%, 50% 10%, 90% 0%, 100% 5%, 100% 85%, 50% 100%, 0% 85%, 0% 5%)' // Livro Aberto Detalhado
+        };
+      case 'tech':
+        return { 
+          gradient: 'linear-gradient(135deg, #000 0%, #3b82f6 100%)', 
+          accent: '#3b82f6', 
+          label: 'Inovação Digital',
+          cta: 'Quero Orçamento',
+          shape: 'polygon(0% 10%, 100% 10%, 100% 70%, 65% 70%, 70% 85%, 85% 85%, 85% 100%, 15% 100%, 15% 85%, 30% 85%, 35% 70%, 0% 70%)' // Monitor / iMac Style
+        };
+      case 'pet':
+        return { 
+          gradient: 'linear-gradient(135deg, #7c2d12 0%, #fb923c 100%)', 
+          accent: '#7c2d12', 
+          label: 'Amo meu Pet',
+          cta: 'Banho e Tosa',
+          shape: 'polygon(50% 40%, 70% 10%, 85% 15%, 80% 45%, 100% 55%, 90% 85%, 50% 100%, 10% 85%, 0% 55%, 20% 45%, 15% 15%, 30% 10%)'
+        };
+      case 'business':
+        return { 
+          gradient: 'linear-gradient(135deg, #1e293b 0%, #64748b 100%)', 
+          accent: '#1e293b', 
+          label: 'Foco em Resultados',
+          cta: 'Falar com Consultor',
+          shape: 'polygon(25% 18%, 25% 0%, 35% 0%, 65% 0%, 75% 0%, 75% 18%, 100% 18%, 100% 90%, 94% 100%, 6% 100%, 0% 90%, 0% 18%)'
+        };
+      // ── Formas Geométricas ──────────────────────────────────────────
+      case 'hexagon':
+        return {
+          gradient: `linear-gradient(135deg, ${data.theme_color || '#3b82f6'} 0%, #8b5cf6 100%)`,
+          accent: data.theme_color || '#3b82f6',
+          shape: 'polygon(25% 0%, 75% 0%, 100% 50%, 75% 100%, 25% 100%, 0% 50%)',
+        };
+      case 'diamond':
+        return {
+          gradient: `linear-gradient(135deg, ${data.theme_color || '#06b6d4'} 0%, #0ea5e9 100%)`,
+          accent: data.theme_color || '#06b6d4',
+          shape: 'polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%)',
+        };
+      case 'blob':
+        return {
+          gradient: `linear-gradient(135deg, ${data.theme_color || '#8b5cf6'} 0%, #c084fc 100%)`,
+          accent: data.theme_color || '#8b5cf6',
+          shape: 'polygon(45% 5%, 68% 0%, 88% 12%, 98% 32%, 96% 58%, 85% 80%, 65% 98%, 38% 100%, 16% 88%, 4% 65%, 2% 38%, 12% 18%, 28% 5%)',
+        };
+      case 'star8':
+        return {
+          gradient: `linear-gradient(135deg, ${data.theme_color || '#f59e0b'} 0%, #fde68a 100%)`,
+          accent: data.theme_color || '#f59e0b',
+          shape: 'polygon(50% 0%, 64% 28%, 93% 7%, 73% 34%, 100% 50%, 73% 66%, 93% 93%, 64% 72%, 50% 100%, 36% 72%, 7% 93%, 27% 66%, 0% 50%, 27% 34%, 7% 7%, 36% 28%)',
+        };
+      case 'squircle':
+        return {
+          gradient: `linear-gradient(135deg, ${data.theme_color || '#10b981'} 0%, #34d399 100%)`,
+          accent: data.theme_color || '#10b981',
+          shape: 'polygon(8% 0%, 92% 0%, 100% 8%, 100% 92%, 92% 100%, 8% 100%, 0% 92%, 0% 8%)',
+        };
+      case 'oval':
+        return {
+          gradient: `linear-gradient(135deg, ${data.theme_color || '#ec4899'} 0%, #f9a8d4 100%)`,
+          accent: data.theme_color || '#ec4899',
+          shape: 'ellipse(42% 50% at 50% 50%)',
+        };
+      case 'shield':
+        return {
+          gradient: `linear-gradient(135deg, ${data.theme_color || '#0f172a'} 0%, #334155 100%)`,
+          accent: data.theme_color || '#334155',
+          shape: 'polygon(15% 0%, 85% 0%, 100% 15%, 100% 60%, 50% 100%, 0% 60%, 0% 15%)',
+        };
+    }
+    return null;
+  };
+
+  const getPhotoFilter = (): string => {
+    if (!isPro) return 'none';
+    switch (data.photo_filter) {
+      case 'bw':      return 'grayscale(100%) contrast(1.1)';
+      case 'vintage': return 'sepia(55%) contrast(1.08) brightness(0.92) saturate(0.8)';
+      case 'vivid':   return 'saturate(1.9) contrast(1.12) brightness(1.05)';
+      case 'golden':  return 'sepia(35%) saturate(1.4) brightness(1.1) hue-rotate(-5deg)';
+      case 'cold':    return 'hue-rotate(195deg) saturate(1.3) brightness(1.05)';
+      case 'faded':   return 'opacity(0.85) grayscale(20%) brightness(1.1) contrast(0.9) saturate(0.75)';
+      case 'dramatic':return 'contrast(1.4) brightness(0.85) saturate(1.2)';
+      default:        return 'none';
+    }
+  };
+
+  const profConfig = getProfessionConfig();
+  const premiumGradient = profConfig?.gradient || (isPro ? `linear-gradient(135deg, ${data.theme_color || '#3b82f6'} 0%, #8b5cf6 100%)` : undefined);
 
   return (
     <TooltipProvider>
@@ -278,7 +430,7 @@ END:VCARD`;
               WebkitMaskImage: 'linear-gradient(to bottom, black 60%, transparent 100%)'
             } : undefined}
           >
-             {isPro && data.background_video_url ? (
+              {isPro && data.background_video_url ? (
                <>
                  {data.background_video_url.match(/\.(mp4|webm|ogg|mov)$/i) ? (
                    <video 
@@ -303,12 +455,22 @@ END:VCARD`;
                </>
              ) : (
                <div 
-                 className="w-full h-full transition-colors duration-500"
+                 className="w-full h-full transition-colors duration-500 relative"
                  style={{ 
                    backgroundColor: data.theme_color || (isPro ? '#0f172a' : '#f1f5f9'),
                    backgroundImage: isPro && !data.theme_color ? 'linear-gradient(to bottom right, #0f172a, #1e293b)' : undefined
                  }}
                >
+                 {/* Digital Texture for Premium */}
+                 {isPro && (
+                   <div 
+                     className="absolute inset-0 opacity-[0.03]" 
+                     style={{ 
+                       backgroundImage: `linear-gradient(#fff 1px, transparent 1px), linear-gradient(90deg, #fff 1px, transparent 1px)`,
+                       backgroundSize: '20px 20px'
+                     }} 
+                   />
+                 )}
                  {/* Decorative Gradient overlays for Pro Non-Video */}
                  {isPro && (
                     <div className="absolute inset-0 bg-gradient-to-br from-primary/20 to-transparent mix-blend-overlay" />
@@ -322,61 +484,177 @@ END:VCARD`;
             
             {/* Badges */}
             <div className="absolute top-4 right-5 z-20">
-               {isPro ? (
-                  <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-black/30 backdrop-blur-xl border border-white/20 text-white text-[10px] font-black uppercase tracking-[0.2em] shadow-lg">
-                    <BadgeCheck className="w-3.5 h-3.5 text-blue-400" />
-                    Premium
+                {isPro ? (
+                  <div className="flex flex-col items-end gap-2 text-right">
+                    <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-black/30 backdrop-blur-xl border border-white/20 text-white text-[10px] font-black uppercase tracking-[0.2em] shadow-lg group-hover/card:border-amber-500/50 transition-colors">
+                      <Crown className="w-3.5 h-3.5 text-amber-400 fill-amber-400/20" />
+                      Premium
+                    </div>
+                    {/* ZL Badge - Regional Focus */}
+                    {(data.city?.toLowerCase().includes('zona leste') || data.service_area?.toLowerCase().includes('zona leste')) && (
+                      <div className="px-3 py-1 rounded-full bg-red-600 text-white text-[9px] font-black uppercase tracking-widest shadow-lg border border-red-500 animate-[pulse_2s_infinite]">
+                        Zona Leste - SP
+                      </div>
+                    )}
+                    {/* Profession Specific Label */}
+                    {profConfig?.label && (
+                      <div className="px-3 py-1 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-white text-[9px] font-bold uppercase tracking-wider">
+                        {profConfig.label}
+                      </div>
+                    )}
                   </div>
-               ) : (
+                ) : (
                   <div className="px-3 py-1 rounded-full bg-slate-200/50 text-slate-500 text-[9px] font-bold uppercase tracking-wider backdrop-blur-md">
                     Digital Free
                   </div>
-               )}
+                )}
             </div>
 
             {/* Identity Content */}
             <div className="relative z-10 flex flex-col items-center w-full max-w-[90%]">
-               {/* Avatar */}
-               <motion.div 
-                 whileHover={isPro ? { scale: 1.05 } : {}}
-                 className={cn(
-                   "w-28 h-28 rounded-full p-1.5 relative overflow-hidden transition-all duration-500 mb-5",
-                   isPro 
-                     ? "bg-white/10 backdrop-blur-md shadow-2xl" 
-                     : "bg-white shadow-xl"
-                 )}
-                 style={{
-                    backgroundColor: isPro && data.theme_color ? `${data.theme_color}10` : undefined,
-                    border: isPro && data.theme_color ? `2px solid ${data.theme_color}` : '1px solid rgba(255,255,255,0.2)',
-                    boxShadow: isPro && data.theme_color ? `0 8px 32px -4px ${data.theme_color}40` : undefined
-                 }}
-               >
-                 <div className="w-full h-full rounded-full overflow-hidden bg-slate-100 dark:bg-slate-800 flex items-center justify-center relative">
-                   {data.photo_url ? (
-                     <Image
-                       src={data.photo_url}
-                       alt={data.name || 'Avatar'}
-                       width={112}
-                       height={112}
-                       className="w-full h-full object-cover"
-                       priority
-                     />
-                   ) : (
-                     <span className="text-3xl font-bold text-slate-400">
-                       {data.name?.charAt(0) || '?'}
-                     </span>
-                   )}
-                 </div>
-                 {/* Verified Badge */}
-                 {isPro && (
-                    <div className="absolute -bottom-1 -right-1 bg-blue-500 text-white rounded-full p-1.5 shadow-lg border-2 border-transparent z-20">
-                      <BadgeCheck className="w-3.5 h-3.5" />
-                    </div>
-                 )}
-               </motion.div>
+                {/* ── AVATAR ─────────────────────────────────────── */}
+                <motion.div 
+                  whileHover={isPro ? { scale: 1.05, rotate: 2 } : {}}
+                  animate={isPro && data.photo_border_effect === 'pulse' ? { scale: [1, 1.04, 1] } : {}}
+                  transition={isPro && data.photo_border_effect === 'pulse' ? { duration: 2, repeat: Infinity, ease: 'easeInOut' } : {}}
+                  className={cn(
+                    "w-40 h-40 relative transition-all duration-500 mb-5 flex items-center justify-center",
+                    isPro 
+                      ? "" 
+                      : "rounded-full p-1.5 bg-white shadow-xl"
+                  )}
+                  style={isPro ? {
+                    filter: data.photo_border_effect === 'glow'
+                      ? `drop-shadow(0 0 14px ${profConfig?.accent || '#3b82f6'}) drop-shadow(0 0 6px ${profConfig?.accent || '#3b82f6'}99)`
+                      : data.photo_border_effect === 'rainbow'
+                      ? 'drop-shadow(0 0 14px #f43f5e) drop-shadow(0 0 8px #8b5cf6)'
+                      : 'drop-shadow(0 0 20px rgba(59,130,246,0.2))'
+                  } : undefined}
+                >
+                  {/* ── Spinning gradient border ── */}
+                  {isPro && data.photo_border_effect === 'spin' && (
+                    <motion.div
+                      className="absolute -inset-[5px] z-0"
+                      style={{
+                        clipPath: profConfig?.shape || 'circle(50% at 50% 50%)',
+                        background: 'conic-gradient(from 0deg, #3b82f6, #8b5cf6, #ef4444, #f59e0b, #22c55e, #06b6d4, #3b82f6)',
+                      }}
+                      animate={{ rotate: 360 }}
+                      transition={{ duration: 2.8, repeat: Infinity, ease: 'linear' }}
+                    />
+                  )}
 
-               {/* Identity Text Block */}
-               <div className={cn(
+                  {/* ── Rainbow animated glow ── */}
+                  {isPro && data.photo_border_effect === 'rainbow' && (
+                    <motion.div
+                      className="absolute -inset-[5px] z-0 blur-[2px]"
+                      style={{ clipPath: profConfig?.shape || 'circle(50% at 50% 50%)' }}
+                      animate={{
+                        background: [
+                          'conic-gradient(from 0deg, #ef4444, #f59e0b, #22c55e, #3b82f6, #8b5cf6, #ef4444)',
+                          'conic-gradient(from 120deg, #ef4444, #f59e0b, #22c55e, #3b82f6, #8b5cf6, #ef4444)',
+                          'conic-gradient(from 240deg, #ef4444, #f59e0b, #22c55e, #3b82f6, #8b5cf6, #ef4444)',
+                          'conic-gradient(from 360deg, #ef4444, #f59e0b, #22c55e, #3b82f6, #8b5cf6, #ef4444)',
+                        ],
+                      }}
+                      transition={{ duration: 3, repeat: Infinity, ease: 'linear' }}
+                    />
+                  )}
+
+                  {/* ── Outer gradient ring (shape border) ── */}
+                  <div 
+                    className="w-full h-full overflow-hidden flex items-center justify-center relative transition-all duration-500 z-[1]"
+                    style={isPro ? {
+                      clipPath: profConfig?.shape || 'circle(50% at 50% 50%)',
+                      background: premiumGradient
+                    } : undefined}
+                  >
+                    {/* ── Inner photo wrapper ── */}
+                    <div 
+                      className="w-[calc(100%-6px)] h-[calc(100%-6px)] overflow-hidden bg-slate-100 dark:bg-slate-800 flex items-center justify-center relative transition-all duration-500"
+                      style={isPro ? {
+                        clipPath: profConfig?.shape || 'circle(50% at 50% 50%)',
+                      } : undefined}
+                    >
+                      {data.photo_url ? (
+                        <Image
+                          src={data.photo_url}
+                          alt={data.name || 'Avatar'}
+                          width={160}
+                          height={160}
+                          className="w-full h-full object-cover transition-all duration-500"
+                          style={{ filter: getPhotoFilter() }}
+                          priority
+                        />
+                      ) : (
+                        <span className="text-3xl font-bold text-slate-400">
+                          {data.name?.charAt(0) || '?'}
+                        </span>
+                      )}
+
+                      {/* ── Shimmer overlay ── */}
+                      {isPro && data.photo_border_effect === 'shimmer' && (
+                        <motion.div
+                          className="absolute inset-0 overflow-hidden pointer-events-none"
+                        >
+                          <motion.div
+                            className="absolute inset-y-0 w-[45%]"
+                            style={{
+                              background: 'linear-gradient(105deg, transparent, rgba(255,255,255,0.35), transparent)',
+                              skewX: '-20deg',
+                            }}
+                            animate={{ x: ['-120%', '280%'] }}
+                            transition={{ duration: 2.2, repeat: Infinity, ease: 'linear', repeatDelay: 1.5 }}
+                          />
+                        </motion.div>
+                      )}
+                    </div>
+                  </div>
+                  
+                  {/* ── Soft Glow behind avatar ── */}
+                  {isPro && (
+                    <motion.div
+                      className="absolute inset-0 -z-10 blur-3xl rounded-full scale-125"
+                      style={{ backgroundColor: profConfig?.accent || 'var(--primary)' }}
+                      animate={data.photo_border_effect === 'pulse'
+                        ? { opacity: [0.5, 1, 0.5], scale: [1.1, 1.4, 1.1] }
+                        : { opacity: [0.4, 0.7, 0.4] }
+                      }
+                      transition={{ duration: 2.5, repeat: Infinity, ease: 'easeInOut' }}
+                    />
+                  )}
+
+                  {/* ── Verified Badge ── */}
+                  {isPro && (
+                     <div className="absolute bottom-1 right-1 bg-blue-500 text-white rounded-full p-1.5 shadow-lg border-2 border-slate-950 z-20">
+                       <BadgeCheck className="w-4 h-4" />
+                     </div>
+                  )}
+
+                  {/* ── Orbiting profession icon ── */}
+                  {isPro && profConfig && data.photo_border_effect === 'orbit' && (
+                    <motion.div
+                      className="absolute w-8 h-8 z-30"
+                      style={{ top: '50%', left: '50%', marginTop: '-16px', marginLeft: '-16px', originX: '50%', originY: '50%' }}
+                      animate={{ rotate: 360 }}
+                      transition={{ duration: 4, repeat: Infinity, ease: 'linear' }}
+                    >
+                      <div
+                        className="absolute w-7 h-7 rounded-full flex items-center justify-center shadow-lg border border-white/30"
+                        style={{
+                          top: '-4rem',
+                          left: '50%',
+                          transform: 'translateX(-50%)',
+                          background: profConfig.gradient,
+                        }}
+                      >
+                        <Sparkles className="w-3.5 h-3.5 text-white" />
+                      </div>
+                    </motion.div>
+                  )}
+                </motion.div>
+
+                <div className={cn(
                   "flex flex-col items-center px-6 py-4 rounded-[1.5rem] mt-2 transition-all w-full backdrop-blur-sm",
                   isPro 
                     ? "bg-black/20 border border-white/10 shadow-sm"
@@ -395,44 +673,65 @@ END:VCARD`;
                    {data.tagline || 'Sua profissão ou frase de impacto'}
                  </p>
                  
-                 <div className="flex flex-wrap items-center justify-center gap-2 mt-1">
-                    {data.city && (
-                      <div className={cn(
-                        "flex items-center gap-1.5 text-[10px] font-black uppercase tracking-[0.2em] py-1 px-3 rounded-full",
-                        isPro ? "bg-white/10 text-white/70" : "bg-slate-200/50 dark:bg-slate-800 text-slate-500"
-                      )}>
-                        <MapPin className="w-3 h-3" />
-                        {data.city}
-                      </div>
-                    )}
+                 <div className="flex flex-col gap-2.5 mt-2 w-full">
+                     {isPro && data.expert_area && (
+                       <div className="flex items-center gap-2 justify-center text-[11px] font-bold text-white/90">
+                         <div className="w-5 h-5 rounded-full bg-blue-500/20 flex items-center justify-center">
+                            <Briefcase className="w-3 h-3 text-blue-400" />
+                         </div>
+                         Especialista em {data.expert_area}
+                       </div>
+                     )}
 
-                    {data.address && (
-                      <a 
-                        href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(data.address)}`}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        onClick={() => handleTrackClick('click_address')}
-                        className={cn(
-                        "flex items-center gap-1.5 text-[10px] font-bold py-1 px-3 rounded-full border transition-all hover:scale-105 active:scale-95",
-                        isPro 
-                          ? "bg-white/5 border-white/10 text-white/80 hover:bg-white/10" 
-                          : "bg-white border-slate-200 text-slate-600 hover:bg-slate-50"
-                      )}>
-                        <MapPin className="w-3 h-3 opacity-50" />
-                        <span className="opacity-80 truncate max-w-[150px]">{data.address}</span>
-                      </a>
-                    )}
+                     <div className="flex flex-wrap items-center justify-center gap-2">
+                        {data.city && (
+                          <div className={cn(
+                            "flex items-center gap-1.5 text-[10px] font-black uppercase tracking-[0.2em] py-1 px-3 rounded-full",
+                            isPro ? "bg-white/10 text-white/70" : "bg-slate-200/50 dark:bg-slate-800 text-slate-500"
+                          )}>
+                            <MapPin className="w-3 h-3" />
+                            {data.city}
+                          </div>
+                        )}
 
-                    {isPro && data.service_area && (
-                      <div className={cn(
-                        "flex items-center gap-1.5 text-[10px] font-black uppercase tracking-[0.1em] py-1 px-3 rounded-full",
-                        "bg-amber-500/10 text-amber-500 border border-amber-500/20 shadow-[0_40px_100px_-20px_rgba(245,158,11,0.1)]"
-                      )}>
-                        <Target className="w-3 h-3" />
-                        Região: {data.service_area}
-                      </div>
-                    )}
-                 </div>
+                        {isPro && data.service_area && (
+                          <div className={cn(
+                            "flex items-center gap-1.5 text-[10px] font-black uppercase tracking-[0.1em] py-1 px-3 rounded-full",
+                            "bg-amber-500/10 text-amber-500 border border-amber-500/20"
+                          )}>
+                            <Target className="w-3 h-3" />
+                            Atendimento em {data.service_area}
+                          </div>
+                        )}
+
+                        {isPro && data.founded_year && (
+                          <div className={cn(
+                            "flex items-center gap-1.5 text-[10px] font-black uppercase tracking-[0.1em] py-1 px-3 rounded-full",
+                            "bg-white/10 text-white/50 border border-white/10"
+                          )}>
+                            <Award className="w-3 h-3" />
+                            Desde {data.founded_year}
+                          </div>
+                        )}
+                     </div>
+
+                     {data.address && (
+                       <a 
+                         href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(data.address)}`}
+                         target="_blank"
+                         rel="noopener noreferrer"
+                         onClick={() => handleTrackClick('click_address')}
+                         className={cn(
+                         "flex items-center gap-1.5 text-[10px] font-bold py-1 px-3 rounded-full border transition-all hover:scale-105 mx-auto active:scale-95 w-fit",
+                         isPro 
+                           ? "bg-white/5 border-white/10 text-white/80 hover:bg-white/10" 
+                           : "bg-white border-slate-200 text-slate-600 hover:bg-slate-50"
+                       )}>
+                         <MapPin className="w-3 h-3 opacity-50" />
+                         <span className="opacity-80 truncate max-w-[150px]">{data.address}</span>
+                       </a>
+                     )}
+                  </div>
                </div>
             </div>
           </div>
@@ -456,23 +755,26 @@ END:VCARD`;
                   variant="default"
                   size="lg"
                   className={cn(
-                    "w-full h-14 rounded-2xl font-black text-base transition-all flex items-center justify-center gap-3",
+                    "w-full h-15 rounded-2xl font-black text-base transition-all flex items-center justify-center gap-3 group/btn overflow-hidden relative",
                     isPro 
-                      ? "text-white shadow-xl hover:brightness-110 active:translate-y-1"
+                      ? "text-white shadow-[0_20px_50px_rgba(59,130,246,0.3)] hover:scale-[1.02] active:scale-[0.98]"
                       : "bg-slate-900 hover:bg-slate-800 text-white shadow-none border-0"
                   )}
                   style={{ 
-                    backgroundColor: isPro ? (data.theme_color || '#25D366') : undefined,
-                    boxShadow: isPro ? `0 10px 30px -10px ${data.theme_color}44` : undefined
+                    background: premiumGradient || (isPro ? (data.theme_color || '#25D366') : undefined),
                   }}
                   asChild
-                  aria-label={isPro ? 'Solicitar Orçamento via WhatsApp' : 'Conversar via WhatsApp'}
+                  aria-label={isPro ? 'Falar Agora via WhatsApp' : 'Conversar via WhatsApp'}
                   onClick={() => handleTrackClick('click_whatsapp')}
                 >
                   <a href={whatsappLink} target="_blank" rel="noopener noreferrer">
-                    <MessageCircle className={cn("w-6 h-6 flex-shrink-0", isPro ? "fill-white" : "fill-white/80")} />
-                    <span className="font-black uppercase tracking-wider">
-                       {isPro ? 'Solicitar Orçamento' : 'WhatsApp'}
+                    {/* Shine effect for Pro */}
+                    {isPro && (
+                      <div className="absolute top-0 -inset-full h-full w-1/2 z-5 block transform -skew-x-12 bg-gradient-to-r from-transparent to-white/20 opacity-40 group-hover/btn:animate-shine" />
+                    )}
+                    <MessageCircle className={cn("w-6 h-6 flex-shrink-0 z-10", isPro ? "fill-white" : "fill-white/80")} />
+                    <span className="font-black uppercase tracking-wider z-10">
+                       {isPro ? (data.cta_text || profConfig?.cta || 'Falar Agora') : 'WhatsApp'}
                     </span>
                   </a>
                 </Button>
@@ -588,40 +890,46 @@ END:VCARD`;
                    <motion.div
                      initial={{ opacity: 0, y: 10 }}
                      animate={{ opacity: 1, y: 0 }}
+                     whileHover={{ scale: 1.02, x: 5 }}
                      className={cn(
-                       "w-full px-4 py-3 rounded-full flex items-center gap-3 mb-3 transition-colors",
+                       "w-full px-5 py-4 rounded-3xl flex items-center gap-4 mb-4 transition-all cursor-pointer",
                        isPro 
-                         ? "bg-white/10 backdrop-blur-xl border border-white/20 shadow-lg"
+                         ? "bg-white/5 backdrop-blur-2xl border border-white/10 hover:bg-white/10 shadow-lg group/srv"
                          : "bg-white border border-slate-100"
                      )}
                    >
-                     <div className={cn("w-8 h-8 rounded-full flex items-center justify-center text-white shadow-lg shrink-0", isPro ? "bg-primary" : "bg-slate-900")}>
+                     <div className={cn("w-10 h-10 rounded-2xl flex items-center justify-center text-white shadow-lg shrink-0", isPro ? "bg-gradient-to-br from-primary to-blue-600" : "bg-slate-900")}>
                         {(() => {
                           const Icon = ICON_MAP[mainService.icon || 'Sparkles'] || Sparkles;
-                          return <Icon className="w-4 h-4" />;
+                          return <Icon className="w-5 h-5" />;
                         })()}
                      </div>
-                     <span className={cn("font-black uppercase leading-tight text-sm", isPro ? "text-white" : "text-slate-900")}>{mainService.name}</span>
+                     <span className={cn("font-bold uppercase tracking-wide text-sm leading-tight", isPro ? "text-white" : "text-slate-900")}>{mainService.name}</span>
                    </motion.div>
                 )}
 
                 {secondaryServices.length > 0 && (
-                  <div className="flex flex-col gap-2">
-                    {secondaryServices.map((service, i) => {
-                       const Icon = ICON_MAP[service.icon || 'Sparkles'] || Sparkles;
-                       return (
-                         <div key={i} className={cn(
-                           "w-full px-4 py-3 rounded-full flex items-center gap-3 border transition-colors",
-                           isPro ? "bg-white/5 backdrop-blur-md border-white/10 hover:bg-white/10" : "bg-slate-50 border-slate-100"
-                         )}>
-                            <div className={cn("w-6 h-6 rounded-lg flex items-center justify-center shrink-0", isPro ? "bg-white/10" : "bg-slate-100")}>
-                               <Icon className={cn("w-3.5 h-3.5", isPro ? "text-white/70" : "text-slate-500")} />
-                            </div>
-                            <span className={cn("text-xs font-bold leading-tight uppercase", isPro ? "text-white" : "text-slate-700 dark:text-slate-300")}>{service.name}</span>
-                         </div>
-                       );
-                    })}
-                  </div>
+                   <div className="grid grid-cols-1 gap-3">
+                     {secondaryServices.map((service, i) => {
+                        const Icon = ICON_MAP[service.icon || 'Sparkles'] || Sparkles;
+                        return (
+                          <motion.div 
+                            key={i} 
+                            whileHover={isPro ? { x: 5, backgroundColor: 'rgba(255,255,255,0.08)' } : {}}
+                            className={cn(
+                              "w-full px-5 py-4 rounded-2xl flex items-center gap-4 border transition-all cursor-pointer",
+                              isPro 
+                                ? "bg-white/[0.03] backdrop-blur-md border-white/5" 
+                                : "bg-slate-50 border-slate-100"
+                            )}>
+                             <div className={cn("w-8 h-8 rounded-xl flex items-center justify-center shrink-0", isPro ? "bg-white/5" : "bg-slate-100")}>
+                                <Icon className={cn("w-4 h-4", isPro ? "text-white/60" : "text-slate-500")} />
+                             </div>
+                             <span className={cn("text-xs font-semibold tracking-wide uppercase", isPro ? "text-white/90" : "text-slate-700 dark:text-slate-300")}>{service.name}</span>
+                          </motion.div>
+                        );
+                     })}
+                   </div>
                 )}
               </div>
             )}

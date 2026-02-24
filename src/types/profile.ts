@@ -36,6 +36,11 @@ export interface Profile {
   theme_color: string;
   theme_style: 'standard' | 'oled' | 'glass' | 'minimalist';
   font_family: string;
+  expert_area: string | null;
+  founded_year: number | null;
+  avatar_frame: string | null;
+  photo_filter: string | null;
+  photo_border_effect: string | null;
   background_video_url: string | null;
   created_at: string;
   updated_at: string;
@@ -58,6 +63,11 @@ export interface ProfileFormData {
   city?: string | null;
   address?: string | null;
   service_area?: string | null;
+  expert_area?: string | null;
+  founded_year?: number | null;
+  avatar_frame?: string | null;
+  photo_filter?: string | null;
+  photo_border_effect?: string | null;
   services?: ServiceItem[];
   cta_text?: string;
   seo_title?: string | null;
