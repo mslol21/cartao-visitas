@@ -1,15 +1,27 @@
 "use client";
 
-import React from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
+import QRCodeStyling, {
+  DrawType,
+  TypeNumber,
+  Mode,
+  ErrorCorrectionLevel,
+  DotType,
+  CornerSquareType,
+  CornerDotType,
+  Options
+} from "qr-code-styling";
 
 interface AnimatedQRProps {
-  /** URL completa do QR code (gerada externamente) */
-  qrSrc: string;
+  /** A URL que o QR code vai abrir */
+  url: string;
+  /** Foto para o centro do QR */
+  photoUrl?: string;
   /** Cor de acento da profissão */
   accentColor?: string;
-  /** Gradiente da profissão (para o frame) */
+  /** Gradiente da profissão */
   profGradient?: string;
   /** Tamanho em px */
   size?: number;
@@ -18,68 +30,121 @@ interface AnimatedQRProps {
 }
 
 export function AnimatedQR({
-  qrSrc,
+  url,
+  photoUrl,
   accentColor = "#00D4FF",
   profGradient,
   size = 112,
   active = true,
 }: AnimatedQRProps) {
+  const [qrCode, setQrCode] = useState<QRCodeStyling | null>(null);
+  const ref = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+
+    const options: Options = {
+      width: size * 4, // Higher resolution for cleaner look
+      height: size * 4,
+      type: "svg" as DrawType,
+      data: url,
+      image: active ? (photoUrl || "/logo-icon.svg") : undefined,
+      margin: 10,
+      qrOptions: {
+        typeNumber: 0 as TypeNumber,
+        mode: "Byte" as Mode,
+        errorCorrectionLevel: "H" as ErrorCorrectionLevel
+      },
+      imageOptions: {
+        hideBackgroundDots: true,
+        imageSize: 0.4,
+        margin: 5,
+        crossOrigin: "anonymous",
+      },
+      dotsOptions: {
+        color: active ? "#2563eb" : "#000000",
+        type: active ? "rounded" as DotType : "square" as DotType,
+        gradient: active ? {
+          type: "linear",
+          rotation: 45,
+          colorStops: [
+            { offset: 0, color: "#2563eb" }, // Blue (Igual ao da esquerda)
+            { offset: 1, color: "#10b981" }  // Green (Igual ao da esquerda)
+          ]
+        } : undefined
+      },
+      backgroundOptions: {
+        color: "#ffffff", // Fundo branco igual ao da esquerda
+      },
+      cornersSquareOptions: {
+        color: active ? "#2563eb" : "#000000",
+        type: active ? "extra-rounded" as CornerSquareType : "square" as CornerSquareType,
+      },
+      cornersDotOptions: {
+        color: active ? "#10b981" : "#000000",
+        type: active ? "dot" as CornerDotType : "square" as CornerDotType,
+      }
+    };
+
+    const newQrCode = new QRCodeStyling(options);
+    setQrCode(newQrCode);
+
+    if (ref.current) {
+      ref.current.innerHTML = "";
+      newQrCode.append(ref.current);
+    }
+  }, [url, active, photoUrl, size]);
+
   if (!active) {
-    // Free: QR estático, simples
     return (
       <div
-        className="rounded-2xl overflow-hidden border border-slate-200/30 shadow-md"
+        ref={ref}
+        className="rounded-2xl overflow-hidden border border-slate-200/30 shadow-md bg-white p-2"
         style={{ width: size, height: size }}
-      >
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src={qrSrc} alt="QR Code" className="w-full h-full object-cover" />
-      </div>
+      />
     );
   }
 
-  // PRO: QR animado
   const gradient =
     profGradient ||
     `linear-gradient(135deg, ${accentColor}cc, ${accentColor}44)`;
 
   return (
     <motion.div
-      className="relative flex items-center justify-center"
-      style={{ width: size + 16, height: size + 16 }}
+      className="relative flex items-center justify-center p-4 bg-white/5 rounded-[2rem] backdrop-blur-sm"
       initial={{ opacity: 0, scale: 0.9 }}
       animate={{ opacity: 1, scale: 1 }}
       transition={{ duration: 0.6, ease: "easeOut" }}
     >
       {/* Glow ring pulsante */}
       <div
-        className="absolute inset-0 rounded-[1.5rem]"
+        className="absolute inset-0 rounded-[2.2rem]"
         style={{
           animation: "qr-pulse 3s ease-in-out infinite",
-          borderRadius: "1.25rem",
         }}
       />
 
       {/* Frame externo com gradiente da profissão */}
       <div
-        className="absolute inset-0 rounded-[1.5rem] p-[2px]"
+        className="absolute inset-0 rounded-[2.2rem] p-[2px]"
         style={{
           background: gradient,
-          animation: "aura-spin 20s linear infinite",
+          animation: "aura-spin 30s linear infinite",
         }}
       >
-        <div className="w-full h-full rounded-[1.3rem] bg-slate-950" />
+        <div className="w-full h-full rounded-[2.1rem] bg-slate-950" />
       </div>
 
       {/* Cantos de bracket PRO */}
       {[
-        { cls: "top-0 left-0",    br: "8px 0 0 0",   bw: "2px 0 0 2px" },
-        { cls: "top-0 right-0",   br: "0 8px 0 0",   bw: "2px 2px 0 0" },
-        { cls: "bottom-0 left-0", br: "0 0 0 8px",   bw: "0 0 2px 2px" },
-        { cls: "bottom-0 right-0",br: "0 0 8px 0",   bw: "0 2px 2px 0" },
+        { cls: "top-2 left-2",    br: "12px 0 0 0",   bw: "3px 0 0 3px" },
+        { cls: "top-2 right-2",   br: "0 12px 0 0",   bw: "3px 3px 0 0" },
+        { cls: "bottom-2 left-2", br: "0 0 0 12px",   bw: "0 0 3px 3px" },
+        { cls: "bottom-2 right-2",br: "0 0 12px 0",   bw: "0 3px 3px 0" },
       ].map(({ cls, br, bw }, i) => (
         <div
           key={i}
-          className={`absolute w-5 h-5 z-[3] ${cls}`}
+          className={`absolute w-8 h-8 z-[10] ${cls}`}
           style={{
             borderColor: accentColor,
             borderStyle: "solid",
@@ -91,31 +156,23 @@ export function AnimatedQR({
         />
       ))}
 
-      {/* QR image */}
+      {/* Styled QR container */}
       <div
-        className="relative z-[2] rounded-[1.1rem] overflow-hidden"
-        style={{ width: size, height: size }}
+        className="relative z-[5] rounded-2xl overflow-hidden bg-white p-2 shadow-2xl"
+        style={{ width: size + 10, height: size + 10 }}
       >
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img
-          src={qrSrc}
-          alt="QR Code Konnexy PRO"
-          className="w-full h-full object-cover"
-          style={{ filter: "invert(0)" }}
-        />
-        {/* Overlay tint com a cor da profissão */}
-        <div
-          className="absolute inset-0 mix-blend-color pointer-events-none"
-          style={{ background: `${accentColor}15` }}
+        <div 
+          ref={ref} 
+          className="w-full h-full flex items-center justify-center [&>svg]:w-full [&>svg]:h-full [&>canvas]:w-full [&>canvas]:h-full"
         />
       </div>
 
       {/* Label PRO badge */}
       <div
-        className="absolute -bottom-3 left-1/2 -translate-x-1/2 z-[4] px-3 py-0.5 rounded-full text-[8px] font-black uppercase tracking-widest text-white shadow-lg"
+        className="absolute -bottom-2 left-1/2 -translate-x-1/2 z-[20] px-4 py-1 rounded-full text-[9px] font-black uppercase tracking-widest text-white shadow-xl"
         style={{ background: gradient }}
       >
-        Konnexy PRO
+        Konnexy PRO Signature
       </div>
     </motion.div>
   );

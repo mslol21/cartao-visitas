@@ -1024,47 +1024,6 @@ export function EditorForm({ initialData, onSubmit, onChange, isPro = false }: E
                     })}
                   </div>
                 </div>
-
-                {/* ── 2. BORDER EFFECT SELECTOR ────────────────────────────────── */}
-                <div className="space-y-3">
-                  <p className="text-[9px] font-black uppercase tracking-[0.25em] text-muted-foreground">2 — Efeito de Borda</p>
-                  <div className="grid grid-cols-4 sm:grid-cols-7 gap-2">
-                    {[
-                      { id: 'none',    label: 'Nenhum',      ringBg: '#94a3b8',   ringStyle: {} },
-                      { id: 'glow',    label: 'Glow',        ringBg: formData.theme_color || '#3b82f6', ringStyle: { filter: `drop-shadow(0 0 6px ${formData.theme_color || '#3b82f6'})` } },
-                      { id: 'spin',    label: 'Spin',        ringBg: 'conic-gradient(from 45deg, #3b82f6, #8b5cf6, #ef4444, #f59e0b, #22c55e, #3b82f6)', ringStyle: {} },
-                      { id: 'rainbow', label: 'Arco-íris',   ringBg: 'conic-gradient(from 0deg, #ef4444, #f59e0b, #22c55e, #3b82f6, #8b5cf6, #ef4444)', ringStyle: {} },
-                      { id: 'pulse',   label: 'Pulsar',      ringBg: formData.theme_color || '#3b82f6', ringStyle: { opacity: 0.8 } },
-                      { id: 'shimmer', label: 'Brilho',      ringBg: 'linear-gradient(105deg, #cbd5e1 30%, #f8fafc 50%, #cbd5e1 70%)', ringStyle: {} },
-                      { id: 'orbit',   label: 'Órbita',      ringBg: formData.theme_color || '#3b82f6', ringStyle: { border: `2px dashed ${formData.theme_color || '#3b82f6'}` } },
-                    ].map((fx) => {
-                      const isSelected = (formData.photo_border_effect || 'none') === fx.id;
-                      const currentShape = 'circle(50% at 50% 50%)'; // Simple circle for border effect preview
-                      return (
-                        <button
-                          key={fx.id}
-                          onClick={() => handleChange('photo_border_effect', fx.id)}
-                          title={fx.label}
-                          className={cn(
-                            "flex flex-col items-center justify-center gap-1.5 p-2 rounded-2xl border-2 transition-all hover:border-primary/60 hover:shadow-md group",
-                            isSelected ? "border-primary bg-primary/5 shadow-md" : "border-border/50 bg-card"
-                          )}
-                        >
-                          {/* Preview: outer ring + inner photo */}
-                          <div className="w-12 h-12 relative flex items-center justify-center" style={fx.ringStyle}>
-                            {/* Ring layer */}
-                            <div
-                              className="absolute inset-[-3px] rounded-full"
-                              style={{ background: fx.ringBg, clipPath: currentShape }}
-                            />
-                            {/* Photo layer */}
-                            <div
-                              className="w-[calc(100%-6px)] h-[calc(100%-6px)] overflow-hidden flex items-center justify-center relative z-[1] rounded-full"
-                            >
-                              {formData.photo_url ? (
-                                <img src={formData.photo_url} alt="" className="w-full h-full object-cover" />
-                              ) : (
-                                <div className="w-full h-full bg-slate-200 dark:bg-slate-700 rounded-full" />
                               )}
                             </div>
                           </div>

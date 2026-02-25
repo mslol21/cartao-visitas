@@ -513,15 +513,16 @@ END:VCARD`;
                         return (
                           <>
                             {/* Anel elétrico piscante */}
-                            <div className="absolute rounded-full z-[6]" style={{
-                              inset: '-4px',
+                            {/* Anel elétrico piscante */}
+                            <div className="absolute rounded-full z-[20]" style={{
+                              inset: '-3px',
                               border: `2px solid ${profAccent}`,
                               animation: 'electric-flicker 0.4s ease-in-out infinite',
                               boxShadow: `0 0 12px ${profAccent}80, 0 0 24px ${profAccent}30`,
                             }} />
                             {/* Faíscas em 6 pontos */}
                             {[0, 60, 120, 180, 240, 300].map((deg, i) => (
-                              <div key={i} className="absolute z-[7] w-0.5 rounded-full"
+                              <div key={i} className="absolute z-[21] w-0.5 rounded-full"
                                 style={{
                                   height: `${8 + (i % 3) * 5}px`,
                                   background: `linear-gradient(to top, ${profAccent}, transparent)`,
@@ -540,19 +541,19 @@ END:VCARD`;
                       case 'barber':
                         return (
                           <>
-                            <div className="absolute rounded-full z-[6]" style={{
+                            <div className="absolute rounded-full z-[15]" style={{
                               inset: '-8px',
                               border: `2px dashed ${profAccent}`,
                               animation: 'aura-spin 12s linear infinite',
                             }} />
-                            <div className="absolute rounded-full z-[6]" style={{
+                            <div className="absolute rounded-full z-[15]" style={{
                               inset: '-16px',
                               border: `1.5px dashed ${profAccent}50`,
                               animation: 'aura-spin 18s linear infinite reverse',
                             }} />
                             {/* Pontinhos nos quadrantes como marcas de tesoura */}
                             {[45, 135, 225, 315].map((deg, i) => (
-                              <div key={i} className="absolute w-2 h-2 rounded-full z-[7]"
+                              <div key={i} className="absolute w-2 h-2 rounded-full z-[16]"
                                 style={{
                                   background: profAccent,
                                   top: '50%', left: '50%',
@@ -571,7 +572,7 @@ END:VCARD`;
                         return (
                           <>
                             {[...Array(9)].map((_, i) => (
-                              <div key={i} className="absolute rounded-full z-[6]"
+                              <div key={i} className="absolute rounded-full z-[20]"
                                 style={{
                                   width:  `${7 + (i % 4) * 3}px`,
                                   height: `${7 + (i % 4) * 3}px`,
@@ -579,7 +580,7 @@ END:VCARD`;
                                   border: `1.5px solid ${profAccent}80`,
                                   bottom: `${5 + (i * 10) % 55}%`,
                                   left:   `${8 + (i * 19) % 75}%`,
-                                  animation: `bubble-rise ${1.4 + (i % 4) * 0.5}s ease-in-out infinite`,
+                                  animation: `bubble-rise ${2.5 + (i % 4) * 0.8}s ease-in-out infinite`,
                                   animationDelay: `${i * 0.25}s`,
                                 }}
                               />
@@ -696,7 +697,8 @@ END:VCARD`;
                         return (
                           <>
                             {/* Scan line inside clipped circle */}
-                            <div className="absolute rounded-full overflow-hidden z-[6]" style={{ inset: 0 }}>
+                            {/* Scan line inside clipped circle */}
+                            <div className="absolute rounded-full overflow-hidden z-[20]" style={{ inset: 0 }}>
                               <div className="absolute left-0 right-0 h-[2px]"
                                 style={{
                                   background: `linear-gradient(90deg, transparent, ${profAccent}CC, transparent)`,
@@ -712,7 +714,7 @@ END:VCARD`;
                               { cls: 'bottom-0 left-0',br: '0 0 0 4px',   bw: '0 0 2px 2px' },
                               { cls: 'bottom-0 right-0',br:'0 0 4px 0',   bw: '0 2px 2px 0' },
                             ] as const).map(({ cls, br, bw }, i) => (
-                              <div key={i} className={`absolute w-5 h-5 z-[7] ${cls}`}
+                              <div key={i} className={`absolute w-5 h-5 z-[21] ${cls}`}
                                 style={{
                                   borderColor: profAccent,
                                   borderStyle: 'solid',
@@ -1184,10 +1186,11 @@ END:VCARD`;
             {isPro && (data.username || data.id) && (
               <div className="flex flex-col items-center mt-2 mb-4">
                 <AnimatedQR
-                  qrSrc={`https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(`${process.env.NEXT_PUBLIC_APP_URL || 'https://konnexy.com.br'}/u/${data.username || data.id}`)}&bgcolor=FFFFFF&color=000000&format=png`}
+                  url={`${process.env.NEXT_PUBLIC_APP_URL || 'https://konnexy.com.br'}/u/${data.username || data.id}`}
+                  photoUrl={data.photo_url || undefined}
                   accentColor={profConfig?.accent || '#00D4FF'}
                   profGradient={profConfig?.gradient}
-                  size={110}
+                  size={120}
                   active={isPro}
                 />
               </div>
