@@ -158,3 +158,84 @@
   scrollbar-width: none;
 }
 
+/* ══ PROFESSION ANIMATIONS ═══════════════════════════════════════════════ */
+
+/* ⚡ Electrician — electric flicker */
+@keyframes electric-flicker {
+  0%, 100% { opacity: 1; filter: brightness(1); }
+  18%  { opacity: 0.2; filter: brightness(2); }
+  22%  { opacity: 1; filter: brightness(1.5); }
+  55%  { opacity: 0.6; filter: brightness(1.8); }
+  58%  { opacity: 1; filter: brightness(1); }
+}
+@keyframes electric-spark {
+  0%   { transform: translateY(0)   scale(1); opacity: 1; }
+  100% { transform: translateY(-28px) scale(0); opacity: 0; }
+}
+
+/* 🫧 Cleaner — bubbles rising */
+@keyframes bubble-rise {
+  0%   { transform: translateY(0)   scale(1);   opacity: 0.7; }
+  50%  { transform: translateY(-22px) scale(1.15); opacity: 0.4; }
+  100% { transform: translateY(-50px) scale(0.3); opacity: 0; }
+}
+
+/* ⚙️ Mechanic — gear pulse (uses aura-spin + this) */
+@keyframes gear-pulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(249,115,22,0.5); }
+  50%       { box-shadow: 0 0 0 8px rgba(249,115,22,0); }
+}
+
+/* 💧 Plumber — water ripple expand */
+@keyframes water-ripple {
+  0%   { transform: scale(1);   opacity: 0.7; }
+  100% { transform: scale(1.9); opacity: 0; }
+}
+
+/* ❤️ Health — heartbeat double-pulse */
+@keyframes heartbeat {
+  0%,100% { transform: scale(1);    opacity: 0.8; }
+  14%     { transform: scale(1.18); opacity: 1; }
+  28%     { transform: scale(1);    opacity: 0.8; }
+  42%     { transform: scale(1.1);  opacity: 0.9; }
+  56%     { transform: scale(1);    opacity: 0.8; }
+}
+@keyframes heartbeat-ring {
+  0%   { transform: scale(1);   opacity: 0.8; }
+  100% { transform: scale(2.2); opacity: 0; }
+}
+
+/* ⚖️ Law — scale rocking */
+@keyframes scale-rock {
+  0%,100% { transform: rotate(0deg); }
+  25%     { transform: rotate(-6deg); }
+  75%     { transform: rotate(6deg); }
+}
+@keyframes gold-orbit {
+  from { transform: rotate(0deg)   translateX(58px) rotate(0deg); }
+  to   { transform: rotate(360deg) translateX(58px) rotate(-360deg); }
+}
+
+/* 💻 Tech — horizontal scan line */
+@keyframes scan-line {
+  0%   { top: 0%;    opacity: 0; }
+  5%   { opacity: 0.7; }
+  95%  { opacity: 0.7; }
+  100% { top: 100%;  opacity: 0; }
+}
+@keyframes digital-blink {
+  0%,100% { opacity: 0.9; }
+  50%     { opacity: 0.3; }
+}
+
+/* 🐾 Pet — hearts / paws floating up */
+@keyframes pet-float {
+  0%   { transform: translateY(0)    rotate(0deg)   scale(1);   opacity: 0.9; }
+  100% { transform: translateY(-55px) rotate(15deg) scale(0.3); opacity: 0; }
+}
+
+/* 💼 Business — orbit dot */
+@keyframes biz-orbit {
+  from { transform: rotate(0deg)   translateX(60px); }
+  to   { transform: rotate(360deg) translateX(60px); }
+}

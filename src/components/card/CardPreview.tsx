@@ -491,6 +491,278 @@ END:VCARD`;
                     orbit:   'aura-spin 6s linear infinite',
                   };
 
+                   // ── Profession-specific animations ──────────────────────────
+                  const renderProfAnim = (): React.ReactNode => {
+                    if (!profConfig || !isPro) return null;
+                    const frame = data.avatar_frame;
+
+                    switch (frame) {
+                      // ⚡ Eletricista — faíscas elétricas que tremem
+                      case 'electrician':
+                        return (
+                          <>
+                            {/* Anel elétrico piscante */}
+                            <div className="absolute rounded-full z-[6]" style={{
+                              inset: '-4px',
+                              border: `2px solid ${profAccent}`,
+                              animation: 'electric-flicker 0.4s ease-in-out infinite',
+                              boxShadow: `0 0 12px ${profAccent}80, 0 0 24px ${profAccent}30`,
+                            }} />
+                            {/* Faíscas em 6 pontos */}
+                            {[0, 60, 120, 180, 240, 300].map((deg, i) => (
+                              <div key={i} className="absolute z-[7] w-0.5 rounded-full"
+                                style={{
+                                  height: `${8 + (i % 3) * 5}px`,
+                                  background: `linear-gradient(to top, ${profAccent}, transparent)`,
+                                  top: '50%', left: '50%',
+                                  transformOrigin: '0 0',
+                                  transform: `rotate(${deg}deg) translateX(52px) translateY(-50%)`,
+                                  animation: `electric-spark ${0.3 + i * 0.07}s ease-out infinite`,
+                                  animationDelay: `${i * 0.08}s`,
+                                }}
+                              />
+                            ))}
+                          </>
+                        );
+
+                      // ✂️ Barbearia — dois anéis tracejados contra-rotativos
+                      case 'barber':
+                        return (
+                          <>
+                            <div className="absolute rounded-full z-[6]" style={{
+                              inset: '-8px',
+                              border: `2px dashed ${profAccent}`,
+                              animation: 'aura-spin 5s linear infinite',
+                            }} />
+                            <div className="absolute rounded-full z-[6]" style={{
+                              inset: '-16px',
+                              border: `1.5px dashed ${profAccent}50`,
+                              animation: 'aura-spin 9s linear infinite reverse',
+                            }} />
+                            {/* Pontinhos nos quadrantes como marcas de tesoura */}
+                            {[45, 135, 225, 315].map((deg, i) => (
+                              <div key={i} className="absolute w-2 h-2 rounded-full z-[7]"
+                                style={{
+                                  background: profAccent,
+                                  top: '50%', left: '50%',
+                                  boxShadow: `0 0 6px ${profAccent}`,
+                                  transform: `rotate(${deg}deg) translateX(50px) translateY(-50%)`,
+                                  animation: 'aura-spin 5s linear infinite',
+                                  animationDelay: `${-i * 1.25}s`,
+                                }}
+                              />
+                            ))}
+                          </>
+                        );
+
+                      // 🫧 Limpeza — bolhas subindo
+                      case 'cleaner':
+                        return (
+                          <>
+                            {[...Array(9)].map((_, i) => (
+                              <div key={i} className="absolute rounded-full z-[6]"
+                                style={{
+                                  width:  `${7 + (i % 4) * 3}px`,
+                                  height: `${7 + (i % 4) * 3}px`,
+                                  background: `${profAccent}40`,
+                                  border: `1.5px solid ${profAccent}80`,
+                                  bottom: `${5 + (i * 10) % 55}%`,
+                                  left:   `${8 + (i * 19) % 75}%`,
+                                  animation: `bubble-rise ${1.4 + (i % 4) * 0.5}s ease-in-out infinite`,
+                                  animationDelay: `${i * 0.25}s`,
+                                }}
+                              />
+                            ))}
+                          </>
+                        );
+
+                      // ⚙️ Mecânico — engrenagem girante com dois anéis
+                      case 'mechanic':
+                        return (
+                          <>
+                            {/* Anel externo com tracejado de dentes */}
+                            <div className="absolute rounded-full z-[6]" style={{
+                              inset: '-10px',
+                              border: `4px solid transparent`,
+                              borderTopColor: profAccent,
+                              borderBottomColor: profAccent,
+                              borderLeftColor:  `${profAccent}40`,
+                              borderRightColor: `${profAccent}40`,
+                              animation: 'aura-spin 2s linear infinite',
+                              boxShadow: `0 0 8px ${profAccent}40`,
+                            }} />
+                            <div className="absolute rounded-full z-[6]" style={{
+                              inset: '-20px',
+                              border: `2px dashed ${profAccent}30`,
+                              animation: 'aura-spin 5s linear infinite reverse',
+                            }} />
+                            {/* Parafusos nos 4 pontos */}
+                            {[0, 90, 180, 270].map((deg, i) => (
+                              <div key={i} className="absolute w-2 h-2 rounded-full z-[7]"
+                                style={{
+                                  background: profAccent,
+                                  top: '50%', left: '50%',
+                                  transform: `rotate(${deg}deg) translateX(54px) translateY(-50%)`,
+                                  animation: 'aura-spin 2s linear infinite',
+                                  animationDelay: `${-i * 0.5}s`,
+                                  boxShadow: `0 0 4px ${profAccent}`,
+                                }}
+                              />
+                            ))}
+                          </>
+                        );
+
+                      // 💧 Encanador — ondas de água se expandindo
+                      case 'plumber':
+                        return (
+                          <>
+                            {[0, 1, 2, 3].map((i) => (
+                              <div key={i} className="absolute rounded-full z-[6]"
+                                style={{
+                                  inset: 0,
+                                  border: `2px solid ${profAccent}`,
+                                  animation: `water-ripple 2s ease-out infinite`,
+                                  animationDelay: `${i * 0.5}s`,
+                                }}
+                              />
+                            ))}
+                          </>
+                        );
+
+                      // ❤️ Saúde — batimento cardíaco duplo-pulso
+                      case 'health':
+                        return (
+                          <>
+                            {/* Anel que bate como coração */}
+                            <div className="absolute rounded-full z-[6]"
+                              style={{
+                                inset: '-3px',
+                                border: `2.5px solid ${profAccent}`,
+                                animation: 'heartbeat 1.2s ease-in-out infinite',
+                                boxShadow: `0 0 10px ${profAccent}60`,
+                              }}
+                            />
+                            {/* Rings que se expandem como ECG */}
+                            {[0, 1].map((i) => (
+                              <div key={i} className="absolute rounded-full z-[5]"
+                                style={{
+                                  inset: 0,
+                                  border: `1.5px solid ${profAccent}80`,
+                                  animation: `heartbeat-ring 1.2s ease-out infinite`,
+                                  animationDelay: `${i * 0.6}s`,
+                                }}
+                              />
+                            ))}
+                          </>
+                        );
+
+                      // ⚖️ Direito — partículas douradas orbitando + anel que balança
+                      case 'law':
+                        return (
+                          <>
+                            <div className="absolute rounded-full z-[5]" style={{
+                              inset: '-8px',
+                              border: `1.5px solid ${profAccent}40`,
+                              animation: 'scale-rock 3s ease-in-out infinite',
+                            }} />
+                            {[0, 1, 2, 3].map((i) => (
+                              <div key={i} className="absolute w-2 h-2 rounded-full z-[7]"
+                                style={{
+                                  background: profAccent,
+                                  top: '50%', left: '50%',
+                                  transformOrigin: '-58px 0',
+                                  animation: `gold-orbit 6s linear infinite`,
+                                  animationDelay: `${-i * 1.5}s`,
+                                  boxShadow: `0 0 8px ${profAccent}`,
+                                }}
+                              />
+                            ))}
+                          </>
+                        );
+
+                      // 💻 TI — linha de scan digital + cantos de bracket
+                      case 'tech':
+                        return (
+                          <>
+                            {/* Scan line inside clipped circle */}
+                            <div className="absolute rounded-full overflow-hidden z-[6]" style={{ inset: 0 }}>
+                              <div className="absolute left-0 right-0 h-[2px]"
+                                style={{
+                                  background: `linear-gradient(90deg, transparent, ${profAccent}CC, transparent)`,
+                                  animation: 'scan-line 2s linear infinite',
+                                  boxShadow: `0 0 8px ${profAccent}`,
+                                }}
+                              />
+                            </div>
+                            {/* Corner brackets */}
+                            {([
+                              { cls: 'top-0 left-0',   br: '4px 0 0 0',   bw: '2px 0 0 2px' },
+                              { cls: 'top-0 right-0',  br: '0 4px 0 0',   bw: '2px 2px 0 0' },
+                              { cls: 'bottom-0 left-0',br: '0 0 0 4px',   bw: '0 0 2px 2px' },
+                              { cls: 'bottom-0 right-0',br:'0 0 4px 0',   bw: '0 2px 2px 0' },
+                            ] as const).map(({ cls, br, bw }, i) => (
+                              <div key={i} className={`absolute w-5 h-5 z-[7] ${cls}`}
+                                style={{
+                                  borderColor: profAccent,
+                                  borderStyle: 'solid',
+                                  borderWidth: bw,
+                                  borderRadius: br,
+                                  animation: `digital-blink 2s ease-in-out infinite`,
+                                  animationDelay: `${i * 0.5}s`,
+                                }}
+                              />
+                            ))}
+                          </>
+                        );
+
+                      // 🐾 Petshop — corações e patinhas flutuando
+                      case 'pet':
+                        return (
+                          <>
+                            {['🐾','❤️','🐾','🐟','❤️','🐾'].map((emoji, i) => (
+                              <div key={i} className="absolute z-[6] select-none pointer-events-none"
+                                style={{
+                                  bottom: `${8 + (i * 13) % 45}%`,
+                                  left:   `${6 + (i * 21) % 82}%`,
+                                  fontSize: `${10 + (i % 3) * 4}px`,
+                                  animation: `pet-float ${1.5 + (i % 3) * 0.6}s ease-out infinite`,
+                                  animationDelay: `${i * 0.35}s`,
+                                }}
+                              >
+                                {emoji}
+                              </div>
+                            ))}
+                          </>
+                        );
+
+                      // 💼 Negócios — ponto profissional orbitando + anel sólido
+                      case 'business':
+                        return (
+                          <>
+                            <div className="absolute rounded-full z-[5]" style={{
+                              inset: '-8px',
+                              border: `1px solid ${profAccent}30`,
+                            }} />
+                            {[0, 1].map((i) => (
+                              <div key={i} className="absolute w-2.5 h-2.5 rounded-full z-[7]"
+                                style={{
+                                  background: `linear-gradient(135deg, ${profAccent}, white)`,
+                                  top: '50%', left: '50%',
+                                  transformOrigin: '-60px 0',
+                                  animation: `biz-orbit ${5 + i * 3}s linear infinite`,
+                                  animationDelay: `${-i * 2.5}s`,
+                                  boxShadow: `0 0 8px ${profAccent}80`,
+                                }}
+                              />
+                            ))}
+                          </>
+                        );
+
+                      default:
+                        return null;
+                    }
+                  };
+
                   return (
                     <div className={cn("konnexy-aura mb-8", isPro && "scale-110")}>
 
@@ -534,6 +806,8 @@ END:VCARD`;
                               }}
                             />
                           ))}
+                          {/* Profissão: animação temática */}
+                          {renderProfAnim()}
                         </>
                       )}
 
