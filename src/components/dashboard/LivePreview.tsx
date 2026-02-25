@@ -27,6 +27,7 @@ export function LivePreview({ data }: LivePreviewProps) {
           data={data}
           showBranding={data.plan !== 'pro'}
           suppressTracking={true}
+          forceProPreview={true}
         />
       </PhoneFrame>
       

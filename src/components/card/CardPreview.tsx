@@ -74,16 +74,26 @@ import { trackEvent, AnalyticsEventType } from '@/app/actions/analytics';
 import { toast } from 'sonner';
 import html2canvas from 'html2canvas';
 import { jsPDF } from 'jspdf';
+import { DigitalField } from '@/components/pro/DigitalField';
+import { AnimatedQR } from '@/components/pro/AnimatedQR';
 
 interface CardPreviewProps {
   data: Partial<Profile>;
   showBranding?: boolean;
   suppressTracking?: boolean;
   isDownloadMode?: boolean;
+  forceProPreview?: boolean; // Novo: força a exibição de recursos PRO no editor
 }
 
-export function CardPreview({ data, showBranding = true, suppressTracking = false, isDownloadMode = false }: CardPreviewProps) {
-  const isPro = data.plan === 'pro';
+export function CardPreview({ 
+  data, 
+  showBranding = true, 
+  suppressTracking = false, 
+  isDownloadMode = false,
+  forceProPreview = false 
+}: CardPreviewProps) {
+  // isPro agora é verdadeiro se o plano for PRO OU se estivermos forçando o preview no editor
+  const isPro = data.plan === 'pro' || forceProPreview;
 
   const handleTrackClick = async (type: AnalyticsEventType) => {
     if (suppressTracking || !data.id || isDownloadMode) return;
@@ -421,13 +431,14 @@ END:VCARD`;
              ) : (
                <div 
                  className={cn(
-                   "w-full h-full transition-colors duration-500 relative",
-                   isPro ? "konnexy-digital-field" : "bg-white dark:bg-slate-950"
-                 )}
-               >
-                 {!isPro && (
-                   <div className="absolute inset-0 bg-slate-50 dark:bg-slate-900/50" />
-                 )}
+                    "w-full h-full transition-colors duration-500 relative overflow-hidden",
+                    isPro ? "konnexy-digital-field" : "bg-white dark:bg-slate-950"
+                  )}
+                >
+                  <DigitalField accentColor={profConfig?.accent || '#00D4FF'} active={isPro} />
+                  {!isPro && (
+                    <div className="absolute inset-0 bg-slate-50 dark:bg-slate-900/50" />
+                  )}
                </div>
              )}
           </div>
@@ -532,12 +543,12 @@ END:VCARD`;
                             <div className="absolute rounded-full z-[6]" style={{
                               inset: '-8px',
                               border: `2px dashed ${profAccent}`,
-                              animation: 'aura-spin 5s linear infinite',
+                              animation: 'aura-spin 12s linear infinite',
                             }} />
                             <div className="absolute rounded-full z-[6]" style={{
                               inset: '-16px',
                               border: `1.5px dashed ${profAccent}50`,
-                              animation: 'aura-spin 9s linear infinite reverse',
+                              animation: 'aura-spin 18s linear infinite reverse',
                             }} />
                             {/* Pontinhos nos quadrantes como marcas de tesoura */}
                             {[45, 135, 225, 315].map((deg, i) => (
@@ -588,13 +599,13 @@ END:VCARD`;
                               borderBottomColor: profAccent,
                               borderLeftColor:  `${profAccent}40`,
                               borderRightColor: `${profAccent}40`,
-                              animation: 'aura-spin 2s linear infinite',
+                              animation: 'aura-spin 15s linear infinite',
                               boxShadow: `0 0 8px ${profAccent}40`,
                             }} />
                             <div className="absolute rounded-full z-[6]" style={{
                               inset: '-20px',
                               border: `2px dashed ${profAccent}30`,
-                              animation: 'aura-spin 5s linear infinite reverse',
+                              animation: 'aura-spin 25s linear infinite reverse',
                             }} />
                             {/* Parafusos nos 4 pontos */}
                             {[0, 90, 180, 270].map((deg, i) => (
@@ -621,8 +632,8 @@ END:VCARD`;
                                 style={{
                                   inset: 0,
                                   border: `2px solid ${profAccent}`,
-                                  animation: `water-ripple 2s ease-out infinite`,
-                                  animationDelay: `${i * 0.5}s`,
+                                  animation: `water-ripple 4s ease-out infinite`,
+                                  animationDelay: `${i * 1.0}s`,
                                 }}
                               />
                             ))}
@@ -810,6 +821,9 @@ END:VCARD`;
                           {renderProfAnim()}
                         </>
                       )}
+
+                      {/* Profissão: animação temática (renderiza sempre se não houver efeito ou se isPro) */}
+                      {hasEffect && renderProfAnim()}
 
                       {/* --- Border effect ring --- */}
                       {hasEffect && (
@@ -1166,6 +1180,19 @@ END:VCARD`;
               </div>
             )}
             
+            {/* QR Signature PRO */}
+            {isPro && (data.username || data.id) && (
+              <div className="flex flex-col items-center mt-2 mb-4">
+                <AnimatedQR
+                  qrSrc={`https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(`${process.env.NEXT_PUBLIC_APP_URL || 'https://konnexy.com.br'}/u/${data.username || data.id}`)}&bgcolor=FFFFFF&color=000000&format=png`}
+                  accentColor={profConfig?.accent || '#00D4FF'}
+                  profGradient={profConfig?.gradient}
+                  size={110}
+                  active={isPro}
+                />
+              </div>
+            )}
+
             {/* Branding Footer (Assinatura de Marca) */}
             {showBranding && (
                <div className="mt-auto pt-8 pb-4 text-center">

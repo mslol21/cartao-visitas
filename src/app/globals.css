@@ -128,7 +128,7 @@
     @apply absolute -inset-2 rounded-full border-2 border-transparent opacity-40;
     border-top-color: #00D4FF;
     border-right-color: #3B82F6;
-    animation: aura-spin 10s linear infinite;
+    animation: aura-spin 18s linear infinite;
   }
 
   .aura-particle {
@@ -161,6 +161,30 @@
 /* ══ PROFESSION ANIMATIONS ═══════════════════════════════════════════════ */
 
 /* ⚡ Electrician — electric flicker */
+/* ══ QR SIGNATURE PRO ══════════════════════════════════════════════════ */
+@keyframes qr-pulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(0, 212, 255, 0.4), 0 0 20px rgba(0, 212, 255, 0.1); }
+  50%       { box-shadow: 0 0 0 8px rgba(0, 212, 255, 0), 0 0 30px rgba(0, 212, 255, 0.2); }
+}
+@keyframes qr-corner-blink {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0.4; }
+}
+
+/* ══ DIGITAL FIELD PREMIUM ══════════════════════════════════════════════ */
+@keyframes field-gradient-shift {
+  0%   { background-position: 0% 50%; }
+  50%  { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+@keyframes field-particle-float {
+  0%   { transform: translateY(0)   translateX(0)   scale(1);   opacity: 0; }
+  10%  { opacity: 0.6; }
+  90%  { opacity: 0.3; }
+  100% { transform: translateY(-80px) translateX(20px) scale(0.5); opacity: 0; }
+}
+
+/* ══ PROFESSION ANIMATIONS (refined — slow & premium) ══════════════════ */
 @keyframes electric-flicker {
   0%, 100% { opacity: 1; filter: brightness(1); }
   18%  { opacity: 0.2; filter: brightness(2); }
