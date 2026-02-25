@@ -904,6 +904,61 @@ export function EditorForm({ initialData, onSubmit, onChange, isPro = false }: E
 
 
 
+                {/* ── 0. PROFESSION SELECTOR ──────────────────────────────────── */}
+                <div className="space-y-3">
+                  <p className="text-[9px] font-black uppercase tracking-[0.25em] text-muted-foreground">Profissão</p>
+                  <div className="grid grid-cols-4 sm:grid-cols-6 gap-2">
+                    {[
+                      { id: 'none',        label: 'Padrão',     icon: User,         color: '#64748b' },
+                      { id: 'electrician', label: 'Eletricista', icon: Zap,          color: '#fbbf24' },
+                      { id: 'barber',      label: 'Barbearia',  icon: Scissors,     color: '#d4af37' },
+                      { id: 'cleaner',     label: 'Limpeza',    icon: SparklesIcon, color: '#0ea5e9' },
+                      { id: 'mechanic',    label: 'Mecânico',   icon: Wrench,       color: '#f97316' },
+                      { id: 'plumber',     label: 'Encanador',  icon: Hammer,       color: '#2563eb' },
+                      { id: 'health',      label: 'Saúde',      icon: Stethoscope,  color: '#ef4444' },
+                      { id: 'law',         label: 'Direito',    icon: Scale,        color: '#eab308' },
+                      { id: 'tech',        label: 'TI',         icon: Cpu,          color: '#3b82f6' },
+                      { id: 'pet',         label: 'Petshop',    icon: Heart,        color: '#fb923c' },
+                      { id: 'business',    label: 'Negócios',   icon: Briefcase,    color: '#64748b' },
+                    ].map((prof) => {
+                      const isSelected = (formData.avatar_frame || 'none') === prof.id;
+                      const PIcon = prof.icon;
+                      return (
+                        <button
+                          key={prof.id}
+                          onClick={() => handleChange('avatar_frame', prof.id)}
+                          title={prof.label}
+                          className={cn(
+                            "flex flex-col items-center justify-center gap-1.5 p-2 rounded-2xl border-2 transition-all hover:border-primary/60 hover:shadow-md group",
+                            isSelected ? "border-primary bg-primary/5 shadow-md" : "border-border/50 bg-card"
+                          )}
+                        >
+                          <div
+                            className="w-10 h-10 rounded-xl flex items-center justify-center transition-transform group-hover:scale-110"
+                            style={{
+                              background: isSelected
+                                ? `linear-gradient(135deg, ${prof.color}dd, ${prof.color}66)`
+                                : `${prof.color}18`,
+                              border: `1.5px solid ${prof.color}${isSelected ? 'cc' : '40'}`,
+                            }}
+                          >
+                            <PIcon
+                              className="w-5 h-5 drop-shadow"
+                              style={{ color: isSelected ? '#fff' : prof.color }}
+                            />
+                          </div>
+                          <span className={cn(
+                            "text-[8px] font-bold uppercase tracking-tight text-center leading-tight",
+                            isSelected ? "text-primary" : "text-muted-foreground"
+                          )}>
+                            {prof.label}
+                          </span>
+                        </button>
+                      );
+                    })}
+                  </div>
+                </div>
+
                 {/* ── 1. FILTER SELECTOR ───────────────────────────────────────── */}
                 <div className="space-y-3">
                   <p className="text-[9px] font-black uppercase tracking-[0.25em] text-muted-foreground">1 — Filtro de Imagem</p>
