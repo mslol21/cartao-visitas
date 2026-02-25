@@ -889,22 +889,15 @@ export function EditorForm({ initialData, onSubmit, onChange, isPro = false }: E
             <div className="h-[1px] bg-border/50 my-6" />
 
             {/* ══ PHOTO CUSTOMIZATION ══════════════════════════════════════════════ */}
-            <div className="space-y-1">
-              <div className="flex items-center justify-between mb-4">
-                <div>
-                  <Label className="flex items-center gap-2 font-black uppercase tracking-widest text-[10px]">
-                    <Camera className="w-4 h-4 text-primary" /> Formato da Foto
-                  </Label>
-                  <p className="text-[10px] text-muted-foreground mt-0.5">Forma, filtro e efeito de borda</p>
-                </div>
-                {!isPro && <span className="text-[10px] bg-primary/10 text-primary px-2 py-1 rounded-full font-black">PRO</span>}
+            <div className="space-y-6">
+              <div className="mb-2">
+                <Label className="flex items-center gap-2 font-black uppercase tracking-widest text-[10px]">
+                  <Camera className="w-4 h-4 text-primary" /> Personalização da Foto
+                </Label>
+                <p className="text-[10px] text-muted-foreground mt-0.5">Profissão, filtro e efeito de borda</p>
               </div>
 
-              <div className={cn("space-y-7", !isPro && "opacity-40 pointer-events-none")}>
-
-
-
-                {/* ── 0. PROFESSION SELECTOR ──────────────────────────────────── */}
+                {/* ── 0. PROFESSION SELECTOR (todos os usuários) ──────────────── */}
                 <div className="space-y-3">
                   <p className="text-[9px] font-black uppercase tracking-[0.25em] text-muted-foreground">Profissão</p>
                   <div className="grid grid-cols-4 sm:grid-cols-6 gap-2">
@@ -958,6 +951,15 @@ export function EditorForm({ initialData, onSubmit, onChange, isPro = false }: E
                     })}
                   </div>
                 </div>
+
+              {/* PRO-only: filtro e borda */}
+              <div className={cn("space-y-7", !isPro && "opacity-40 pointer-events-none")}>
+                {!isPro && (
+                  <div className="flex items-center gap-2 p-3 rounded-2xl bg-primary/5 border border-primary/20">
+                    <span className="text-[10px] bg-primary/10 text-primary px-2 py-1 rounded-full font-black flex-shrink-0">PRO</span>
+                    <p className="text-[10px] text-muted-foreground">Filtro de imagem e efeitos de borda disponíveis no plano PRO</p>
+                  </div>
+                )}
 
                 {/* ── 1. FILTER SELECTOR ───────────────────────────────────────── */}
                 <div className="space-y-3">
