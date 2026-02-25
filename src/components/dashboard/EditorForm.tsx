@@ -1024,20 +1024,8 @@ export function EditorForm({ initialData, onSubmit, onChange, isPro = false }: E
                     })}
                   </div>
                 </div>
-                              )}
-                            </div>
-                          </div>
-                          <span className={cn("text-[8px] font-bold uppercase tracking-tight text-center leading-tight", isSelected ? "text-primary" : "text-muted-foreground")}>
-                            {fx.label}
-                          </span>
-                        </button>
-                      );
-                    })}
-                  </div>
-                </div>
-              </div>
 
-              {!isPro && (
+               {!isPro && (
                 <div className="mt-4 p-4 rounded-2xl bg-primary/5 border border-primary/20 text-center">
                   <p className="text-xs text-muted-foreground mb-2">Desbloqueie formas, filtros e efeitos exclusivos</p>
                   <Link href="/pricing" className="text-[10px] font-black uppercase text-primary hover:underline tracking-widest">Fazer Upgrade PRO →</Link>
