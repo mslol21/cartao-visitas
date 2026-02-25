@@ -241,8 +241,8 @@ END:VCARD`;
         return "bg-white text-slate-900 border-slate-100 shadow-none";
       default: 
         if (hasVideo) return "bg-black/20 backdrop-blur-2xl text-white border-white/10";
-        // Ultra Premium Default with Digital Texture
-        return "bg-slate-900/80 backdrop-blur-3xl text-white border-white/10 shadow-[inset_0_0_60px_rgba(59,130,246,0.1)]";
+        // OFFICIAL KONNEXY DIGITAL FIELD STYLE
+        return "konnexy-digital-field text-white border-white/10 shadow-[inset_0_0_60px_rgba(59,130,246,0.1)]";
     }
   };
 
@@ -255,22 +255,25 @@ END:VCARD`;
           gradient: 'linear-gradient(135deg, #fbbf24 0%, #000000 100%)', 
           accent: '#fbbf24', 
           label: 'Eletricista 24h',
+          icon: Zap,
           cta: 'Chamar no WhatsApp',
-          shape: 'polygon(40% 0%, 100% 0%, 65% 45%, 95% 45%, 30% 100%, 45% 55%, 15% 55%)' // Raio Realista
+          shape: 'polygon(40% 0%, 100% 0%, 65% 45%, 95% 45%, 30% 100%, 45% 55%, 15% 55%)'
         };
       case 'barber':
         return { 
           gradient: 'linear-gradient(135deg, #111 0%, #d4af37 100%)', 
           accent: '#d4af37', 
           label: 'Mestre da Lâmina',
+          icon: Scissors,
           cta: 'Agende seu horário',
-          shape: 'polygon(50% 50%, 80% 0%, 100% 0%, 55% 52%, 100% 100%, 80% 100%, 52% 55%, 35% 72%, 35% 92%, 25% 100%, 8% 100%, 0% 88%, 0% 68%, 18% 58%, 28% 58%, 32% 54%, 28% 50%, 12% 50%, 0% 38%, 0% 12%, 8% 0%, 25% 0%, 35% 8%, 35% 38%)' // Tesoura Realista baseada na imagem
+          shape: 'polygon(50% 50%, 80% 0%, 100% 0%, 55% 52%, 100% 100%, 80% 100%, 52% 55%, 35% 72%, 35% 92%, 25% 100%, 8% 100%, 0% 88%, 0% 68%, 18% 58%, 28% 58%, 32% 54%, 28% 50%, 12% 50%, 0% 38%, 0% 12%, 8% 0%, 25% 0%, 35% 8%, 35% 38%)'
         };
       case 'cleaner':
         return { 
           gradient: 'linear-gradient(135deg, #0ea5e9 0%, #e0f2fe 100%)', 
           accent: '#0ea5e9', 
           label: 'Brilho Máximo',
+          icon: Sparkles,
           cta: 'Solicitar Faxina',
           shape: 'polygon(50% 0%, 61% 39%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 39%)' 
         };
@@ -279,99 +282,63 @@ END:VCARD`;
           gradient: 'linear-gradient(135deg, #334155 0%, #f97316 100%)', 
           accent: '#f97316', 
           label: 'Turbo Mecânica',
+          icon: Wrench,
           cta: 'Pedir Orçamento',
-          shape: 'polygon(50% 0%, 62% 4%, 65% 15%, 82% 16%, 86% 26%, 96% 36%, 96% 46%, 100% 50%, 96% 54%, 96% 64%, 86% 74%, 82% 84%, 65% 84%, 62% 96%, 50% 100%, 38% 96%, 35% 84%, 18% 84%, 14% 74%, 4% 64%, 4% 54%, 0% 50%, 4% 46%, 4% 36%, 14% 26%, 18% 16%, 35% 15%, 38% 4%)' // Engrenagem Robusta baseada na imagem
+          shape: 'polygon(50% 0%, 62% 4%, 65% 15%, 82% 16%, 86% 26%, 96% 36%, 96% 46%, 100% 50%, 96% 54%, 96% 64%, 86% 74%, 82% 84%, 65% 84%, 62% 96%, 50% 100%, 38% 96%, 35% 84%, 18% 84%, 14% 74%, 4% 64%, 4% 54%, 0% 50%, 4% 46%, 4% 36%, 14% 26%, 18% 16%, 35% 15%, 38% 4%)'
         };
       case 'plumber':
         return { 
           gradient: 'linear-gradient(135deg, #1d4ed8 0%, #60a5fa 100%)', 
-          accent: '#2563eb', 
+          accent: '#2563eb',
           label: 'SOS Hidráulica',
+          icon: Hammer,
           cta: 'Falar com Encanador',
-          shape: 'polygon(50% 0%, 75% 15%, 90% 40%, 100% 65%, 90% 90%, 70% 100%, 30% 100%, 10% 90%, 0% 65%, 10% 40%, 25% 15%)' // Gota Mais Redonda
+          shape: 'polygon(50% 0%, 75% 15%, 90% 40%, 100% 65%, 90% 90%, 70% 100%, 30% 100%, 10% 90%, 0% 65%, 10% 40%, 25% 15%)'
         };
       case 'health':
         return { 
           gradient: 'linear-gradient(135deg, #ef4444 0%, #fee2e2 100%)', 
           accent: '#ef4444', 
           label: 'Sempre com Você',
+          icon: Stethoscope,
           cta: 'Marcar agora',
-          shape: 'polygon(30% 0%, 70% 0%, 70% 30%, 100% 30%, 100% 70%, 70% 70%, 70% 100%, 30% 100%, 30% 70%, 0% 70%, 0% 30%, 30% 30%)' // Cruz
+          shape: 'polygon(30% 0%, 70% 0%, 70% 30%, 100% 30%, 100% 70%, 70% 70%, 70% 100%, 30% 100%, 30% 70%, 0% 70%, 0% 30%, 30% 30%)'
         };
       case 'law':
         return { 
           gradient: 'linear-gradient(135deg, #0f172a 0%, #eab308 100%)', 
           accent: '#eab308', 
           label: 'Defesa Especializada',
+          icon: Scale,
           cta: 'Direito Já',
-          shape: 'polygon(10% 0%, 50% 10%, 90% 0%, 100% 5%, 100% 85%, 50% 100%, 0% 85%, 0% 5%)' // Livro Aberto Detalhado
+          shape: 'polygon(10% 0%, 50% 10%, 90% 0%, 100% 5%, 100% 85%, 50% 100%, 0% 85%, 0% 5%)'
         };
       case 'tech':
         return { 
           gradient: 'linear-gradient(135deg, #000 0%, #3b82f6 100%)', 
           accent: '#3b82f6', 
           label: 'Inovação Digital',
+          icon: Cpu,
           cta: 'Quero Orçamento',
-          shape: 'polygon(0% 10%, 100% 10%, 100% 70%, 65% 70%, 70% 85%, 85% 85%, 85% 100%, 15% 100%, 15% 85%, 30% 85%, 35% 70%, 0% 70%)' // Monitor / iMac Style
+          shape: 'polygon(0% 10%, 100% 10%, 100% 70%, 65% 70%, 70% 85%, 85% 85%, 85% 100%, 15% 100%, 15% 85%, 30% 85%, 35% 70%, 0% 70%)'
         };
       case 'pet':
         return { 
           gradient: 'linear-gradient(135deg, #7c2d12 0%, #fb923c 100%)', 
-          accent: '#7c2d12', 
+          accent: '#fb923c',
           label: 'Amo meu Pet',
+          icon: Heart,
           cta: 'Banho e Tosa',
           shape: 'polygon(50% 40%, 70% 10%, 85% 15%, 80% 45%, 100% 55%, 90% 85%, 50% 100%, 10% 85%, 0% 55%, 20% 45%, 15% 15%, 30% 10%)'
         };
       case 'business':
         return { 
           gradient: 'linear-gradient(135deg, #1e293b 0%, #64748b 100%)', 
-          accent: '#1e293b', 
+          accent: '#64748b', 
           label: 'Foco em Resultados',
+          icon: Briefcase,
           cta: 'Falar com Consultor',
           shape: 'polygon(25% 18%, 25% 0%, 35% 0%, 65% 0%, 75% 0%, 75% 18%, 100% 18%, 100% 90%, 94% 100%, 6% 100%, 0% 90%, 0% 18%)'
-        };
-      // ── Formas Geométricas ──────────────────────────────────────────
-      case 'hexagon':
-        return {
-          gradient: `linear-gradient(135deg, ${data.theme_color || '#3b82f6'} 0%, #8b5cf6 100%)`,
-          accent: data.theme_color || '#3b82f6',
-          shape: 'polygon(25% 0%, 75% 0%, 100% 50%, 75% 100%, 25% 100%, 0% 50%)',
-        };
-      case 'diamond':
-        return {
-          gradient: `linear-gradient(135deg, ${data.theme_color || '#06b6d4'} 0%, #0ea5e9 100%)`,
-          accent: data.theme_color || '#06b6d4',
-          shape: 'polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%)',
-        };
-      case 'blob':
-        return {
-          gradient: `linear-gradient(135deg, ${data.theme_color || '#8b5cf6'} 0%, #c084fc 100%)`,
-          accent: data.theme_color || '#8b5cf6',
-          shape: 'polygon(45% 5%, 68% 0%, 88% 12%, 98% 32%, 96% 58%, 85% 80%, 65% 98%, 38% 100%, 16% 88%, 4% 65%, 2% 38%, 12% 18%, 28% 5%)',
-        };
-      case 'star8':
-        return {
-          gradient: `linear-gradient(135deg, ${data.theme_color || '#f59e0b'} 0%, #fde68a 100%)`,
-          accent: data.theme_color || '#f59e0b',
-          shape: 'polygon(50% 0%, 64% 28%, 93% 7%, 73% 34%, 100% 50%, 73% 66%, 93% 93%, 64% 72%, 50% 100%, 36% 72%, 7% 93%, 27% 66%, 0% 50%, 27% 34%, 7% 7%, 36% 28%)',
-        };
-      case 'squircle':
-        return {
-          gradient: `linear-gradient(135deg, ${data.theme_color || '#10b981'} 0%, #34d399 100%)`,
-          accent: data.theme_color || '#10b981',
-          shape: 'polygon(8% 0%, 92% 0%, 100% 8%, 100% 92%, 92% 100%, 8% 100%, 0% 92%, 0% 8%)',
-        };
-      case 'oval':
-        return {
-          gradient: `linear-gradient(135deg, ${data.theme_color || '#ec4899'} 0%, #f9a8d4 100%)`,
-          accent: data.theme_color || '#ec4899',
-          shape: 'ellipse(42% 50% at 50% 50%)',
-        };
-      case 'shield':
-        return {
-          gradient: `linear-gradient(135deg, ${data.theme_color || '#0f172a'} 0%, #334155 100%)`,
-          accent: data.theme_color || '#334155',
-          shape: 'polygon(15% 0%, 85% 0%, 100% 15%, 100% 60%, 50% 100%, 0% 60%, 0% 15%)',
         };
     }
     return null;
@@ -422,9 +389,9 @@ END:VCARD`;
               : "border border-slate-200 dark:border-slate-800 shadow-sm bg-white dark:bg-slate-950"
           )}
         >
-          {/* --- BACKGROUND LAYER (Video with Fade Out) --- */}
+          {/* --- BACKGROUND LAYER (Video or Digital Field) --- */}
           <div 
-            className="absolute top-0 inset-x-0 h-[85%] z-0"
+            className="absolute inset-0 z-0"
             style={isPro && data.background_video_url ? {
               maskImage: 'linear-gradient(to bottom, black 60%, transparent 100%)',
               WebkitMaskImage: 'linear-gradient(to bottom, black 60%, transparent 100%)'
@@ -448,32 +415,18 @@ END:VCARD`;
                      className="w-full h-full object-cover"
                    />
                  )}
-                 {/* Dark overlay for readability */}
                  <div className="absolute inset-0 bg-black/40 backdrop-blur-[1px]" />
-                 {/* Internal Gradient for extra smoothness at the very bottom edge of video */}
                  <div className="absolute inset-x-0 bottom-0 h-32 bg-gradient-to-t from-slate-950 to-transparent opacity-80" />
                </>
              ) : (
                <div 
-                 className="w-full h-full transition-colors duration-500 relative"
-                 style={{ 
-                   backgroundColor: data.theme_color || (isPro ? '#0f172a' : '#f1f5f9'),
-                   backgroundImage: isPro && !data.theme_color ? 'linear-gradient(to bottom right, #0f172a, #1e293b)' : undefined
-                 }}
-               >
-                 {/* Digital Texture for Premium */}
-                 {isPro && (
-                   <div 
-                     className="absolute inset-0 opacity-[0.03]" 
-                     style={{ 
-                       backgroundImage: `linear-gradient(#fff 1px, transparent 1px), linear-gradient(90deg, #fff 1px, transparent 1px)`,
-                       backgroundSize: '20px 20px'
-                     }} 
-                   />
+                 className={cn(
+                   "w-full h-full transition-colors duration-500 relative",
+                   isPro ? "konnexy-digital-field" : "bg-white dark:bg-slate-950"
                  )}
-                 {/* Decorative Gradient overlays for Pro Non-Video */}
-                 {isPro && (
-                    <div className="absolute inset-0 bg-gradient-to-br from-primary/20 to-transparent mix-blend-overlay" />
+               >
+                 {!isPro && (
+                   <div className="absolute inset-0 bg-slate-50 dark:bg-slate-900/50" />
                  )}
                </div>
              )}
@@ -512,162 +465,152 @@ END:VCARD`;
 
             {/* Identity Content */}
             <div className="relative z-10 flex flex-col items-center w-full max-w-[90%]">
-                {/* ── AVATAR ─────────────────────────────────────── */}
-                <motion.div 
-                  whileHover={isPro ? { scale: 1.05, rotate: 2 } : {}}
-                  animate={isPro && data.photo_border_effect === 'pulse' ? { scale: [1, 1.04, 1] } : {}}
-                  transition={isPro && data.photo_border_effect === 'pulse' ? { duration: 2, repeat: Infinity, ease: 'easeInOut' } : {}}
-                  className={cn(
-                    "w-40 h-40 relative transition-all duration-500 mb-5 flex items-center justify-center",
-                    isPro 
-                      ? "" 
-                      : "rounded-full p-1.5 bg-white shadow-xl"
-                  )}
-                  style={isPro ? {
-                    filter: data.photo_border_effect === 'glow'
-                      ? `drop-shadow(0 0 14px ${profConfig?.accent || '#3b82f6'}) drop-shadow(0 0 6px ${profConfig?.accent || '#3b82f6'}99)`
-                      : data.photo_border_effect === 'rainbow'
-                      ? 'drop-shadow(0 0 14px #f43f5e) drop-shadow(0 0 8px #8b5cf6)'
-                      : 'drop-shadow(0 0 20px rgba(59,130,246,0.2))'
-                  } : undefined}
-                >
-                  {/* ── Spinning gradient border ── */}
-                  {isPro && data.photo_border_effect === 'spin' && (
-                    <motion.div
-                      className="absolute -inset-[5px] z-0"
-                      style={{
-                        clipPath: profConfig?.shape || 'circle(50% at 50% 50%)',
-                        background: 'conic-gradient(from 0deg, #3b82f6, #8b5cf6, #ef4444, #f59e0b, #22c55e, #06b6d4, #3b82f6)',
-                      }}
-                      animate={{ rotate: 360 }}
-                      transition={{ duration: 2.8, repeat: Infinity, ease: 'linear' }}
-                    />
-                  )}
+                {/* ── KONNEXY AURA (Digital Aura + Border Effects + Profession) ── */}
+                {(() => {
+                  const effect = data.photo_border_effect || 'none';
+                  const themeColor = data.theme_color || '#2563EB';
+                  const hasEffect = effect !== 'none';
+                  const profAccent = profConfig?.accent || '#00D4FF';
+                  const ProfIcon = profConfig?.icon;
 
-                  {/* ── Rainbow animated glow ── */}
-                  {isPro && data.photo_border_effect === 'rainbow' && (
-                    <motion.div
-                      className="absolute -inset-[5px] z-0 blur-[2px]"
-                      style={{ clipPath: profConfig?.shape || 'circle(50% at 50% 50%)' }}
-                      animate={{
-                        background: [
-                          'conic-gradient(from 0deg, #ef4444, #f59e0b, #22c55e, #3b82f6, #8b5cf6, #ef4444)',
-                          'conic-gradient(from 120deg, #ef4444, #f59e0b, #22c55e, #3b82f6, #8b5cf6, #ef4444)',
-                          'conic-gradient(from 240deg, #ef4444, #f59e0b, #22c55e, #3b82f6, #8b5cf6, #ef4444)',
-                          'conic-gradient(from 360deg, #ef4444, #f59e0b, #22c55e, #3b82f6, #8b5cf6, #ef4444)',
-                        ],
-                      }}
-                      transition={{ duration: 3, repeat: Infinity, ease: 'linear' }}
-                    />
-                  )}
+                  // --- Ring styles for each border effect ---
+                  const ringStyles: Record<string, React.CSSProperties> = {
+                    none:    {},
+                    glow:    { background: themeColor, filter: `blur(8px)`, opacity: 0.7 },
+                    spin:    { background: 'conic-gradient(from 0deg, #3b82f6, #8b5cf6, #ef4444, #f59e0b, #22c55e, #3b82f6)' },
+                    rainbow: { background: 'conic-gradient(from 0deg, #ef4444, #f59e0b, #22c55e, #3b82f6, #8b5cf6, #ef4444)' },
+                    pulse:   { background: themeColor, opacity: 0.85 },
+                    shimmer: { background: 'linear-gradient(105deg, #94a3b8 30%, #f8fafc 50%, #94a3b8 70%)', backgroundSize: '200% 100%' },
+                    orbit:   { border: `3px dashed ${themeColor}`, background: 'transparent' },
+                  };
+                  const ringAnimations: Record<string, string> = {
+                    spin:    'aura-spin 3s linear infinite',
+                    rainbow: 'aura-spin 4s linear infinite',
+                    pulse:   'pulse 1.8s ease-in-out infinite',
+                    shimmer: 'shine 2s linear infinite',
+                    orbit:   'aura-spin 6s linear infinite',
+                  };
 
-                  {/* ── Outer gradient ring (shape border) ── */}
-                  <div 
-                    className="w-full h-full overflow-hidden flex items-center justify-center relative transition-all duration-500 z-[1]"
-                    style={isPro ? {
-                      clipPath: profConfig?.shape || 'circle(50% at 50% 50%)',
-                      background: premiumGradient
-                    } : undefined}
-                  >
-                    {/* ── Inner photo wrapper ── */}
-                    <div 
-                      className="w-[calc(100%-6px)] h-[calc(100%-6px)] overflow-hidden bg-slate-100 dark:bg-slate-800 flex items-center justify-center relative transition-all duration-500"
-                      style={isPro ? {
-                        clipPath: profConfig?.shape || 'circle(50% at 50% 50%)',
-                      } : undefined}
-                    >
-                      {data.photo_url ? (
-                        <Image
-                          src={data.photo_url}
-                          alt={data.name || 'Avatar'}
-                          width={160}
-                          height={160}
-                          className="w-full h-full object-cover transition-all duration-500"
-                          style={{ filter: getPhotoFilter() }}
-                          priority
-                        />
-                      ) : (
-                        <span className="text-3xl font-bold text-slate-400">
-                          {data.name?.charAt(0) || '?'}
-                        </span>
+                  return (
+                    <div className={cn("konnexy-aura mb-8", isPro && "scale-110")}>
+
+                      {/* --- Default Aura (no border effect selected) --- */}
+                      {!hasEffect && (
+                        <>
+                          {/* Glow: profession color when available, else Konnexy cyan */}
+                          <div
+                            className="aura-glow"
+                            style={{
+                              opacity: isPro ? 0.75 : 0.55,
+                              filter: `blur(${isPro ? 16 : 12}px)`,
+                              background: profConfig
+                                ? `conic-gradient(from 0deg, ${profAccent}, ${profConfig.gradient.includes('#') ? profConfig.gradient.split('#')[2] ? '#' + profConfig.gradient.split('#')[2].slice(0,6) : profAccent : profAccent}, ${profAccent})`
+                                : 'conic-gradient(from 0deg, #00D4FF, #3B82F6, #22D3EE, #00D4FF)',
+                            }}
+                          />
+                          {/* Arc: profession color */}
+                          <div
+                            className="aura-arc"
+                            style={{
+                              borderTopColor:   profConfig ? profAccent : '#00D4FF',
+                              borderRightColor: profConfig ? profAccent : '#3B82F6',
+                              borderWidth: isPro ? '3px' : '2px',
+                              opacity: isPro ? 0.7 : 0.4,
+                            }}
+                          />
+                          {/* Particles */}
+                          {[...Array(isPro ? 10 : 5)].map((_, i) => (
+                            <div
+                              key={i}
+                              className="aura-particle"
+                              style={{
+                                top:             `${(i * 37 + 5) % 120 - 10}%`,
+                                left:            `${(i * 53 + 10) % 120 - 10}%`,
+                                animationDelay:  `${i * 0.4}s`,
+                                animationDuration:`${3 + (i % 3)}s`,
+                                transform:       `scale(${isPro ? 1 + (i % 3) * 0.3 : 0.6 + (i % 3) * 0.2})`,
+                                opacity:         isPro ? 0.45 : 0.2,
+                                background:      profConfig ? profAccent : '#00D4FF',
+                              }}
+                            />
+                          ))}
+                        </>
                       )}
 
-                      {/* ── Shimmer overlay ── */}
-                      {isPro && data.photo_border_effect === 'shimmer' && (
-                        <motion.div
-                          className="absolute inset-0 overflow-hidden pointer-events-none"
-                        >
-                          <motion.div
-                            className="absolute inset-y-0 w-[45%]"
-                            style={{
-                              background: 'linear-gradient(105deg, transparent, rgba(255,255,255,0.35), transparent)',
-                              skewX: '-20deg',
-                            }}
-                            animate={{ x: ['-120%', '280%'] }}
-                            transition={{ duration: 2.2, repeat: Infinity, ease: 'linear', repeatDelay: 1.5 }}
+                      {/* --- Border effect ring --- */}
+                      {hasEffect && (
+                        <div
+                          className="absolute rounded-full z-[5]"
+                          style={{ inset: '-6px', ...ringStyles[effect], animation: ringAnimations[effect] }}
+                        />
+                      )}
+                      {effect === 'glow' && (
+                        <div className="absolute rounded-full z-[4] blur-[14px]"
+                          style={{ inset: '-10px', background: themeColor, opacity: 0.5, animation: 'pulse 2s ease-in-out infinite' }}
+                        />
+                      )}
+
+                      {/* Profile Photo */}
+                      <div className={cn(
+                        "relative w-36 h-36 md:w-40 md:h-40 rounded-full overflow-hidden z-10 shadow-2xl transition-all duration-700",
+                        !hasEffect && isPro && profConfig
+                          ? "border-[3px]"
+                          : !hasEffect && isPro
+                          ? "border-4 border-white/40 ring-4 ring-konnexy-cian/20"
+                          : "border-4 border-white/10"
+                      )}
+                      style={!hasEffect && isPro && profConfig ? { borderColor: profAccent + '80' } : {}}
+                      >
+                        {data.photo_url ? (
+                          <Image
+                            src={data.photo_url}
+                            alt={data.name || 'Avatar'}
+                            fill
+                            className="object-cover"
+                            style={{ filter: getPhotoFilter() }}
+                            priority
                           />
-                        </motion.div>
+                        ) : (
+                          <div className="w-full h-full bg-konnexy-base flex items-center justify-center text-white text-4xl font-black">
+                            {data.name?.charAt(0) || '?'}
+                          </div>
+                        )}
+                      </div>
+
+                      {/* Profession icon badge (replaces Crown when profession is set) */}
+                      {isPro && ProfIcon && !hasEffect && (
+                        <div
+                          className="absolute -bottom-1 right-1 p-1.5 rounded-full shadow-lg border-2 border-slate-900 z-20"
+                          style={{ background: profConfig!.gradient }}
+                        >
+                          <ProfIcon className="w-4 h-4 text-white drop-shadow" />
+                        </div>
+                      )}
+
+                      {/* Crown badge when NO profession set or when border effect active */}
+                      {isPro && (!ProfIcon || hasEffect) && (
+                        <div className="absolute -bottom-1 right-2 bg-gradient-to-br from-konnexy-cian to-konnexy-blue p-1.5 rounded-full shadow-lg border-2 border-slate-900 z-20 animate-pulse">
+                          <Crown className="w-4 h-4 text-white" />
+                        </div>
                       )}
                     </div>
-                  </div>
-                  
-                  {/* ── Soft Glow behind avatar ── */}
-                  {isPro && (
-                    <motion.div
-                      className="absolute inset-0 -z-10 blur-3xl rounded-full scale-125"
-                      style={{ backgroundColor: profConfig?.accent || 'var(--primary)' }}
-                      animate={data.photo_border_effect === 'pulse'
-                        ? { opacity: [0.5, 1, 0.5], scale: [1.1, 1.4, 1.1] }
-                        : { opacity: [0.4, 0.7, 0.4] }
-                      }
-                      transition={{ duration: 2.5, repeat: Infinity, ease: 'easeInOut' }}
-                    />
-                  )}
-
-                  {/* ── Verified Badge ── */}
-                  {isPro && (
-                     <div className="absolute bottom-1 right-1 bg-blue-500 text-white rounded-full p-1.5 shadow-lg border-2 border-slate-950 z-20">
-                       <BadgeCheck className="w-4 h-4" />
-                     </div>
-                  )}
-
-                  {/* ── Orbiting profession icon ── */}
-                  {isPro && profConfig && data.photo_border_effect === 'orbit' && (
-                    <motion.div
-                      className="absolute w-8 h-8 z-30"
-                      style={{ top: '50%', left: '50%', marginTop: '-16px', marginLeft: '-16px', originX: '50%', originY: '50%' }}
-                      animate={{ rotate: 360 }}
-                      transition={{ duration: 4, repeat: Infinity, ease: 'linear' }}
-                    >
-                      <div
-                        className="absolute w-7 h-7 rounded-full flex items-center justify-center shadow-lg border border-white/30"
-                        style={{
-                          top: '-4rem',
-                          left: '50%',
-                          transform: 'translateX(-50%)',
-                          background: profConfig.gradient,
-                        }}
-                      >
-                        <Sparkles className="w-3.5 h-3.5 text-white" />
-                      </div>
-                    </motion.div>
-                  )}
-                </motion.div>
+                  );
+                })()}
 
                 <div className={cn(
-                  "flex flex-col items-center px-6 py-4 rounded-[1.5rem] mt-2 transition-all w-full backdrop-blur-sm",
+                  "flex flex-col items-center px-6 py-4 rounded-[1.5rem] mt-2 transition-all w-full backdrop-blur-md",
                   isPro 
-                    ? "bg-black/20 border border-white/10 shadow-sm"
+                    ? "bg-white/5 border border-white/10 shadow-sm"
                     : "bg-slate-50/80 dark:bg-slate-900/80 border border-slate-200/50 dark:border-slate-800/50"
                )}>
                  <h1 className={cn(
-                   "text-2xl font-black tracking-tight mb-1 capitalize leading-tight text-center",
+                   "text-2xl md:text-3xl font-black tracking-tight mb-1 capitalize leading-tight text-center font-sora",
                    isPro ? "text-white drop-shadow-sm" : "text-slate-900 dark:text-white"
                  )}>
                    {data.name || 'Seu Nome'}
                  </h1>
                  <p className={cn(
-                   "text-sm font-bold leading-relaxed opacity-90 mb-3 text-center max-w-[260px]",
+                   "text-sm md:text-base font-medium leading-relaxed opacity-90 mb-3 text-center max-w-[280px]",
                    isPro ? "text-white/80" : "text-slate-600 dark:text-slate-400"
                  )}>
                    {data.tagline || 'Sua profissão ou frase de impacto'}
@@ -755,26 +698,25 @@ END:VCARD`;
                   variant="default"
                   size="lg"
                   className={cn(
-                    "w-full h-15 rounded-2xl font-black text-base transition-all flex items-center justify-center gap-3 group/btn overflow-hidden relative",
+                    "w-full h-16 rounded-[1.2rem] font-black text-lg transition-all flex items-center justify-center gap-3 group/btn overflow-hidden relative border-none",
                     isPro 
-                      ? "text-white shadow-[0_20px_50px_rgba(59,130,246,0.3)] hover:scale-[1.02] active:scale-[0.98]"
-                      : "bg-slate-900 hover:bg-slate-800 text-white shadow-none border-0"
+                      ? "text-white shadow-[0_20px_40px_rgba(37,99,235,0.4)]"
+                      : "bg-slate-900 hover:bg-slate-800 text-white shadow-none"
                   )}
                   style={{ 
-                    background: premiumGradient || (isPro ? (data.theme_color || '#25D366') : undefined),
+                    background: isPro ? 'linear-gradient(135deg, #00D4FF 0%, #2563EB 50%, #6D28D9 100%)' : undefined,
                   }}
                   asChild
                   aria-label={isPro ? 'Falar Agora via WhatsApp' : 'Conversar via WhatsApp'}
                   onClick={() => handleTrackClick('click_whatsapp')}
                 >
                   <a href={whatsappLink} target="_blank" rel="noopener noreferrer">
-                    {/* Shine effect for Pro */}
-                    {isPro && (
-                      <div className="absolute top-0 -inset-full h-full w-1/2 z-5 block transform -skew-x-12 bg-gradient-to-r from-transparent to-white/20 opacity-40 group-hover/btn:animate-shine" />
-                    )}
+                    {/* Shine effect */}
+                    <div className="absolute top-0 -inset-full h-full w-1/2 z-5 block transform -skew-x-12 bg-gradient-to-r from-transparent to-white/20 opacity-40 group-hover/btn:animate-shine" />
+                    
                     <MessageCircle className={cn("w-6 h-6 flex-shrink-0 z-10", isPro ? "fill-white" : "fill-white/80")} />
-                    <span className="font-black uppercase tracking-wider z-10">
-                       {isPro ? (data.cta_text || profConfig?.cta || 'Falar Agora') : 'WhatsApp'}
+                    <span className="font-black uppercase tracking-[0.05em] z-10">
+                       {isPro ? (data.cta_text || profConfig?.cta || 'Falar no WhatsApp') : 'WhatsApp'}
                     </span>
                   </a>
                 </Button>
@@ -878,59 +820,45 @@ END:VCARD`;
               </div>
             </div>
 
-            {/* Services */}
+            {/* Services (Serviços Organizados) */}
             {activeServicesArr.length > 0 && (
               <div className="w-full">
-                <div className="flex items-center gap-3 mb-5">
-                  <span className={cn("text-[10px] font-black uppercase tracking-[0.2em]", isPro && data.background_video_url ? "text-white/60" : "text-slate-400")}>Serviços</span>
-                  <div className={cn("h-[1px] flex-1", isPro && data.background_video_url ? "bg-white/20" : "bg-slate-200 dark:bg-slate-800")} />
+                <div className="flex items-center gap-3 mb-6">
+                  <span className={cn("text-[10px] font-black uppercase tracking-[0.25em]", isPro ? "text-white/40" : "text-slate-400")}>Catálogo de Serviços</span>
+                  <div className={cn("h-[1px] flex-1", isPro ? "bg-white/10" : "bg-slate-200 dark:bg-slate-800")} />
                 </div>
                 
-                {mainService && (
-                   <motion.div
-                     initial={{ opacity: 0, y: 10 }}
-                     animate={{ opacity: 1, y: 0 }}
-                     whileHover={{ scale: 1.02, x: 5 }}
-                     className={cn(
-                       "w-full px-5 py-4 rounded-3xl flex items-center gap-4 mb-4 transition-all cursor-pointer",
-                       isPro 
-                         ? "bg-white/5 backdrop-blur-2xl border border-white/10 hover:bg-white/10 shadow-lg group/srv"
-                         : "bg-white border border-slate-100"
-                     )}
-                   >
-                     <div className={cn("w-10 h-10 rounded-2xl flex items-center justify-center text-white shadow-lg shrink-0", isPro ? "bg-gradient-to-br from-primary to-blue-600" : "bg-slate-900")}>
-                        {(() => {
-                          const Icon = ICON_MAP[mainService.icon || 'Sparkles'] || Sparkles;
-                          return <Icon className="w-5 h-5" />;
-                        })()}
-                     </div>
-                     <span className={cn("font-bold uppercase tracking-wide text-sm leading-tight", isPro ? "text-white" : "text-slate-900")}>{mainService.name}</span>
-                   </motion.div>
-                )}
-
-                {secondaryServices.length > 0 && (
-                   <div className="grid grid-cols-1 gap-3">
-                     {secondaryServices.map((service, i) => {
-                        const Icon = ICON_MAP[service.icon || 'Sparkles'] || Sparkles;
-                        return (
-                          <motion.div 
-                            key={i} 
-                            whileHover={isPro ? { x: 5, backgroundColor: 'rgba(255,255,255,0.08)' } : {}}
-                            className={cn(
-                              "w-full px-5 py-4 rounded-2xl flex items-center gap-4 border transition-all cursor-pointer",
-                              isPro 
-                                ? "bg-white/[0.03] backdrop-blur-md border-white/5" 
-                                : "bg-slate-50 border-slate-100"
-                            )}>
-                             <div className={cn("w-8 h-8 rounded-xl flex items-center justify-center shrink-0", isPro ? "bg-white/5" : "bg-slate-100")}>
-                                <Icon className={cn("w-4 h-4", isPro ? "text-white/60" : "text-slate-500")} />
-                             </div>
-                             <span className={cn("text-xs font-semibold tracking-wide uppercase", isPro ? "text-white/90" : "text-slate-700 dark:text-slate-300")}>{service.name}</span>
-                          </motion.div>
-                        );
-                     })}
-                   </div>
-                )}
+                <div className="flex flex-col gap-4">
+                  {activeServicesArr.map((service, i) => {
+                     const Icon = ICON_MAP[service.icon || 'Sparkles'] || Sparkles;
+                     return (
+                       <motion.div 
+                         key={i} 
+                         initial={{ opacity: 0, x: -10 }}
+                         animate={{ opacity: 1, x: 0 }}
+                         transition={{ delay: 0.1 * i }}
+                         whileHover={isPro ? { x: 8, scale: 1.01 } : {}}
+                         className={cn(
+                           "group flex items-center gap-5 p-4 rounded-[1.2rem] transition-all cursor-pointer",
+                           isPro 
+                             ? "glass-premium hover:bg-white/20" 
+                             : "bg-white dark:bg-slate-900 border border-slate-100 dark:border-white/5"
+                         )}>
+                          <div className={cn(
+                            "w-12 h-12 rounded-xl flex items-center justify-center shrink-0 transition-transform group-hover:rotate-6",
+                            isPro ? "bg-white/10 text-konnexy-cian" : "bg-slate-100 dark:bg-slate-800 text-primary"
+                          )}>
+                             <Icon className="w-6 h-6" />
+                          </div>
+                          <div className="flex flex-col gap-1">
+                            <span className={cn("text-sm font-bold tracking-tight", isPro ? "text-white" : "text-slate-900 dark:text-white")}>
+                              {service.name}
+                            </span>
+                          </div>
+                       </motion.div>
+                     );
+                  })}
+                </div>
               </div>
             )}
 
@@ -964,12 +892,13 @@ END:VCARD`;
               </div>
             )}
             
-            {/* Branding Footer */}
+            {/* Branding Footer (Assinatura de Marca) */}
             {showBranding && (
-               <div className="mt-auto py-6 text-center">
-                 <a href="/" className={cn("inline-flex items-center gap-1.5 text-[10px] uppercase font-black tracking-[0.2em] transition-colors opacity-60 hover:opacity-100", 
-                   isPro && data.background_video_url ? "text-white/60 hover:text-white" : "text-slate-400 hover:text-primary")}>
-                   Criado com <span className={cn(isPro && data.background_video_url ? "text-white" : "text-slate-900 dark:text-white")}>Konnexy</span>
+               <div className="mt-auto pt-8 pb-4 text-center">
+                 <a href="/" className={cn("inline-flex flex-col items-center gap-1.5 transition-all opacity-40 hover:opacity-100", 
+                   isPro ? "text-white/60 hover:text-white" : "text-slate-400 hover:text-primary")}>
+                   <span className="text-[9px] uppercase font-black tracking-[0.3em]">Powered by</span>
+                   <span className={cn("text-xs font-black tracking-tight", isPro ? "text-white" : "text-slate-900 dark:text-white")}>KONNEXY™</span>
                  </a>
                </div>
             )}

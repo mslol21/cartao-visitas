@@ -902,103 +902,11 @@ export function EditorForm({ initialData, onSubmit, onChange, isPro = false }: E
 
               <div className={cn("space-y-7", !isPro && "opacity-40 pointer-events-none")}>
 
-                {/* ── 1. SHAPE SELECTOR ──────────────────────────────────────── */}
+
+
+                {/* ── 1. FILTER SELECTOR ───────────────────────────────────────── */}
                 <div className="space-y-3">
-                  <p className="text-[9px] font-black uppercase tracking-[0.25em] text-muted-foreground">1 — Escolha a Forma</p>
-
-                  <p className="text-[9px] font-bold uppercase tracking-widest text-muted-foreground/60 border-b border-border/50 pb-1">Por Especialidade</p>
-                  <div className="grid grid-cols-4 sm:grid-cols-6 gap-2">
-                    {[
-                      { id: 'none',        label: 'Círculo',    shape: 'circle(50% at 50% 50%)',  gradient: 'linear-gradient(135deg, #64748b 0%, #94a3b8 100%)', icon: Ban },
-                      { id: 'electrician',label: 'Eletricista', shape: 'polygon(40% 0%, 100% 0%, 65% 45%, 95% 45%, 30% 100%, 45% 55%, 15% 55%)', gradient: 'linear-gradient(135deg, #fbbf24 0%, #000 100%)', icon: Zap },
-                      { id: 'barber',     label: 'Barbearia',  shape: 'polygon(50% 50%, 80% 0%, 100% 0%, 55% 52%, 100% 100%, 80% 100%, 52% 55%, 35% 72%, 35% 92%, 25% 100%, 8% 100%, 0% 88%, 0% 68%, 18% 58%, 28% 58%, 32% 54%, 28% 50%, 12% 50%, 0% 38%, 0% 12%, 8% 0%, 25% 0%, 35% 8%, 35% 38%)', gradient: 'linear-gradient(135deg, #111 0%, #d4af37 100%)', icon: Scissors },
-                      { id: 'cleaner',    label: 'Limpeza',    shape: 'polygon(50% 0%, 61% 39%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 39%)', gradient: 'linear-gradient(135deg, #0ea5e9 0%, #e0f2fe 100%)', icon: SparklesIcon },
-                      { id: 'mechanic',   label: 'Mecânico',   shape: 'polygon(50% 0%, 62% 4%, 65% 15%, 82% 16%, 86% 26%, 96% 36%, 96% 46%, 100% 50%, 96% 54%, 96% 64%, 86% 74%, 82% 84%, 65% 84%, 62% 96%, 50% 100%, 38% 96%, 35% 84%, 18% 84%, 14% 74%, 4% 64%, 4% 54%, 0% 50%, 4% 46%, 4% 36%, 14% 26%, 18% 16%, 35% 15%, 38% 4%)', gradient: 'linear-gradient(135deg, #334155 0%, #f97316 100%)', icon: Settings },
-                      { id: 'plumber',    label: 'Encanador',  shape: 'polygon(50% 0%, 75% 15%, 90% 40%, 100% 65%, 90% 90%, 70% 100%, 30% 100%, 10% 90%, 0% 65%, 10% 40%, 25% 15%)', gradient: 'linear-gradient(135deg, #1d4ed8 0%, #60a5fa 100%)', icon: Droplets },
-                      { id: 'health',     label: 'Saúde',      shape: 'polygon(30% 0%, 70% 0%, 70% 30%, 100% 30%, 100% 70%, 70% 70%, 70% 100%, 30% 100%, 30% 70%, 0% 70%, 0% 30%, 30% 30%)', gradient: 'linear-gradient(135deg, #ef4444 0%, #fee2e2 100%)', icon: Stethoscope },
-                      { id: 'law',        label: 'Direito',    shape: 'polygon(10% 0%, 50% 10%, 90% 0%, 100% 5%, 100% 85%, 50% 100%, 0% 85%, 0% 5%)', gradient: 'linear-gradient(135deg, #0f172a 0%, #eab308 100%)', icon: Book },
-                      { id: 'tech',       label: 'TI',         shape: 'polygon(0% 10%, 100% 10%, 100% 70%, 65% 70%, 70% 85%, 85% 85%, 85% 100%, 15% 100%, 15% 85%, 30% 85%, 35% 70%, 0% 70%)', gradient: 'linear-gradient(135deg, #000 0%, #3b82f6 100%)', icon: Monitor },
-                      { id: 'pet',        label: 'Petshop',    shape: 'polygon(50% 40%, 70% 10%, 85% 15%, 80% 45%, 100% 55%, 90% 85%, 50% 100%, 10% 85%, 0% 55%, 20% 45%, 15% 15%, 30% 10%)', gradient: 'linear-gradient(135deg, #7c2d12 0%, #fb923c 100%)', icon: PawPrint },
-                      { id: 'business',   label: 'Negócios',   shape: 'polygon(25% 18%, 25% 0%, 75% 0%, 75% 18%, 100% 18%, 100% 90%, 94% 100%, 6% 100%, 0% 90%, 0% 18%)', gradient: 'linear-gradient(135deg, #1e293b 0%, #64748b 100%)', icon: Briefcase },
-                    ].map((frame) => {
-                      const isSelected = (formData.avatar_frame || 'none') === frame.id;
-                      return (
-                        <button
-                          key={frame.id}
-                          onClick={() => handleChange('avatar_frame', frame.id)}
-                          title={frame.label}
-                          className={cn(
-                            "flex flex-col items-center justify-center gap-1.5 p-2 rounded-2xl border-2 transition-all hover:border-primary/60 hover:shadow-md group",
-                            isSelected ? "border-primary bg-primary/5 shadow-md" : "border-border/50 bg-card"
-                          )}
-                        >
-                          {/* Live photo preview */}
-                          <div className="w-12 h-12 relative flex items-center justify-center overflow-visible">
-                            <div
-                              className="w-11 h-11 overflow-hidden flex items-center justify-center transition-transform group-hover:scale-105"
-                              style={{ clipPath: frame.shape, background: frame.gradient }}
-                            >
-                              {formData.photo_url ? (
-                                <img src={formData.photo_url} alt="" className="w-full h-full object-cover brightness-90" />
-                              ) : (
-                                <frame.icon className="w-4 h-4 text-white" />
-                              )}
-                            </div>
-                          </div>
-                          <span className={cn("text-[8px] font-bold uppercase tracking-tight text-center leading-tight", isSelected ? "text-primary" : "text-muted-foreground")}>
-                            {frame.label}
-                          </span>
-                        </button>
-                      );
-                    })}
-                  </div>
-
-                  <p className="text-[9px] font-bold uppercase tracking-widest text-muted-foreground/60 border-b border-border/50 pb-1 pt-2">Geométricas</p>
-                  <div className="grid grid-cols-4 sm:grid-cols-7 gap-2">
-                    {[
-                      { id: 'hexagon',  label: 'Hex',      shape: 'polygon(25% 0%, 75% 0%, 100% 50%, 75% 100%, 25% 100%, 0% 50%)',                                                                                                                              gradient: `linear-gradient(135deg, ${formData.theme_color || '#3b82f6'} 0%, #8b5cf6 100%)` },
-                      { id: 'diamond',  label: 'Diamante', shape: 'polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%)',                                                                                                                                                    gradient: `linear-gradient(135deg, ${formData.theme_color || '#06b6d4'} 0%, #0ea5e9 100%)` },
-                      { id: 'blob',     label: 'Blob',     shape: 'polygon(45% 5%, 68% 0%, 88% 12%, 98% 32%, 96% 58%, 85% 80%, 65% 98%, 38% 100%, 16% 88%, 4% 65%, 2% 38%, 12% 18%, 28% 5%)',                                                                     gradient: `linear-gradient(135deg, ${formData.theme_color || '#8b5cf6'} 0%, #c084fc 100%)` },
-                      { id: 'star8',    label: 'Estrela',  shape: 'polygon(50% 0%, 64% 28%, 93% 7%, 73% 34%, 100% 50%, 73% 66%, 93% 93%, 64% 72%, 50% 100%, 36% 72%, 7% 93%, 27% 66%, 0% 50%, 27% 34%, 7% 7%, 36% 28%)',                                         gradient: `linear-gradient(135deg, ${formData.theme_color || '#f59e0b'} 0%, #fde68a 100%)` },
-                      { id: 'squircle', label: 'Quadrado', shape: 'polygon(8% 0%, 92% 0%, 100% 8%, 100% 92%, 92% 100%, 8% 100%, 0% 92%, 0% 8%)',                                                                                                                    gradient: `linear-gradient(135deg, ${formData.theme_color || '#10b981'} 0%, #34d399 100%)` },
-                      { id: 'oval',     label: 'Oval',     shape: 'ellipse(42% 50% at 50% 50%)',                                                                                                                                                                      gradient: `linear-gradient(135deg, ${formData.theme_color || '#ec4899'} 0%, #f9a8d4 100%)` },
-                      { id: 'shield',   label: 'Escudo',   shape: 'polygon(15% 0%, 85% 0%, 100% 15%, 100% 60%, 50% 100%, 0% 60%, 0% 15%)',                                                                                                                          gradient: `linear-gradient(135deg, ${formData.theme_color || '#0f172a'} 0%, #334155 100%)` },
-                    ].map((frame) => {
-                      const isSelected = formData.avatar_frame === frame.id;
-                      return (
-                        <button
-                          key={frame.id}
-                          onClick={() => handleChange('avatar_frame', frame.id)}
-                          title={frame.label}
-                          className={cn(
-                            "flex flex-col items-center justify-center gap-1.5 p-2 rounded-2xl border-2 transition-all hover:border-primary/60 hover:shadow-md group",
-                            isSelected ? "border-primary bg-primary/5 shadow-md" : "border-border/50 bg-card"
-                          )}
-                        >
-                          <div className="w-12 h-12 relative flex items-center justify-center overflow-visible">
-                            <div
-                              className="w-11 h-11 overflow-hidden flex items-center justify-center transition-transform group-hover:scale-105"
-                              style={{ clipPath: frame.shape, background: frame.gradient }}
-                            >
-                              {formData.photo_url ? (
-                                <img src={formData.photo_url} alt="" className="w-full h-full object-cover brightness-90" />
-                              ) : (
-                                <div className="w-4 h-4 rounded-full bg-white/40" />
-                              )}
-                            </div>
-                          </div>
-                          <span className={cn("text-[8px] font-bold uppercase tracking-tight text-center leading-tight", isSelected ? "text-primary" : "text-muted-foreground")}>
-                            {frame.label}
-                          </span>
-                        </button>
-                      );
-                    })}
-                  </div>
-                </div>
-
-                {/* ── 2. FILTER SELECTOR ───────────────────────────────────────── */}
-                <div className="space-y-3">
-                  <p className="text-[9px] font-black uppercase tracking-[0.25em] text-muted-foreground">2 — Filtro de Imagem</p>
+                  <p className="text-[9px] font-black uppercase tracking-[0.25em] text-muted-foreground">1 — Filtro de Imagem</p>
                   <div className="grid grid-cols-4 sm:grid-cols-8 gap-2">
                     {[
                       { id: 'none',     label: 'Original',  cssFilter: 'none' },
@@ -1023,12 +931,6 @@ export function EditorForm({ initialData, onSubmit, onChange, isPro = false }: E
                           tech: 'polygon(0% 10%, 100% 10%, 100% 70%, 65% 70%, 70% 85%, 85% 85%, 85% 100%, 15% 100%, 15% 85%, 30% 85%, 35% 70%, 0% 70%)',
                           pet: 'polygon(50% 40%, 70% 10%, 85% 15%, 80% 45%, 100% 55%, 90% 85%, 50% 100%, 10% 85%, 0% 55%, 20% 45%, 15% 15%, 30% 10%)',
                           business: 'polygon(25% 18%, 25% 0%, 75% 0%, 75% 18%, 100% 18%, 100% 90%, 94% 100%, 6% 100%, 0% 90%, 0% 18%)',
-                          hexagon: 'polygon(25% 0%, 75% 0%, 100% 50%, 75% 100%, 25% 100%, 0% 50%)',
-                          diamond: 'polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%)',
-                          blob: 'polygon(45% 5%, 68% 0%, 88% 12%, 98% 32%, 96% 58%, 85% 80%, 65% 98%, 38% 100%, 16% 88%, 4% 65%, 2% 38%, 12% 18%, 28% 5%)',
-                          star8: 'polygon(50% 0%, 64% 28%, 93% 7%, 73% 34%, 100% 50%, 73% 66%, 93% 93%, 64% 72%, 50% 100%, 36% 72%, 7% 93%, 27% 66%, 0% 50%, 27% 34%, 7% 7%, 36% 28%)',
-                          squircle: 'polygon(8% 0%, 92% 0%, 100% 8%, 100% 92%, 92% 100%, 8% 100%, 0% 92%, 0% 8%)',
-                          oval: 'ellipse(42% 50% at 50% 50%)', shield: 'polygon(15% 0%, 85% 0%, 100% 15%, 100% 60%, 50% 100%, 0% 60%, 0% 15%)',
                         };
                         return shapeMap[formData.avatar_frame || 'none'] || 'circle(50% at 50% 50%)';
                       })();
@@ -1066,9 +968,9 @@ export function EditorForm({ initialData, onSubmit, onChange, isPro = false }: E
                   </div>
                 </div>
 
-                {/* ── 3. BORDER EFFECT SELECTOR ────────────────────────────────── */}
+                {/* ── 2. BORDER EFFECT SELECTOR ────────────────────────────────── */}
                 <div className="space-y-3">
-                  <p className="text-[9px] font-black uppercase tracking-[0.25em] text-muted-foreground">3 — Efeito de Borda</p>
+                  <p className="text-[9px] font-black uppercase tracking-[0.25em] text-muted-foreground">2 — Efeito de Borda</p>
                   <div className="grid grid-cols-4 sm:grid-cols-7 gap-2">
                     {[
                       { id: 'none',    label: 'Nenhum',      ringBg: '#94a3b8',   ringStyle: {} },

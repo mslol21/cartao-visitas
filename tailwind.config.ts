@@ -56,6 +56,15 @@ export default {
           DEFAULT: "hsl(var(--whatsapp))",
           hover: "hsl(var(--whatsapp-hover))",
         },
+        // KONNEXY OFFICIAL PALETTE
+        konnexy: {
+          base: "#0F172A",
+          deep: "#0B1120",
+          blue: "#2563EB",
+          cian: "#00D4FF",
+          green: "#22D3EE",
+          purple: "#6D28D9",
+        },
         sidebar: {
           DEFAULT: "hsl(var(--sidebar-background))",
           foreground: "hsl(var(--sidebar-foreground))",
@@ -75,6 +84,7 @@ export default {
       fontFamily: {
         sans: ["Inter", "sans-serif"],
         display: ["Plus Jakarta Sans", "sans-serif"],
+        sora: ["Sora", "sans-serif"],
       },
       keyframes: {
         "accordion-down": {
@@ -101,6 +111,14 @@ export default {
           "0%": { left: "-100%" },
           "100%": { left: "125%" },
         },
+        "aura-spin": {
+          "0%": { transform: "rotate(0deg)" },
+          "100%": { transform: "rotate(360deg)" },
+        },
+        "float-particle": {
+          "0%, 100%": { transform: "translate(0, 0)" },
+          "50%": { transform: "translate(10px, -10px)" },
+        },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
@@ -110,10 +128,13 @@ export default {
         "scale-in": "scale-in 0.3s ease-out forwards",
         shine: "shine 1.5s ease-in-out infinite",
         "spin-slow": "spin 8s linear infinite",
+        "aura-spin": "aura-spin 10s linear infinite",
+        "float-particle": "float-particle 3s ease-in-out infinite",
       },
       backgroundImage: {
         "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
         "hero-pattern": "linear-gradient(135deg, hsl(145 70% 42% / 0.05) 0%, transparent 50%)",
+        "konnexy-gradient": "linear-gradient(135deg, #00D4FF 0%, #2563EB 50%, #6D28D9 100%)",
       },
     },
   },

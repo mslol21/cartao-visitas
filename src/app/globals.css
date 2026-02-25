@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&family=Sora:wght@400;500;600;700;800&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -71,12 +71,20 @@
     @apply bg-white/50 dark:bg-slate-900/50 backdrop-blur-lg border border-white/20 dark:border-white/10 shadow-xl;
   }
 
+  .glass-premium {
+    @apply bg-white/10 dark:bg-slate-900/40 backdrop-blur-2xl border border-white/20 dark:border-white/10 shadow-2xl;
+  }
+
   .gradient-primary {
     @apply bg-gradient-to-br from-primary via-blue-600 to-indigo-700;
   }
 
+  .gradient-konnexy {
+    @apply bg-gradient-to-br from-konnexy-cian via-konnexy-blue to-konnexy-purple;
+  }
+
   .gradient-text {
-    @apply bg-clip-text text-transparent bg-gradient-to-r from-primary to-indigo-600 font-bold;
+    @apply bg-clip-text text-transparent bg-gradient-to-r from-konnexy-cian to-konnexy-purple font-bold;
   }
 
   .btn-whatsapp {
@@ -89,6 +97,43 @@
 
   .animate-pulse-slow {
     animation: pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  }
+
+  /* KONNEXY DIGITAL FIELD */
+  .konnexy-digital-field {
+    @apply bg-[#0B1120] relative overflow-hidden;
+    background-image: 
+      radial-gradient(circle at 50% -20%, #2563EB22, transparent 60%),
+      radial-gradient(circle at 100% 100%, #6D28D911, transparent 40%);
+  }
+
+  .konnexy-digital-field::after {
+    content: '';
+    @apply absolute inset-0 opacity-[0.03] pointer-events-none;
+    background-image: radial-gradient(#fff 1px, transparent 1px);
+    background-size: 24px 24px;
+  }
+
+  /* AURA KONNEXY */
+  .konnexy-aura {
+    @apply relative flex items-center justify-center;
+  }
+
+  .aura-glow {
+    @apply absolute inset-0 rounded-full blur-[12px] opacity-60;
+    background: conic-gradient(from 0deg, #00D4FF, #3B82F6, #22D3EE, #00D4FF);
+  }
+
+  .aura-arc {
+    @apply absolute -inset-2 rounded-full border-2 border-transparent opacity-40;
+    border-top-color: #00D4FF;
+    border-right-color: #3B82F6;
+    animation: aura-spin 10s linear infinite;
+  }
+
+  .aura-particle {
+    @apply absolute w-1.5 h-1.5 rounded-full bg-konnexy-cian blur-[1px] opacity-20;
+    animation: float-particle 4s ease-in-out infinite;
   }
 }
 
@@ -112,3 +157,4 @@
   -ms-overflow-style: none;
   scrollbar-width: none;
 }
+
