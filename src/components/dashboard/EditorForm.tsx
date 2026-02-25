@@ -1154,7 +1154,8 @@ export function EditorForm({ initialData, onSubmit, onChange, isPro = false }: E
                 </p>
               </div>
             </div>
-          </TabsContent>
+          </div>
+        </TabsContent>
 
           <TabsContent value="seo" className="space-y-6 mt-0">
             {!isPro ? (
