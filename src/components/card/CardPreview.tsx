@@ -507,269 +507,210 @@ END:VCARD`;
                     if (!profConfig || !isPro) return null;
                     const frame = data.avatar_frame;
 
-                    switch (frame) {
-                      // ⚡ Eletricista — faíscas elétricas que tremem
-                      case 'electrician':
-                        return (
-                          <>
-                            {/* Anel elétrico piscante */}
-                            {/* Anel elétrico piscante */}
+                      switch (frame) {
+                        // ⚡ Eletricista — Anel de energia pulsante e faíscas externas
+                        case 'electrician':
+                          return (
+                            <>
+                              <div className="absolute rounded-full z-[20]" style={{
+                                inset: '-12px',
+                                border: `2px solid ${profAccent}40`,
+                                animation: 'pulse 2s ease-in-out infinite',
+                                boxShadow: `0 0 20px ${profAccent}20`,
+                              }} />
+                              {[0, 60, 120, 180, 240, 300].map((deg, i) => (
+                                <div key={i} className="absolute z-[21]"
+                                  style={{
+                                    top: '50%', left: '50%',
+                                    transform: `rotate(${deg}deg) translateX(76px) translateY(-50%)`,
+                                  }}
+                                >
+                                  <div className="w-1 h-3 rounded-full" style={{
+                                    background: `linear-gradient(to top, ${profAccent}, transparent)`,
+                                    animation: `electric-spark ${0.4 + i * 0.1}s ease-out infinite`,
+                                    animationDelay: `${i * 0.12}s`,
+                                  }} />
+                                </div>
+                              ))}
+                            </>
+                          );
+
+                        // ✂️ Barbearia — Órbitas de precisão elegantes
+                        case 'barber':
+                          return (
+                            <>
+                              <div className="absolute rounded-full z-[15]" style={{
+                                inset: '-15px',
+                                border: `2.5px solid ${profAccent}30`,
+                                borderTopColor: profAccent,
+                                borderBottomColor: profAccent,
+                                animation: 'aura-spin 15s linear infinite',
+                              }} />
+                              <div className="absolute rounded-full z-[15]" style={{
+                                inset: '-24px',
+                                border: `1.5px dashed ${profAccent}40`,
+                                animation: 'aura-spin 25s linear infinite reverse',
+                              }} />
+                              {[0, 90, 180, 270].map((deg, i) => (
+                                <div key={i} className="absolute w-2 h-1 z-[16]"
+                                  style={{
+                                    background: profAccent,
+                                    top: '50%', left: '50%',
+                                    transform: `rotate(${deg}deg) translateX(78px) translateY(-50%)`,
+                                    animation: 'aura-spin 15s linear infinite',
+                                  }}
+                                />
+                              ))}
+                            </>
+                          );
+
+                        // 🫧 Limpeza — Bolhas emanando das bordas
+                        case 'cleaner':
+                          return (
+                            <>
+                              {[...Array(10)].map((_, i) => (
+                                <div key={i} className="absolute rounded-full z-[20]"
+                                  style={{
+                                    width:  `${8 + (i % 3) * 4}px`,
+                                    height: `${8 + (i % 3) * 4}px`,
+                                    background: `${profAccent}20`,
+                                    border: `1px solid ${profAccent}50`,
+                                    top: `${50 + 70 * Math.sin(i * 0.6)}%`,
+                                    left: `${50 + 70 * Math.cos(i * 0.6)}%`,
+                                    animation: `bubble-rise ${3 + (i % 3)}s ease-out infinite`,
+                                    animationDelay: `${i * 0.3}s`,
+                                  }}
+                                />
+                              ))}
+                            </>
+                          );
+
+                        // ⚙️ Mecânico — Engrenagem industrial externa
+                        case 'mechanic':
+                          return (
+                            <>
+                              <div className="absolute rounded-full z-[15]" style={{
+                                inset: '-25px',
+                                border: `10px dotted ${profAccent}40`,
+                                animation: 'aura-spin 30s linear infinite',
+                                filter: 'drop-shadow(0 0 5px rgba(0,0,0,0.5))',
+                              }} />
+                              <div className="absolute rounded-full z-[16]" style={{
+                                inset: '-14px',
+                                border: `2px solid ${profAccent}60`,
+                                borderTopColor: 'transparent',
+                                borderBottomColor: 'transparent',
+                                animation: 'aura-spin 8s cubic-bezier(0.4, 0, 0.2, 1) infinite',
+                              }} />
+                            </>
+                          );
+
+                        // 💧 Encanador — Ondas de água circulares
+                        case 'plumber':
+                          return (
+                            <>
+                              {[0, 1, 2].map((i) => (
+                                <div key={i} className="absolute rounded-full z-[14]"
+                                  style={{
+                                    inset: '-12px',
+                                    border: `1.5px solid ${profAccent}`,
+                                    animation: `water-ripple 5s ease-out infinite`,
+                                    animationDelay: `${i * 1.6}s`,
+                                  }}
+                                />
+                              ))}
+                            </>
+                          );
+
+                        // ❤️ Saúde — Pulso Vital (EKG)
+                        case 'health':
+                          return (
                             <div className="absolute rounded-full z-[20]" style={{
-                              inset: '-3px',
-                              border: `2px solid ${profAccent}`,
-                              animation: 'electric-flicker 0.4s ease-in-out infinite',
-                              boxShadow: `0 0 12px ${profAccent}80, 0 0 24px ${profAccent}30`,
+                              inset: '-12px',
+                              border: `3px double ${profAccent}`,
+                              animation: 'pulse 1.5s ease-in-out infinite',
+                              boxShadow: `0 0 15px ${profAccent}40`,
                             }} />
-                            {/* Faíscas em 6 pontos */}
-                            {[0, 60, 120, 180, 240, 300].map((deg, i) => (
-                              <div key={i} className="absolute z-[21] w-0.5 rounded-full"
-                                style={{
-                                  height: `${8 + (i % 3) * 5}px`,
-                                  background: `linear-gradient(to top, ${profAccent}, transparent)`,
-                                  top: '50%', left: '50%',
-                                  transformOrigin: '0 0',
-                                  transform: `rotate(${deg}deg) translateX(52px) translateY(-50%)`,
-                                  animation: `electric-spark ${0.3 + i * 0.07}s ease-out infinite`,
-                                  animationDelay: `${i * 0.08}s`,
-                                }}
-                              />
-                            ))}
-                          </>
-                        );
+                          );
 
-                      // ✂️ Barbearia — dois anéis tracejados contra-rotativos
-                      case 'barber':
-                        return (
-                          <>
+                        // ⚖️ Direito — Moldura de Prestígio (Pilar)
+                        case 'law':
+                          return (
                             <div className="absolute rounded-full z-[15]" style={{
-                              inset: '-8px',
-                              border: `2px dashed ${profAccent}`,
-                              animation: 'aura-spin 12s linear infinite',
-                            }} />
-                            <div className="absolute rounded-full z-[15]" style={{
-                              inset: '-16px',
-                              border: `1.5px dashed ${profAccent}50`,
-                              animation: 'aura-spin 18s linear infinite reverse',
-                            }} />
-                            {/* Pontinhos nos quadrantes como marcas de tesoura */}
-                            {[45, 135, 225, 315].map((deg, i) => (
-                              <div key={i} className="absolute w-2 h-2 rounded-full z-[16]"
-                                style={{
-                                  background: profAccent,
-                                  top: '50%', left: '50%',
-                                  boxShadow: `0 0 6px ${profAccent}`,
-                                  transform: `rotate(${deg}deg) translateX(50px) translateY(-50%)`,
-                                  animation: 'aura-spin 5s linear infinite',
-                                  animationDelay: `${-i * 1.25}s`,
-                                }}
-                              />
-                            ))}
-                          </>
-                        );
-
-                      // 🫧 Limpeza — bolhas subindo
-                      case 'cleaner':
-                        return (
-                          <>
-                            {[...Array(9)].map((_, i) => (
-                              <div key={i} className="absolute rounded-full z-[20]"
-                                style={{
-                                  width:  `${7 + (i % 4) * 3}px`,
-                                  height: `${7 + (i % 4) * 3}px`,
-                                  background: `${profAccent}40`,
-                                  border: `1.5px solid ${profAccent}80`,
-                                  bottom: `${5 + (i * 10) % 55}%`,
-                                  left:   `${8 + (i * 19) % 75}%`,
-                                  animation: `bubble-rise ${2.5 + (i % 4) * 0.8}s ease-in-out infinite`,
-                                  animationDelay: `${i * 0.25}s`,
-                                }}
-                              />
-                            ))}
-                          </>
-                        );
-
-                      // ⚙️ Mecânico — engrenagem girante com dois anéis
-                      case 'mechanic':
-                        return (
-                          <>
-                            {/* Anel externo com tracejado de dentes */}
-                            <div className="absolute rounded-full z-[6]" style={{
                               inset: '-10px',
-                              border: `4px solid transparent`,
-                              borderTopColor: profAccent,
-                              borderBottomColor: profAccent,
-                              borderLeftColor:  `${profAccent}40`,
-                              borderRightColor: `${profAccent}40`,
-                              animation: 'aura-spin 15s linear infinite',
-                              boxShadow: `0 0 8px ${profAccent}40`,
+                              border: `2px solid ${profAccent}`,
+                              padding: '2px',
+                              background: `linear-gradient(45deg, transparent, ${profAccent}40, transparent)`,
+                              boxShadow: `inset 0 0 10px ${profAccent}20`,
                             }} />
-                            <div className="absolute rounded-full z-[6]" style={{
-                              inset: '-20px',
-                              border: `2px dashed ${profAccent}30`,
-                              animation: 'aura-spin 25s linear infinite reverse',
+                          );
+
+                        // 💻 TI — Brackets de Scanner e Stream de Dados
+                        case 'tech':
+                          return (
+                            <>
+                              {/* Cantos de scanner alargados */}
+                              {([
+                                { cls: 'top-0 left-0',   br: '12px 0 0 0',   bw: '3px 0 0 3px', ins: '-18px' },
+                                { cls: 'top-0 right-0',  br: '0 12px 0 0',   bw: '3px 3px 0 0', ins: '-18px' },
+                                { cls: 'bottom-0 left-0',br: '0 0 0 12px',   bw: '0 0 3px 3px', ins: '-18px' },
+                                { cls: 'bottom-0 right-0',br:'0 0 12px 0',   bw: '0 3px 3px 0', ins: '-18px' },
+                              ] as const).map(({ cls, br, bw, ins }, i) => (
+                                <div key={i} className={`absolute w-8 h-8 z-[25]`}
+                                  style={{
+                                    borderColor: profAccent,
+                                    borderStyle: 'solid',
+                                    borderWidth: bw,
+                                    borderRadius: br,
+                                    top: i < 2 ? ins : 'auto',
+                                    bottom: i >= 2 ? ins : 'auto',
+                                    left: i % 2 === 0 ? ins : 'auto',
+                                    right: i % 2 !== 0 ? ins : 'auto',
+                                    animation: `digital-blink 3s ease-in-out infinite`,
+                                    animationDelay: `${i * 0.4}s`,
+                                    filter: `drop-shadow(0 0 5px ${profAccent}80)`,
+                                  }}
+                                />
+                              ))}
+                              {/* Data stream dots */}
+                              <div className="absolute rounded-full z-[20]" style={{
+                                inset: '-28px',
+                                border: `1px dashed ${profAccent}20`,
+                                animation: 'aura-spin 20s linear infinite',
+                              }} />
+                            </>
+                          );
+
+                        // 🐾 Petshop — Ícones flutuando na aura externa
+                        case 'pet':
+                          return (
+                            <>
+                              {['🐾','❤️','🐾','🦴','❤️','🐶'].map((emoji, i) => (
+                                <div key={i} className="absolute z-[22] select-none pointer-events-none"
+                                  style={{
+                                    top: '50%', left: '50%',
+                                    transform: `rotate(${i * 60}deg) translateX(78px) rotate(-${i * 60}deg)`,
+                                    fontSize: `14px`,
+                                    animation: `float-particle ${4 + i}s ease-in-out infinite`,
+                                    animationDelay: `${i * 0.5}s`,
+                                  }}
+                                >
+                                  {emoji}
+                                </div>
+                              ))}
+                            </>
+                          );
+
+                        // 💼 Negócios — Órbita de Carreira Crescente
+                        case 'business':
+                          return (
+                            <div className="absolute rounded-full z-[15]" style={{
+                              inset: '-12px',
+                              border: `2px solid ${profAccent}30`,
+                              borderTop: `4px solid ${profAccent}`,
+                              animation: 'aura-spin 10s cubic-bezier(0.4, 0, 0.2, 1) infinite',
                             }} />
-                            {/* Parafusos nos 4 pontos */}
-                            {[0, 90, 180, 270].map((deg, i) => (
-                              <div key={i} className="absolute w-2 h-2 rounded-full z-[7]"
-                                style={{
-                                  background: profAccent,
-                                  top: '50%', left: '50%',
-                                  transform: `rotate(${deg}deg) translateX(54px) translateY(-50%)`,
-                                  animation: 'aura-spin 2s linear infinite',
-                                  animationDelay: `${-i * 0.5}s`,
-                                  boxShadow: `0 0 4px ${profAccent}`,
-                                }}
-                              />
-                            ))}
-                          </>
-                        );
-
-                      // 💧 Encanador — ondas de água se expandindo
-                      case 'plumber':
-                        return (
-                          <>
-                            {[0, 1, 2, 3].map((i) => (
-                              <div key={i} className="absolute rounded-full z-[6]"
-                                style={{
-                                  inset: 0,
-                                  border: `2px solid ${profAccent}`,
-                                  animation: `water-ripple 4s ease-out infinite`,
-                                  animationDelay: `${i * 1.0}s`,
-                                }}
-                              />
-                            ))}
-                          </>
-                        );
-
-                      // ❤️ Saúde — batimento cardíaco duplo-pulso
-                      case 'health':
-                        return (
-                          <>
-                            {/* Anel que bate como coração */}
-                            <div className="absolute rounded-full z-[6]"
-                              style={{
-                                inset: '-3px',
-                                border: `2.5px solid ${profAccent}`,
-                                animation: 'heartbeat 1.2s ease-in-out infinite',
-                                boxShadow: `0 0 10px ${profAccent}60`,
-                              }}
-                            />
-                            {/* Rings que se expandem como ECG */}
-                            {[0, 1].map((i) => (
-                              <div key={i} className="absolute rounded-full z-[5]"
-                                style={{
-                                  inset: 0,
-                                  border: `1.5px solid ${profAccent}80`,
-                                  animation: `heartbeat-ring 1.2s ease-out infinite`,
-                                  animationDelay: `${i * 0.6}s`,
-                                }}
-                              />
-                            ))}
-                          </>
-                        );
-
-                      // ⚖️ Direito — partículas douradas orbitando + anel que balança
-                      case 'law':
-                        return (
-                          <>
-                            <div className="absolute rounded-full z-[5]" style={{
-                              inset: '-8px',
-                              border: `1.5px solid ${profAccent}40`,
-                              animation: 'scale-rock 3s ease-in-out infinite',
-                            }} />
-                            {[0, 1, 2, 3].map((i) => (
-                              <div key={i} className="absolute w-2 h-2 rounded-full z-[7]"
-                                style={{
-                                  background: profAccent,
-                                  top: '50%', left: '50%',
-                                  transformOrigin: '-58px 0',
-                                  animation: `gold-orbit 6s linear infinite`,
-                                  animationDelay: `${-i * 1.5}s`,
-                                  boxShadow: `0 0 8px ${profAccent}`,
-                                }}
-                              />
-                            ))}
-                          </>
-                        );
-
-                      // 💻 TI — linha de scan digital + cantos de bracket
-                      case 'tech':
-                        return (
-                          <>
-                            {/* Scan line inside clipped circle */}
-                            {/* Scan line inside clipped circle */}
-                            <div className="absolute rounded-full overflow-hidden z-[20]" style={{ inset: 0 }}>
-                              <div className="absolute left-0 right-0 h-[2px]"
-                                style={{
-                                  background: `linear-gradient(90deg, transparent, ${profAccent}CC, transparent)`,
-                                  animation: 'scan-line 2s linear infinite',
-                                  boxShadow: `0 0 8px ${profAccent}`,
-                                }}
-                              />
-                            </div>
-                            {/* Corner brackets */}
-                            {([
-                              { cls: 'top-0 left-0',   br: '4px 0 0 0',   bw: '2px 0 0 2px' },
-                              { cls: 'top-0 right-0',  br: '0 4px 0 0',   bw: '2px 2px 0 0' },
-                              { cls: 'bottom-0 left-0',br: '0 0 0 4px',   bw: '0 0 2px 2px' },
-                              { cls: 'bottom-0 right-0',br:'0 0 4px 0',   bw: '0 2px 2px 0' },
-                            ] as const).map(({ cls, br, bw }, i) => (
-                              <div key={i} className={`absolute w-5 h-5 z-[21] ${cls}`}
-                                style={{
-                                  borderColor: profAccent,
-                                  borderStyle: 'solid',
-                                  borderWidth: bw,
-                                  borderRadius: br,
-                                  animation: `digital-blink 2s ease-in-out infinite`,
-                                  animationDelay: `${i * 0.5}s`,
-                                }}
-                              />
-                            ))}
-                          </>
-                        );
-
-                      // 🐾 Petshop — corações e patinhas flutuando
-                      case 'pet':
-                        return (
-                          <>
-                            {['🐾','❤️','🐾','🐟','❤️','🐾'].map((emoji, i) => (
-                              <div key={i} className="absolute z-[6] select-none pointer-events-none"
-                                style={{
-                                  bottom: `${8 + (i * 13) % 45}%`,
-                                  left:   `${6 + (i * 21) % 82}%`,
-                                  fontSize: `${10 + (i % 3) * 4}px`,
-                                  animation: `pet-float ${1.5 + (i % 3) * 0.6}s ease-out infinite`,
-                                  animationDelay: `${i * 0.35}s`,
-                                }}
-                              >
-                                {emoji}
-                              </div>
-                            ))}
-                          </>
-                        );
-
-                      // 💼 Negócios — ponto profissional orbitando + anel sólido
-                      case 'business':
-                        return (
-                          <>
-                            <div className="absolute rounded-full z-[5]" style={{
-                              inset: '-8px',
-                              border: `1px solid ${profAccent}30`,
-                            }} />
-                            {[0, 1].map((i) => (
-                              <div key={i} className="absolute w-2.5 h-2.5 rounded-full z-[7]"
-                                style={{
-                                  background: `linear-gradient(135deg, ${profAccent}, white)`,
-                                  top: '50%', left: '50%',
-                                  transformOrigin: '-60px 0',
-                                  animation: `biz-orbit ${5 + i * 3}s linear infinite`,
-                                  animationDelay: `${-i * 2.5}s`,
-                                  boxShadow: `0 0 8px ${profAccent}80`,
-                                }}
-                              />
-                            ))}
-                          </>
-                        );
+                          );
 
                       default:
                         return null;
