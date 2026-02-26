@@ -5,12 +5,15 @@ import { CardPreview } from '@/components/card/CardPreview';
 import { Profile } from '@/types/profile';
 import { motion } from 'framer-motion';
 import { Smartphone, Eye } from 'lucide-react';
+import { isPaidUser } from '@/utils/planUtils';
 
 interface LivePreviewProps {
   data: Partial<Profile>;
 }
 
 export function LivePreview({ data }: LivePreviewProps) {
+  const isPaid = isPaidUser(data as Profile);
+  
   return (
     <div className="flex flex-col items-center">
       <div className="w-full flex items-center justify-between mb-8 px-2">
@@ -25,7 +28,7 @@ export function LivePreview({ data }: LivePreviewProps) {
       <PhoneFrame>
         <CardPreview
           data={data}
-          showBranding={data.plan !== 'pro'}
+          showBranding={!isPaid}
           suppressTracking={true}
           forceProPreview={true}
         />

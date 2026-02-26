@@ -85,9 +85,10 @@ interface EditorFormProps {
   onSubmit: (data: Partial<ProfileFormData>) => Promise<void>;
   onChange: (data: Partial<ProfileFormData>) => void;
   isPro?: boolean;
+  canCustomizeTheme?: boolean;
 }
 
-export function EditorForm({ initialData, onSubmit, onChange, isPro = false }: EditorFormProps) {
+export function EditorForm({ initialData, onSubmit, onChange, isPro = false, canCustomizeTheme = true }: EditorFormProps) {
   const [formData, setFormData] = useState<Partial<ProfileFormData>>(initialData);
   const [isSaving, setIsSaving] = useState(false);
   const [uploading, setUploading] = useState(false);
@@ -953,11 +954,17 @@ export function EditorForm({ initialData, onSubmit, onChange, isPro = false }: E
                 </div>
 
               {/* PRO-only: filtro e borda */}
-              <div className={cn("space-y-7", !isPro && "opacity-40 pointer-events-none")}>
+              <div className={cn("space-y-7", (!isPro || !canCustomizeTheme) && "opacity-40 pointer-events-none")}>
                 {!isPro && (
                   <div className="flex items-center gap-2 p-3 rounded-2xl bg-primary/5 border border-primary/20">
                     <span className="text-[10px] bg-primary/10 text-primary px-2 py-1 rounded-full font-black flex-shrink-0">PRO</span>
-                    <p className="text-[10px] text-muted-foreground">Filtro de imagem e efeitos de borda disponíveis no plano PRO</p>
+                    <p className="text-[10px] text-muted-foreground">{canCustomizeTheme ? 'Filtro de imagem e efeitos de borda disponíveis no plano PRO' : 'Personalização de tema desativada para este plano'}</p>
+                  </div>
+                )}
+                {isPro && !canCustomizeTheme && (
+                  <div className="flex items-center gap-2 p-3 rounded-2xl bg-amber-500/5 border border-amber-500/20">
+                    <span className="text-[10px] bg-amber-500/10 text-amber-500 px-2 py-1 rounded-full font-black flex-shrink-0">LOCKED</span>
+                    <p className="text-[10px] text-muted-foreground font-medium">Personalização bloqueada para este plano (Fundador Local)</p>
                   </div>
                 )}
 
@@ -1041,7 +1048,7 @@ export function EditorForm({ initialData, onSubmit, onChange, isPro = false }: E
                 {!isPro && <span className="text-[10px] bg-primary/10 text-primary px-2 py-1 rounded-full font-black">PRO</span>}
               </div>
               
-              <div className={cn("grid grid-cols-2 gap-3", !isPro && "opacity-40 pointer-events-none")}>
+              <div className={cn("grid grid-cols-2 gap-3", (!isPro || !canCustomizeTheme) && "opacity-40 pointer-events-none")}>
                 {[
                   { id: 'standard', label: 'Padrão', desc: 'Limpo e moderno' },
                   { id: 'oled', label: 'OLED Dark', desc: 'Preto profundo' },
@@ -1074,7 +1081,7 @@ export function EditorForm({ initialData, onSubmit, onChange, isPro = false }: E
                 {!isPro && <span className="text-[10px] bg-primary/10 text-primary px-2 py-1 rounded-full font-black">PRO</span>}
               </div>
               
-              <div className={cn("grid grid-cols-2 gap-3", !isPro && "opacity-40 pointer-events-none")}>
+              <div className={cn("grid grid-cols-2 gap-3", (!isPro || !canCustomizeTheme) && "opacity-40 pointer-events-none")}>
                 {['Inter', 'Outfit', 'Playfair Display', 'Sora', 'Plus Jakarta Sans', 'Bento'].map((font) => (
                   <button
                     key={font}
@@ -1096,7 +1103,7 @@ export function EditorForm({ initialData, onSubmit, onChange, isPro = false }: E
                 <Label className="flex items-center gap-2 font-black uppercase tracking-widest text-[10px]"><ImageIcon className="w-4 h-4 text-primary" /> Fundo Personalizado</Label>
                 {!isPro && <span className="text-[10px] bg-primary/10 text-primary px-2 py-1 rounded-full font-black">PRO</span>}
               </div>
-              <div className={cn("space-y-3", !isPro && "opacity-40 pointer-events-none")}>
+              <div className={cn("space-y-3", (!isPro || !canCustomizeTheme) && "opacity-40 pointer-events-none")}>
                 <input
                   type="file"
                   ref={videoInputRef}

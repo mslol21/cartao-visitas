@@ -77,6 +77,8 @@ import { jsPDF } from 'jspdf';
 import { DigitalField } from '@/components/pro/DigitalField';
 import { AnimatedQR } from '@/components/pro/AnimatedQR';
 
+import { isPaidUser } from '@/utils/planUtils';
+
 interface CardPreviewProps {
   data: Partial<Profile>;
   showBranding?: boolean;
@@ -93,7 +95,9 @@ export function CardPreview({
   forceProPreview = false 
 }: CardPreviewProps) {
   // isPro agora é verdadeiro se o plano for PRO OU se estivermos forçando o preview no editor
-  const isPro = data.plan === 'pro' || forceProPreview;
+  const isPaid = isPaidUser(data as Profile) || forceProPreview;
+  const isPro = isPaid;
+  const isBarbearia = data.category === 'barbearia';
 
   const handleTrackClick = async (type: AnalyticsEventType) => {
     if (suppressTracking || !data.id || isDownloadMode) return;
@@ -195,7 +199,7 @@ END:VCARD`;
   const formattedWhatsapp = cleanWhatsapp.startsWith('55') ? cleanWhatsapp : `55${cleanWhatsapp}`;
   
   const whatsappLink = cleanWhatsapp
-    ? `https://wa.me/${formattedWhatsapp}?text=${encodeURIComponent(`Olá! Vi seu perfil na Konnexy e gostaria de ${isPro ? 'solicitar um orçamento' : 'conversar'} sobre seus serviços.`)}`
+    ? `https://wa.me/${formattedWhatsapp}?text=${encodeURIComponent(isBarbearia ? "Olá! Gostaria de agendar um corte 💈" : `Olá! Vi seu perfil na Konnexy e gostaria de ${isPro ? 'solicitar um orçamento' : 'conversar'} sobre seus serviços.`)}`
     : '#';
 
   const socialLinks = [
@@ -240,6 +244,10 @@ END:VCARD`;
 
   const getThemeClasses = () => {
     const hasVideo = !!data.background_video_url && isPro;
+    
+    // Barbearia sempre usa o tema escuro/grafite se for a categoria ativa
+    if (isBarbearia) return "bg-black text-white border-white/10 shadow-[inset_0_0_120px_rgba(255,255,255,0.05)]";
+    
     if (!isPro) return "bg-white dark:bg-slate-950";
     
     switch (data.theme_style) {
@@ -947,7 +955,7 @@ END:VCARD`;
                     
                     <MessageCircle className={cn("w-6 h-6 flex-shrink-0 z-10", isPro ? "fill-white" : "fill-white/80")} />
                     <span className="font-black uppercase tracking-[0.05em] z-10">
-                       {isPro ? (data.cta_text || profConfig?.cta || 'Falar no WhatsApp') : 'WhatsApp'}
+                       {isPro ? (data.cta_text || (isBarbearia ? 'Agendar Corte 💈' : (profConfig?.cta || 'Falar no WhatsApp'))) : 'WhatsApp'}
                     </span>
                   </a>
                 </Button>

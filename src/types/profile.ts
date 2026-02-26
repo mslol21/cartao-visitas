@@ -29,7 +29,13 @@ export interface Profile {
   service_area: string | null;
   services: ServiceItem[];
   cta_text: string;
-  plan: 'free' | 'pro';
+  plan: 'free' | 'pro' | 'fundador_local';
+  billing_type: 'stripe' | 'manual';
+  plan_expires_at: string | null;
+  is_founder: boolean;
+  category: 'default' | 'barbearia';
+  can_customize_theme: boolean;
+  role: 'user' | 'admin';
   verified: boolean;
   seo_title: string | null;
   seo_description: string | null;
@@ -70,6 +76,13 @@ export interface ProfileFormData {
   photo_border_effect?: string | null;
   services?: ServiceItem[];
   cta_text?: string;
+  plan?: 'free' | 'pro' | 'fundador_local';
+  billing_type?: 'stripe' | 'manual';
+  plan_expires_at?: string | null;
+  is_founder?: boolean;
+  category?: 'default' | 'barbearia';
+  can_customize_theme?: boolean;
+  role?: 'user' | 'admin';
   seo_title?: string | null;
   seo_description?: string | null;
   theme_color?: string;

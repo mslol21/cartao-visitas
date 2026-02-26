@@ -29,7 +29,8 @@ import {
   Facebook,
   Twitter,
   Youtube,
-  Link2
+  Link2,
+  ShieldCheck
 } from 'lucide-react';
 import { 
   BarChart, 
@@ -45,6 +46,7 @@ import { ChartContainer, ChartTooltip, ChartTooltipContent } from '@/components/
 import { toast } from 'sonner';
 import { motion, AnimatePresence } from 'framer-motion';
 import { cn } from "@/lib/utils";
+import { isPaidUser } from '@/utils/planUtils';
 
 import { Logo } from '@/components/brand/Logo';
 import { verifyCheckoutSession, forceSyncProPlan } from '@/app/actions/checkout';
@@ -168,7 +170,7 @@ function DashboardContent() {
   }
 
   const publicUrl = profile?.username ? `/${profile.username}` : null;
-  const isPro = profile?.plan === 'pro';
+  const isPro = isPaidUser(profile);
 
   return (
     <>
@@ -232,6 +234,15 @@ function DashboardContent() {
               )}
             </AnimatePresence>
             
+            {profile?.role === 'admin' && (
+              <Button asChild variant="ghost" size="sm" className="hidden sm:flex rounded-2xl bg-red-500/10 text-red-600 hover:bg-red-500/20">
+                <Link href="/admin" className="flex items-center gap-2">
+                  <ShieldCheck className="w-4 h-4" />
+                  Admin
+                </Link>
+              </Button>
+            )}
+            
             <div className="h-4 w-[1px] bg-border mx-2" />
             
             <button 
@@ -290,6 +301,7 @@ function DashboardContent() {
                     onSubmit={handleAutoSave}
                     onChange={setCurrentData}
                     isPro={isPro}
+                    canCustomizeTheme={profile?.can_customize_theme ?? true}
                   />
                 </div>
 

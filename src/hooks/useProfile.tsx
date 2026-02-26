@@ -47,7 +47,27 @@ export function useProfile() {
       }
       
       if (data) {
-        setProfile(data as Profile);
+        const profileData = data as Profile;
+        // Check for manual plan expiration
+        if (profileData.billing_type === 'manual' && profileData.plan_expires_at) {
+          const expirationDate = new Date(profileData.plan_expires_at);
+          if (expirationDate < new Date()) {
+            // Plan expired, demote to free
+            const updates = { 
+              plan: 'free' as const, 
+              billing_type: 'stripe' as const 
+            };
+            
+            await supabase
+              .from('profiles')
+              .update(updates)
+              .eq('id', profileData.id);
+              
+            setProfile({ ...profileData, ...updates });
+            return;
+          }
+        }
+        setProfile(profileData);
       }
     } catch (error) {
       console.error('Error fetching profile:', error);
