@@ -10,25 +10,24 @@ export async function getAllUsersOverview() {
     if (!supabase) throw new Error("Falha ao inicializar o cliente Supabase");
     if (!supabase.auth) throw new Error("Serviço de autenticação não disponível no cliente");
     
-    // Verifica se o usuário atual é admin
-    const { data: authData, error: authError } = await supabase.auth.getUser();
-    if (authError) {
-      console.error('Admin Auth Error:', authError);
-      throw new Error("Erro na autenticação: " + authError.message);
-    }
+    // Busca o usuário de forma mais direta
+    const { data: { user }, error: authError } = await supabase.auth.getUser();
     
-    const user = authData?.user;
-    if (!user) throw new Error("Usuário não identificado");
+    if (authError || !user) {
+      console.error('Production Auth Error:', authError);
+      throw new Error("Sessão inválida ou expirada. Faça login novamente.");
+    }
 
+    // Busca o cargo usando o ID do usuário de forma direta
     const { data: profile, error: profileError } = await supabase
       .from('profiles')
       .select('role')
       .eq('user_id', user.id)
-      .single();
+      .maybeSingle();
 
-    if (profileError) {
-      console.error('Admin Profile Fetch Error:', profileError);
-      throw new Error("Erro ao buscar cargo do perfil");
+    if (profileError || !profile) {
+      console.error('Profile Fetch Error:', profileError);
+      throw new Error("Perfil de administrador não localizado.");
     }
 
     if (profile?.role !== 'admin') {
