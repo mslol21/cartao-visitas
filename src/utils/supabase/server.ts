@@ -20,7 +20,7 @@ export async function createClient() {
     )
   }
 
-  return createServerClient(
+  const client = createServerClient(
     supabaseUrl,
     supabaseKey,
     {
@@ -42,10 +42,6 @@ export async function createClient() {
       },
     }
   )
-
-  if (!client.auth) {
-    console.warn('CRITICAL: Supabase client created without auth property!');
-  }
 
   return client;
 }
