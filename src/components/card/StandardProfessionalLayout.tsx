@@ -17,10 +17,10 @@ import {
   Zap
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { Profile, Service, CustomFields } from '@/types/profile';
+import { Profile, Service, CustomFields, ProfessionCategory } from '@/types/profile';
 import { cn } from '@/lib/utils';
 import Image from 'next/image';
-import { getProfessionConfig, ProfessionCategory } from '@/config/professions';
+import { getProfessionConfig } from '@/config/professions';
 
 interface StandardProfessionalLayoutProps {
   data: Partial<Profile>;
