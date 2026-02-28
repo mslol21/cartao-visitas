@@ -698,7 +698,7 @@ END:VCARD`;
                     asChild
                     onClick={() => handleTrackClick('click_address')}
                   >
-                    <a href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(previewAddress || data.address)}`} target="_blank" rel="noopener noreferrer">
+                    <a href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(previewAddress || '')}`} target="_blank" rel="noopener noreferrer">
                       <MapPin className="w-4 h-4 mr-2 text-[#C6A75E]" />
                       Localização
                     </a>
@@ -2659,7 +2659,7 @@ END:VCARD`;
 
                      {previewAddress && (
                        <a 
-                         href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(previewAddress || data.address)}`}
+                         href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(previewAddress || '')}`}
                          target="_blank"
                          rel="noopener noreferrer"
                          onClick={() => handleTrackClick('click_address')}
