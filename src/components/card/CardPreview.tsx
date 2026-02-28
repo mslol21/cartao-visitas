@@ -117,14 +117,20 @@ export function CardPreview({
   const isHealth = ['health', 'personal_trainer', 'psicologo'].includes(data.profession as string) || data.category === 'health';
   const isSales = data.profession === 'sales' || data.category === 'sales';
   const isFood = ['food', 'quentinhas'].includes(data.profession as string) || data.category === 'food';
-  const isService = ['service', 'pedreiro', 'mecanico', 'eletricista', 'encanador', 'diarista', 'frete', 'ar_condicionado', 'montador_moveis', 'gesseiro', 'vidraceiro', 'pintor', 'serralheiro', 'marceneiro', 'assistencia_celular'].includes(data.profession as string) || data.category === 'service';
+  const isService = data.profession === 'service' || data.category === 'service';
+  const isModernService = [
+    'pedreiro', 'mecanico', 'eletricista', 'encanador', 'diarista', 
+    'frete', 'ar_condicionado', 'montador_moveis', 'gesseiro', 
+    'vidraceiro', 'pintor', 'serralheiro', 'marceneiro', 
+    'assistencia_celular'
+  ].includes(data.profession as string);
   const isAdvogado = data.profession === 'advogado' || data.category === 'advogado';
   const isTech = ['tech', 'tecnico_informatica', 'designer', 'fotografo'].includes(data.profession as string) || data.category === 'tech';
   const isRealEstate = data.profession === 'real_estate' || data.category === 'real_estate';
   const isDriver = data.profession === 'driver' || data.category === 'driver';
   const isPetshop = data.profession === 'petshop' || data.category === 'petshop';
   
-  const isStandardized = !!data.profession && data.profession !== 'default';
+  const isStandardized = isModernService || ['quentinhas', 'assistencia_celular'].some(p => data.profession === p);
 
   // Data helpers that prefer new fields but fall back to old ones for compatibility
   const previewName = data.business_name || data.name || 'Seu Nome';
@@ -506,6 +512,7 @@ END:VCARD`;
                        isSales ? "bg-[#f5f3ff]" : 
                        isFood ? "bg-[#fef2f2]" : 
                        isService ? "bg-[#fff7ed]" : 
+                        isStandardized ? "bg-transparent" : 
                         isTech ? "bg-[#020617]" :
                         isRealEstate ? "bg-[#f8fafc]" :
                         isDriver ? "bg-[#111111]" :
@@ -596,7 +603,7 @@ END:VCARD`;
                          backgroundSize: '24px 24px'
                        }} />
                     </>
-                  ) : isService ? (
+                  ) : isStandardized ? null : isService ? (
                      <>
                         <div className="absolute inset-0 bg-gradient-to-br from-[#FFF7ED] via-[#F8FAFC] to-[#FFEDD5] dark:from-[#130d0a] dark:to-[#0a0705]" />
                         <div className="absolute inset-0 opacity-[0.04]" style={{
@@ -622,8 +629,9 @@ END:VCARD`;
                </div>
              )}
           </div>
-
-          {isBarbearia ? (
+          {isPro && isStandardized ? (
+            <StandardProfessionalLayout data={data as Profile} isPro={isPro} />
+          ) : isBarbearia ? (
             <div className="relative flex flex-col items-center w-full min-h-[600px] z-10 px-6 py-10 overflow-y-auto scroll-hide">
               {/* Header */}
               <div className="flex flex-col items-center mb-8">
