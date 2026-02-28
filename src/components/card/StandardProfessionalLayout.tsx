@@ -30,7 +30,8 @@ import {
   HardHat,
   Monitor,
   Smartphone,
-  Check
+  Check,
+  ExternalLink
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Profile, Service, CustomFields, ProfessionCategory } from '@/types/profile';
@@ -371,6 +372,55 @@ export function StandardProfessionalLayout({ data, isPro }: StandardProfessional
       )}
 
 
+      {/* 12. LINKS PERSONALIZADOS */}
+      {data.custom_links && data.custom_links.length > 0 && (
+        <motion.div 
+          custom={7} initial="hidden" animate="visible" variants={fadeIn}
+          className="px-6 space-y-3"
+        >
+          <div className="flex items-center gap-3">
+            <span className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400">Links Úteis</span>
+            <div className="h-px flex-1 bg-slate-200 dark:bg-slate-800" />
+          </div>
+          <div className="flex flex-col gap-2">
+            {data.custom_links.map((link, idx) => (
+              <Button key={idx} asChild variant="outline" className="w-full h-12 rounded-2xl border-slate-200 dark:border-slate-800 hover:bg-primary/5 hover:border-primary/30 transition-all font-bold text-xs justify-between group">
+                <a href={link.url.startsWith('http') ? link.url : `https://${link.url}`} target="_blank" rel="noopener noreferrer">
+                  <span className="truncate">{link.title}</span>
+                  <ExternalLink className="w-4 h-4 opacity-30 group-hover:opacity-100 transition-opacity" />
+                </a>
+              </Button>
+            ))}
+          </div>
+        </motion.div>
+      )}
+
+      {/* 13. HORÁRIO DE FUNCIONAMENTO */}
+      {data.business_hours && Object.values(data.business_hours).some(v => v) && (
+        <motion.div 
+          custom={8} initial="hidden" animate="visible" variants={fadeIn}
+          className="px-6"
+        >
+          <div className="p-6 rounded-[2rem] bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800">
+             <div className="flex items-center gap-2 mb-4">
+                <Clock className="w-4 h-4 text-primary" />
+                <span className="text-[10px] font-black uppercase tracking-widest text-slate-400">Horário de Funcionamento</span>
+             </div>
+             <div className="space-y-2">
+                {['Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado', 'Dom'].map((day) => {
+                  const hours = data.business_hours?.[day];
+                  if (!hours) return null;
+                  return (
+                    <div key={day} className="flex justify-between items-center text-[11px] font-bold">
+                       <span className="opacity-40 uppercase tracking-widest">{day}</span>
+                       <span className="text-slate-900 dark:text-white">{hours}</span>
+                    </div>
+                  );
+                })}
+             </div>
+          </div>
+        </motion.div>
+      )}
 
       {/* PLATFORM BRANDING */}
       <div className="mt-12 flex flex-col items-center gap-4 opacity-30">
