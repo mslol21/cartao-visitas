@@ -130,11 +130,9 @@ export function EditorForm({ initialData, onSubmit, onChange, isPro = false, can
       if (!silent) toast.error('O WhatsApp é obrigatório!');
       return;
     }
-    if ((formData.bio_profissional?.length || 0) < 120) {
-       if (!silent) toast.error('A Bio Profissional deve ter pelo menos 120 caracteres!');
-       return;
-    }
-    if (!formData.servicos || formData.servicos.length === 0) {
+
+    const currentServices = formData.servicos || [];
+    if (currentServices.length === 0) {
        if (!silent) toast.error('Adicione pelo menos 1 serviço!');
        return;
     }
@@ -526,18 +524,6 @@ export function EditorForm({ initialData, onSubmit, onChange, isPro = false, can
                        value={formData.profession || 'default'} 
                        onValueChange={(val) => {
                          handleChange('profession', val);
-                         // Se mudar a profissão, aplicar tema padrão se for PRO
-                         const config = getProfessionConfig(val as ProfessionCategory);
-                         if (isPro) {
-                           handleChange('theme_color', config.theme.color === 'amber' ? '#d4af37' : 
-                                                    config.theme.color === 'pink' ? '#f472b6' : 
-                                                    config.theme.color === 'green' ? '#10b981' : 
-                                                    config.theme.color === 'slate' ? '#1e293b' :
-                                                    config.theme.color === 'teal' ? '#14b8a6' :
-                                                    config.theme.color === 'purple' ? '#8b5cf6' :
-                                                    config.theme.color === 'blue' ? '#3b82f6' : '#3b82f6');
-                           handleChange('theme_style', config.theme.style);
-                         }
                        }}
                      >
                        <SelectTrigger className="rounded-2xl h-12 bg-white dark:bg-slate-950">
@@ -710,13 +696,7 @@ export function EditorForm({ initialData, onSubmit, onChange, isPro = false, can
                 <div className="space-y-4">
                   <div className="space-y-2">
                     <div className="flex justify-between items-center">
-                      <Label className="text-xs font-bold uppercase tracking-wider opacity-60">Bio Profissional (Mín. 120 caracteres)</Label>
-                      <span className={cn(
-                        "text-[10px] font-bold",
-                        (formData.bio_profissional?.length || 0) < 120 ? "text-amber-500" : "text-green-500"
-                      )}>
-                        {formData.bio_profissional?.length || 0}/120
-                      </span>
+                      <Label className="text-xs font-bold uppercase tracking-wider opacity-60">Bio Profissional</Label>
                     </div>
                     <Textarea
                       value={formData.bio_profissional || ''}
