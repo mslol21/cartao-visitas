@@ -80,9 +80,9 @@ export function StandardProfessionalLayout({ data, isPro }: StandardProfessional
            <span className="text-[10px] font-black uppercase tracking-[0.2em]">{config.label}</span>
         </div>
 
-        {data.subtitle && (
+        {(data.subtitle || data.tagline) && (
           <p className="text-sm font-medium text-slate-500 dark:text-slate-400 max-w-[280px] italic leading-relaxed">
-            "{data.subtitle}"
+            "{data.subtitle || data.tagline}"
           </p>
         )}
 
@@ -163,7 +163,7 @@ export function StandardProfessionalLayout({ data, isPro }: StandardProfessional
       )}
 
       {/* 9. SERVIÇOS */}
-      {data.servicos && data.servicos.length > 0 && (
+      {((data.servicos && data.servicos.length > 0) || (data.services && data.services.length > 0)) && (
         <motion.div 
           custom={4} initial="hidden" animate="visible" variants={fadeIn}
           className="px-6"
@@ -175,7 +175,11 @@ export function StandardProfessionalLayout({ data, isPro }: StandardProfessional
           </div>
           
           <div className="space-y-3">
-            {data.servicos.map((service, idx) => (
+            {(data.servicos && data.servicos.length > 0 ? data.servicos : (data.services || []).map(s => ({
+              nome: typeof s === 'string' ? s : s.name,
+              preco: typeof s === 'string' ? '' : s.price,
+              descricao: typeof s === 'string' ? '' : s.description
+            }))).map((service: any, idx) => (
               <div key={idx} className="group p-5 rounded-[1.8rem] bg-white dark:bg-white/5 border border-slate-100 dark:border-white/10 hover:border-primary/40 transition-all flex justify-between items-center shadow-sm">
                  <div className="flex flex-col gap-1">
                     <span className="text-sm font-black uppercase tracking-tighter text-slate-800 dark:text-white">{service.nome}</span>

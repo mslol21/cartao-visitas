@@ -985,135 +985,56 @@ export function EditorForm({ initialData, onSubmit, onChange, isPro = false, can
 
             <div className="h-[1px] bg-border/50 my-6" />
 
-            <div className="space-y-6">
-              <div className="mb-2">
-                <Label className="flex items-center gap-2 font-black uppercase tracking-widest text-[10px]">
-                  <Camera className="w-4 h-4 text-primary" /> Personalização da Foto
-                </Label>
-                <p className="text-[10px] text-muted-foreground mt-0.5">Profissão, filtro e efeito de borda</p>
-              </div>
+              <div className="space-y-6">
+                <div className="mb-2">
+                  <Label className="flex items-center gap-2 font-black uppercase tracking-widest text-[10px]">
+                    <SparklesIcon className="w-4 h-4 text-primary" /> Estilização da Foto
+                  </Label>
+                  <p className="text-[10px] text-muted-foreground mt-0.5">Filtros e efeitos de borda (Exclusivo PRO)</p>
+                </div>
 
-              <div className="space-y-3">
-                <p className="text-[9px] font-black uppercase tracking-[0.25em] text-muted-foreground">Profissão</p>
-                <div className="grid grid-cols-4 sm:grid-cols-6 gap-2">
-                  {[
-                    { id: 'none',        label: 'Padrão',     icon: User,         color: '#64748b' },
-                    { id: 'barber',      label: 'Barbearia',  icon: Scissors,     color: '#d4af37' },
-                    { id: 'tech',        label: 'TI',         icon: Cpu,          color: '#3b82f6' },
-                    { id: 'beauty',      label: 'Beleza',     icon: SparklesIcon, color: '#f472b6' },
-                    { id: 'real_estate', label: 'Imóveis',    icon: Building2,    color: '#0ea5e9' },
-                    { id: 'lawyer',      label: 'Advogado',   icon: Scale,        color: '#1e293b' },
-                    { id: 'service',     label: 'Serviços',   icon: Hammer,       color: '#f59e0b' },
-                    { id: 'sales',       label: 'Vendas',     icon: ShoppingBag,  color: '#8b5cf6' },
-                    { id: 'health',      label: 'Saúde',      icon: Stethoscope,  color: '#10b981' },
-                    { id: 'food',        label: 'Comida',     icon: Utensils,     color: '#ef4444' },
-                    { id: 'driver',      label: 'Motorista',  icon: Car,          color: '#000000' },
-                    { id: 'petshop',     label: 'Petshop',    icon: PawPrint,     color: '#f97316' },
-                  ].map((prof) => {
-                    const isSelected = (formData.avatar_frame || 'none') === prof.id;
-                    const PIcon = prof.icon;
-                    return (
-                      <button
-                        key={prof.id}
-                        onClick={() => {
-                          const updates: Partial<ProfileFormData> = { avatar_frame: prof.id };
-                          if (prof.id === 'barber') {
-                            updates.category = 'barbearia';
-                            updates.font_family = 'Sora';
-                            updates.theme_color = '#d4af37';
-                            updates.cta_text = 'Agendar Corte 💈';
-                          } else if (prof.id === 'beauty') {
-                            updates.category = 'beauty';
-                            updates.font_family = 'Playfair Display';
-                            updates.theme_color = '#f472b6';
-                            updates.cta_text = 'Agendar Horário ✨';
-                          } else if (prof.id === 'tech') {
-                            updates.category = 'tech';
-                            updates.font_family = 'JetBrains Mono';
-                            updates.theme_color = '#3b82f6';
-                            updates.cta_text = 'Quero Orçamento ⚡';
-                          } else if (prof.id === 'real_estate') {
-                            updates.category = 'real_estate';
-                            updates.font_family = 'Montserrat';
-                            updates.theme_color = '#0ea5e9';
-                            updates.cta_text = 'Consultar Imóveis 🏠';
-                          } else if (prof.id === 'lawyer') {
-                            updates.category = 'advogado';
-                            updates.font_family = 'Playfair Display';
-                            updates.theme_color = '#1e293b';
-                            updates.cta_text = 'Agendar Consulta Jurídica ⚖️';
-                          } else if (prof.id === 'service') {
-                            updates.category = 'service';
-                            updates.font_family = 'Plus Jakarta Sans';
-                            updates.theme_color = '#f59e0b';
-                            updates.cta_text = 'Solicitar Orçamento 🛠️';
-                          } else if (prof.id === 'sales') {
-                            updates.category = 'sales';
-                            updates.font_family = 'Outfit';
-                            updates.theme_color = '#8b5cf6';
-                            updates.cta_text = 'Ver Catálogo 🛍️';
-                          } else if (prof.id === 'health') {
-                            updates.category = 'health';
-                            updates.font_family = 'Inter';
-                            updates.theme_color = '#10b981';
-                            updates.cta_text = 'Agendar Consulta 🩺';
-                          } else if (prof.id === 'food') {
-                            updates.category = 'food';
-                            updates.font_family = 'Sora';
-                            updates.theme_color = '#ef4444';
-                            updates.cta_text = 'Fazer Pedido 🍔';
-                          } else if (prof.id === 'driver') {
-                            updates.category = 'driver';
-                            updates.font_family = 'Inter';
-                            updates.theme_color = '#000000';
-                            updates.cta_text = 'Solicitar Corrida 🚗';
-                          } else if (prof.id === 'petshop') {
-                            updates.category = 'petshop';
-                            updates.font_family = 'Plus Jakarta Sans';
-                            updates.theme_color = '#f97316';
-                            updates.cta_text = 'Agendar Banho & Tosa 🐾';
-                          } else {
-                            updates.category = 'default';
-                          }
-                          
-                          // Update multiple fields at once
-                          const updated = { ...formData, ...updates };
-                          setFormData(updated);
-                          onChange(updated);
-                          setIsDirty(true);
-                        }}
-                        title={prof.label}
-                        className={cn(
-                          "flex flex-col items-center justify-center gap-1.5 p-2 rounded-2xl border-2 transition-all hover:border-primary/60 hover:shadow-md group",
-                          isSelected ? "border-primary bg-primary/5 shadow-md" : "border-border/50 bg-card"
-                        )}
-                      >
-                        <div
-                          className="w-10 h-10 rounded-xl flex items-center justify-center transition-transform group-hover:scale-110"
-                          style={{
-                            background: isSelected
-                              ? `linear-gradient(135deg, ${prof.color}dd, ${prof.color}66)`
-                              : `${prof.color}18`,
-                            border: `1.5px solid ${prof.color}${isSelected ? 'cc' : '40'}`,
-                          }}
-                        >
-                          <PIcon
-                            className="w-5 h-5 drop-shadow"
-                            style={{ color: isSelected ? '#fff' : prof.color }}
-                          />
-                        </div>
-                        <span className={cn(
-                          "text-[8px] font-bold uppercase tracking-tight text-center leading-tight",
-                          isSelected ? "text-primary" : "text-muted-foreground"
-                        )}>
-                          {prof.label}
-                        </span>
-                      </button>
-                    )
-                  })}
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div className="space-y-2">
+                    <Label className="text-[9px] font-black uppercase tracking-widest opacity-40">Filtro de Imagem</Label>
+                    <Select 
+                      value={formData.photo_filter || 'none'} 
+                      onValueChange={(val) => isPro && handleChange('photo_filter', val)}
+                      disabled={!isPro}
+                    >
+                      <SelectTrigger className="rounded-xl h-10">
+                        <SelectValue placeholder="Nenhum" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="none">Padrão</SelectItem>
+                        <SelectItem value="grayscale">Preto e Branco</SelectItem>
+                        <SelectItem value="sepia">Sépia (Vintage)</SelectItem>
+                        <SelectItem value="brightness-110">Mais Brilho</SelectItem>
+                        <SelectItem value="contrast-125">Alto Contraste</SelectItem>
+                        <SelectItem value="saturate-150">Cores Vibrantes</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+
+                  <div className="space-y-2">
+                    <Label className="text-[9px] font-black uppercase tracking-widest opacity-40">Efeito de Borda</Label>
+                    <Select 
+                      value={formData.photo_border_effect || 'none'} 
+                      onValueChange={(val) => isPro && handleChange('photo_border_effect', val)}
+                      disabled={!isPro}
+                    >
+                      <SelectTrigger className="rounded-xl h-10">
+                        <SelectValue placeholder="Nenhum" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="none">Simples</SelectItem>
+                        <SelectItem value="glow">Brilho Neon</SelectItem>
+                        <SelectItem value="gradient">Borda Arco-íris</SelectItem>
+                        <SelectItem value="pulse">Pulsação Suave</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
                 </div>
               </div>
-            </div>
 
                 {/* ── HORÁRIO DE ATENDIMENTO ───────────────────────────────────── */}
                 <div className="space-y-4">
