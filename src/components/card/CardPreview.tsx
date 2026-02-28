@@ -92,6 +92,7 @@ import { DigitalField } from '@/components/pro/DigitalField';
 import { AnimatedQR } from '@/components/pro/AnimatedQR';
 
 import { isPaidUser } from '@/utils/planUtils';
+import { StandardProfessionalLayout } from './StandardProfessionalLayout';
 
 interface CardPreviewProps {
   data: Partial<Profile>;
@@ -111,17 +112,19 @@ export function CardPreview({
   // isPro agora é verdadeiro se o plano for PRO OU se estivermos forçando o preview no editor
   const isPaid = isPaidUser(data as Profile) || forceProPreview;
   const isPro = isPaid;
-  const isBarbearia = data.category === 'barbearia';
-  const isBeauty = data.category === 'beauty';
-  const isHealth = data.category === 'health';
-  const isSales = data.category === 'sales';
-  const isFood = data.category === 'food';
-  const isService = data.category === 'service';
-  const isAdvogado = data.category === 'advogado';
-  const isTech = data.category === 'tech';
-  const isRealEstate = data.category === 'real_estate';
-  const isDriver = data.category === 'driver';
-  const isPetshop = data.category === 'petshop';
+  const isBarbearia = data.profession === 'barbearia' || data.category === 'barbearia';
+  const isBeauty = data.profession === 'beauty' || data.category === 'beauty';
+  const isHealth = data.profession === 'health' || data.category === 'health';
+  const isSales = data.profession === 'sales' || data.category === 'sales';
+  const isFood = data.profession === 'food' || data.category === 'food';
+  const isService = data.profession === 'service' || data.category === 'service';
+  const isAdvogado = data.profession === 'advogado' || data.category === 'advogado';
+  const isTech = data.profession === 'tech' || data.category === 'tech';
+  const isRealEstate = data.profession === 'real_estate' || data.category === 'real_estate';
+  const isDriver = data.profession === 'driver' || data.category === 'driver';
+  const isPetshop = data.profession === 'petshop' || data.category === 'petshop';
+  
+  const isStandardized = !!data.profession && data.profession !== 'default';
 
   const handleTrackClick = async (type: AnalyticsEventType) => {
     if (suppressTracking || !data.id || isDownloadMode) return;
@@ -605,7 +608,11 @@ END:VCARD`;
              )}
           </div>
 
-          {isBarbearia ? (
+          {isStandardized ? (
+            <div className="relative flex flex-col w-full min-h-[600px] z-10 overflow-y-auto scroll-hide">
+               <StandardProfessionalLayout data={data} isPro={isPro} />
+            </div>
+          ) : isBarbearia ? (
             <div className="relative flex flex-col items-center w-full min-h-[600px] z-10 px-6 py-10 overflow-y-auto scroll-hide">
               {/* Header */}
               <div className="flex flex-col items-center mb-8">

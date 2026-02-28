@@ -1,11 +1,13 @@
 "use client";
 
-import { useState, useEffect, useRef, useCallback } from 'react';
+import { useState, useEffect, useRef, useCallback, useMemo } from 'react';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Switch } from "@/components/ui/switch";
+import { Checkbox } from "@/components/ui/checkbox";
 import { 
   Loader2, 
   Plus, 
@@ -58,25 +60,27 @@ import {
   MapPin,
   ShieldCheck,
   Lock,
-  Ban,
-  Tag,
-  Crown,
-  Droplets,
-  Lightbulb,
-  Monitor,
-  Shield,
-  PawPrint,
-  Book,
   Clock,
-  Car
+  Car,
+  ChevronRight,
+  PawPrint,
+  Info
 } from 'lucide-react';
 import { 
   Popover,
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
+import { 
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { StyledQRCode } from '../StyledQRCode';
-import { Profile, ProfileFormData } from '@/types/profile';
+import { Profile, ProfileFormData, ProfessionCategory, CustomFields } from '@/types/profile';
+import { getProfessionConfig, professionsMap } from '@/config/professions';
 import { createClient } from '@/utils/supabase/client';
 import { toast } from 'sonner';
 import { cn } from '@/lib/utils';
@@ -107,13 +111,30 @@ export function EditorForm({ initialData, onSubmit, onChange, isPro = false, can
   const handleSave = useCallback(async (silent = false) => {
     if (isSaving) return;
     
+    // Novas validações obrigatórias
     if (!formData.username?.trim()) {
       if (!silent) toast.error('O Username (URL) é obrigatório!');
       return;
     }
+    if (!formData.business_name?.trim()) {
+       if (!silent) toast.error('Nome do negócio é obrigatório!');
+       return;
+    }
+    if (!formData.profession || formData.profession === 'default') {
+       if (!silent) toast.error('Selecione uma profissão específica!');
+       return;
+    }
     if (!formData.whatsapp?.trim()) {
       if (!silent) toast.error('O WhatsApp é obrigatório!');
       return;
+    }
+    if ((formData.bio_profissional?.length || 0) < 120) {
+       if (!silent) toast.error('A Bio Profissional deve ter pelo menos 120 caracteres!');
+       return;
+    }
+    if (!formData.servicos || formData.servicos.length === 0) {
+       if (!silent) toast.error('Adicione pelo menos 1 serviço!');
+       return;
     }
     
     if (usernameStatus === 'taken') {
@@ -195,6 +216,19 @@ export function EditorForm({ initialData, onSubmit, onChange, isPro = false, can
     onChange(updated);
     setIsDirty(true);
   };
+
+  const handleCustomFieldChange = (fieldName: keyof CustomFields, value: any) => {
+    const updatedCustomFields = { ...(formData.custom_fields || {}), [fieldName]: value };
+    const updated = { ...formData, custom_fields: updatedCustomFields };
+    setFormData(updated as ProfileFormData);
+    onChange(updated as ProfileFormData);
+    setIsDirty(true);
+  };
+
+  const professionConfig = useMemo(() => 
+    getProfessionConfig(formData.profession as ProfessionCategory), 
+    [formData.profession]
+  );
 
   const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -473,159 +507,303 @@ export function EditorForm({ initialData, onSubmit, onChange, isPro = false, can
               <input type="file" ref={fileInputRef} onChange={handleFileUpload} accept="image/*" className="hidden" />
             </div>
 
-            <div className="grid gap-4">
-              <div className="space-y-2">
-                <Label className="text-xs font-bold uppercase tracking-wider opacity-60">Nome Profissional</Label>
-                <Input
-                  value={formData.name || ''}
-                  onChange={(e) => handleChange('name', e.target.value)}
-                  placeholder="Seu nome completo"
-                  className="rounded-2xl h-12"
-                />
-              </div>
+            <div className="grid gap-6">
+              {/* 1. PADRONIZAÇÃO GLOBAL */}
+              <div className="p-6 rounded-3xl bg-slate-50 dark:bg-slate-900/50 border border-slate-200 dark:border-slate-800 space-y-4">
+                <div className="flex items-center gap-2 mb-2">
+                   <div className="p-2 bg-primary/10 rounded-lg">
+                      <Globe className="w-4 h-4 text-primary" />
+                   </div>
+                   <h3 className="text-sm font-black uppercase tracking-widest">Informações Gerais</h3>
+                </div>
 
-              <div className="space-y-2">
-                <Label className="text-xs font-bold uppercase tracking-wider opacity-60">Proposta de Valor / Tagline</Label>
-                <Input
-                  value={formData.tagline || ''}
-                  onChange={(e) => handleChange('tagline', e.target.value)}
-                  placeholder="Ex: Consultor Sênior em Marketing Digital"
-                  className="rounded-2xl h-12"
-                />
-              </div>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                   <div className="space-y-2">
+                     <Label className="text-xs font-bold uppercase tracking-wider opacity-60">Sua Profissão</Label>
+                     <Select 
+                       value={formData.profession || 'default'} 
+                       onValueChange={(val) => {
+                         handleChange('profession', val);
+                         // Se mudar a profissão, aplicar tema padrão se for PRO
+                         const config = getProfessionConfig(val as ProfessionCategory);
+                         if (isPro) {
+                           handleChange('theme_color', config.theme.color === 'amber' ? '#d4af37' : 
+                                                    config.theme.color === 'pink' ? '#f472b6' : 
+                                                    config.theme.color === 'green' ? '#10b981' : 
+                                                    config.theme.color === 'slate' ? '#1e293b' :
+                                                    config.theme.color === 'teal' ? '#14b8a6' :
+                                                    config.theme.color === 'purple' ? '#8b5cf6' :
+                                                    config.theme.color === 'blue' ? '#3b82f6' : '#3b82f6');
+                           handleChange('theme_style', config.theme.style);
+                         }
+                       }}
+                     >
+                       <SelectTrigger className="rounded-2xl h-12 bg-white dark:bg-slate-950">
+                         <SelectValue placeholder="Selecione sua profissão" />
+                       </SelectTrigger>
+                       <SelectContent className="rounded-2xl">
+                         {Object.values(professionsMap).map(p => (
+                           <SelectItem key={p.id} value={p.id}>{p.label}</SelectItem>
+                         ))}
+                       </SelectContent>
+                     </Select>
+                   </div>
 
-              <div className="grid grid-cols-2 gap-4">
+                   <div className="space-y-2">
+                     <Label className="text-xs font-bold uppercase tracking-wider opacity-60">Nome do Negócio (Exibição Principal)</Label>
+                     <Input
+                       value={formData.business_name || ''}
+                       onChange={(e) => handleChange('business_name', e.target.value)}
+                       placeholder="Ex: Barbearia do João"
+                       className="rounded-2xl h-12"
+                     />
+                   </div>
+                </div>
+
                 <div className="space-y-2">
-                  <Label className="text-xs font-bold uppercase tracking-wider opacity-60">CEP (Auto-preencher)</Label>
-                  <div className="relative">
+                  <Label className="text-xs font-bold uppercase tracking-wider opacity-60">Subtítulo / Especialidade</Label>
+                  <Input
+                    value={formData.subtitle || ''}
+                    onChange={(e) => handleChange('subtitle', e.target.value)}
+                    placeholder="Ex: Especialista em Degradê e Barba"
+                    className="rounded-2xl h-12"
+                  />
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div className="space-y-2">
+                    <Label className="text-xs font-bold uppercase tracking-wider opacity-60">Área de Atendimento</Label>
                     <Input
-                      onChange={async (e) => {
-                        const cep = e.target.value.replace(/\D/g, '');
-                        if (cep.length === 8) {
-                          try {
-                            const res = await fetch(`https://viacep.com.br/ws/${cep}/json/`);
-                            const data = await res.json();
-                            if (!data.erro) {
-                              handleChange('city', `${data.localidade}, ${data.uf}`);
-                            } else {
-                              toast.error('CEP não encontrado');
-                            }
-                          } catch (err) {
-                            toast.error('Erro ao buscar CEP');
-                          }
-                        }
-                      }}
-                      placeholder="00000-000"
+                      value={formData.area_atendimento || ''}
+                      onChange={(e) => handleChange('area_atendimento', e.target.value)}
+                      placeholder="Ex: São Paulo e Grande SP"
                       className="rounded-2xl h-12"
-                      maxLength={9}
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <Label className="text-xs font-bold uppercase tracking-wider opacity-60">Tipo de Atendimento</Label>
+                    <Input
+                      value={formData.tipo_atendimento || ''}
+                      onChange={(e) => handleChange('tipo_atendimento', e.target.value)}
+                      placeholder="Ex: Presencial / Domiciliar"
+                      className="rounded-2xl h-12"
                     />
                   </div>
                 </div>
+
                 <div className="space-y-2">
-                  <Label className="text-xs font-bold uppercase tracking-wider opacity-60">Cidade / Estado</Label>
+                  <Label className="text-xs font-bold uppercase tracking-wider opacity-60">Horário de Funcionamento</Label>
                   <Input
-                    value={formData.city || ''}
-                    onChange={(e) => handleChange('city', e.target.value)}
-                    placeholder="São Paulo, SP"
+                    value={formData.horario_funcionamento || ''}
+                    onChange={(e) => handleChange('horario_funcionamento', e.target.value)}
+                    placeholder="Ex: Seg a Sáb, 09h às 19h"
                     className="rounded-2xl h-12"
+                  />
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div className="space-y-2">
+                    <Label className="text-[#25D366] font-bold flex items-center gap-2">
+                      <MessageCircle className="w-4 h-4" /> WhatsApp (Obrigatório)
+                    </Label>
+                    <Input
+                      value={formData.whatsapp || ''}
+                      onChange={(e) => handleChange('whatsapp', e.target.value.replace(/\D/g, ''))}
+                      placeholder="5511999999999"
+                      className="rounded-2xl h-12 border-[#25D366]/30"
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <Label className="text-[#E1306C] font-bold flex items-center gap-2">
+                      <Instagram className="w-4 h-4" /> Instagram (Opcional)
+                    </Label>
+                    <Input
+                      value={formData.instagram || ''}
+                      onChange={(e) => handleChange('instagram', e.target.value.replace('@', ''))}
+                      placeholder="seu.usuario"
+                      className="rounded-2xl h-12 border-[#E1306C]/30"
+                    />
+                  </div>
+                </div>
+
+                <div className="flex items-center gap-3 p-4 bg-white/50 dark:bg-slate-950/50 rounded-2xl border border-slate-200 dark:border-slate-800">
+                   <Checkbox 
+                     id="has_loc" 
+                     checked={formData.has_physical_location} 
+                     onCheckedChange={(checked) => handleChange('has_physical_location', !!checked)} 
+                   />
+                   <Label htmlFor="has_loc" className="text-sm font-bold cursor-pointer">Possuo endereço físico para atendimento</Label>
+                </div>
+
+                {formData.has_physical_location && (
+                   <div className="space-y-2 animate-in fade-in slide-in-from-top-2">
+                     <Label className="text-xs font-bold uppercase tracking-wider opacity-60">Endereço Completo</Label>
+                     <Input
+                       value={formData.endereco_completo || ''}
+                       onChange={(e) => handleChange('endereco_completo', e.target.value)}
+                       placeholder="Av. Paulista, 1000 - São Paulo, SP"
+                       className="rounded-2xl h-12"
+                     />
+                   </div>
+                )}
+              </div>
+
+              {/* 2. CAMPOS ESPECÍFICOS (Dinamismo por Profissão) */}
+              {professionConfig.customFields.length > 0 && (
+                <div className="p-6 rounded-3xl bg-primary/5 border border-primary/20 space-y-4 animate-in zoom-in-95">
+                  <div className="flex items-center gap-2 mb-2">
+                     <div className="p-2 bg-primary/10 rounded-lg">
+                        <SparklesIcon className="w-4 h-4 text-primary" />
+                     </div>
+                     <h3 className="text-sm font-black uppercase tracking-widest">Destaques {professionConfig.label}</h3>
+                  </div>
+
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    {professionConfig.customFields.map((field) => (
+                      <div key={field.name} className="flex flex-col gap-2">
+                        {field.type === 'boolean' ? (
+                          <div className="flex items-center justify-between p-3 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800">
+                            <Label className="text-sm font-bold opacity-80">{field.label}</Label>
+                            <Switch 
+                              checked={!!(formData.custom_fields as any)?.[field.name]}
+                              onCheckedChange={(checked) => handleCustomFieldChange(field.name as keyof CustomFields, checked)}
+                            />
+                          </div>
+                        ) : field.type === 'text' ? (
+                          <>
+                            <Label className="text-xs font-bold uppercase tracking-wider opacity-60">{field.label}</Label>
+                            <Input
+                              value={(formData.custom_fields as any)?.[field.name] || ''}
+                              onChange={(e) => handleCustomFieldChange(field.name as keyof CustomFields, e.target.value)}
+                              placeholder={field.placeholder}
+                              className="rounded-2xl h-11"
+                            />
+                          </>
+                        ) : field.type === 'array' ? (
+                          <>
+                            <Label className="text-xs font-bold uppercase tracking-wider opacity-60">{field.label} (Separado por vírgula)</Label>
+                            <Input
+                              value={((formData.custom_fields as any)?.[field.name] || []).join(', ')}
+                              onChange={(e) => handleCustomFieldChange(field.name as keyof CustomFields, e.target.value.split(',').map(s => s.trim()))}
+                              placeholder={field.placeholder}
+                              className="rounded-2xl h-11"
+                            />
+                          </>
+                        ) : null}
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {/* 3. BIO E DIFERENCIAIS */}
+              <div className="p-6 rounded-3xl bg-slate-50 dark:bg-slate-900/50 border border-slate-200 dark:border-slate-800 space-y-4">
+                <div className="flex items-center gap-2 mb-2">
+                   <div className="p-2 bg-primary/10 rounded-lg">
+                      <FileText className="w-4 h-4 text-primary" />
+                   </div>
+                   <h3 className="text-sm font-black uppercase tracking-widest">Biografia & Diferenciais</h3>
+                </div>
+
+                <div className="space-y-2">
+                  <div className="flex justify-between items-center">
+                    <Label className="text-xs font-bold uppercase tracking-wider opacity-60">Bio Profissional (Mín. 120 caracteres)</Label>
+                    <span className={cn(
+                      "text-[10px] font-bold",
+                      (formData.bio_profissional?.length || 0) < 120 ? "text-amber-500" : "text-green-500"
+                    )}>
+                      {formData.bio_profissional?.length || 0}/120
+                    </span>
+                  </div>
+                  <Textarea
+                    value={formData.bio_profissional || ''}
+                    onChange={(e) => handleChange('bio_profissional', e.target.value)}
+                    placeholder="Conte sobre sua trajetória, valores e o que te torna único... (Mínimo de 120 caracteres para passar confiança)"
+                    className="rounded-2xl min-h-[120px]"
+                  />
+                </div>
+
+                <div className="space-y-2">
+                  <Label className="text-xs font-bold uppercase tracking-wider opacity-60">Seus Diferenciais (Um por linha)</Label>
+                  <Textarea
+                    value={formData.diferenciais?.join('\n') || ''}
+                    onChange={(e) => handleChange('diferenciais', e.target.value.split('\n').filter(l => l.trim()))}
+                    placeholder="Ex: 5 anos de experiência&#10;Atendimento Premium&#10;Garantia de Satisfação"
+                    className="rounded-2xl min-h-[100px]"
                   />
                 </div>
               </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div className="space-y-2">
-                  <Label className="text-xs font-bold uppercase tracking-wider opacity-60 flex items-center gap-2">
-                    Endereço Completo (Opcional)
-                  </Label>
-                  <Input
-                    value={formData.address || ''}
-                    onChange={(e) => handleChange('address', e.target.value)}
-                    placeholder="Av. Paulista, 1000 - Sala 12"
-                    className="rounded-2xl h-12"
-                  />
+              {/* 4. SERVIÇOS (Mínimo 1) */}
+              <div className="p-6 rounded-3xl bg-slate-50 dark:bg-slate-900/50 border border-slate-200 dark:border-slate-800 space-y-4">
+                <div className="flex items-center gap-2 mb-2">
+                   <div className="p-2 bg-primary/10 rounded-lg">
+                      <Tag className="w-4 h-4 text-primary" />
+                   </div>
+                   <h3 className="text-sm font-black uppercase tracking-widest">Catálogo de Serviços</h3>
                 </div>
-                <div className="space-y-2 relative">
-                  <Label className="text-xs font-bold uppercase tracking-wider opacity-60 flex items-center gap-2">
-                    Região de Atendimento
-                    {!isPro && <SparklesIcon className="w-3 h-3 text-yellow-500 fill-yellow-500" />}
-                  </Label>
-                  <div className="relative">
+                
+                <div className="space-y-3">
+                  <Label className="text-xs opacity-60">Adicione seus serviços principais com valores.</Label>
+                  <div className="grid grid-cols-[1fr_100px] gap-2">
                     <Input
-                      value={formData.service_area || ''}
-                      onChange={(e) => isPro && handleChange('service_area', e.target.value)}
-                      placeholder={isPro ? "Ex: Toda Grande SP, Interior..." : "Exclusivo PRO"}
-                      disabled={!isPro}
-                      className={cn(
-                        "rounded-2xl h-12 pr-10",
-                        !isPro && "bg-slate-50 dark:bg-slate-900 border-dashed cursor-not-allowed opacity-60"
-                      )}
+                      value={newService}
+                      onChange={(e) => setNewService(e.target.value)}
+                      placeholder="Nome do Serviço"
+                      className="rounded-2xl h-11"
                     />
-                    {!isPro && (
-                      <div className="absolute right-3 top-1/2 -translate-y-1/2">
-                        <Lock className="w-4 h-4 text-muted-foreground/40" />
-                      </div>
-                    )}
+                    <Input
+                      value={newServicePrice}
+                      onChange={(e) => setNewServicePrice(e.target.value)}
+                      placeholder="Preço R$"
+                      className="rounded-2xl h-11"
+                    />
                   </div>
-                  {!isPro && (
-                    <p className="text-[10px] font-medium text-amber-600 dark:text-amber-500 italic mt-1">
-                      Upgrade para PRO para informar sua região de atuação.
-                    </p>
-                  )}
-                </div>
-              </div>
+                  <div className="flex gap-2">
+                    <Input
+                      value={newServiceDescription}
+                      onChange={(e) => setNewServiceDescription(e.target.value)}
+                      placeholder="Descrição opcional"
+                      className="rounded-2xl h-11 flex-1"
+                    />
+                    <Button type="button" size="icon" onClick={() => {
+                      if (!newService.trim()) return;
+                      const srv = formData.servicos || [];
+                      handleChange('servicos', [...srv, { 
+                        nome: newService.trim(), 
+                        preco: newServicePrice.trim(), 
+                        descricao: newServiceDescription.trim() 
+                      }]);
+                      setNewService('');
+                      setNewServicePrice('');
+                      setNewServiceDescription('');
+                    }} className="h-11 w-11 rounded-xl">
+                      <Plus className="w-5 h-5" />
+                    </Button>
+                  </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div className="space-y-2 relative">
-                  <Label className="text-xs font-bold uppercase tracking-wider opacity-60 flex items-center gap-2">
-                    Especialidade (Expertise)
-                    {!isPro && <SparklesIcon className="w-3 h-3 text-yellow-500 fill-yellow-500" />}
-                  </Label>
-                  <div className="relative">
-                    <Input
-                      value={formData.expert_area || ''}
-                      onChange={(e) => isPro && handleChange('expert_area', e.target.value)}
-                      placeholder={isPro ? "Ex: Marketing Digital, Nutrição..." : "Exclusivo PRO"}
-                      disabled={!isPro}
-                      className={cn(
-                        "rounded-2xl h-12 pr-10",
-                        !isPro && "bg-slate-50 dark:bg-slate-900 border-dashed cursor-not-allowed opacity-60"
-                      )}
-                    />
-                    {!isPro && (
-                      <div className="absolute right-3 top-1/2 -translate-y-1/2">
-                        <Lock className="w-4 h-4 text-muted-foreground/40" />
+                  <div className="flex flex-col gap-2 mt-4">
+                    {(formData.servicos || []).map((s, idx) => (
+                      <div key={idx} className="flex items-center gap-3 p-3 bg-white/50 dark:bg-slate-950/50 rounded-2xl border border-slate-200 dark:border-slate-800 group/srv">
+                         <div className="flex-1 min-w-0">
+                           <p className="text-xs font-bold uppercase">{s.nome}</p>
+                           <p className="text-[10px] text-primary font-black">{s.preco || 'Sob consulta'}</p>
+                         </div>
+                         <Button variant="ghost" size="icon" onClick={() => {
+                           const srv = formData.servicos || [];
+                           handleChange('servicos', srv.filter((_, i) => i !== idx));
+                         }} className="opacity-0 group-hover/srv:opacity-100 transition-opacity">
+                           <X className="w-4 h-4 text-red-500" />
+                         </Button>
                       </div>
-                    )}
-                  </div>
-                </div>
-                <div className="space-y-2 relative">
-                  <Label className="text-xs font-bold uppercase tracking-wider opacity-60 flex items-center gap-2">
-                    No mercado desde (Ano)
-                    {!isPro && <SparklesIcon className="w-3 h-3 text-yellow-500 fill-yellow-500" />}
-                  </Label>
-                  <div className="relative">
-                    <Input
-                      type="number"
-                      value={formData.founded_year || ''}
-                      onChange={(e) => isPro && handleChange('founded_year', parseInt(e.target.value) || null)}
-                      placeholder={isPro ? "Ex: 2015" : "Exclusivo PRO"}
-                      disabled={!isPro}
-                      className={cn(
-                        "rounded-2xl h-12 pr-10",
-                        !isPro && "bg-slate-50 dark:bg-slate-900 border-dashed cursor-not-allowed opacity-60"
-                      )}
-                    />
-                    {!isPro && (
-                      <div className="absolute right-3 top-1/2 -translate-y-1/2">
-                        <Lock className="w-4 h-4 text-muted-foreground/40" />
-                      </div>
-                    )}
+                    ))}
                   </div>
                 </div>
               </div>
 
-              <div className="space-y-2">
-                <Label className="text-xs font-bold uppercase tracking-wider opacity-60">Username (URL)</Label>
+              {/* URL PERMANENTE */}
+              <div className="p-6 rounded-3xl bg-slate-50 dark:bg-slate-900/50 border border-slate-200 dark:border-slate-800 space-y-4">
+                <Label className="text-xs font-bold uppercase tracking-wider opacity-60">Seu Link Exclusivo (URL)</Label>
                 <div className="relative">
                   <Input
                     value={formData.username || ''}
@@ -633,129 +811,16 @@ export function EditorForm({ initialData, onSubmit, onChange, isPro = false, can
                     placeholder="seu.nome"
                     className={cn(
                       "rounded-2xl h-12 pr-10",
-                      usernameStatus === 'taken' && "border-red-500 focus-visible:ring-red-500",
-                      usernameStatus === 'available' && "border-green-500 focus-visible:ring-green-500"
+                      usernameStatus === 'taken' && "border-red-500",
+                      usernameStatus === 'available' && "border-green-500"
                     )}
                   />
-                  <div className="absolute right-3 top-1/2 -translate-y-1/2">
+                   <div className="absolute right-3 top-1/2 -translate-y-1/2">
                     {usernameStatus === 'checking' && <Loader2 className="w-4 h-4 animate-spin text-muted-foreground" />}
                     {usernameStatus === 'available' && <Check className="w-4 h-4 text-green-500" />}
                     {usernameStatus === 'taken' && <X className="w-4 h-4 text-red-500" />}
                   </div>
                 </div>
-                {usernameStatus === 'taken' && (
-                  <p className="text-[10px] font-bold text-red-500 uppercase tracking-widest mt-1 ml-1">
-                    Este link já está em uso
-                  </p>
-                )}
-              </div>
-            </div>
-
-              <div className="space-y-2">
-                <Label className="text-[#25D366] font-bold flex items-center gap-2">
-                  <MessageCircle className="w-4 h-4" /> WhatsApp (Obrigatório)
-                </Label>
-                <Input
-                  value={formData.whatsapp || ''}
-                  onChange={(e) => handleChange('whatsapp', e.target.value.replace(/\D/g, ''))}
-                  placeholder="Ex: 5511999999999"
-                  className={cn(
-                    "rounded-2xl h-12 border-[#25D366]/30 focus-visible:ring-[#25D366]",
-                    !formData.whatsapp && "border-red-300"
-                  )}
-                />
-              </div>
-
-
-            <div className="space-y-3">
-              <Label className="text-xs font-bold uppercase tracking-wider opacity-60">Meus Serviços ({formData.services?.length || 0}/{maxServices})</Label>
-              <div className="space-y-2">
-                <div className="grid grid-cols-[1fr_100px] gap-2">
-                  <Input
-                    value={newService}
-                    onChange={(e) => setNewService(e.target.value)}
-                    placeholder="Nome do Serviço"
-                    className="rounded-2xl h-11"
-                    onKeyDown={(e) => e.key === 'Enter' && (e.preventDefault(), addService())}
-                  />
-                  <Input
-                    value={newServicePrice}
-                    onChange={(e) => setNewServicePrice(e.target.value)}
-                    placeholder="Preço/R$"
-                    className="rounded-2xl h-11"
-                  />
-                </div>
-                <div className="flex gap-2">
-                  <Input
-                    value={newServiceDescription}
-                    onChange={(e) => setNewServiceDescription(e.target.value)}
-                    placeholder="Descrição breve (ex: Atendimento personalizado)"
-                    className="rounded-2xl h-11 flex-1"
-                  />
-                  <Button type="button" size="icon" onClick={addService} className="h-11 w-11 rounded-xl shrink-0">
-                    <Plus className="w-5 h-5" />
-                  </Button>
-                </div>
-              </div>
-              <div className="flex flex-col gap-2">
-                {formData.services?.map((serviceItem, i) => {
-                  const service = typeof serviceItem === 'string' ? { name: serviceItem, icon: 'Sparkles' } : serviceItem;
-                  return (
-                    <div key={i} className="flex items-center gap-3 p-3 bg-slate-100 dark:bg-slate-800/40 rounded-2xl group/item">
-                      {/* Icon Picker (Pro Only) */}
-                      {isPro ? (
-                        <Popover>
-                          <PopoverTrigger asChild>
-                            <Button variant="ghost" size="icon" className="h-10 w-10 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-white/5 hover:border-primary/50 transition-colors">
-                              {(() => {
-                                const Icon = AVAILABLE_ICONS.find(idx => idx.name === service.icon)?.icon || SparklesIcon;
-                                return <Icon className="w-5 h-5 text-primary" />;
-                              })()}
-                            </Button>
-                          </PopoverTrigger>
-                        <PopoverContent className="w-[280px] p-3 rounded-2xl" align="start">
-                          <div className="grid grid-cols-5 gap-2">
-                            {AVAILABLE_ICONS.map((iconData) => (
-                              <Button
-                                key={iconData.name}
-                                variant="ghost"
-                                size="icon"
-                                className={cn(
-                                  "h-10 w-10 rounded-lg",
-                                  service.icon === iconData.name && "bg-primary/10 text-primary"
-                                )}
-                                onClick={() => updateServiceIcon(i, iconData.name)}
-                              >
-                                <iconData.icon className="w-5 h-5" />
-                              </Button>
-                            ))}
-                          </div>
-                        </PopoverContent>
-                      </Popover>
-                    ) : (
-                      <div className="h-10 w-10 rounded-xl bg-slate-200 dark:bg-slate-800 flex items-center justify-center">
-                        <SparklesIcon className="w-5 h-5 text-slate-400" />
-                      </div>
-                    )}
-
-                    <div className="flex-1 min-w-0">
-                      <p className="text-xs font-bold uppercase tracking-wide truncate">{service.name}</p>
-                      {service.description && (
-                        <p className="text-[10px] text-muted-foreground line-clamp-1">{service.description}</p>
-                      )}
-                      {service.price && <p className="text-[10px] text-primary font-black uppercase tracking-widest">{service.price}</p>}
-                    </div>
-
-                    <Button 
-                      variant="ghost" 
-                      size="icon" 
-                      onClick={() => removeService(i)}
-                      className="h-8 w-8 rounded-lg opacity-0 group-hover/item:opacity-100 hover:bg-red-500/10 hover:text-red-500 transition-all"
-                    >
-                      <X className="w-4 h-4" />
-                    </Button>
-                  </div>
-                )})}
               </div>
             </div>
           </TabsContent>
