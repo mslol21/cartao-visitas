@@ -7,15 +7,26 @@ export async function getAllUsersOverview() {
   try {
     const supabase = await createSupabaseServerClient();
     
+    if (!process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY) {
+      throw new Error("Configuração do Supabase ausente no servidor. Verifique o arquivo .env.");
+    }
+
     if (!supabase) throw new Error("Falha ao inicializar o cliente Supabase");
     if (!supabase.auth) throw new Error("Serviço de autenticação não disponível no cliente");
     
-    // Busca o usuário de forma mais direta
-    const { data: { user }, error: authError } = await supabase.auth.getUser();
-    
-    if (authError || !user) {
-      console.error('Production Auth Error:', authError);
-      throw new Error("Sessão inválida ou expirada. Faça login novamente.");
+    // Busca a sessão de forma robusta
+    const { data: { session }, error: sessionError } = await supabase.auth.getSession();
+    let user = session?.user;
+
+    if (!user) {
+      // Tenta o getUser se o getSession falhar (mais rigoroso)
+      const { data: { user: authUser }, error: authError } = await supabase.auth.getUser();
+      user = authUser || undefined;
+      
+      if (authError || !user) {
+        console.error('Auth check failed:', { sessionError, authError });
+        throw new Error("Sessão inválida ou expirada. Recomendo sair e entrar novamente no sistema.");
+      }
     }
 
     // Busca o cargo usando o ID do usuário de forma direta
@@ -25,13 +36,14 @@ export async function getAllUsersOverview() {
       .eq('user_id', user.id)
       .maybeSingle();
 
-    if (profileError || !profile) {
+    if (profileError) {
       console.error('Profile Fetch Error:', profileError);
-      throw new Error("Perfil de administrador não localizado.");
+      throw new Error("Erro ao validar permissões de administrador.");
     }
 
-    if (profile?.role !== 'admin') {
-      throw new Error("Acesso negado: você não é um administrador");
+    if (!profile || profile.role !== 'admin') {
+      console.warn('Unauthorized access attempt:', user.id);
+      throw new Error("Acesso negado: Perfil de administrador não localizado.");
     }
 
     const { data, error } = await supabase

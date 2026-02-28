@@ -25,15 +25,13 @@ export async function createClient() {
     supabaseKey,
     {
       cookies: {
-        async getAll() {
-          const s = await cookieStore;
-          return s.getAll()
+        getAll() {
+          return cookieStore.getAll()
         },
-        async setAll(cookiesToSet: { name: string; value: string; options: Record<string, unknown> }[]) {
-          const s = await cookieStore;
+        setAll(cookiesToSet: { name: string; value: string; options: Record<string, unknown> }[]) {
           cookiesToSet.forEach(({ name, value, options }) => {
             try {
-              s.set(name, value, options as any)
+              cookieStore.set(name, value, options as any)
             } catch (error) {
               // Safe to ignore in Server Components
             }

@@ -25,6 +25,7 @@ import {
   Code,
   Paintbrush,
   Utensils,
+  UtensilsCrossed,
   ShoppingBag,
   Heart,
   User,
@@ -51,7 +52,20 @@ import {
   Crown,
   Plus,
   Tag,
-  Shield
+  Shield,
+  Clock,
+  ChevronRight,
+  Construction,
+  History,
+  ShieldCheck,
+  Car,
+  PawPrint,
+  Terminal,
+  Code2,
+  Home,
+  Gem,
+  Navigation,
+  Package
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Profile } from '@/types/profile';
@@ -98,6 +112,16 @@ export function CardPreview({
   const isPaid = isPaidUser(data as Profile) || forceProPreview;
   const isPro = isPaid;
   const isBarbearia = data.category === 'barbearia';
+  const isBeauty = data.category === 'beauty';
+  const isHealth = data.category === 'health';
+  const isSales = data.category === 'sales';
+  const isFood = data.category === 'food';
+  const isService = data.category === 'service';
+  const isAdvogado = data.category === 'advogado';
+  const isTech = data.category === 'tech';
+  const isRealEstate = data.category === 'real_estate';
+  const isDriver = data.category === 'driver';
+  const isPetshop = data.category === 'petshop';
 
   const handleTrackClick = async (type: AnalyticsEventType) => {
     if (suppressTracking || !data.id || isDownloadMode) return;
@@ -199,7 +223,11 @@ END:VCARD`;
   const formattedWhatsapp = cleanWhatsapp.startsWith('55') ? cleanWhatsapp : `55${cleanWhatsapp}`;
   
   const whatsappLink = cleanWhatsapp
-    ? `https://wa.me/${formattedWhatsapp}?text=${encodeURIComponent(isBarbearia ? "Olá! Gostaria de agendar um corte 💈" : `Olá! Vi seu perfil na Konnexy e gostaria de ${isPro ? 'solicitar um orçamento' : 'conversar'} sobre seus serviços.`)}`
+    ? `https://wa.me/${formattedWhatsapp}?text=${encodeURIComponent(
+        isBarbearia ? "Olá! Gostaria de agendar um corte 💈" : 
+        isAdvogado ? "Olá! Gostaria de agendar uma consulta jurídica ⚖️" :
+        `Olá! Vi seu perfil na Konnexy e gostaria de ${isPro ? 'solicitar um orçamento' : 'conversar'} sobre seus serviços.`
+      )}`
     : '#';
 
   const socialLinks = [
@@ -245,8 +273,30 @@ END:VCARD`;
   const getThemeClasses = () => {
     const hasVideo = !!data.background_video_url && isPro;
     
-    // Barbearia sempre usa o tema escuro/grafite se for a categoria ativa
-    if (isBarbearia) return "bg-black text-white border-white/10 shadow-[inset_0_0_120px_rgba(255,255,255,0.05)]";
+    // BARBEARIA - PREMIUM THEME
+    if (isBarbearia) {
+      return "bg-[#0a0a0a] text-white border-yellow-700/30 shadow-[inset_0_0_150px_rgba(212,175,55,0.05),0_50px_100px_-20px_rgba(0,0,0,0.5)]";
+    }
+
+    if (isAdvogado) {
+      return "bg-[#0f172a] text-white border-slate-700/50 shadow-[inset_0_0_100px_rgba(30,41,59,0.5)]";
+    }
+
+    if (isTech) {
+      return "bg-[#020617] text-white border-blue-900/40 shadow-[inset_0_0_120px_rgba(59,130,246,0.1)]";
+    }
+
+    if (isRealEstate) {
+      return "bg-[#f8fafc] text-slate-900 border-sky-100 shadow-[0_20px_50px_rgba(14,165,233,0.05)]";
+    }
+
+    if (isDriver) {
+      return "bg-[#111111] text-white border-white/5 shadow-[inset_0_0_100px_rgba(255,255,255,0.02)]";
+    }
+
+    if (isPetshop) {
+      return "bg-[#fffaf5] text-slate-900 border-orange-100 shadow-[0_20px_50px_rgba(249,115,22,0.05)]";
+    }
     
     if (!isPro) return "bg-white dark:bg-slate-950";
     
@@ -268,15 +318,6 @@ END:VCARD`;
     if (!isPro) return null;
     
     switch (data.avatar_frame) {
-      case 'electrician':
-        return { 
-          gradient: 'linear-gradient(135deg, #fbbf24 0%, #000000 100%)', 
-          accent: '#fbbf24', 
-          label: 'Eletricista 24h',
-          icon: Zap,
-          cta: 'Chamar no WhatsApp',
-          shape: 'polygon(40% 0%, 100% 0%, 65% 45%, 95% 45%, 30% 100%, 45% 55%, 15% 55%)'
-        };
       case 'barber':
         return { 
           gradient: 'linear-gradient(135deg, #111 0%, #d4af37 100%)', 
@@ -285,51 +326,6 @@ END:VCARD`;
           icon: Scissors,
           cta: 'Agende seu horário',
           shape: 'polygon(50% 50%, 80% 0%, 100% 0%, 55% 52%, 100% 100%, 80% 100%, 52% 55%, 35% 72%, 35% 92%, 25% 100%, 8% 100%, 0% 88%, 0% 68%, 18% 58%, 28% 58%, 32% 54%, 28% 50%, 12% 50%, 0% 38%, 0% 12%, 8% 0%, 25% 0%, 35% 8%, 35% 38%)'
-        };
-      case 'cleaner':
-        return { 
-          gradient: 'linear-gradient(135deg, #0ea5e9 0%, #e0f2fe 100%)', 
-          accent: '#0ea5e9', 
-          label: 'Brilho Máximo',
-          icon: Sparkles,
-          cta: 'Solicitar Faxina',
-          shape: 'polygon(50% 0%, 61% 39%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 39%)' 
-        };
-      case 'mechanic':
-        return { 
-          gradient: 'linear-gradient(135deg, #334155 0%, #f97316 100%)', 
-          accent: '#f97316', 
-          label: 'Turbo Mecânica',
-          icon: Wrench,
-          cta: 'Pedir Orçamento',
-          shape: 'polygon(50% 0%, 62% 4%, 65% 15%, 82% 16%, 86% 26%, 96% 36%, 96% 46%, 100% 50%, 96% 54%, 96% 64%, 86% 74%, 82% 84%, 65% 84%, 62% 96%, 50% 100%, 38% 96%, 35% 84%, 18% 84%, 14% 74%, 4% 64%, 4% 54%, 0% 50%, 4% 46%, 4% 36%, 14% 26%, 18% 16%, 35% 15%, 38% 4%)'
-        };
-      case 'plumber':
-        return { 
-          gradient: 'linear-gradient(135deg, #1d4ed8 0%, #60a5fa 100%)', 
-          accent: '#2563eb',
-          label: 'SOS Hidráulica',
-          icon: Hammer,
-          cta: 'Falar com Encanador',
-          shape: 'polygon(50% 0%, 75% 15%, 90% 40%, 100% 65%, 90% 90%, 70% 100%, 30% 100%, 10% 90%, 0% 65%, 10% 40%, 25% 15%)'
-        };
-      case 'health':
-        return { 
-          gradient: 'linear-gradient(135deg, #ef4444 0%, #fee2e2 100%)', 
-          accent: '#ef4444', 
-          label: 'Sempre com Você',
-          icon: Stethoscope,
-          cta: 'Marcar agora',
-          shape: 'polygon(30% 0%, 70% 0%, 70% 30%, 100% 30%, 100% 70%, 70% 70%, 70% 100%, 30% 100%, 30% 70%, 0% 70%, 0% 30%, 30% 30%)'
-        };
-      case 'law':
-        return { 
-          gradient: 'linear-gradient(135deg, #0f172a 0%, #eab308 100%)', 
-          accent: '#eab308', 
-          label: 'Defesa Especializada',
-          icon: Scale,
-          cta: 'Direito Já',
-          shape: 'polygon(10% 0%, 50% 10%, 90% 0%, 100% 5%, 100% 85%, 50% 100%, 0% 85%, 0% 5%)'
         };
       case 'tech':
         return { 
@@ -340,23 +336,68 @@ END:VCARD`;
           cta: 'Quero Orçamento',
           shape: 'polygon(0% 10%, 100% 10%, 100% 70%, 65% 70%, 70% 85%, 85% 85%, 85% 100%, 15% 100%, 15% 85%, 30% 85%, 35% 70%, 0% 70%)'
         };
-      case 'pet':
+      case 'beauty':
         return { 
-          gradient: 'linear-gradient(135deg, #7c2d12 0%, #fb923c 100%)', 
-          accent: '#fb923c',
-          label: 'Amo meu Pet',
-          icon: Heart,
-          cta: 'Banho e Tosa',
-          shape: 'polygon(50% 40%, 70% 10%, 85% 15%, 80% 45%, 100% 55%, 90% 85%, 50% 100%, 10% 85%, 0% 55%, 20% 45%, 15% 15%, 30% 10%)'
+          gradient: 'linear-gradient(135deg, #f472b6 0%, #db2777 100%)', 
+          accent: '#f472b6', 
+          label: 'Beleza & Estilo',
+          icon: Sparkles,
+          cta: 'Agendar Horário ✨',
+          shape: 'polygon(50% 0%, 90% 20%, 100% 60%, 75% 100%, 25% 100%, 0% 60%, 10% 20%)'
         };
-      case 'business':
+      case 'real_estate':
         return { 
-          gradient: 'linear-gradient(135deg, #1e293b 0%, #64748b 100%)', 
-          accent: '#64748b', 
-          label: 'Foco em Resultados',
-          icon: Briefcase,
-          cta: 'Falar com Consultor',
-          shape: 'polygon(25% 18%, 25% 0%, 35% 0%, 65% 0%, 75% 0%, 75% 18%, 100% 18%, 100% 90%, 94% 100%, 6% 100%, 0% 90%, 0% 18%)'
+          gradient: 'linear-gradient(135deg, #0ea5e9 0%, #0369a1 100%)', 
+          accent: '#0ea5e9', 
+          label: 'Negócios Imobiliários',
+          icon: Building2,
+          cta: 'Solicitar Informações 🏠',
+          shape: 'polygon(50% 0%, 100% 40%, 100% 100%, 0% 100%, 0% 40%)'
+        };
+      case 'lawyer':
+        return { 
+          gradient: 'linear-gradient(135deg, #1e293b 0%, #0f172a 100%)', 
+          accent: '#1e293b', 
+          label: 'Consultoria Jurídica',
+          icon: Scale,
+          cta: 'Agendar Consulta Jurídica ⚖️',
+          shape: 'polygon(20% 0%, 80% 0%, 100% 20%, 100% 80%, 80% 100%, 20% 100%, 0% 80%, 0% 20%)'
+        };
+      case 'service':
+        return { 
+          gradient: 'linear-gradient(135deg, #f59e0b 0%, #d97706 100%)', 
+          accent: '#f59e0b', 
+          label: 'Especialista em Serviços',
+          icon: Hammer,
+          cta: 'Solicitar Orçamento 🛠️',
+          shape: 'polygon(30% 0%, 70% 0%, 100% 30%, 100% 70%, 70% 100%, 30% 100%, 0% 70%, 0% 30%)'
+        };
+      case 'sales':
+        return { 
+          gradient: 'linear-gradient(135deg, #8b5cf6 0%, #6d28d9 100%)', 
+          accent: '#8b5cf6', 
+          label: 'Representante Comercial',
+          icon: ShoppingBag,
+          cta: 'Ver Catálogo 🛍️',
+          shape: 'circle(50% at 50% 50%)'
+        };
+      case 'health':
+        return { 
+          gradient: 'linear-gradient(135deg, #10b981 0%, #059669 100%)', 
+          accent: '#10b981', 
+          label: 'Profissional de Saúde',
+          icon: Stethoscope,
+          cta: 'Agendar Consulta 🩺',
+          shape: 'polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%)'
+        };
+      case 'food':
+        return { 
+          gradient: 'linear-gradient(135deg, #ef4444 0%, #b91c1c 100%)', 
+          accent: '#ef4444', 
+          label: 'Espaço Gastronômico',
+          icon: Utensils,
+          cta: 'Fazer Pedido 🍔',
+          shape: 'polygon(0% 0%, 100% 0%, 90% 100%, 10% 100%)'
         };
     }
     return null;
@@ -440,10 +481,123 @@ END:VCARD`;
                <div 
                  className={cn(
                     "w-full h-full transition-colors duration-500 relative overflow-hidden",
-                    isPro ? "konnexy-digital-field" : "bg-white dark:bg-slate-950"
-                  )}
+                     isPro ? (
+                       isBarbearia ? "bg-[#0f0f0f]" : 
+                       isBeauty ? "bg-[#fdf2f8]" : 
+                       isHealth ? "bg-[#f0fdf4]" : 
+                       isSales ? "bg-[#f5f3ff]" : 
+                       isFood ? "bg-[#fef2f2]" : 
+                       isService ? "bg-[#fff7ed]" : 
+                        isTech ? "bg-[#020617]" :
+                        isRealEstate ? "bg-[#f8fafc]" :
+                        isDriver ? "bg-[#111111]" :
+                        isPetshop ? "bg-[#fffaf5]" :
+                       isAdvogado ? "bg-[#0f172a]" :
+                       "konnexy-digital-field"
+                     ) : "bg-white dark:bg-slate-950"
+                   )}
                 >
-                  <DigitalField accentColor={profConfig?.accent || '#00D4FF'} active={isPro} />
+                  {isBarbearia ? (
+                    <>
+                      {/* Premium Wood/Leather Texture Simulation */}
+                      <div className="absolute inset-0 opacity-20" style={{
+                        backgroundImage: `radial-gradient(circle at 2px 2px, #d4af37 1px, transparent 0)`,
+                        backgroundSize: '32px 32px'
+                      }} />
+                      <div className="absolute inset-0 bg-gradient-to-br from-[#1a1a1a] via-[#0a0a0a] to-[#000000]" />
+                      <div className="absolute inset-0 opacity-30 shadow-[inset_0_0_100px_rgba(0,0,0,0.8)]" />
+                      {/* Barber Pole Stripes (Animated) */}
+                      <div className="absolute -left-20 top-0 bottom-0 w-40 opacity-5 pointer-events-none rotate-12 bg-gradient-to-r from-red-600 via-white to-blue-600 bg-[length:100%_40px] animate-[slide-down_5s_linear_infinite]" />
+                    </>
+                  ) : isBeauty ? (
+                    <>
+                       <div className="absolute inset-0 bg-gradient-to-br from-[#FEF9F9] via-[#FBFAF9] to-[#FDF2F8] dark:from-[#1a1012] dark:to-[#0a0506]" />
+                       <div className="absolute inset-0 opacity-10" style={{
+                         backgroundImage: `radial-gradient(circle at 10px 10px, #f472b6 0.2px, transparent 0)`,
+                         backgroundSize: '30px 30px'
+                       }} />
+                       {/* Silk/Glossy Effect */}
+                       <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/10 to-transparent rotate-45 translate-x-1/2" />
+                    </>
+                  ) : isHealth ? (
+                    <>
+                       <div className="absolute inset-0 bg-gradient-to-br from-[#F0FDF4] via-[#F8FAFC] to-[#DCFCE7] dark:from-[#06100a] dark:to-[#020604]" />
+                       <div className="absolute inset-0 opacity-5" style={{
+                         backgroundImage: `radial-gradient(circle at 10px 10px, #10b981 0.5px, transparent 0)`,
+                         backgroundSize: '20px 20px'
+                       }} />
+                       <div className="absolute inset-0 bg-gradient-to-t from-emerald-500/5 to-transparent" />
+                    </>
+                  ) : isSales ? (
+                    <>
+                       <div className="absolute inset-0 bg-gradient-to-br from-[#F5F3FF] via-[#F8FAFC] to-[#EDE9FE] dark:from-[#0c0a13] dark:to-[#05040a]" />
+                       <div className="absolute inset-0 opacity-[0.03]" style={{
+                         backgroundImage: `linear-gradient(45deg, #8b5cf6 25%, transparent 25%, transparent 50%, #8b5cf6 50%, #8b5cf6 75%, transparent 75%, transparent 100%)`,
+                         backgroundSize: '40px 40px'
+                       }} />
+                    </>
+                  ) : isFood ? (
+                    <>
+                       <div className="absolute inset-0 bg-gradient-to-br from-[#FEF2F2] via-[#F8FAFC] to-[#FEE2E2] dark:from-[#130a0a] dark:to-[#0a0505]" />
+                       <div className="absolute inset-0 opacity-5" style={{
+                         backgroundImage: `radial-gradient(circle at 15px 15px, #ef4444 0.5px, transparent 0)`,
+                         backgroundSize: '30px 30px'
+                       }} />
+                    </>
+                  ) : isTech ? (
+                    <>
+                       <div className="absolute inset-0 bg-gradient-to-br from-[#020617] via-[#0f172a] to-[#020617]" />
+                       <div className="absolute inset-0 opacity-[0.05]" style={{
+                         backgroundImage: `linear-gradient(rgba(59, 130, 246, 0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(59, 130, 246, 0.1) 1px, transparent 1px)`,
+                         backgroundSize: '20px 20px'
+                       }} />
+                       <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(59,130,246,0.1),transparent_70%)]" />
+                    </>
+                  ) : isRealEstate ? (
+                    <>
+                       <div className="absolute inset-0 bg-gradient-to-br from-[#ffffff] via-[#f8fafc] to-[#f1f5f9]" />
+                       <div className="absolute inset-0 opacity-[0.02]" style={{
+                         backgroundImage: `linear-gradient(45deg, #0ea5e9 25%, transparent 25%, transparent 50%, #0ea5e9 50%, #0ea5e9 75%, transparent 75%, transparent 100%)`,
+                         backgroundSize: '60px 60px'
+                       }} />
+                    </>
+                  ) : isDriver ? (
+                    <>
+                       <div className="absolute inset-0 bg-[#111111]" />
+                       <div className="absolute top-0 left-0 right-0 h-1/2 bg-gradient-to-b from-white/5 to-transparent" />
+                       <div className="absolute inset-0 opacity-5" style={{
+                         backgroundImage: `linear-gradient(0deg, transparent 24%, rgba(255, 255, 255, .05) 25%, rgba(255, 255, 255, .05) 26%, transparent 27%, transparent 74%, rgba(255, 255, 255, .05) 75%, rgba(255, 255, 255, .05) 76%, transparent 77%, transparent), linear-gradient(90deg, transparent 24%, rgba(255, 255, 255, .05) 25%, rgba(255, 255, 255, .05) 26%, transparent 27%, transparent 74%, rgba(255, 255, 255, .05) 75%, rgba(255, 255, 255, .05) 76%, transparent 77%, transparent)`,
+                         backgroundSize: '50px 50px'
+                       }} />
+                    </>
+                  ) : isPetshop ? (
+                    <>
+                       <div className="absolute inset-0 bg-gradient-to-br from-[#fff7ed] via-[#fffaf5] to-[#ffedd5]" />
+                       <div className="absolute inset-0 opacity-[0.05]" style={{
+                         backgroundImage: `radial-gradient(#f97316 1px, transparent 0)`,
+                         backgroundSize: '24px 24px'
+                       }} />
+                    </>
+                  ) : isService ? (
+                     <>
+                        <div className="absolute inset-0 bg-gradient-to-br from-[#FFF7ED] via-[#F8FAFC] to-[#FFEDD5] dark:from-[#130d0a] dark:to-[#0a0705]" />
+                        <div className="absolute inset-0 opacity-[0.04]" style={{
+                          backgroundImage: `linear-gradient(0deg, #f59e0b 1px, transparent 1px), linear-gradient(90deg, #f59e0b 1px, transparent 1px)`,
+                          backgroundSize: '25px 25px'
+                        }} />
+                     </>
+                   ) : isAdvogado ? (
+                     <>
+                        <div className="absolute inset-0 bg-gradient-to-br from-[#0f172a] via-[#1e293b] to-[#0f172a]" />
+                        <div className="absolute inset-0 opacity-[0.03]" style={{
+                          backgroundImage: `linear-gradient(0deg, #fff 1px, transparent 1px), linear-gradient(90deg, #fff 1px, transparent 1px)`,
+                          backgroundSize: '40px 40px'
+                        }} />
+                        <div className="absolute inset-0 bg-gradient-to-t from-slate-900 via-transparent to-transparent" />
+                     </>
+                   ) : (
+                     <DigitalField accentColor={profConfig?.accent || '#00D4FF'} active={isPro} />
+                   )}
                   {!isPro && (
                     <div className="absolute inset-0 bg-slate-50 dark:bg-slate-900/50" />
                   )}
@@ -451,7 +605,1664 @@ END:VCARD`;
              )}
           </div>
 
-          {/* --- TOP SECTION (Identity) --- */}
+          {isBarbearia ? (
+            <div className="relative flex flex-col items-center w-full min-h-[600px] z-10 px-6 py-10 overflow-y-auto scroll-hide">
+              {/* Header */}
+              <div className="flex flex-col items-center mb-8">
+                <div className="relative w-40 h-40 rounded-full border-4 border-[#C6A75E] overflow-hidden shadow-[0_0_30px_rgba(198,167,94,0.3)] mb-4">
+                  {data.photo_url ? (
+                    <Image
+                      src={data.photo_url}
+                      alt={data.name || 'Barbearia'}
+                      fill
+                      className="object-cover"
+                      style={{ filter: 'grayscale(15%) contrast(1.1)' }}
+                      priority
+                    />
+                  ) : (
+                    <div className="w-full h-full bg-[#1a1a1a] flex items-center justify-center text-[#C6A75E] text-4xl font-black">
+                      <Scissors className="w-12 h-12" />
+                    </div>
+                  )}
+                </div>
+                <h1 className="text-3xl font-black text-white tracking-tighter uppercase mb-1 text-center">{data.name || 'Barbearia'}</h1>
+                <p className="text-[#C6A75E] font-bold text-sm tracking-widest uppercase italic text-center">{data.tagline || 'Corte com estilo e precisão 💈'}</p>
+              </div>
+
+              {/* Main Call to Action */}
+              <motion.div 
+                whileHover={{ scale: 1.03 }}
+                whileTap={{ scale: 0.98 }}
+                className="w-full mb-8"
+              >
+                <Button
+                  className="w-full h-20 rounded-xl bg-[#C6A75E] hover:bg-[#b39550] text-black font-black text-xl uppercase tracking-tighter shadow-[0_15px_30px_rgba(198,167,94,0.4)] relative overflow-hidden group/cta flex items-center justify-center gap-3"
+                  asChild
+                  onClick={() => handleTrackClick('click_whatsapp')}
+                >
+                  <a href={whatsappLink} target="_blank" rel="noopener noreferrer">
+                    <div className="absolute top-0 -inset-full h-full w-1/2 z-5 block transform -skew-x-12 bg-gradient-to-r from-transparent to-white/30 opacity-40 animate-shine" />
+                    <MessageCircle className="w-8 h-8 fill-black" />
+                    <span>Agendar Corte 💈</span>
+                  </a>
+                </Button>
+              </motion.div>
+
+              {/* Secondary Buttons Grid (Max 4) */}
+              <div className="grid grid-cols-2 gap-3 w-full mb-10">
+                <Button 
+                  variant="outline" 
+                  className="rounded-lg h-12 bg-white/5 border-white/10 text-white/80 text-[10px] font-black uppercase tracking-widest hover:bg-white/10"
+                  onClick={() => document.getElementById('services-table')?.scrollIntoView({ behavior: 'smooth' })}
+                >
+                  <FileText className="w-4 h-4 mr-2 text-[#C6A75E]" />
+                  Serviços
+                </Button>
+
+                {data.instagram && (
+                  <Button 
+                    variant="outline" 
+                    className="rounded-lg h-12 bg-white/5 border-white/10 text-white/80 text-[10px] font-black uppercase tracking-widest hover:bg-white/10"
+                    asChild
+                    onClick={() => handleTrackClick('click_instagram')}
+                  >
+                    <a href={`https://instagram.com/${data.instagram}`} target="_blank" rel="noopener noreferrer">
+                      <Instagram className="w-4 h-4 mr-2 text-[#C6A75E]" />
+                      Instagram
+                    </a>
+                  </Button>
+                )}
+
+                {data.address && (
+                  <Button 
+                    variant="outline" 
+                    className="rounded-lg h-12 bg-white/5 border-white/10 text-white/80 text-[10px] font-black uppercase tracking-widest hover:bg-white/10"
+                    asChild
+                    onClick={() => handleTrackClick('click_address')}
+                  >
+                    <a href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(data.address)}`} target="_blank" rel="noopener noreferrer">
+                      <MapPin className="w-4 h-4 mr-2 text-[#C6A75E]" />
+                      Localização
+                    </a>
+                  </Button>
+                )}
+
+                <Button 
+                  variant="outline" 
+                  className="rounded-lg h-12 bg-white/5 border-white/10 text-white/80 text-[10px] font-black uppercase tracking-widest hover:bg-white/10"
+                  onClick={() => document.getElementById('hours-table')?.scrollIntoView({ behavior: 'smooth' })}
+                >
+                  <Clock className="w-4 h-4 mr-2 text-[#C6A75E]" />
+                  Horários
+                </Button>
+              </div>
+
+              {/* Services Section - Table Layout */}
+              <div id="services-table" className="w-full mb-10">
+                <div className="flex items-center gap-3 mb-6">
+                  <div className="h-[1px] flex-1 bg-white/10" />
+                  <span className="text-[#C6A75E] text-[10px] font-black uppercase tracking-[0.3em]">Tabela de Serviços</span>
+                  <div className="h-[1px] flex-1 bg-white/10" />
+                </div>
+                
+                <div className="space-y-[1px] bg-white/5 rounded-xl border border-white/10 overflow-hidden shadow-2xl">
+                  <div className="grid grid-cols-[1fr_auto] p-4 bg-white/5 text-[#C6A75E] text-[10px] font-black uppercase tracking-widest">
+                    <span>Serviço</span>
+                    <span>Preço</span>
+                  </div>
+                  {activeServicesArr.length > 0 ? activeServicesArr.map((service, i) => (
+                    <div key={i} className="grid grid-cols-[1fr_auto] items-center p-4 bg-transparent border-t border-white/5 text-white/90 text-sm font-bold group hover:bg-white/5 transition-colors">
+                      <div className="flex flex-col gap-1">
+                        <span className="flex items-center gap-2">
+                          <div className="w-1.5 h-1.5 rounded-full bg-[#C6A75E]/30 group-hover:bg-[#C6A75E] transition-colors" />
+                          {service.name}
+                        </span>
+                        {service.description && (
+                          <p className="text-[10px] text-white/40 font-medium pl-3.5 leading-tight italic">
+                            {service.description}
+                          </p>
+                        )}
+                      </div>
+                      <span className="text-[#C6A75E] font-black">
+                        {service.price || '—'}
+                      </span>
+                    </div>
+                  )) : (
+                    <p className="p-8 text-center text-white/20 text-xs italic uppercase tracking-widest">Configure seus serviços no painel</p>
+                  )}
+                </div>
+              </div>
+
+              {/* Business Hours Section */}
+              {data.business_hours && Object.values(data.business_hours).some(v => v) && (
+                <div id="hours-table" className="w-full mb-10">
+                  <div className="flex items-center gap-3 mb-6">
+                    <div className="h-[1px] flex-1 bg-white/10" />
+                    <span className="text-[#C6A75E] text-[10px] font-black uppercase tracking-[0.3em]">Horário de Atendimento</span>
+                    <div className="h-[1px] flex-1 bg-white/10" />
+                  </div>
+                  
+                  <div className="space-y-[1px] bg-white/5 rounded-xl border border-white/10 overflow-hidden shadow-2xl">
+                    {['Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado', 'Dom'].map((day) => {
+                      const hours = data.business_hours?.[day];
+                      if (!hours) return null;
+                      return (
+                        <div key={day} className="grid grid-cols-[1fr_auto] items-center p-4 bg-transparent border-t border-white/5 text-white/90 text-[11px] font-medium group hover:bg-white/5 transition-colors uppercase tracking-wider">
+                          <span className="opacity-60">{day}</span>
+                          <span className="text-[#C6A75E] font-black">{hours}</span>
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
+              )}
+
+              {data.service_area && (
+                <div className="w-full mb-10 px-4 py-3 rounded-xl bg-[#C6A75E]/5 border border-[#C6A75E]/20 text-center">
+                  <span className="text-[8px] font-black uppercase text-[#C6A75E] tracking-widest block mb-1">Área de Atuação</span>
+                  <p className="text-xs font-bold text-white italic">{data.service_area}</p>
+                </div>
+              )}
+
+              {/* Footer */}
+              <div className="mt-auto w-full text-center space-y-6 pt-10 pb-4">
+                {data.address && (
+                  <p className="text-white/40 text-[10px] font-medium leading-relaxed max-w-[200px] mx-auto uppercase tracking-tighter">
+                    {data.address}
+                  </p>
+                )}
+                
+                <div className="flex flex-col items-center gap-2">
+                   <div className="inline-flex flex-col items-center gap-1.5 opacity-30">
+                     <span className="text-[8px] uppercase font-black tracking-[0.4em] text-white">Página Profissional por</span>
+                     <span className="text-xs font-black tracking-tighter text-white">KONNEXY™</span>
+                   </div>
+                </div>
+
+                {/* QR Signature PRO */}
+                {isPro && (data.username || data.id) && (
+                  <div className="flex flex-col items-center mt-6 mb-2">
+                    <AnimatedQR
+                      url={`${process.env.NEXT_PUBLIC_APP_URL || 'https://konnexy.com.br'}/u/${data.username || data.id}`}
+                      photoUrl={data.photo_url || undefined}
+                      accentColor="#C6A75E"
+                      size={100}
+                      active={isPro}
+                    />
+                  </div>
+                )}
+              </div>
+
+              {/* Floating Fixed Button (Subtle) */}
+              <motion.a
+                href={whatsappLink}
+                target="_blank"
+                rel="noopener noreferrer"
+                initial={{ opacity: 0, scale: 0.8 }}
+                animate={{ opacity: 1, scale: 1 }}
+                className="fixed bottom-6 right-6 w-14 h-14 bg-[#C6A75E] rounded-full flex items-center justify-center shadow-2xl z-[100] md:hidden"
+                onClick={() => handleTrackClick('click_whatsapp')}
+              >
+                <MessageCircle className="w-7 h-7 fill-black" />
+              </motion.a>
+            </div>
+          ) : isBeauty ? (
+            <div className="relative flex flex-col items-center w-full min-h-[600px] z-10 px-6 py-10 overflow-y-auto scroll-hide">
+              {/* Header Beleza */}
+              <div className="flex flex-col items-center mb-8">
+                <div className="relative w-40 h-40 rounded-full border-4 border-[#F472B6] overflow-hidden shadow-[0_0_30px_rgba(244,114,182,0.3)] mb-4 bg-white/50 backdrop-blur-md">
+                  {data.photo_url ? (
+                    <Image
+                      src={data.photo_url}
+                      alt={data.name || 'Profile'}
+                      fill
+                      className="object-cover"
+                      unoptimized
+                    />
+                  ) : (
+                    <div className="w-full h-full flex items-center justify-center bg-pink-50 dark:bg-pink-900/10">
+                      <Sparkles className="w-12 h-12 text-[#F472B6]/40" />
+                    </div>
+                  )}
+                </div>
+                <h1 className="text-3xl font-serif text-[#1e1e1e] dark:text-white text-center leading-tight">
+                  {data.name || 'Seu Nome'}
+                </h1>
+                <p className="text-xs font-medium uppercase tracking-[0.25em] text-[#DB2777] dark:text-[#F472B6] mt-2 italic">
+                  {data.tagline || 'Especialista em Beleza'}
+                </p>
+                {data.city && (
+                  <div className="flex items-center gap-1.5 mt-3 opacity-60">
+                    <MapPin className="w-3 h-3 text-[#DB2777]" />
+                    <span className="text-[10px] font-bold uppercase tracking-widest text-[#1e1e1e] dark:text-white">{data.city}</span>
+                  </div>
+                )}
+              </div>
+
+              {/* Botão de Agendamento */}
+              <Button 
+                asChild 
+                className="w-full h-14 rounded-full bg-[#DB2777] hover:bg-[#BE185D] text-white font-bold text-sm shadow-[0_10px_25px_-5px_rgba(219,39,119,0.4)] mb-10 transition-all hover:scale-[1.02] border-none"
+              >
+                <a 
+                  href={whatsappLink} 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  onClick={() => handleTrackClick('click_whatsapp')}
+                >
+                  {data.cta_text || 'Agendar Horário ✨'}
+                </a>
+              </Button>
+
+              {/* Redes Sociais */}
+              <div className="flex justify-center gap-4 mb-10 w-full">
+                {validSocialLinks.map((social, i) => {
+                  const Icon = social.icon;
+                  return (
+                    <motion.a
+                      key={social.id}
+                      href={social.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      whileHover={{ scale: 1.1, y: -2 }}
+                      className="w-12 h-12 rounded-full bg-white dark:bg-white/5 border border-[#F472B6]/20 flex items-center justify-center text-[#DB2777] dark:text-[#F472B6] shadow-sm backdrop-blur-md"
+                      onClick={() => handleTrackClick(social.trackType as any)}
+                    >
+                      <Icon className="w-5 h-5" />
+                    </motion.a>
+                  );
+                })}
+              </div>
+
+              {/* Serviços Beleza */}
+              <div className="w-full mb-10">
+                <div className="flex items-center gap-3 mb-6">
+                  <div className="h-[0.5px] flex-1 bg-[#F472B6]/30" />
+                  <span className="text-[#DB2777] dark:text-[#F472B6] text-[9px] font-black uppercase tracking-[0.4em]">Experiências & Rituais</span>
+                  <div className="h-[0.5px] flex-1 bg-[#F472B6]/30" />
+                </div>
+                
+                <div className="space-y-3">
+                  {activeServicesArr.length > 0 ? activeServicesArr.map((service, i) => (
+                    <motion.div 
+                      key={i} 
+                      initial={{ opacity: 0, y: 10 }}
+                      whileInView={{ opacity: 1, y: 0 }}
+                      className="flex justify-between items-center p-5 rounded-[1.5rem] bg-white/60 dark:bg-white/5 border border-[#F472B6]/10 backdrop-blur-md group hover:border-[#F472B6]/40 transition-all shadow-sm"
+                    >
+                      <div className="flex flex-col gap-0.5">
+                        <span className="text-sm font-bold text-slate-900 dark:text-white/95">{service.name}</span>
+                        {service.description && (
+                          <p className="text-[10px] text-slate-500 italic opacity-80 leading-tight pr-4">
+                            {service.description}
+                          </p>
+                        )}
+                      </div>
+                      <div className="flex flex-col items-end gap-1">
+                        <span className="text-sm font-black text-[#DB2777] dark:text-[#F472B6]">
+                          {service.price || '—'}
+                        </span>
+                        <ChevronRight className="w-3 h-3 opacity-20" />
+                      </div>
+                    </motion.div>
+                  )) : (
+                    <p className="text-center text-xs opacity-20 italic uppercase tracking-[0.2em] py-10">Revele seus serviços aqui</p>
+                  )}
+                </div>
+              </div>
+
+              {/* Especialidade / Anos de Estrada */}
+              <div className="grid grid-cols-2 gap-4 w-full mb-10">
+                {data.expert_area && (
+                  <div className="flex flex-col items-center justify-center p-4 rounded-3xl bg-[#F472B6]/5 border border-[#F472B6]/10 text-center">
+                    <Award className="w-5 h-5 text-[#DB2777] mb-2" />
+                    <span className="text-[8px] font-black uppercase tracking-widest opacity-40 mb-1">Especialidade</span>
+                    <span className="text-[10px] font-bold text-[#DB2777] dark:text-pink-300">{data.expert_area}</span>
+                  </div>
+                )}
+                {data.founded_year && (
+                  <div className="flex flex-col items-center justify-center p-4 rounded-3xl bg-[#F472B6]/5 border border-[#F472B6]/10 text-center">
+                    <Star className="w-5 h-5 text-[#DB2777] mb-2" />
+                    <span className="text-[8px] font-black uppercase tracking-widest opacity-40 mb-1">Fundado em</span>
+                    <span className="text-[10px] font-bold text-[#DB2777] dark:text-pink-300">{data.founded_year}</span>
+                  </div>
+                )}
+              </div>
+
+              {/* Endereço */}
+              {data.address && (
+                <div className="w-full p-6 rounded-[2rem] bg-white/40 dark:bg-white/5 border border-[#F472B6]/10 mb-10 text-center backdrop-blur-md">
+                  <MapPin className="w-5 h-5 text-[#DB2777] mx-auto mb-2 opacity-60" />
+                  <p className="text-xs font-medium text-slate-800 dark:text-pink-50/80 leading-relaxed">
+                    {data.address}
+                  </p>
+                </div>
+              )}
+              {/* Atuação e Horários Beleza */}
+              <div className="w-full space-y-4 mb-10">
+                {data.service_area && (
+                  <div className="flex flex-col items-center p-4 rounded-[1.5rem] bg-[#F472B6]/5 border border-[#F472B6]/10 text-center">
+                    <Globe className="w-4 h-4 text-[#DB2777] mb-2 opacity-60" />
+                    <span className="text-[8px] font-black uppercase tracking-widest opacity-40 mb-1">Região de Atendimento</span>
+                    <p className="text-[10px] font-bold text-[#DB2777] dark:text-pink-300">{data.service_area}</p>
+                  </div>
+                )}
+
+                {data.business_hours && Object.values(data.business_hours).some(v => v) && (
+                  <div className="p-6 rounded-[2rem] bg-white/40 dark:bg-white/5 border border-[#F472B6]/10 backdrop-blur-md">
+                    <div className="flex items-center gap-2 mb-4">
+                      <Clock className="w-4 h-4 text-[#DB2777] opacity-60" />
+                      <span className="text-[9px] font-black uppercase tracking-[0.2em] text-[#DB2777] dark:text-pink-200">Horários de Atendimento</span>
+                    </div>
+                    <div className="space-y-2">
+                       {['Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado', 'Dom'].map((day) => {
+                         const hours = data.business_hours?.[day];
+                         if (!hours) return null;
+                         return (
+                           <div key={day} className="flex justify-between text-[10px] font-medium border-b border-[#F472B6]/5 pb-1 last:border-0">
+                             <span className="text-slate-400 capitalize">{day}</span>
+                             <span className="text-[#DB2777] dark:text-pink-300 font-bold">{hours}</span>
+                           </div>
+                         );
+                       })}
+                    </div>
+                  </div>
+                )}
+              </div>
+              
+              <div className="flex flex-col items-center gap-2 mb-4">
+                 <div className="inline-flex flex-col items-center gap-1.5 opacity-20">
+                   <span className="text-[8px] uppercase font-black tracking-[0.5em] text-[#DB2777] dark:text-pink-200">Konnexy&trade; Haute Couture</span>
+                 </div>
+              </div>
+
+              {/* QR Signature PRO */}
+              {isPro && (data.username || data.id) && (
+                <div className="flex flex-col items-center mb-10">
+                  <AnimatedQR
+                    url={`${process.env.NEXT_PUBLIC_APP_URL || 'https://konnexy.com.br'}/u/${data.username || data.id}`}
+                    photoUrl={data.photo_url || undefined}
+                    accentColor="#F472B6"
+                    size={100}
+                    active={isPro}
+                  />
+                </div>
+              )}
+            </div>
+            ) : isHealth ? (
+              <div className="relative flex flex-col items-center w-full min-h-[600px] z-10 px-6 py-12 overflow-y-auto scroll-hide">
+                {/* Header Saúde Premium */}
+                <div className="flex flex-col items-center mb-10 w-full">
+                  <motion.div 
+                    initial={{ scale: 0.9, opacity: 0 }}
+                    animate={{ scale: 1, opacity: 1 }}
+                    className="relative w-44 h-44 mb-6"
+                  >
+                    <div className="absolute inset-0 rounded-full bg-gradient-to-tr from-[#10b981] to-[#6ee7b7] opacity-20 blur-2xl animate-pulse" />
+                    <div className="relative w-full h-full rounded-full border-[6px] border-white dark:border-slate-900 shadow-2xl overflow-hidden z-10">
+                      {data.photo_url ? (
+                        <Image src={data.photo_url} alt={data.name || 'Saúde'} fill className="object-cover" unoptimized />
+                      ) : (
+                        <div className="w-full h-full flex items-center justify-center bg-emerald-50 dark:bg-emerald-950">
+                          <Stethoscope className="w-16 h-16 text-[#10b981]/40" />
+                        </div>
+                      )}
+                    </div>
+                    <div className="absolute -bottom-2 -right-2 w-12 h-12 rounded-2xl bg-[#10b981] flex items-center justify-center text-white shadow-xl z-20 border-4 border-white dark:border-slate-900">
+                      <Heart className="w-5 h-5 fill-current" />
+                    </div>
+                  </motion.div>
+                  
+                  <h1 className="text-3xl font-black text-slate-900 dark:text-white text-center tracking-tighter leading-none mb-3">
+                    {data.name || 'Seu Nome'}
+                  </h1>
+                  <div className="flex items-center gap-2 bg-emerald-50 dark:bg-emerald-900/20 px-4 py-1.5 rounded-full border border-emerald-100 dark:border-emerald-800/30">
+                    <ShieldCheck className="w-3.5 h-3.5 text-[#10b981]" />
+                    <span className="text-[10px] font-black uppercase tracking-[0.2em] text-[#059669]">
+                      {data.tagline || 'Especialista em Saúde'}
+                    </span>
+                  </div>
+                </div>
+
+                {/* Trust Stats Saúde */}
+                <div className="grid grid-cols-2 gap-4 w-full mb-10">
+                   <div className="bg-white dark:bg-slate-900/50 p-4 rounded-3xl border border-slate-100 dark:border-slate-800 shadow-sm text-center">
+                      <p className="text-xl font-black text-slate-900 dark:text-white line-tight">
+                        {data.founded_year ? `${new Date().getFullYear() - data.founded_year}+` : '10+'}
+                      </p>
+                      <p className="text-[9px] font-bold text-slate-400 uppercase tracking-widest mt-1">Anos de Experiência</p>
+                   </div>
+                   <div className="bg-white dark:bg-slate-900/50 p-4 rounded-3xl border border-slate-100 dark:border-slate-800 shadow-sm text-center">
+                      <p className="text-xl font-black text-slate-900 dark:text-white line-tight">95%</p>
+                      <p className="text-[9px] font-bold text-slate-400 uppercase tracking-widest mt-1">Satisfação</p>
+                   </div>
+                </div>
+
+                {/* CTA Saúde */}
+                <Button 
+                  asChild 
+                  className="w-full h-14 rounded-2xl bg-[#10b981] hover:bg-[#059669] text-white font-bold text-sm shadow-[0_10px_20px_-5px_rgba(16,185,129,0.3)] mb-8 transition-all hover:scale-[1.02] border-none"
+                >
+                  <a 
+                    href={whatsappLink} 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    onClick={() => handleTrackClick('click_whatsapp')}
+                  >
+                    {data.cta_text || 'Agendar Consulta 🩺'}
+                  </a>
+                </Button>
+
+                {/* Serviços Saúde */}
+                <div className="w-full mb-8">
+                  <p className="text-[9px] font-black uppercase tracking-widest text-slate-400 mb-4 text-center">Procedimentos & Consultas</p>
+                  <div className="space-y-2">
+                    {activeServicesArr.length > 0 ? activeServicesArr.map((service, i) => (
+                      <div key={i} className="flex justify-between items-center p-4 rounded-3xl bg-white/80 dark:bg-emerald-950/20 border border-emerald-100 dark:border-emerald-900/30 group hover:border-emerald-500 transition-all">
+                        <div className="flex flex-col flex-1">
+                          <span className="text-sm font-bold text-slate-700 dark:text-emerald-50 leading-tight">{service.name}</span>
+                          {service.description && <span className="text-[10px] text-slate-400 leading-tight mt-1 opacity-70">{service.description}</span>}
+                        </div>
+                        {service.price && <span className="text-sm font-black text-[#10b981] ml-4 bg-[#10b981]/10 px-3 py-1 rounded-xl shrink-0">{service.price}</span>}
+                      </div>
+                    )) : (
+                      <p className="text-center text-xs opacity-20 italic py-6">Adicione seus serviços médicos</p>
+                    )}
+                  </div>
+                </div>
+
+                  {/* Localização e Horários Saúde Premium */}
+                  <div className="w-full space-y-4 mb-10">
+                    <div className="bg-emerald-50/30 dark:bg-emerald-950/20 p-6 rounded-[2.5rem] border border-emerald-100/50 dark:border-emerald-800/30 relative overflow-hidden">
+                      <div className="absolute top-0 right-0 p-6 opacity-[0.05] pointer-events-none">
+                        <Clock className="w-20 h-20 text-[#10b981]" />
+                      </div>
+                      
+                      <div className="relative z-10 space-y-6">
+                        {data.address && (
+                          <div className="flex items-start gap-4">
+                            <div className="w-10 h-10 rounded-2xl bg-white dark:bg-slate-900 flex items-center justify-center shrink-0 shadow-sm">
+                              <MapPin className="w-5 h-5 text-[#10b981]" />
+                            </div>
+                            <div className="flex flex-col">
+                              <span className="text-[9px] font-black uppercase text-emerald-600/60 mb-1 tracking-widest">Endereço Clínica</span>
+                              <p className="text-xs font-bold text-slate-700 dark:text-emerald-50 leading-relaxed">{data.address}</p>
+                            </div>
+                          </div>
+                        )}
+
+                        {data.business_hours && Object.values(data.business_hours).some(v => v) && (
+                          <div className="pt-6 border-t border-emerald-100 dark:border-emerald-800/50">
+                            <div className="flex items-center gap-3 mb-4">
+                              <Clock className="w-4 h-4 text-[#10b981]" />
+                              <span className="text-[10px] font-black uppercase text-emerald-700 tracking-[0.2em]">Horários de Atendimento</span>
+                            </div>
+                            <div className="grid grid-cols-1 gap-2">
+                              {['Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado', 'Dom'].map((day) => {
+                                const hours = data.business_hours?.[day];
+                                if (!hours) return null;
+                                return (
+                                  <div key={day} className="flex justify-between items-center bg-white/50 dark:bg-black/20 p-3 rounded-xl">
+                                    <span className="text-[10px] font-bold text-slate-500 uppercase">{day}</span>
+                                    <span className="text-[10px] font-black text-[#059669]">{hours}</span>
+                                  </div>
+                                );
+                              })}
+                            </div>
+                          </div>
+                        )}
+                      </div>
+                    </div>
+
+                    {data.service_area && (
+                      <div className="flex items-center gap-4 p-5 rounded-[2.5rem] bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 shadow-sm">
+                        <div className="w-10 h-10 rounded-full bg-emerald-50 dark:bg-emerald-950 flex items-center justify-center shrink-0">
+                          <Globe className="w-5 h-5 text-[#10b981]" />
+                        </div>
+                        <div className="flex flex-col">
+                          <span className="text-[9px] font-black uppercase text-slate-400 mb-0.5 tracking-widest">Área de Atendimento</span>
+                          <p className="text-[11px] font-bold text-slate-700 dark:text-emerald-50">{data.service_area}</p>
+                        </div>
+                      </div>
+                    )}
+                  </div>
+
+                <div className="mt-auto opacity-20 flex flex-col items-center gap-1 mb-6">
+                   <span className="text-[7px] uppercase font-black tracking-[0.4em]">Konnexy&trade; Health System</span>
+                </div>
+
+                {/* QR Signature PRO */}
+                {isPro && (data.username || data.id) && (
+                  <div className="flex flex-col items-center mb-10">
+                    <AnimatedQR
+                      url={`${process.env.NEXT_PUBLIC_APP_URL || 'https://konnexy.com.br'}/u/${data.username || data.id}`}
+                      photoUrl={data.photo_url || undefined}
+                      accentColor="#10b981"
+                      size={100}
+                      active={isPro}
+                    />
+                  </div>
+                )}
+              </div>
+            ) : isSales ? (
+              <div className="relative flex flex-col items-center w-full min-h-[600px] z-10 px-6 py-10 overflow-y-auto scroll-hide">
+                {/* Header Vendas */}
+                <div className="w-full mb-8 flex flex-col items-center">
+                  <div className="relative w-full aspect-[16/9] rounded-3xl overflow-hidden shadow-xl mb-6 border-b-4 border-[#8b5cf6]">
+                    {data.photo_url ? (
+                      <Image
+                        src={data.photo_url}
+                        alt={data.name || 'Vendas'}
+                        fill
+                        className="object-cover"
+                        unoptimized
+                      />
+                    ) : (
+                      <div className="w-full h-full flex items-center justify-center bg-violet-50 dark:bg-violet-900/10">
+                        <ShoppingBag className="w-12 h-12 text-[#8b5cf6]/40" />
+                      </div>
+                    )}
+                    <div className="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-black/60 to-transparent" />
+                    <div className="absolute bottom-4 left-6 right-6">
+                      <h1 className="text-xl font-black text-white uppercase italic tracking-tighter">
+                        {data.name || 'Loja / Consultor'}
+                      </h1>
+                    </div>
+                  </div>
+                  <p className="text-xs font-bold text-[#8b5cf6] dark:text-violet-300 italic">
+                    {data.tagline || 'Confira nossas ofertas e produtos'}
+                  </p>
+                </div>
+
+                {/* CTA Principal Vendas */}
+                <Button 
+                  asChild 
+                  className="w-full h-16 rounded-2xl bg-[#8b5cf6] hover:bg-[#7c3aed] text-white font-black text-lg shadow-[0_15px_30px_-10px_rgba(139,92,246,0.5)] mb-8 transition-all hover:scale-[1.02] border-none italic"
+                >
+                  <a 
+                    href={whatsappLink} 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    onClick={() => handleTrackClick('click_whatsapp')}
+                  >
+                    {data.cta_text || 'Faça seu Pedido 🛍️'}
+                  </a>
+                </Button>
+
+                {/* Grid de Produtos/Serviços */}
+                <div className="w-full mb-8">
+                  <p className="text-[10px] font-black uppercase tracking-widest text-[#8b5cf6]/40 text-center mb-4">Destaques do Catálogo</p>
+                  <div className="grid grid-cols-1 gap-3">
+                    {activeServicesArr.length > 0 ? activeServicesArr.map((service, i) => (
+                      <div key={i} className="flex flex-col p-5 rounded-3xl bg-white dark:bg-slate-900 border-b-2 border-r-2 border-violet-100 dark:border-violet-900/30 group hover:border-[#8b5cf6] transition-colors shadow-sm relative overflow-hidden">
+                        <div className="flex justify-between items-center mb-2 relative z-10 w-full">
+                        <div className="flex flex-col flex-1">
+                          <span className="text-sm font-black text-slate-800 dark:text-white uppercase tracking-tighter leading-tight">{service.name}</span>
+                          {service.description && <p className="text-[11px] text-slate-500 dark:text-violet-200/60 leading-tight line-clamp-2 mt-1">{service.description}</p>}
+                        </div>
+                        {service.price && <span className="bg-violet-100 dark:bg-violet-900/40 text-[#8b5cf6] text-[10px] font-black px-3 py-1 rounded-full shrink-0 ml-4">{service.price}</span>}
+                      </div>
+                    </div>
+                  )) : (
+                    <p className="text-center text-xs opacity-20 italic py-8">Destaque seus produtos aqui</p>
+                  )}
+                </div>
+              </div>
+
+                {/* Detalhes Vendas */}
+                <div className="w-full space-y-4 mb-8">
+                  {data.address && (
+                    <div className="p-5 rounded-3xl bg-slate-900 border-l-4 border-[#8b5cf6] text-white">
+                      <div className="flex items-center gap-2 mb-2">
+                        <MapPin className="w-4 h-4 text-[#8b5cf6]" />
+                        <span className="text-[9px] font-black uppercase tracking-[0.2em] text-[#8b5cf6]">Localização</span>
+                      </div>
+                      <p className="text-xs font-medium opacity-80">{data.address}</p>
+                    </div>
+                  )}
+                  {data.service_area && (
+                    <div className="p-5 rounded-3xl bg-violet-50 dark:bg-violet-900/10 border border-violet-100 dark:border-violet-800/30">
+                      <div className="flex items-center gap-2 mb-2">
+                        <Globe className="w-4 h-4 text-[#8b5cf6]" />
+                        <span className="text-[9px] font-black uppercase tracking-[0.2em] text-[#8b5cf6]">Atendimento</span>
+                      </div>
+                      <p className="text-xs font-bold italic text-slate-700 dark:text-violet-100">{data.service_area}</p>
+                    </div>
+                  )}
+                  
+                  {data.business_hours && Object.values(data.business_hours).some(v => v) && (
+                    <div className="p-5 rounded-3xl bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800">
+                      <div className="flex items-center gap-2 mb-4">
+                        <Clock className="w-4 h-4 text-[#8b5cf6]" />
+                        <span className="text-[9px] font-black uppercase tracking-[0.2em]">Horário de Funcionamento</span>
+                      </div>
+                      <div className="grid grid-cols-1 gap-1">
+                        {['Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado', 'Dom'].map((day) => {
+                          const hours = data.business_hours?.[day];
+                          if (!hours) return null;
+                          return (
+                            <div key={day} className="flex justify-between text-[10px] items-center py-1 border-b border-slate-50 dark:border-slate-800 last:border-0">
+                              <span className="text-slate-400 font-bold uppercase">{day}</span>
+                              <span className="text-[#8b5cf6] font-black italic">{hours}</span>
+                            </div>
+                          );
+                        })}
+                      </div>
+                    </div>
+                  )}
+                </div>
+
+                {/* Redes Sociais Vendas */}
+                <div className="flex justify-center gap-3 w-full mb-10">
+                  {validSocialLinks.map((social) => {
+                    const Icon = social.icon;
+                    return (
+                      <a 
+                        key={social.id}
+                        href={social.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="w-12 h-12 rounded-2xl bg-white dark:bg-slate-800 border-2 border-slate-50 dark:border-slate-800 flex items-center justify-center text-[#8b5cf6] shadow-sm hover:border-[#8b5cf6] transition-colors"
+                        onClick={() => handleTrackClick(social.trackType as any)}
+                      >
+                        <Icon className="w-5 h-5" />
+                      </a>
+                    );
+                  })}
+                </div>
+
+                {/* Footer Vendas */}
+                <div className="mt-auto w-full flex justify-between items-end opacity-30 mb-8">
+                   <div className="flex flex-col">
+                     <span className="text-[7px] font-black uppercase tracking-widest">Enterprise Solution</span>
+                     <span className="text-[10px] font-black tracking-tighter">KONNEXY&trade; SALES</span>
+                   </div>
+                   <ShoppingBag className="w-8 h-8 opacity-20" />
+                </div>
+
+                {/* QR Signature PRO */}
+                {isPro && (data.username || data.id) && (
+                  <div className="flex flex-col items-center mb-10 w-full">
+                    <AnimatedQR
+                      url={`${process.env.NEXT_PUBLIC_APP_URL || 'https://konnexy.com.br'}/u/${data.username || data.id}`}
+                      photoUrl={data.photo_url || undefined}
+                      accentColor="#8b5cf6"
+                      size={100}
+                      active={isPro}
+                    />
+                  </div>
+                )}
+              </div>
+            ) : isFood ? (
+              <div className="relative flex flex-col items-center w-full min-h-[600px] z-10 px-6 py-10 overflow-y-auto scroll-hide">
+                {/* Header Comida */}
+                <div className="flex flex-col items-center mb-8">
+                  <div className="relative w-44 h-44 rounded-[2.5rem] rotate-3 overflow-hidden shadow-2xl mb-6 border-4 border-white">
+                    {data.photo_url ? (
+                      <Image
+                        src={data.photo_url}
+                        alt={data.name || 'Gastronomia'}
+                        fill
+                        className="object-cover -rotate-3 scale-110"
+                        unoptimized
+                      />
+                    ) : (
+                      <div className="w-full h-full flex items-center justify-center bg-orange-50">
+                        <UtensilsCrossed className="w-12 h-12 text-orange-500/40" />
+                      </div>
+                    )}
+                  </div>
+                  <h1 className="text-3xl font-black text-slate-900 dark:text-white text-center leading-none tracking-tighter uppercase">
+                    {data.name || 'Seu Restaurante'}
+                  </h1>
+                  <span className="mt-2 px-3 py-1 rounded-full bg-red-600 text-white text-[9px] font-black uppercase tracking-widest">
+                    {data.tagline || 'Sabor que Apaixona'}
+                  </span>
+                </div>
+
+                {/* CTA Comida */}
+                <Button 
+                  asChild 
+                  className="w-full h-16 rounded-[1.5rem] bg-red-600 hover:bg-red-700 text-white font-black text-lg shadow-[0_15px_30px_rgba(220,38,38,0.3)] mb-8 transition-transform active:scale-95 border-none"
+                >
+                  <a 
+                    href={whatsappLink} 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    onClick={() => handleTrackClick('click_whatsapp')}
+                  >
+                    {data.cta_text || 'Fazer meu Pedido 🍔'}
+                  </a>
+                </Button>
+
+                {/* Menu Destaque */}
+                <div className="w-full mb-8">
+                   <div className="flex items-center gap-2 mb-4">
+                     <div className="h-px flex-1 bg-red-100" />
+                     <span className="text-[10px] font-black text-red-600 uppercase tracking-widest">Favoritos da Casa</span>
+                     <div className="h-px flex-1 bg-red-100" />
+                   </div>
+                   <div className="grid grid-cols-1 gap-2">
+                     {activeServicesArr.length > 0 ? activeServicesArr.map((service, i) => (
+                       <div key={i} className="flex justify-between items-center p-4 rounded-2xl bg-white dark:bg-white/5 shadow-sm border border-red-50 dark:border-red-900/10">
+                         <div className="flex flex-col">
+                           <span className="text-sm font-bold text-slate-800 dark:text-white">{service.name}</span>
+                           {service.description && <span className="text-[10px] text-slate-400 line-clamp-1">{service.description}</span>}
+                         </div>
+                         <div className="flex items-center gap-2">
+                           <span className="text-sm font-black text-red-600">{service.price}</span>
+                           <div className="w-6 h-6 rounded-full bg-red-50 dark:bg-red-900/20 flex items-center justify-center">
+                             <Plus className="w-3 h-3 text-red-600" />
+                           </div>
+                         </div>
+                       </div>
+                     )) : (
+                       <p className="text-center text-xs opacity-20 italic py-10">Adicione seus pratos no painel</p>
+                     )}
+                   </div>
+                </div>
+
+                {/* Detalhes Comida */}
+                <div className="w-full space-y-3 mb-10">
+                  {data.address && (
+                    <div className="flex flex-col items-center p-6 rounded-[2.5rem] bg-orange-50 dark:bg-orange-950/10 border-2 border-dashed border-orange-200 dark:border-orange-900/30 text-center">
+                      <MapPin className="w-6 h-6 text-red-600 mb-2" />
+                      <span className="text-[9px] font-black uppercase tracking-widest text-red-600/50 mb-1">Onde nos Encontrar</span>
+                      <p className="text-xs font-bold text-slate-800 dark:text-orange-50 leading-relaxed">{data.address}</p>
+                    </div>
+                  )}
+
+                  <div className="grid grid-cols-2 gap-3">
+                    {data.service_area && (
+                      <div className="p-5 rounded-[2rem] bg-white dark:bg-slate-900 border border-red-50 dark:border-red-900/20 text-center">
+                        <Globe className="w-5 h-5 text-red-600 mx-auto mb-2" />
+                        <span className="text-[8px] font-black uppercase text-slate-400 block mb-1">Entregas em</span>
+                        <p className="text-[10px] font-black text-red-600 uppercase">{data.service_area}</p>
+                      </div>
+                    )}
+                    {data.business_hours && Object.values(data.business_hours).some(v => v) && (
+                      <div className="p-5 rounded-[2rem] bg-white dark:bg-slate-900 border border-red-50 dark:border-red-900/20 text-center">
+                        <Clock className="w-5 h-5 text-red-600 mx-auto mb-2" />
+                        <span className="text-[8px] font-black uppercase text-slate-400 block mb-1">Estamos</span>
+                        <p className="text-[10px] font-black text-red-600 uppercase">Abertos Hoje</p>
+                      </div>
+                    )}
+                  </div>
+                  
+                  {data.business_hours && Object.values(data.business_hours).some(v => v) && (
+                    <div className="p-6 rounded-[2rem] bg-red-600 text-white">
+                      <p className="text-[10px] font-black uppercase tracking-widest mb-4 opacity-60">Horário de Cozinha</p>
+                      <div className="space-y-2">
+                        {['Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado', 'Dom'].map((day) => {
+                          const hours = data.business_hours?.[day];
+                          if (!hours) return null;
+                          return (
+                            <div key={day} className="flex justify-between text-[11px] font-bold italic">
+                              <span className="opacity-60">{day}</span>
+                              <span className="tracking-tighter">{hours}</span>
+                            </div>
+                          );
+                        })}
+                      </div>
+                    </div>
+                  )}
+                </div>
+
+                {/* Redes Comida */}
+                <div className="flex justify-center gap-4 mb-4">
+                  {validSocialLinks.map((social) => {
+                    const Icon = social.icon;
+                    return (
+                      <a 
+                        key={social.id}
+                        href={social.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="w-10 h-10 rounded-full bg-slate-900 text-white flex items-center justify-center hover:scale-110 transition-transform"
+                        onClick={() => handleTrackClick(social.trackType as any)}
+                      >
+                        <Icon className="w-4 h-4" />
+                      </a>
+                    );
+                  })}
+                </div>
+
+                <div className="mt-auto flex flex-col items-center gap-1 opacity-20 mb-6">
+                   <span className="text-[9px] font-black tracking-[0.3em]">KONNEXY&trade; FOOD</span>
+                </div>
+
+                {/* QR Signature PRO */}
+                {isPro && (data.username || data.id) && (
+                  <div className="flex flex-col items-center mb-10 w-full">
+                    <AnimatedQR
+                      url={`${process.env.NEXT_PUBLIC_APP_URL || 'https://konnexy.com.br'}/u/${data.username || data.id}`}
+                      photoUrl={data.photo_url || undefined}
+                      accentColor="#ef4444"
+                      size={100}
+                      active={isPro}
+                    />
+                  </div>
+                )}
+              </div>
+            ) : isTech ? (
+              <div className="relative flex flex-col items-center w-full min-h-[600px] z-10 px-6 py-10 overflow-y-auto scroll-hide">
+                  {/* Tech Aesthetics - Digital Grid Background simulated via patterns */}
+                  <div className="w-full flex justify-between items-start mb-10 pt-4">
+                     <div className="flex flex-col">
+                       <div className="w-10 h-10 rounded-xl bg-blue-500/10 flex items-center justify-center mb-4 border border-blue-500/20">
+                         <Terminal className="w-5 h-5 text-blue-400" />
+                       </div>
+                       <h1 className="text-2xl font-bold text-white tracking-tighter leading-none">
+                         {data.name || 'Tech Expert'}
+                       </h1>
+                       <p className="text-[10px] font-black uppercase tracking-[0.2em] text-blue-500 mt-2">
+                          {data.expert_area || 'Soluções Digitais'}
+                       </p>
+                     </div>
+                     <div className="relative w-24 h-24 rounded-2xl border-2 border-blue-500/50 p-1 bg-blue-500/5 overflow-hidden group/photo">
+                        <div className="absolute inset-0 bg-blue-500/10 opacity-0 group-hover/photo:opacity-100 transition-opacity" />
+                        <div className="w-full h-full rounded-xl overflow-hidden relative">
+                           {data.photo_url ? (
+                             <Image
+                               src={data.photo_url}
+                               alt={data.name || 'Tech'}
+                               fill
+                               className="object-cover"
+                               unoptimized
+                             />
+                           ) : (
+                             <div className="w-full h-full bg-slate-900 flex items-center justify-center">
+                               <Cpu className="w-8 h-8 text-blue-500/40" />
+                             </div>
+                           )}
+                        </div>
+                     </div>
+                  </div>
+
+                  {/* Tech CTA */}
+                  <Button 
+                    asChild 
+                    className="w-full h-16 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-black text-sm tracking-widest uppercase mb-10 shadow-[0_20px_40px_rgba(37,99,235,0.3)] transition-all active:scale-95"
+                    onClick={() => handleTrackClick('click_whatsapp')}
+                  >
+                    <a href={whatsappLink} target="_blank" rel="noopener noreferrer">
+                       <Code2 className="w-4 h-4 mr-2" />
+                       {data.cta_text || 'Solicitar Orçamento'}
+                    </a>
+                  </Button>
+
+                  {/* Tech Stack (Services) */}
+                  <div className="w-full mb-10">
+                     <div className="flex items-center gap-3 mb-6">
+                       <span className="text-[10px] font-black uppercase tracking-[0.3em] text-blue-400">Stack de Especialidades</span>
+                       <div className="h-[1px] flex-1 bg-blue-500/10" />
+                     </div>
+                     <div className="grid grid-cols-1 gap-4">
+                       {activeServicesArr.length > 0 ? activeServicesArr.map((service, i) => (
+                         <div key={i} className="group/svc flex flex-col gap-1.5 p-5 rounded-2xl bg-white/5 border border-white/5 hover:border-blue-500/30 transition-all backdrop-blur-md relative overflow-hidden">
+                           <div className="absolute top-0 right-0 w-24 h-24 bg-blue-500/5 blur-2xl rounded-full -mr-8 -mt-8 pointer-events-none" />
+                           <div className="flex justify-between items-center relative z-10 w-full">
+                             <div className="flex flex-col">
+                               <span className="text-xs font-bold text-white uppercase tracking-tight">{service.name}</span>
+                               {service.price && <span className="text-[9px] font-black text-blue-400 mt-2 uppercase tracking-[0.1em]">{service.price}</span>}
+                             </div>
+                             <div className="w-8 h-8 rounded-lg bg-blue-500/10 flex items-center justify-center opacity-0 group-hover/svc:opacity-100 transition-all">
+                               <ChevronRight className="w-4 h-4 text-blue-400" />
+                             </div>
+                           </div>
+                           {service.description && (
+                             <p className="text-[10px] text-slate-400 leading-relaxed opacity-60 relative z-10">{service.description}</p>
+                           )}
+                         </div>
+                       )) : (
+                         <p className="text-center text-xs opacity-20 italic py-10">Serviços não configurados</p>
+                       )}
+                     </div>
+                  </div>
+
+                  {/* Tech Details & Location */}
+                  <div className="w-full space-y-4 mb-8">
+                     {(data.address || data.city) && (
+                       <div className="p-5 rounded-2xl bg-[#0f172a] border border-blue-500/20 text-white flex items-start gap-4">
+                         <MapPin className="w-5 h-5 text-blue-400 mt-1 shrink-0" />
+                         <div className="flex flex-col">
+                           <span className="text-[10px] font-black uppercase text-blue-500/60 mb-1 tracking-widest">Base de Operações</span>
+                           <p className="text-xs font-bold text-slate-300 leading-relaxed">{data.address} {data.city ? `- ${data.city}` : ''}</p>
+                         </div>
+                       </div>
+                     )}
+
+                     {data.business_hours && Object.values(data.business_hours).some(v => v) && (
+                       <div className="p-5 rounded-2xl bg-[#0f172a] border border-blue-500/20 text-white">
+                         <div className="flex items-center gap-3 mb-4">
+                           <Clock className="w-4 h-4 text-blue-400" />
+                           <span className="text-[10px] font-black uppercase text-blue-500 tracking-[0.2em]">Horários de Suporte</span>
+                         </div>
+                         <div className="grid grid-cols-1 gap-2">
+                           {['Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado', 'Dom'].map((day) => {
+                             const hours = data.business_hours?.[day];
+                             if (!hours) return null;
+                             return (
+                               <div key={day} className="flex justify-between items-center p-2 rounded-lg hover:bg-white/5 transition-colors">
+                                 <span className="text-[10px] font-bold text-slate-500 uppercase">{day}</span>
+                                 <span className="text-[10px] font-black text-blue-400">{hours}</span>
+                               </div>
+                             );
+                           })}
+                         </div>
+                       </div>
+                     )}
+                   </div>
+
+                   {/* Tech Social */}
+                   <div className="flex justify-center gap-4 w-full mb-10">
+                     {validSocialLinks.map((social) => {
+                       const Icon = social.icon;
+                       return (
+                         <a 
+                           key={social.id}
+                           href={social.url}
+                           target="_blank"
+                           rel="noopener noreferrer"
+                           className="w-12 h-12 rounded-xl bg-blue-500/5 border border-blue-500/20 flex items-center justify-center text-blue-400 hover:bg-blue-500/20 hover:scale-110 transition-all"
+                           onClick={() => handleTrackClick(social.trackType as any)}
+                         >
+                           <Icon className="w-5 h-5" />
+                         </a>
+                       );
+                     })}
+                   </div>
+
+                  {/* QR Signature PRO */}
+                  {isPro && (data.username || data.id) && (
+                    <div className="bg-slate-900/50 p-4 rounded-3xl border border-blue-500/20 mb-10 backdrop-blur-xl">
+                      <AnimatedQR
+                        url={`${process.env.NEXT_PUBLIC_APP_URL || 'https://konnexy.com.br'}/u/${data.username || data.id}`}
+                        photoUrl={data.photo_url || undefined}
+                        accentColor="#3b82f6"
+                        size={120}
+                        active={isPro}
+                      />
+                    </div>
+                  )}
+
+                  {/* Tech Footer */}
+                  <div className="mt-auto opacity-30 flex items-center gap-2">
+                     <span className="text-[7px] font-black uppercase tracking-[0.5em] text-blue-400">KONNEXY&trade; DIGITAL SOLUTIONS</span>
+                  </div>
+               </div>
+            ) : isRealEstate ? (
+              <div className="relative flex flex-col items-center w-full min-h-[600px] z-10 px-6 py-10 overflow-y-auto scroll-hide">
+                  {/* Real Estate Theme - Luxurious Gold & Emerald Style */}
+                  <div className="w-full flex flex-col items-center mb-10 pt-4 text-center">
+                     <div className="relative w-32 h-32 rounded-full border-4 border-emerald-500/30 p-1.5 mb-6 shadow-2xl">
+                        <div className="w-full h-full rounded-full overflow-hidden border-2 border-emerald-500/20">
+                           {data.photo_url ? (
+                             <Image src={data.photo_url} alt={data.name || 'Imóveis'} fill className="object-cover" unoptimized />
+                           ) : (
+                             <div className="w-full h-full bg-slate-900 flex items-center justify-center">
+                               <User className="w-10 h-10 text-emerald-500/30" />
+                             </div>
+                           )}
+                        </div>
+                        <div className="absolute -bottom-2 right-2 w-10 h-10 rounded-full bg-emerald-600 border-4 border-slate-950 flex items-center justify-center shadow-xl">
+                           <Home className="w-4 h-4 text-white" />
+                        </div>
+                     </div>
+                     <h1 className="text-2xl font-bold text-white tracking-tight leading-none mb-3">
+                       {data.name || 'Consultor Imobiliário'}
+                     </h1>
+                     <div className="px-4 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/20">
+                       <span className="text-[9px] font-black uppercase tracking-[0.2em] text-emerald-500">
+                          {data.expert_area || 'Especialista em Imóveis'}
+                       </span>
+                     </div>
+                  </div>
+
+                  {/* Real Estate CTA */}
+                  <Button 
+                    asChild 
+                    className="w-full h-16 rounded-[1.25rem] bg-emerald-600 hover:bg-emerald-500 text-white font-black text-sm tracking-[0.1em] uppercase mb-10 shadow-[0_20px_35px_rgba(16,185,129,0.3)] transition-all active:scale-95"
+                    onClick={() => handleTrackClick('click_whatsapp')}
+                  >
+                    <a href={whatsappLink} target="_blank" rel="noopener noreferrer">
+                       <Building2 className="w-4 h-4 mr-2" />
+                       {data.cta_text || 'Encontrar Imóvel'}
+                    </a>
+                  </Button>
+
+                  {/* Properties / Services */}
+                  <div className="w-full mb-10">
+                     <div className="flex items-center gap-3 mb-6">
+                       <span className="text-[10px] font-black uppercase tracking-[0.3em] text-emerald-500">Portfólio de Atuação</span>
+                       <div className="h-[1px] flex-1 bg-emerald-500/10" />
+                     </div>
+                     <div className="grid grid-cols-1 gap-4">
+                       {activeServicesArr.length > 0 ? activeServicesArr.map((service, i) => (
+                         <div key={i} className="group/svc flex flex-col gap-1.5 p-6 rounded-3xl bg-white/5 border border-white/5 hover:border-emerald-500/30 transition-all relative overflow-hidden">
+                           <div className="flex justify-between items-start relative z-10 w-full">
+                             <div className="flex flex-col gap-1">
+                               <span className="text-xs font-bold text-white uppercase tracking-tight">{service.name}</span>
+                               {service.price && <span className="text-[10px] font-black text-emerald-500 mt-1">{service.price}</span>}
+                             </div>
+                             <Gem className="w-4 h-4 text-emerald-500 opacity-30 group-hover/svc:opacity-100 transition-opacity" />
+                           </div>
+                           {service.description && (
+                             <p className="text-[10px] text-slate-400 leading-relaxed opacity-60 mt-2">{service.description}</p>
+                           )}
+                         </div>
+                       )) : (
+                         <p className="text-center text-xs opacity-20 italic py-10">Especialidades não informadas</p>
+                       )}
+                     </div>
+                  </div>
+
+                  {/* Real Estate Contact & Location */}
+                  <div className="w-full space-y-4 mb-8">
+                     {(data.address || data.city) && (
+                       <div className="p-6 rounded-3xl bg-white dark:bg-slate-900 border border-emerald-100 dark:border-emerald-900/30 flex items-start gap-4">
+                         <MapPin className="w-6 h-6 text-emerald-500 mt-1 shrink-0" />
+                         <div className="flex flex-col">
+                           <span className="text-[10px] font-black uppercase text-emerald-600/60 mb-1 tracking-widest">Escritório</span>
+                           <p className="text-xs font-bold text-slate-700 dark:text-emerald-50 leading-relaxed">{data.address} {data.city ? `- ${data.city}` : ''}</p>
+                         </div>
+                       </div>
+                     )}
+
+                     {data.business_hours && Object.values(data.business_hours).some(v => v) && (
+                       <div className="p-6 rounded-3xl bg-white dark:bg-slate-900 border border-emerald-100 dark:border-emerald-900/30">
+                         <div className="flex items-center gap-3 mb-4">
+                           <Clock className="w-5 h-5 text-emerald-500" />
+                           <span className="text-[10px] font-black uppercase text-emerald-700 dark:text-emerald-500 tracking-[0.2em]">Horário Comercial</span>
+                         </div>
+                         <div className="grid grid-cols-1 gap-2">
+                           {['Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado', 'Dom'].map((day) => {
+                             const hours = data.business_hours?.[day];
+                             if (!hours) return null;
+                             return (
+                               <div key={day} className="flex justify-between items-center py-2 border-b border-emerald-50 dark:border-emerald-900/20 last:border-0">
+                                 <span className="text-[10px] font-bold text-slate-500 uppercase">{day}</span>
+                                 <span className="text-[10px] font-black text-emerald-600 dark:text-emerald-400">{hours}</span>
+                               </div>
+                             );
+                           })}
+                         </div>
+                       </div>
+                     )}
+                   </div>
+
+                   {/* Real Estate Social */}
+                   <div className="flex justify-center gap-4 w-full mb-10">
+                     {validSocialLinks.map((social) => {
+                       const Icon = social.icon;
+                       return (
+                         <a 
+                           key={social.id}
+                           href={social.url}
+                           target="_blank"
+                           rel="noopener noreferrer"
+                           className="w-12 h-12 rounded-full bg-emerald-50 dark:bg-emerald-900/20 flex items-center justify-center text-emerald-600 dark:text-emerald-400 hover:bg-emerald-100 dark:hover:bg-emerald-900/40 hover:scale-110 transition-all border border-emerald-100 dark:border-emerald-800/50"
+                           onClick={() => handleTrackClick(social.trackType as any)}
+                         >
+                           <Icon className="w-5 h-5" />
+                         </a>
+                       );
+                     })}
+                   </div>
+                  <div className="mt-auto pt-8 flex flex-col items-center gap-4">
+                     {isPro && (data.username || data.id) && (
+                       <div className="bg-white p-3 rounded-2xl shadow-2xl rotate-3">
+                         <AnimatedQR
+                           url={`${process.env.NEXT_PUBLIC_APP_URL || 'https://konnexy.com.br'}/u/${data.username || data.id}`}
+                           photoUrl={data.photo_url || undefined}
+                           accentColor="#10b981"
+                           size={80}
+                           active={isPro}
+                         />
+                       </div>
+                     )}
+                     <span className="text-[7px] font-bold uppercase tracking-[0.5em] text-emerald-500/40">Luxury Real Estate Signature</span>
+                  </div>
+               </div>
+            ) : isDriver ? (
+               <div className="relative flex flex-col items-center w-full min-h-[600px] z-10 px-6 py-10 overflow-y-auto scroll-hide">
+                  {/* Driver/Delivery Aesthetics - Mobility and Speed */}
+                  <div className="w-full flex justify-between items-center mb-10 pt-4">
+                     <div className="flex flex-col">
+                       <h1 className="text-2xl font-black text-white uppercase italic tracking-tighter leading-none mb-1">
+                         {data.name || 'Professional Driver'}
+                       </h1>
+                       <div className="flex items-center gap-2">
+                         <div className="w-2 h-2 rounded-full bg-orange-500 animate-pulse" />
+                         <span className="text-[9px] font-black uppercase tracking-[0.2em] text-orange-500">
+                           {data.expert_area || 'Transporte & Delivery'}
+                         </span>
+                       </div>
+                     </div>
+                     <div className="relative w-20 h-20 rounded-full border-4 border-orange-500 overflow-hidden shadow-[0_0_20px_rgba(249,115,22,0.3)]">
+                        {data.photo_url ? (
+                          <Image src={data.photo_url} alt={data.name || 'Driver'} fill className="object-cover" unoptimized />
+                        ) : (
+                          <div className="w-full h-full bg-slate-900 flex items-center justify-center">
+                            <Car className="w-8 h-8 text-orange-500/50" />
+                          </div>
+                        )}
+                     </div>
+                  </div>
+
+                  {/* Driver CTA */}
+                  <Button 
+                    asChild 
+                    className="w-full h-16 rounded-2xl bg-orange-500 hover:bg-orange-400 text-slate-950 font-black text-sm tracking-widest uppercase mb-10 shadow-2xl transition-all active:scale-95 group"
+                    onClick={() => handleTrackClick('click_whatsapp')}
+                  >
+                    <a href={whatsappLink} target="_blank" rel="noopener noreferrer">
+                       <Navigation className="w-4 h-4 mr-2 group-hover:animate-bounce" />
+                       {data.cta_text || 'Chamar Agora'}
+                    </a>
+                  </Button>
+
+                  {/* Driver Services */}
+                  <div className="w-full mb-10">
+                    <p className="text-[10px] font-black uppercase tracking-[0.3em] text-slate-500 mb-6 border-l-4 border-orange-500 pl-3">Serviços e Rotas</p>
+                    <div className="grid grid-cols-1 gap-3">
+                       {activeServicesArr.length > 0 ? activeServicesArr.map((service, i) => (
+                         <div key={i} className="flex items-center gap-4 p-4 rounded-2xl bg-white/5 border border-white/5 hover:bg-white/10 transition-colors">
+                           <div className="w-10 h-10 rounded-xl bg-orange-500/10 flex items-center justify-center">
+                              <Package className="w-5 h-5 text-orange-500" />
+                           </div>
+                           <div className="flex flex-col">
+                             <span className="text-xs font-bold text-white uppercase">{service.name}</span>
+                             {service.price && <span className="text-[9px] font-black text-orange-500">{service.price}</span>}
+                           </div>
+                         </div>
+                       )) : (
+                         <p className="text-center text-xs opacity-20 italic py-10">Serviços não informados</p>
+                       )}
+                    </div>
+                  </div>
+
+                  {/* Footer Driver */}
+                  <div className="mt-auto flex items-center gap-3 opacity-30">
+                     <span className="text-[8px] font-black uppercase tracking-[0.5em]">Fast Route Protocol &trade;</span>
+                  </div>
+               </div>
+            ) : isPetshop ? (
+               <div className="relative flex flex-col items-center w-full min-h-[600px] z-10 px-6 py-10 overflow-y-auto scroll-hide">
+                  {/* Petshop Aesthetics - Playful and Friendly */}
+                  <div className="w-full flex items-center gap-6 mb-10 pt-4">
+                     <div className="relative w-28 h-28 shrink-0">
+                        <div className="absolute inset-0 bg-purple-500/20 rounded-[2.5rem] rotate-6" />
+                        <div className="absolute inset-0 bg-mint-500/20 rounded-[2.5rem] -rotate-3" />
+                        <div className="relative w-full h-full rounded-[2rem] overflow-hidden border-4 border-white dark:border-slate-800 shadow-xl">
+                           {data.photo_url ? (
+                             <Image src={data.photo_url} alt={data.name || 'Petshop'} fill className="object-cover" unoptimized />
+                           ) : (
+                             <div className="w-full h-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center">
+                               <PawPrint className="w-10 h-10 text-purple-400" />
+                             </div>
+                           )}
+                        </div>
+                     </div>
+                     <div className="flex flex-col">
+                       <h1 className="text-2xl font-black text-purple-600 dark:text-purple-400 leading-none mb-2">
+                         {data.name || 'Pet Care'}
+                       </h1>
+                       <span className="text-[10px] font-black uppercase tracking-widest text-slate-500">
+                          {data.expert_area || 'Estética e Saúde Animal'}
+                       </span>
+                     </div>
+                  </div>
+
+                  {/* Petshop CTA */}
+                  <Button 
+                    asChild 
+                    className="w-full h-16 rounded-[2rem] bg-purple-500 hover:bg-purple-600 text-white font-black text-sm tracking-widest uppercase mb-10 shadow-xl transition-all"
+                    onClick={() => handleTrackClick('click_whatsapp')}
+                  >
+                    <a href={whatsappLink} target="_blank" rel="noopener noreferrer">
+                       <MessageCircle className="w-4 h-4 mr-2" />
+                       {data.cta_text || 'Agendar Banho & Tosa'}
+                    </a>
+                  </Button>
+
+                  {/* Pet Services - Changed to List format similar to barbearia */}
+                  <div className="w-full mb-8">
+                     <div className="flex justify-center gap-3 mb-6 items-center">
+                        <div className="h-[1px] flex-1 bg-purple-500/20" />
+                        <PawPrint className="w-4 h-4 text-purple-500/40" />
+                        <span className="text-[10px] font-black text-purple-600 dark:text-purple-400 uppercase tracking-widest">Nossos Serviços</span>
+                        <PawPrint className="w-4 h-4 text-purple-500/40" />
+                        <div className="h-[1px] flex-1 bg-purple-500/20" />
+                     </div>
+                     <div className="bg-white dark:bg-slate-800 rounded-3xl border border-purple-100 dark:border-purple-900/30 p-2 shadow-xl">
+                       {activeServicesArr.length > 0 ? activeServicesArr.map((service, i) => (
+                         <div key={i} className="flex justify-between items-center p-4 border-b border-purple-50 dark:border-purple-900/20 last:border-0 hover:bg-purple-50/50 dark:hover:bg-purple-900/10 transition-colors rounded-2xl">
+                           <div className="flex flex-col">
+                             <div className="flex items-center gap-2">
+                               <Heart className="w-4 h-4 text-purple-400" />
+                               <span className="text-sm font-bold text-slate-800 dark:text-white uppercase tracking-tight">{service.name}</span>
+                             </div>
+                             {service.description && (
+                               <span className="text-[10px] text-slate-500 dark:text-slate-400 mt-1 line-clamp-1 max-w-[200px] ml-6">{service.description}</span>
+                             )}
+                           </div>
+                           {service.price && (
+                             <div className="flex items-center gap-2 shrink-0">
+                               <div className="w-4 h-[1px] bg-purple-200 dark:bg-purple-800 hidden sm:block" />
+                               <span className="text-purple-600 dark:text-purple-400 font-black">{service.price}</span>
+                             </div>
+                           )}
+                         </div>
+                       )) : (
+                         <p className="text-center text-xs text-slate-400 italic py-8">Nenhum serviço cadastrado.</p>
+                       )}
+                     </div>
+                  </div>
+
+                  {/* Petshop Contact & Details */}
+                  <div className="w-full space-y-4 mb-8">
+                     {(data.address || data.city) && (
+                       <div className="p-6 rounded-3xl bg-purple-50 dark:bg-purple-900/10 border border-purple-100 dark:border-purple-900/30 flex items-start gap-4">
+                         <div className="w-10 h-10 rounded-full bg-purple-100 dark:bg-purple-900/30 flex items-center justify-center shrink-0">
+                           <MapPin className="w-5 h-5 text-purple-500" />
+                         </div>
+                         <div className="flex flex-col pt-1">
+                           <span className="text-[10px] font-black uppercase text-purple-600/60 mb-1 tracking-widest">Onde Estamos</span>
+                           <p className="text-xs font-bold text-slate-700 dark:text-purple-50 leading-relaxed">{data.address} {data.city ? `- ${data.city}` : ''}</p>
+                         </div>
+                       </div>
+                     )}
+
+                     {data.business_hours && Object.values(data.business_hours).some(v => v) && (
+                       <div className="p-6 rounded-3xl bg-white dark:bg-slate-800 border border-purple-100 dark:border-purple-900/30 shadow-sm">
+                         <div className="flex items-center gap-3 mb-4">
+                           <Clock className="w-5 h-5 text-purple-500" />
+                           <span className="text-[10px] font-black uppercase text-purple-700 dark:text-purple-400 tracking-[0.2em]">Horário de Funcionamento</span>
+                         </div>
+                         <div className="grid grid-cols-1 gap-2">
+                           {['Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado', 'Dom'].map((day) => {
+                             const hours = data.business_hours?.[day];
+                             if (!hours) return null;
+                             return (
+                               <div key={day} className="flex justify-between items-center py-2 border-b border-purple-50 dark:border-purple-900/20 last:border-0">
+                                 <span className="text-[10px] font-bold text-slate-500 uppercase">{day}</span>
+                                 <span className="text-[10px] font-black text-purple-600 dark:text-purple-400">{hours}</span>
+                               </div>
+                             );
+                           })}
+                         </div>
+                       </div>
+                     )}
+                   </div>
+
+                   {/* Petshop Social */}
+                   <div className="flex justify-center gap-4 w-full mb-10">
+                     {validSocialLinks.map((social) => {
+                       const Icon = social.icon;
+                       return (
+                         <a 
+                           key={social.id}
+                           href={social.url}
+                           target="_blank"
+                           rel="noopener noreferrer"
+                           className="w-12 h-12 rounded-2xl bg-white dark:bg-slate-800 shadow-lg flex items-center justify-center text-purple-500 hover:bg-purple-500 hover:text-white hover:-translate-y-1 transition-all"
+                           onClick={() => handleTrackClick(social.trackType as any)}
+                         >
+                           <Icon className="w-5 h-5" />
+                         </a>
+                       );
+                     })}
+                   </div>
+
+                  <div className="mt-auto opacity-30">
+                     <span className="text-[7px] font-black uppercase tracking-[0.4em] text-purple-600 dark:text-purple-400">PetCare Management Signature</span>
+                  </div>
+               </div>
+            ) : isService ? (
+              <div className="relative flex flex-col items-center w-full min-h-[600px] z-10 px-6 py-10 overflow-y-auto scroll-hide">
+                {/* Header Serviços / Manutenção - INDUSTRIAL REVAMPED */}
+                <div className="w-full mb-8 p-6 rounded-[2.5rem] bg-slate-900 shadow-2xl relative overflow-hidden group">
+                  <div className="absolute top-0 right-0 p-4 opacity-10 group-hover:rotate-12 transition-transform duration-500 pointer-events-none">
+                    <Construction className="w-24 h-24 text-white" />
+                  </div>
+                  <div className="absolute -bottom-10 -left-10 w-40 h-40 bg-[#f59e0b] opacity-5 rounded-full blur-3xl" />
+                  
+                  <div className="relative z-10 flex flex-col items-center text-center">
+                    <div className="relative w-28 h-28 rounded-3xl border-2 border-[#f59e0b]/50 overflow-hidden mb-6 p-1.5 bg-slate-800 rotate-3 transition-transform group-hover:rotate-0">
+                      <div className="w-full h-full rounded-2xl overflow-hidden relative">
+                        {data.photo_url ? (
+                          <Image
+                            src={data.photo_url}
+                            alt={data.name || 'Serviços'}
+                            fill
+                            className="object-cover -rotate-3 scale-110 group-hover:rotate-0 transition-transform"
+                            unoptimized
+                          />
+                        ) : (
+                          <div className="w-full h-full bg-slate-800 flex items-center justify-center">
+                            <Settings className="w-10 h-10 text-[#f59e0b]" />
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                    <h1 className="text-2xl font-black text-white uppercase tracking-tighter leading-none mb-2">
+                      {data.name || 'Nome da Empresa'}
+                    </h1>
+                    <div className="px-3 py-1 bg-[#f59e0b] rounded-lg inline-block">
+                      <p className="text-[9px] font-black text-slate-900 uppercase tracking-[0.2em]">
+                        {data.tagline || 'Excelência Industrial'}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Trust Badges / Stats - UP FRONT */}
+                {(data.expert_area || data.founded_year) && (
+                  <div className="grid grid-cols-2 gap-3 w-full mb-6">
+                    {data.expert_area && (
+                      <div className="p-4 rounded-2xl bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 flex flex-col items-center text-center">
+                        <div className="w-10 h-10 rounded-xl bg-[#f59e0b]/10 flex items-center justify-center mb-2">
+                          <Award className="w-5 h-5 text-[#f59e0b]" />
+                        </div>
+                        <span className="text-[8px] font-black uppercase text-slate-400 mb-1">Especialidade</span>
+                        <p className="text-[10px] font-black text-slate-800 dark:text-white uppercase truncate w-full">{data.expert_area}</p>
+                      </div>
+                    )}
+                    {data.founded_year && (
+                      <div className="p-4 rounded-2xl bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 flex flex-col items-center text-center">
+                        <div className="w-10 h-10 rounded-xl bg-[#f59e0b]/10 flex items-center justify-center mb-2">
+                          <History className="w-5 h-5 text-[#f59e0b]" />
+                        </div>
+                        <span className="text-[8px] font-black uppercase text-slate-400 mb-1">No Mercado</span>
+                        <p className="text-[10px] font-black text-slate-800 dark:text-white uppercase truncate w-full">Desde {data.founded_year}</p>
+                      </div>
+                    )}
+                  </div>
+                )}
+
+                {/* CTA Serviços */}
+                <Button 
+                  asChild 
+                  className="w-full h-16 rounded-2xl bg-[#f59e0b] hover:bg-[#d97706] text-black font-black text-base shadow-[0_20px_40px_rgba(245,158,11,0.25)] mb-8 transition-all active:scale-95 border-none group"
+                >
+                  <a 
+                    href={whatsappLink} 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    onClick={() => handleTrackClick('click_whatsapp')}
+                  >
+                    <MessageCircle className="w-5 h-5 mr-2 fill-black" />
+                    {data.cta_text || 'Solicitar Orçamento'}
+                    <ChevronRight className="w-5 h-5 ml-auto group-hover:translate-x-1 transition-transform" />
+                  </a>
+                </Button>
+
+                {/* Localização e Atendimento */}
+                {(data.address || data.service_area) && (
+                  <div className="w-full mb-8 space-y-3">
+                    {data.address && (
+                      <div className="flex items-start gap-4 p-5 rounded-2xl bg-slate-900 text-white shadow-xl border border-slate-800 relative overflow-hidden">
+                        <div className="absolute top-0 right-0 w-20 h-20 bg-white/5 rounded-full -mr-10 -mt-10 blur-2xl pointer-events-none" />
+                        <div className="w-10 h-10 rounded-xl bg-[#f59e0b] flex items-center justify-center shrink-0">
+                          <MapPin className="w-5 h-5 text-black" />
+                        </div>
+                        <div className="flex flex-col">
+                          <span className="text-[9px] font-black uppercase text-[#f59e0b] mb-1">Localização</span>
+                          <p className="text-xs font-bold leading-relaxed">{data.address}</p>
+                        </div>
+                      </div>
+                    )}
+                    {data.service_area && (
+                      <div className="flex items-center gap-4 p-5 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800">
+                        <div className="w-10 h-10 rounded-xl bg-slate-100 dark:bg-slate-800 flex items-center justify-center shrink-0">
+                          <Globe className="w-5 h-5 text-[#f59e0b]" />
+                        </div>
+                        <div className="flex flex-col">
+                          <span className="text-[9px] font-black uppercase text-slate-400 mb-1">Raio de Atuação</span>
+                          <span className="text-xs font-black uppercase text-slate-800 dark:text-white">{data.service_area}</span>
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                )}
+
+                {/* Lista de Soluções */}
+                <div className="w-full mb-10">
+                  <div className="flex items-center gap-4 mb-6">
+                    <span className="text-[11px] font-black text-slate-400 uppercase tracking-[0.3em] whitespace-nowrap">Soluções Especializadas</span>
+                    <div className="h-px w-full bg-slate-200 dark:bg-slate-800" />
+                  </div>
+                    <div className="space-y-4">
+                      {activeServicesArr.length > 0 ? activeServicesArr.map((service, i) => (
+                        <div key={i} className="flex flex-col p-5 rounded-3xl bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 shadow-sm group hover:border-[#f59e0b] transition-all relative overflow-hidden">
+                          <div className="flex justify-between items-center relative z-10 w-full gap-4">
+                            <div className="flex flex-col flex-1">
+                              <span className="text-sm font-black text-slate-800 dark:text-white uppercase tracking-tighter leading-tight">{service.name}</span>
+                              {service.description && <p className="text-[11px] text-slate-500 mt-1.5 leading-relaxed opacity-80">{service.description}</p>}
+                            </div>
+                            {service.price && (
+                              <span className="text-xs font-black text-[#f59e0b] bg-[#f59e0b]/10 px-3 py-1.5 rounded-xl shrink-0 border border-[#f59e0b]/20">
+                                {service.price}
+                              </span>
+                            )}
+                          </div>
+                          <div className="absolute top-0 right-0 p-2 opacity-[0.03] pointer-events-none">
+                            <Hammer className="w-12 h-12" />
+                          </div>
+                        </div>
+                      )) : (
+                      <p className="text-center text-xs opacity-20 italic py-10">Consulte nossos serviços via WhatsApp</p>
+                    )}
+                  </div>
+                </div>
+
+                {/* Horários e Redes Sociais */}
+                <div className="w-full grid grid-cols-1 gap-6 mb-10">
+                  {data.business_hours && Object.values(data.business_hours).some(v => v) && (
+                    <div className="bg-slate-900 rounded-[2.5rem] p-8 text-white relative overflow-hidden">
+                      <div className="absolute top-0 right-0 p-6 opacity-10 pointer-events-none">
+                        <Clock className="w-16 h-16 text-white" />
+                      </div>
+                      <h3 className="text-xs font-black uppercase tracking-[0.3em] text-[#f59e0b] mb-6">Expediente</h3>
+                      <div className="space-y-3 relative z-10">
+                        {['Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado', 'Dom'].map((day) => {
+                          const hours = data.business_hours?.[day];
+                          if (!hours) return null;
+                          return (
+                            <div key={day} className="flex justify-between items-center text-[10px] font-bold uppercase tracking-widest border-b border-white/10 pb-2 last:border-0">
+                              <span className="opacity-40">{day}</span>
+                              <span className="text-[#f59e0b]">{hours}</span>
+                            </div>
+                          );
+                        })}
+                      </div>
+                    </div>
+                  )}
+
+                  <div className="flex justify-between gap-3">
+                    {validSocialLinks.map((social) => {
+                      const Icon = social.icon;
+                      return (
+                        <a
+                          key={social.id}
+                          href={social.url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="flex-1 h-14 rounded-2xl bg-white dark:bg-slate-800 border-2 border-slate-50 dark:border-slate-800 flex items-center justify-center text-slate-600 dark:text-slate-300 shadow-sm transition-all hover:scale-105 active:scale-95 group"
+                          onClick={() => handleTrackClick(social.trackType as any)}
+                        >
+                          <Icon className="w-6 h-6 group-hover:text-[#f59e0b]" />
+                        </a>
+                      );
+                    })}
+                  </div>
+                </div>
+
+                <div className="mt-auto flex flex-col items-center gap-4 py-8">
+                   <div className="px-4 py-2 bg-slate-100 dark:bg-slate-800 rounded-full opacity-40">
+                      <span className="text-[9px] font-black tracking-[0.4em] uppercase text-slate-600 dark:text-slate-400">KONNEXY INDUSTRIAL SYSTEM</span>
+                   </div>
+                   
+                   {/* QR Signature PRO */}
+                   {isPro && (data.username || data.id) && (
+                     <div className="bg-white dark:bg-slate-800 p-4 rounded-3xl shadow-xl border border-slate-100 dark:border-slate-800 scale-90">
+                       <AnimatedQR
+                         url={`${process.env.NEXT_PUBLIC_APP_URL || 'https://konnexy.com.br'}/u/${data.username || data.id}`}
+                         photoUrl={data.photo_url || undefined}
+                         accentColor="#f59e0b"
+                         size={120}
+                         active={isPro}
+                       />
+                     </div>
+                   )}
+                </div>
+              </div>
+            ) : isAdvogado ? (
+              <div className="relative flex flex-col items-center w-full min-h-[600px] z-10 px-6 py-10 overflow-y-auto scroll-hide">
+                 {/* Header Advogado - Sobriedade e Elegância */}
+                 <div className="w-full flex justify-between items-start mb-10 pt-4">
+                    <div className="flex flex-col">
+                      <Scale className="w-8 h-8 text-slate-400 mb-3" />
+                      <h1 className="text-2xl font-serif text-white tracking-tight leading-none">
+                        {data.name || 'Advogado(a)'}
+                      </h1>
+                      <p className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-500 mt-2">
+                         {data.expert_area || 'Consultoria Jurídica'}
+                      </p>
+                    </div>
+                    <div className="relative w-24 h-24 rounded-full border-2 border-slate-700 p-1">
+                       <div className="w-full h-full rounded-full overflow-hidden">
+                          {data.photo_url ? (
+                            <Image
+                              src={data.photo_url}
+                              alt={data.name || 'Advogado'}
+                              fill
+                              className="object-cover"
+                              unoptimized
+                            />
+                          ) : (
+                            <div className="w-full h-full bg-slate-800 flex items-center justify-center">
+                              <User className="w-8 h-8 text-slate-600" />
+                            </div>
+                          )}
+                       </div>
+                    </div>
+                 </div>
+
+                 {/* CTA Principal Advogado */}
+                 <Button 
+                   asChild 
+                   className="w-full h-16 rounded-xl bg-slate-100 hover:bg-white text-slate-900 font-bold text-sm tracking-widest uppercase mb-10 shadow-2xl transition-all active:scale-95 group/law"
+                   onClick={() => handleTrackClick('click_whatsapp')}
+                 >
+                   <a href={whatsappLink} target="_blank" rel="noopener noreferrer">
+                      <MessageCircle className="w-4 h-4 mr-2" />
+                      {data.cta_text || 'Agendar Consulta'}
+                   </a>
+                 </Button>
+
+                 {/* Especialidades Jurídicas */}
+                 <div className="w-full mb-10">
+                    <div className="flex items-center gap-3 mb-6">
+                      <span className="text-[10px] font-black uppercase tracking-[0.3em] text-slate-500">Áreas de Atuação</span>
+                      <div className="h-[1px] flex-1 bg-slate-800" />
+                    </div>
+                    <div className="grid grid-cols-1 gap-4">
+                      {activeServicesArr.length > 0 ? activeServicesArr.map((service, i) => (
+                        <div key={i} className="group/svc flex flex-col gap-1.5 p-5 rounded-2xl bg-slate-900 border border-slate-800 transition-colors hover:border-slate-600 relative overflow-hidden">
+                          <div className="flex justify-between items-center relative z-10 w-full">
+                            <div className="flex flex-col">
+                              <span className="text-xs font-bold text-white uppercase tracking-tight leading-none">{service.name}</span>
+                              {service.price && <span className="text-[9px] font-black text-slate-500 mt-2 uppercase tracking-widest">{service.price}</span>}
+                            </div>
+                            <ChevronRight className="w-4 h-4 text-slate-600 group-hover/svc:translate-x-1 transition-transform" />
+                          </div>
+                          {service.description && (
+                            <p className="text-[10px] text-slate-400 italic leading-relaxed opacity-60 relative z-10">{service.description}</p>
+                          )}
+                        </div>
+                      )) : (
+                        <p className="text-center text-xs opacity-20 italic py-10">Especialidades não informadas</p>
+                      )}
+                    </div>
+                 </div>
+
+                 {/* Informações de Contato / Localização */}
+                 <div className="w-full space-y-4 mb-10">
+                   {data.city && (
+                      <div className="flex items-center gap-3 p-4 rounded-xl bg-slate-800/50 border border-slate-700/50">
+                        <MapPin className="w-4 h-4 text-slate-400" />
+                        <span className="text-xs font-medium text-slate-300">{data.city} {data.address && `- ${data.address}`}</span>
+                      </div>
+                   )}
+                   {data.service_area && (
+                      <div className="flex items-center gap-3 p-4 rounded-xl bg-slate-800/50 border border-slate-700/50">
+                        <Globe className="w-4 h-4 text-slate-400" />
+                        <span className="text-[10px] font-black uppercase tracking-widest text-slate-400">Atendimento: {data.service_area}</span>
+                      </div>
+                   )}
+                 </div>
+
+                 {/* Business Hours Advogado */}
+                 {data.business_hours && Object.values(data.business_hours).some(v => v) && (
+                   <div className="w-full mb-10">
+                     <p className="text-[9px] font-black uppercase tracking-widest text-slate-600 mb-4 px-1">Expediente Jurídico</p>
+                     <div className="grid grid-cols-1 gap-1">
+                        {['Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado', 'Dom'].map((day) => {
+                          const hours = data.business_hours?.[day];
+                          if (!hours) return null;
+                          return (
+                            <div key={day} className="flex justify-between p-3 rounded-lg hover:bg-slate-800/30 transition-colors">
+                              <span className="text-[10px] font-bold text-slate-500 uppercase">{day}</span>
+                              <span className="text-[10px] font-bold text-white">{hours}</span>
+                            </div>
+                          );
+                        })}
+                     </div>
+                   </div>
+                 )}
+
+                 {/* Redes Sociais Advogado */}
+                 <div className="flex justify-center gap-6 w-full mb-10">
+                   {validSocialLinks.map((social) => {
+                     const Icon = social.icon;
+                     return (
+                       <a 
+                         key={social.id}
+                         href={social.url}
+                         target="_blank"
+                         rel="noopener noreferrer"
+                         className="text-slate-500 hover:text-white transition-colors"
+                         onClick={() => handleTrackClick(social.trackType as any)}
+                       >
+                         <Icon className="w-5 h-5" />
+                       </a>
+                     );
+                   })}
+                 </div>
+
+                 {/* QR Code Advogado */}
+                 {isPro && (data.username || data.id) && (
+                   <div className="flex flex-col items-center mt-4 mb-10">
+                     <AnimatedQR
+                       url={`${process.env.NEXT_PUBLIC_APP_URL || 'https://konnexy.com.br'}/u/${data.username || data.id}`}
+                       photoUrl={data.photo_url || undefined}
+                       accentColor="#94a3b8"
+                       size={100}
+                       active={isPro}
+                     />
+                   </div>
+                 )}
+
+                 {/* Footer Advogado */}
+                 <div className="mt-auto opacity-20 text-center">
+                    <p className="text-[8px] font-black uppercase tracking-[0.5em]">Advocacia de Excelência</p>
+                 </div>
+              </div>
+            ) : (
+            <>
+              {/* --- TOP SECTION (Identity) --- */}
           <div className="relative w-full p-6 pt-12 pb-8 flex flex-col items-center text-center shrink-0 z-10 transition-all">
             
             {/* Badges */}
@@ -516,33 +2327,6 @@ END:VCARD`;
                     const frame = data.avatar_frame;
 
                       switch (frame) {
-                        // ⚡ Eletricista — Anel de energia pulsante e faíscas externas
-                        case 'electrician':
-                          return (
-                            <>
-                              <div className="absolute rounded-full z-[20]" style={{
-                                inset: '-12px',
-                                border: `2px solid ${profAccent}40`,
-                                animation: 'pulse 2s ease-in-out infinite',
-                                boxShadow: `0 0 20px ${profAccent}20`,
-                              }} />
-                              {[0, 60, 120, 180, 240, 300].map((deg, i) => (
-                                <div key={i} className="absolute z-[21]"
-                                  style={{
-                                    top: '50%', left: '50%',
-                                    transform: `rotate(${deg}deg) translateX(76px) translateY(-50%)`,
-                                  }}
-                                >
-                                  <div className="w-1 h-3 rounded-full" style={{
-                                    background: `linear-gradient(to top, ${profAccent}, transparent)`,
-                                    animation: `electric-spark ${0.4 + i * 0.1}s ease-out infinite`,
-                                    animationDelay: `${i * 0.12}s`,
-                                  }} />
-                                </div>
-                              ))}
-                            </>
-                          );
-
                         // ✂️ Barbearia — Órbitas de precisão elegantes
                         case 'barber':
                           return (
@@ -570,87 +2354,6 @@ END:VCARD`;
                                 />
                               ))}
                             </>
-                          );
-
-                        // 🫧 Limpeza — Bolhas emanando das bordas
-                        case 'cleaner':
-                          return (
-                            <>
-                              {[...Array(10)].map((_, i) => (
-                                <div key={i} className="absolute rounded-full z-[20]"
-                                  style={{
-                                    width:  `${8 + (i % 3) * 4}px`,
-                                    height: `${8 + (i % 3) * 4}px`,
-                                    background: `${profAccent}20`,
-                                    border: `1px solid ${profAccent}50`,
-                                    top: `${50 + 70 * Math.sin(i * 0.6)}%`,
-                                    left: `${50 + 70 * Math.cos(i * 0.6)}%`,
-                                    animation: `bubble-rise ${3 + (i % 3)}s ease-out infinite`,
-                                    animationDelay: `${i * 0.3}s`,
-                                  }}
-                                />
-                              ))}
-                            </>
-                          );
-
-                        // ⚙️ Mecânico — Engrenagem industrial externa
-                        case 'mechanic':
-                          return (
-                            <>
-                              <div className="absolute rounded-full z-[15]" style={{
-                                inset: '-25px',
-                                border: `10px dotted ${profAccent}40`,
-                                animation: 'aura-spin 30s linear infinite',
-                                filter: 'drop-shadow(0 0 5px rgba(0,0,0,0.5))',
-                              }} />
-                              <div className="absolute rounded-full z-[16]" style={{
-                                inset: '-14px',
-                                border: `2px solid ${profAccent}60`,
-                                borderTopColor: 'transparent',
-                                borderBottomColor: 'transparent',
-                                animation: 'aura-spin 8s cubic-bezier(0.4, 0, 0.2, 1) infinite',
-                              }} />
-                            </>
-                          );
-
-                        // 💧 Encanador — Ondas de água circulares
-                        case 'plumber':
-                          return (
-                            <>
-                              {[0, 1, 2].map((i) => (
-                                <div key={i} className="absolute rounded-full z-[14]"
-                                  style={{
-                                    inset: '-12px',
-                                    border: `1.5px solid ${profAccent}`,
-                                    animation: `water-ripple 5s ease-out infinite`,
-                                    animationDelay: `${i * 1.6}s`,
-                                  }}
-                                />
-                              ))}
-                            </>
-                          );
-
-                        // ❤️ Saúde — Pulso Vital (EKG)
-                        case 'health':
-                          return (
-                            <div className="absolute rounded-full z-[20]" style={{
-                              inset: '-12px',
-                              border: `3px double ${profAccent}`,
-                              animation: 'pulse 1.5s ease-in-out infinite',
-                              boxShadow: `0 0 15px ${profAccent}40`,
-                            }} />
-                          );
-
-                        // ⚖️ Direito — Moldura de Prestígio (Pilar)
-                        case 'law':
-                          return (
-                            <div className="absolute rounded-full z-[15]" style={{
-                              inset: '-10px',
-                              border: `2px solid ${profAccent}`,
-                              padding: '2px',
-                              background: `linear-gradient(45deg, transparent, ${profAccent}40, transparent)`,
-                              boxShadow: `inset 0 0 10px ${profAccent}20`,
-                            }} />
                           );
 
                         // 💻 TI — Brackets de Scanner e Stream de Dados
@@ -689,39 +2392,72 @@ END:VCARD`;
                             </>
                           );
 
-                        // 🐾 Petshop — Ícones flutuando na aura externa
-                        case 'pet':
+                        // ✨ Beleza — Brilhos e Pétalas
+                        case 'beauty':
                           return (
                             <>
-                              {['🐾','❤️','🐾','🦴','❤️','🐶'].map((emoji, i) => (
-                                <div key={i} className="absolute z-[22] select-none pointer-events-none"
+                              <div className="absolute rounded-full z-[15]" style={{
+                                inset: '-18px',
+                                border: `2px solid ${profAccent}40`,
+                                borderLeftColor: 'transparent',
+                                borderRightColor: 'transparent',
+                                animation: 'aura-spin 8s ease-in-out infinite',
+                              }} />
+                              {[...Array(4)].map((_, i) => (
+                                <Sparkles key={i} className="absolute z-[16] opacity-60"
                                   style={{
-                                    top: '50%', left: '50%',
-                                    transform: `rotate(${i * 60}deg) translateX(78px) rotate(-${i * 60}deg)`,
-                                    fontSize: `14px`,
-                                    animation: `float-particle ${4 + i}s ease-in-out infinite`,
+                                    color: profAccent,
+                                    width: '12px', height: '12px',
+                                    top: i < 2 ? '0%' : '100%',
+                                    left: i % 2 === 0 ? '0%' : '100%',
+                                    animation: 'pulse 2s ease-in-out infinite',
                                     animationDelay: `${i * 0.5}s`,
                                   }}
-                                >
-                                  {emoji}
-                                </div>
+                                />
                               ))}
                             </>
                           );
 
-                        // 💼 Negócios — Órbita de Carreira Crescente
-                        case 'business':
+                        // 🏠 Imóveis — Moldura Estrutural
+                        case 'real_estate':
+                          return (
+                            <div className="absolute z-[15] overflow-hidden" style={{ inset: '-10px', border: `2px solid ${profAccent}40`, borderRadius: '12px' }}>
+                              <div className="absolute top-0 left-0 w-full h-[2px]" style={{ background: `linear-gradient(90deg, transparent, ${profAccent}, transparent)`, animation: 'shine 3s linear infinite' }} />
+                            </div>
+                          );
+
+                        // ⚖️ Advogado — Linhas de Equilíbrio
+                        case 'lawyer':
+                          return (
+                            <>
+                              <div className="absolute w-[120%] h-[1px] z-[15] top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 opacity-20" style={{ background: profAccent }} />
+                              <div className="absolute h-[120%] w-[1px] z-[15] top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 opacity-20" style={{ background: profAccent }} />
+                            </>
+                          );
+
+                        // 🩺 Saúde — Pulso Vital
+                        case 'health':
                           return (
                             <div className="absolute rounded-full z-[15]" style={{
-                              inset: '-12px',
-                              border: `2px solid ${profAccent}30`,
-                              borderTop: `4px solid ${profAccent}`,
-                              animation: 'aura-spin 10s cubic-bezier(0.4, 0, 0.2, 1) infinite',
+                              inset: '-20px',
+                              border: `2px solid ${profAccent}`,
+                              opacity: 0.3,
+                              animation: 'pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite',
                             }} />
                           );
 
-                      default:
-                        return null;
+                        // 🍔 Comida — Vapor/Aura Quente
+                        case 'food':
+                          return (
+                            <div className="absolute z-[15] opacity-40" style={{
+                              inset: '-15px',
+                              background: `radial-gradient(circle, ${profAccent}30 0%, transparent 70%)`,
+                              animation: 'pulse 3s ease-in-out infinite',
+                            }} />
+                          );
+
+                        default:
+                          return null;
                     }
                   };
 
@@ -915,7 +2651,7 @@ END:VCARD`;
                      )}
                   </div>
                </div>
-            </div>
+             </div>
           </div>
 
           {/* --- BOTTOM SECTION (Actions & Services) --- */}
@@ -943,7 +2679,11 @@ END:VCARD`;
                       : "bg-slate-900 hover:bg-slate-800 text-white shadow-none"
                   )}
                   style={{ 
-                    background: isPro ? 'linear-gradient(135deg, #00D4FF 0%, #2563EB 50%, #6D28D9 100%)' : undefined,
+                    background: isPro 
+                      ? (isBarbearia 
+                          ? 'linear-gradient(135deg, #d4af37 0%, #a8872d 50%, #7c621d 100%)' 
+                          : 'linear-gradient(135deg, #00D4FF 0%, #2563EB 50%, #6D28D9 100%)')
+                      : undefined,
                   }}
                   asChild
                   aria-label={isPro ? 'Falar Agora via WhatsApp' : 'Conversar via WhatsApp'}
@@ -1085,14 +2825,33 @@ END:VCARD`;
                          )}>
                           <div className={cn(
                             "w-12 h-12 rounded-xl flex items-center justify-center shrink-0 transition-transform group-hover:rotate-6",
-                            isPro ? "bg-white/10 text-konnexy-cian" : "bg-slate-100 dark:bg-slate-800 text-primary"
+                            isPro 
+                              ? (isBarbearia ? "bg-yellow-500/10 text-yellow-500" : "bg-white/10 text-konnexy-cian") 
+                              : "bg-slate-100 dark:bg-slate-800 text-primary"
                           )}>
                              <Icon className="w-6 h-6" />
                           </div>
-                          <div className="flex flex-col gap-1">
-                            <span className={cn("text-sm font-bold tracking-tight", isPro ? "text-white" : "text-slate-900 dark:text-white")}>
-                              {service.name}
-                            </span>
+                          <div className="flex flex-col flex-1 gap-1">
+                            <div className="flex justify-between items-center w-full">
+                               <span className={cn("text-sm font-bold tracking-tight", isPro ? "text-white" : "text-slate-900 dark:text-white")}>
+                                 {service.name}
+                               </span>
+                               {service.price && (
+                                 <span className={cn("text-[10px] font-black uppercase tracking-widest px-2 py-1 rounded-lg shrink-0 ml-2", isPro ? "bg-white/10 text-konnexy-cian" : "bg-slate-100 text-primary")}>
+                                   {service.price}
+                                 </span>
+                               )}
+                            </div>
+                            {service.description && (
+                              <p className={cn("text-[11px] leading-tight opacity-60 line-clamp-2", isPro ? "text-white/80" : "text-slate-500")}>
+                                {service.description}
+                              </p>
+                            )}
+                            {isPro && (
+                              <div className="flex items-center justify-end mt-1">
+                                <ChevronRight className="w-3.5 h-3.5 opacity-0 group-hover:opacity-40 transition-all -translate-x-1 group-hover:translate-x-0" />
+                              </div>
+                            )}
                           </div>
                        </motion.div>
                      );
@@ -1130,6 +2889,28 @@ END:VCARD`;
                 </div>
               </div>
             )}
+
+            {/* Business Hours (Default Layout) */}
+            {data.business_hours && Object.values(data.business_hours).some(v => v) && (
+              <div className="w-full space-y-3">
+                <div className="flex items-center gap-3 mb-2">
+                  <span className={cn("text-[10px] font-black uppercase tracking-[0.2em]", isPro ? "text-white/40" : "text-slate-400")}>Horário de Funcionamento</span>
+                  <div className={cn("h-[1px] flex-1", isPro ? "bg-white/10" : "bg-slate-200 dark:bg-slate-800")} />
+                </div>
+                <div className="grid gap-2 bg-slate-100/50 dark:bg-white/5 rounded-2xl p-4 border border-slate-200/50 dark:border-white/5">
+                  {['Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado', 'Dom'].map((day) => {
+                    const hours = data.business_hours?.[day];
+                    if (!hours) return null;
+                    return (
+                      <div key={day} className="flex items-center justify-between text-[11px] font-bold">
+                        <span className="opacity-40 uppercase tracking-widest">{day}</span>
+                        <span className={cn(isPro ? "text-white" : "text-slate-900 dark:text-white")}>{hours}</span>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+            )}
             
             {/* QR Signature PRO */}
             {isPro && (data.username || data.id) && (
@@ -1151,28 +2932,30 @@ END:VCARD`;
                  <a href="/" className={cn("inline-flex flex-col items-center gap-1.5 transition-all opacity-40 hover:opacity-100", 
                    isPro ? "text-white/60 hover:text-white" : "text-slate-400 hover:text-primary")}>
                    <span className="text-[9px] uppercase font-black tracking-[0.3em]">Powered by</span>
-                   <span className={cn("text-xs font-black tracking-tight", isPro ? "text-white" : "text-slate-900 dark:text-white")}>KONNEXY™</span>
-                 </a>
-               </div>
-            )}
-          </div>
-        </div>
-
-        {/* Pro Upsell */}
-        {!isPro && showBranding && (
-          <div className="mt-4 px-4 py-3 rounded-[1.5rem] bg-slate-900 border border-primary/20 flex flex-col sm:flex-row items-center justify-between gap-3 shadow-2xl">
-            <div className="flex items-center gap-3">
-              <div className="w-8 h-8 rounded-xl bg-primary/10 flex items-center justify-center">
-                 <Sparkles className="w-4 h-4 text-primary" />
-              </div>
-              <span className="text-[10px] font-black uppercase tracking-widest text-slate-300">Upgrade para design premium</span>
+                    <span className={cn("text-xs font-black tracking-tight", isPro ? "text-white" : "text-slate-900 dark:text-white")}>KONNEXY&trade;</span>
+                  </a>
+                </div>
+              )}
             </div>
-            <Button variant="hero" size="sm" className="h-8 px-4 text-[10px] font-black rounded-xl bg-primary text-white" asChild>
-              <a href="/pricing">Ver Pro</a>
-            </Button>
-          </div>
+          </>
         )}
-      </motion.div>
-    </TooltipProvider>
-  );
+      </div>
+
+      {/* Pro Upsell */}
+      {!isPro && showBranding && (
+        <div className="mt-4 px-4 py-3 rounded-[1.5rem] bg-slate-900 border border-primary/20 flex flex-col sm:flex-row items-center justify-between gap-3 shadow-2xl">
+          <div className="flex items-center gap-3">
+            <div className="w-8 h-8 rounded-xl bg-primary/10 flex items-center justify-center">
+              <Sparkles className="w-4 h-4 text-primary" />
+            </div>
+            <span className="text-[10px] font-black uppercase tracking-widest text-slate-300">Upgrade para design premium</span>
+          </div>
+          <Button variant="hero" size="sm" className="h-8 px-4 text-[10px] font-black rounded-xl bg-primary text-white" asChild>
+            <a href="/pricing">Ver Pro</a>
+          </Button>
+        </div>
+      )}
+    </motion.div>
+  </TooltipProvider>
+);
 }

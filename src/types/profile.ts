@@ -1,6 +1,8 @@
 export interface ServiceItem {
   name: string;
   icon?: string;
+  price?: string;
+  description?: string;
 }
 
 export interface CustomLink {
@@ -33,7 +35,7 @@ export interface Profile {
   billing_type: 'stripe' | 'manual';
   plan_expires_at: string | null;
   is_founder: boolean;
-  category: 'default' | 'barbearia';
+  category: 'default' | 'barbearia' | 'beauty' | 'health' | 'sales' | 'food' | 'service' | 'advogado' | 'tech' | 'real_estate' | 'driver' | 'petshop';
   can_customize_theme: boolean;
   role: 'user' | 'admin';
   verified: boolean;
@@ -50,6 +52,7 @@ export interface Profile {
   background_video_url: string | null;
   created_at: string;
   updated_at: string;
+  business_hours?: Record<string, string>;
 }
 
 export interface ProfileFormData {
@@ -80,7 +83,7 @@ export interface ProfileFormData {
   billing_type?: 'stripe' | 'manual';
   plan_expires_at?: string | null;
   is_founder?: boolean;
-  category?: 'default' | 'barbearia';
+  category?: 'default' | 'barbearia' | 'beauty' | 'health' | 'sales' | 'food' | 'service' | 'advogado' | 'tech' | 'real_estate' | 'driver' | 'petshop';
   can_customize_theme?: boolean;
   role?: 'user' | 'admin';
   seo_title?: string | null;
@@ -89,4 +92,5 @@ export interface ProfileFormData {
   theme_style?: 'standard' | 'oled' | 'glass' | 'minimalist';
   font_family?: string;
   background_video_url?: string | null;
+  business_hours?: Record<string, string>;
 }

@@ -67,6 +67,8 @@ import {
   Shield,
   PawPrint,
   Book,
+  Clock,
+  Car
 } from 'lucide-react';
 import { 
   Popover,
@@ -93,6 +95,8 @@ export function EditorForm({ initialData, onSubmit, onChange, isPro = false, can
   const [isSaving, setIsSaving] = useState(false);
   const [uploading, setUploading] = useState(false);
   const [newService, setNewService] = useState('');
+  const [newServicePrice, setNewServicePrice] = useState('');
+  const [newServiceDescription, setNewServiceDescription] = useState('');
   const [usernameStatus, setUsernameStatus] = useState<'idle' | 'checking' | 'available' | 'taken'>('idle');
   const fileInputRef = useRef<HTMLInputElement>(null);
   const videoInputRef = useRef<HTMLInputElement>(null);
@@ -323,13 +327,20 @@ export function EditorForm({ initialData, onSubmit, onChange, isPro = false, can
   const addService = () => {
     if (!newService.trim()) return;
     const currentServices = (formData.services || []).map(s => 
-      typeof s === 'string' ? { name: s, icon: 'Sparkles' } : s
+      typeof s === 'string' ? { name: s, icon: 'Sparkles', price: '', description: '' } : s
     );
-    const updatedServices = [...currentServices, { name: newService.trim(), icon: 'Sparkles' }];
+    const updatedServices = [...currentServices, { 
+      name: newService.trim(), 
+      icon: 'Sparkles', 
+      price: newServicePrice.trim(),
+      description: newServiceDescription.trim()
+    }];
     
     if (updatedServices.length <= (isPro ? 20 : 3)) {
       handleChange('services', updatedServices);
       setNewService('');
+      setNewServicePrice('');
+      setNewServiceDescription('');
     } else {
       toast.error(isPro ? 'Máximo de 20 serviços' : 'Upgrade para Pro para adicionar mais serviços');
     }
@@ -658,17 +669,33 @@ export function EditorForm({ initialData, onSubmit, onChange, isPro = false, can
 
             <div className="space-y-3">
               <Label className="text-xs font-bold uppercase tracking-wider opacity-60">Meus Serviços ({formData.services?.length || 0}/{maxServices})</Label>
-              <div className="flex gap-2">
-                <Input
-                  value={newService}
-                  onChange={(e) => setNewService(e.target.value)}
-                  placeholder="Adicionar especialidade..."
-                  className="rounded-2xl h-12"
-                  onKeyDown={(e) => e.key === 'Enter' && (e.preventDefault(), addService())}
-                />
-                <Button type="button" size="icon" onClick={addService} className="h-12 w-12 rounded-2xl">
-                  <Plus className="w-5 h-5" />
-                </Button>
+              <div className="space-y-2">
+                <div className="grid grid-cols-[1fr_100px] gap-2">
+                  <Input
+                    value={newService}
+                    onChange={(e) => setNewService(e.target.value)}
+                    placeholder="Nome do Serviço"
+                    className="rounded-2xl h-11"
+                    onKeyDown={(e) => e.key === 'Enter' && (e.preventDefault(), addService())}
+                  />
+                  <Input
+                    value={newServicePrice}
+                    onChange={(e) => setNewServicePrice(e.target.value)}
+                    placeholder="Preço/R$"
+                    className="rounded-2xl h-11"
+                  />
+                </div>
+                <div className="flex gap-2">
+                  <Input
+                    value={newServiceDescription}
+                    onChange={(e) => setNewServiceDescription(e.target.value)}
+                    placeholder="Descrição breve (ex: Atendimento personalizado)"
+                    className="rounded-2xl h-11 flex-1"
+                  />
+                  <Button type="button" size="icon" onClick={addService} className="h-11 w-11 rounded-xl shrink-0">
+                    <Plus className="w-5 h-5" />
+                  </Button>
+                </div>
               </div>
               <div className="flex flex-col gap-2">
                 {formData.services?.map((serviceItem, i) => {
@@ -711,8 +738,12 @@ export function EditorForm({ initialData, onSubmit, onChange, isPro = false, can
                       </div>
                     )}
 
-                    <div className="flex-1">
-                      <p className="text-xs font-bold uppercase tracking-wide">{service.name}</p>
+                    <div className="flex-1 min-w-0">
+                      <p className="text-xs font-bold uppercase tracking-wide truncate">{service.name}</p>
+                      {service.description && (
+                        <p className="text-[10px] text-muted-foreground line-clamp-1">{service.description}</p>
+                      )}
+                      {service.price && <p className="text-[10px] text-primary font-black uppercase tracking-widest">{service.price}</p>}
                     </div>
 
                     <Button 
@@ -862,7 +893,7 @@ export function EditorForm({ initialData, onSubmit, onChange, isPro = false, can
           <TabsContent value="visual" className="space-y-6 mt-0">
             <div className="space-y-2">
               <Label className="flex items-center gap-2 opacity-60"><Palette className="w-4 h-4" /> Cor de Destaque</Label>
-              <div className="flex flex-wrap gap-2">
+              <div className={cn("flex flex-wrap gap-2", (formData.category === 'barbearia' && !canCustomizeTheme) && "opacity-40 pointer-events-none")}>
                 {['#3b82f6', '#25D366', '#000000', '#f43f5e', '#8b5cf6', '#f59e0b'].map((color) => (
                   <button
                     key={color}
@@ -889,7 +920,6 @@ export function EditorForm({ initialData, onSubmit, onChange, isPro = false, can
 
             <div className="h-[1px] bg-border/50 my-6" />
 
-            {/* ══ PHOTO CUSTOMIZATION ══════════════════════════════════════════════ */}
             <div className="space-y-6">
               <div className="mb-2">
                 <Label className="flex items-center gap-2 font-black uppercase tracking-widest text-[10px]">
@@ -898,182 +928,157 @@ export function EditorForm({ initialData, onSubmit, onChange, isPro = false, can
                 <p className="text-[10px] text-muted-foreground mt-0.5">Profissão, filtro e efeito de borda</p>
               </div>
 
-                {/* ── 0. PROFESSION SELECTOR (todos os usuários) ──────────────── */}
-                <div className="space-y-3">
-                  <p className="text-[9px] font-black uppercase tracking-[0.25em] text-muted-foreground">Profissão</p>
-                  <div className="grid grid-cols-4 sm:grid-cols-6 gap-2">
-                    {[
-                      { id: 'none',        label: 'Padrão',     icon: User,         color: '#64748b' },
-                      { id: 'electrician', label: 'Eletricista', icon: Zap,          color: '#fbbf24' },
-                      { id: 'barber',      label: 'Barbearia',  icon: Scissors,     color: '#d4af37' },
-                      { id: 'cleaner',     label: 'Limpeza',    icon: SparklesIcon, color: '#0ea5e9' },
-                      { id: 'mechanic',    label: 'Mecânico',   icon: Wrench,       color: '#f97316' },
-                      { id: 'plumber',     label: 'Encanador',  icon: Hammer,       color: '#2563eb' },
-                      { id: 'health',      label: 'Saúde',      icon: Stethoscope,  color: '#ef4444' },
-                      { id: 'law',         label: 'Direito',    icon: Scale,        color: '#eab308' },
-                      { id: 'tech',        label: 'TI',         icon: Cpu,          color: '#3b82f6' },
-                      { id: 'pet',         label: 'Petshop',    icon: Heart,        color: '#fb923c' },
-                      { id: 'business',    label: 'Negócios',   icon: Briefcase,    color: '#64748b' },
-                    ].map((prof) => {
-                      const isSelected = (formData.avatar_frame || 'none') === prof.id;
-                      const PIcon = prof.icon;
-                      return (
-                        <button
-                          key={prof.id}
-                          onClick={() => handleChange('avatar_frame', prof.id)}
-                          title={prof.label}
-                          className={cn(
-                            "flex flex-col items-center justify-center gap-1.5 p-2 rounded-2xl border-2 transition-all hover:border-primary/60 hover:shadow-md group",
-                            isSelected ? "border-primary bg-primary/5 shadow-md" : "border-border/50 bg-card"
-                          )}
+              <div className="space-y-3">
+                <p className="text-[9px] font-black uppercase tracking-[0.25em] text-muted-foreground">Profissão</p>
+                <div className="grid grid-cols-4 sm:grid-cols-6 gap-2">
+                  {[
+                    { id: 'none',        label: 'Padrão',     icon: User,         color: '#64748b' },
+                    { id: 'barber',      label: 'Barbearia',  icon: Scissors,     color: '#d4af37' },
+                    { id: 'tech',        label: 'TI',         icon: Cpu,          color: '#3b82f6' },
+                    { id: 'beauty',      label: 'Beleza',     icon: SparklesIcon, color: '#f472b6' },
+                    { id: 'real_estate', label: 'Imóveis',    icon: Building2,    color: '#0ea5e9' },
+                    { id: 'lawyer',      label: 'Advogado',   icon: Scale,        color: '#1e293b' },
+                    { id: 'service',     label: 'Serviços',   icon: Hammer,       color: '#f59e0b' },
+                    { id: 'sales',       label: 'Vendas',     icon: ShoppingBag,  color: '#8b5cf6' },
+                    { id: 'health',      label: 'Saúde',      icon: Stethoscope,  color: '#10b981' },
+                    { id: 'food',        label: 'Comida',     icon: Utensils,     color: '#ef4444' },
+                    { id: 'driver',      label: 'Motorista',  icon: Car,          color: '#000000' },
+                    { id: 'petshop',     label: 'Petshop',    icon: PawPrint,     color: '#f97316' },
+                  ].map((prof) => {
+                    const isSelected = (formData.avatar_frame || 'none') === prof.id;
+                    const PIcon = prof.icon;
+                    return (
+                      <button
+                        key={prof.id}
+                        onClick={() => {
+                          const updates: Partial<ProfileFormData> = { avatar_frame: prof.id };
+                          if (prof.id === 'barber') {
+                            updates.category = 'barbearia';
+                            updates.font_family = 'Sora';
+                            updates.theme_color = '#d4af37';
+                            updates.cta_text = 'Agendar Corte 💈';
+                          } else if (prof.id === 'beauty') {
+                            updates.category = 'beauty';
+                            updates.font_family = 'Playfair Display';
+                            updates.theme_color = '#f472b6';
+                            updates.cta_text = 'Agendar Horário ✨';
+                          } else if (prof.id === 'tech') {
+                            updates.category = 'tech';
+                            updates.font_family = 'JetBrains Mono';
+                            updates.theme_color = '#3b82f6';
+                            updates.cta_text = 'Quero Orçamento ⚡';
+                          } else if (prof.id === 'real_estate') {
+                            updates.category = 'real_estate';
+                            updates.font_family = 'Montserrat';
+                            updates.theme_color = '#0ea5e9';
+                            updates.cta_text = 'Consultar Imóveis 🏠';
+                          } else if (prof.id === 'lawyer') {
+                            updates.category = 'advogado';
+                            updates.font_family = 'Playfair Display';
+                            updates.theme_color = '#1e293b';
+                            updates.cta_text = 'Agendar Consulta Jurídica ⚖️';
+                          } else if (prof.id === 'service') {
+                            updates.category = 'service';
+                            updates.font_family = 'Plus Jakarta Sans';
+                            updates.theme_color = '#f59e0b';
+                            updates.cta_text = 'Solicitar Orçamento 🛠️';
+                          } else if (prof.id === 'sales') {
+                            updates.category = 'sales';
+                            updates.font_family = 'Outfit';
+                            updates.theme_color = '#8b5cf6';
+                            updates.cta_text = 'Ver Catálogo 🛍️';
+                          } else if (prof.id === 'health') {
+                            updates.category = 'health';
+                            updates.font_family = 'Inter';
+                            updates.theme_color = '#10b981';
+                            updates.cta_text = 'Agendar Consulta 🩺';
+                          } else if (prof.id === 'food') {
+                            updates.category = 'food';
+                            updates.font_family = 'Sora';
+                            updates.theme_color = '#ef4444';
+                            updates.cta_text = 'Fazer Pedido 🍔';
+                          } else if (prof.id === 'driver') {
+                            updates.category = 'driver';
+                            updates.font_family = 'Inter';
+                            updates.theme_color = '#000000';
+                            updates.cta_text = 'Solicitar Corrida 🚗';
+                          } else if (prof.id === 'petshop') {
+                            updates.category = 'petshop';
+                            updates.font_family = 'Plus Jakarta Sans';
+                            updates.theme_color = '#f97316';
+                            updates.cta_text = 'Agendar Banho & Tosa 🐾';
+                          } else {
+                            updates.category = 'default';
+                          }
+                          
+                          // Update multiple fields at once
+                          const updated = { ...formData, ...updates };
+                          setFormData(updated);
+                          onChange(updated);
+                          setIsDirty(true);
+                        }}
+                        title={prof.label}
+                        className={cn(
+                          "flex flex-col items-center justify-center gap-1.5 p-2 rounded-2xl border-2 transition-all hover:border-primary/60 hover:shadow-md group",
+                          isSelected ? "border-primary bg-primary/5 shadow-md" : "border-border/50 bg-card"
+                        )}
+                      >
+                        <div
+                          className="w-10 h-10 rounded-xl flex items-center justify-center transition-transform group-hover:scale-110"
+                          style={{
+                            background: isSelected
+                              ? `linear-gradient(135deg, ${prof.color}dd, ${prof.color}66)`
+                              : `${prof.color}18`,
+                            border: `1.5px solid ${prof.color}${isSelected ? 'cc' : '40'}`,
+                          }}
                         >
-                          <div
-                            className="w-10 h-10 rounded-xl flex items-center justify-center transition-transform group-hover:scale-110"
-                            style={{
-                              background: isSelected
-                                ? `linear-gradient(135deg, ${prof.color}dd, ${prof.color}66)`
-                                : `${prof.color}18`,
-                              border: `1.5px solid ${prof.color}${isSelected ? 'cc' : '40'}`,
+                          <PIcon
+                            className="w-5 h-5 drop-shadow"
+                            style={{ color: isSelected ? '#fff' : prof.color }}
+                          />
+                        </div>
+                        <span className={cn(
+                          "text-[8px] font-bold uppercase tracking-tight text-center leading-tight",
+                          isSelected ? "text-primary" : "text-muted-foreground"
+                        )}>
+                          {prof.label}
+                        </span>
+                      </button>
+                    )
+                  })}
+                </div>
+              </div>
+            </div>
+
+                {/* ── HORÁRIO DE ATENDIMENTO ───────────────────────────────────── */}
+                <div className="space-y-4">
+                  <div className="flex items-center justify-between">
+                    <Label className="flex items-center gap-2 font-black uppercase tracking-widest text-[10px]">
+                      <Clock className="w-4 h-4 text-primary" /> Horário de Atendimento
+                    </Label>
+                  </div>
+                  
+                  <div className="grid grid-cols-1 gap-3">
+                    {['Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado', 'Dom'].map((day) => {
+                      return (
+                        <div key={day} className="flex items-center gap-3">
+                          <span className="text-[10px] font-bold uppercase w-16 text-muted-foreground">{day}</span>
+                          <Input
+                            value={formData.business_hours?.[day] || ''}
+                            onChange={(e) => {
+                              const newHours = { ...(formData.business_hours || {}), [day]: e.target.value };
+                              handleChange('business_hours', newHours);
                             }}
-                          >
-                            <PIcon
-                              className="w-5 h-5 drop-shadow"
-                              style={{ color: isSelected ? '#fff' : prof.color }}
-                            />
-                          </div>
-                          <span className={cn(
-                            "text-[8px] font-bold uppercase tracking-tight text-center leading-tight",
-                            isSelected ? "text-primary" : "text-muted-foreground"
-                          )}>
-                            {prof.label}
-                          </span>
-                        </button>
-                      );
+                            placeholder="Ex: 09:00 - 18:00 ou Fechado"
+                            className="rounded-xl h-10 text-xs"
+                          />
+                        </div>
+                      )
                     })}
                   </div>
                 </div>
 
-              {/* PRO-only: filtro e borda */}
-              <div className={cn("space-y-7", (!isPro || !canCustomizeTheme) && "opacity-40 pointer-events-none")}>
-                {!isPro && (
-                  <div className="flex items-center gap-2 p-3 rounded-2xl bg-primary/5 border border-primary/20">
-                    <span className="text-[10px] bg-primary/10 text-primary px-2 py-1 rounded-full font-black flex-shrink-0">PRO</span>
-                    <p className="text-[10px] text-muted-foreground">{canCustomizeTheme ? 'Filtro de imagem e efeitos de borda disponíveis no plano PRO' : 'Personalização de tema desativada para este plano'}</p>
-                  </div>
-                )}
-                {isPro && !canCustomizeTheme && (
-                  <div className="flex items-center gap-2 p-3 rounded-2xl bg-amber-500/5 border border-amber-500/20">
-                    <span className="text-[10px] bg-amber-500/10 text-amber-500 px-2 py-1 rounded-full font-black flex-shrink-0">LOCKED</span>
-                    <p className="text-[10px] text-muted-foreground font-medium">Personalização bloqueada para este plano (Fundador Local)</p>
-                  </div>
-                )}
-
-                {/* ── 1. FILTER SELECTOR ───────────────────────────────────────── */}
-                <div className="space-y-3">
-                  <p className="text-[9px] font-black uppercase tracking-[0.25em] text-muted-foreground">1 — Filtro de Imagem</p>
-                  <div className="grid grid-cols-4 sm:grid-cols-8 gap-2">
-                    {[
-                      { id: 'none',     label: 'Original',  cssFilter: 'none' },
-                      { id: 'bw',       label: 'P&B',        cssFilter: 'grayscale(100%) contrast(1.1)' },
-                      { id: 'vintage',  label: 'Vintage',    cssFilter: 'sepia(55%) contrast(1.08) brightness(0.92) saturate(0.8)' },
-                      { id: 'vivid',    label: 'Vívido',     cssFilter: 'saturate(1.9) contrast(1.12) brightness(1.05)' },
-                      { id: 'golden',   label: 'Dourado',    cssFilter: 'sepia(35%) saturate(1.4) brightness(1.1) hue-rotate(-5deg)' },
-                      { id: 'cold',     label: 'Frio',       cssFilter: 'hue-rotate(195deg) saturate(1.3) brightness(1.05)' },
-                      { id: 'faded',    label: 'Desbotado',  cssFilter: 'opacity(0.85) grayscale(20%) brightness(1.1) contrast(0.9) saturate(0.75)' },
-                      { id: 'dramatic', label: 'Dramático',  cssFilter: 'contrast(1.4) brightness(0.85) saturate(1.2)' },
-                    ].map((f) => {
-                      const isSelected = (formData.photo_filter || 'none') === f.id;
-                      const currentShape = (() => {
-                        const shapeMap: Record<string, string> = {
-                          none: 'circle(50% at 50% 50%)', electrician: 'polygon(40% 0%, 100% 0%, 65% 45%, 95% 45%, 30% 100%, 45% 55%, 15% 55%)',
-                          barber: 'polygon(50% 50%, 80% 0%, 100% 0%, 55% 52%, 100% 100%, 80% 100%, 52% 55%, 35% 72%, 35% 92%, 25% 100%, 8% 100%, 0% 88%, 0% 68%, 18% 58%, 28% 58%, 32% 54%, 28% 50%, 12% 50%, 0% 38%, 0% 12%, 8% 0%, 25% 0%, 35% 8%, 35% 38%)',
-                          cleaner: 'polygon(50% 0%, 61% 39%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 39%)',
-                          mechanic: 'polygon(50% 0%, 62% 4%, 65% 15%, 82% 16%, 86% 26%, 96% 36%, 96% 46%, 100% 50%, 96% 54%, 96% 64%, 86% 74%, 82% 84%, 65% 84%, 62% 96%, 50% 100%, 38% 96%, 35% 84%, 18% 84%, 14% 74%, 4% 64%, 4% 54%, 0% 50%, 4% 46%, 4% 36%, 14% 26%, 18% 16%, 35% 15%, 38% 4%)',
-                          plumber: 'polygon(50% 0%, 75% 15%, 90% 40%, 100% 65%, 90% 90%, 70% 100%, 30% 100%, 10% 90%, 0% 65%, 10% 40%, 25% 15%)',
-                          health: 'polygon(30% 0%, 70% 0%, 70% 30%, 100% 30%, 100% 70%, 70% 70%, 70% 100%, 30% 100%, 30% 70%, 0% 70%, 0% 30%, 30% 30%)',
-                          law: 'polygon(10% 0%, 50% 10%, 90% 0%, 100% 5%, 100% 85%, 50% 100%, 0% 85%, 0% 5%)',
-                          tech: 'polygon(0% 10%, 100% 10%, 100% 70%, 65% 70%, 70% 85%, 85% 85%, 85% 100%, 15% 100%, 15% 85%, 30% 85%, 35% 70%, 0% 70%)',
-                          pet: 'polygon(50% 40%, 70% 10%, 85% 15%, 80% 45%, 100% 55%, 90% 85%, 50% 100%, 10% 85%, 0% 55%, 20% 45%, 15% 15%, 30% 10%)',
-                          business: 'polygon(25% 18%, 25% 0%, 75% 0%, 75% 18%, 100% 18%, 100% 90%, 94% 100%, 6% 100%, 0% 90%, 0% 18%)',
-                        };
-                        return shapeMap[formData.avatar_frame || 'none'] || 'circle(50% at 50% 50%)';
-                      })();
-                      return (
-                        <button
-                          key={f.id}
-                          onClick={() => handleChange('photo_filter', f.id)}
-                          title={f.label}
-                          className={cn(
-                            "flex flex-col items-center justify-center gap-1.5 p-2 rounded-2xl border-2 transition-all hover:border-primary/60 hover:shadow-md group",
-                            isSelected ? "border-primary bg-primary/5 shadow-md" : "border-border/50 bg-card"
-                          )}
-                        >
-                          <div className="w-12 h-12 overflow-hidden flex items-center justify-center" style={{ clipPath: currentShape }}>
-                            {formData.photo_url ? (
-                              <img
-                                src={formData.photo_url}
-                                alt=""
-                                className="w-full h-full object-cover transition-all group-hover:scale-105"
-                                style={{ filter: f.cssFilter }}
-                              />
-                            ) : (
-                              <div
-                                className="w-full h-full"
-                                style={{ background: 'linear-gradient(135deg, #64748b, #94a3b8)', filter: f.cssFilter }}
-                              />
-                            )}
-                          </div>
-                          <span className={cn("text-[8px] font-bold uppercase tracking-tight text-center leading-tight", isSelected ? "text-primary" : "text-muted-foreground")}>
-                            {f.label}
-                          </span>
-                        </button>
-                      );
-                    })}
-                  </div>
-                </div>
-
-               {!isPro && (
-                <div className="mt-4 p-4 rounded-2xl bg-primary/5 border border-primary/20 text-center">
-                  <p className="text-xs text-muted-foreground mb-2">Desbloqueie formas, filtros e efeitos exclusivos</p>
-                  <Link href="/pricing" className="text-[10px] font-black uppercase text-primary hover:underline tracking-widest">Fazer Upgrade PRO →</Link>
-                </div>
-              )}
-            </div>
-
-            <div className="h-[1px] bg-border/50 my-6" />
-
-            <div className="space-y-6">
-              <div className="flex items-center justify-between">
-                <Label className="flex items-center gap-2 font-black uppercase tracking-widest text-[10px]"><Layers className="w-4 h-4 text-primary" /> Estilo do Tema</Label>
-                {!isPro && <span className="text-[10px] bg-primary/10 text-primary px-2 py-1 rounded-full font-black">PRO</span>}
-              </div>
-              
-              <div className={cn("grid grid-cols-2 gap-3", (!isPro || !canCustomizeTheme) && "opacity-40 pointer-events-none")}>
-                {[
-                  { id: 'standard', label: 'Padrão', desc: 'Limpo e moderno' },
-                  { id: 'oled', label: 'OLED Dark', desc: 'Preto profundo' },
-                  { id: 'glass', label: 'Glassmorphism', desc: 'Efeito de vidro' },
-                  { id: 'minimalist', label: 'Minimalist', desc: 'Foco no conteúdo' }
-                ].map((style) => (
-                  <button
-                    key={style.id}
-                    onClick={() => handleChange('theme_style', style.id as any)}
-                    className={cn(
-                      "p-4 rounded-2xl border-2 text-left transition-all hover:border-primary/50",
-                      formData.theme_style === style.id ? "border-primary bg-primary/5 shadow-md" : "border-border/50 bg-card"
-                    )}
-                  >
-                    <p className="text-xs font-bold">{style.label}</p>
-                    <p className="text-[10px] opacity-60">{style.desc}</p>
-                  </button>
-                ))}
-              </div>
-              {!isPro && (
-                <Link href="/pricing" className="text-[10px] text-primary font-bold hover:underline block mt-2 text-center">
-                  Faça upgrade para desbloquear temas premium
-                </Link>
-              )}
-            </div>
+                <div className="h-[1px] bg-border/50 my-6" />
 
             <div className="space-y-4">
               <div className="flex items-center justify-between">
@@ -1081,7 +1086,7 @@ export function EditorForm({ initialData, onSubmit, onChange, isPro = false, can
                 {!isPro && <span className="text-[10px] bg-primary/10 text-primary px-2 py-1 rounded-full font-black">PRO</span>}
               </div>
               
-              <div className={cn("grid grid-cols-2 gap-3", (!isPro || !canCustomizeTheme) && "opacity-40 pointer-events-none")}>
+              <div className={cn("grid grid-cols-2 gap-3", (!isPro || !canCustomizeTheme || (formData.category === 'barbearia' && !canCustomizeTheme)) && "opacity-40 pointer-events-none")}>
                 {['Inter', 'Outfit', 'Playfair Display', 'Sora', 'Plus Jakarta Sans', 'Bento'].map((font) => (
                   <button
                     key={font}
@@ -1103,7 +1108,7 @@ export function EditorForm({ initialData, onSubmit, onChange, isPro = false, can
                 <Label className="flex items-center gap-2 font-black uppercase tracking-widest text-[10px]"><ImageIcon className="w-4 h-4 text-primary" /> Fundo Personalizado</Label>
                 {!isPro && <span className="text-[10px] bg-primary/10 text-primary px-2 py-1 rounded-full font-black">PRO</span>}
               </div>
-              <div className={cn("space-y-3", (!isPro || !canCustomizeTheme) && "opacity-40 pointer-events-none")}>
+              <div className={cn("space-y-3", (!isPro || !canCustomizeTheme || (formData.category === 'barbearia' && !canCustomizeTheme)) && "opacity-40 pointer-events-none")}>
                 <input
                   type="file"
                   ref={videoInputRef}
@@ -1112,7 +1117,7 @@ export function EditorForm({ initialData, onSubmit, onChange, isPro = false, can
                   className="hidden"
                 />
                 
-                {formData.background_video_url ? (
+                {formData.background_video_url ?
                   <div className="relative group/video rounded-2xl overflow-hidden border border-border">
                     {formData.background_video_url.match(/\.(mp4|webm|ogg|mov)$/i) ? (
                       <video 
@@ -1139,7 +1144,7 @@ export function EditorForm({ initialData, onSubmit, onChange, isPro = false, can
                       </Button>
                     </div>
                   </div>
-                ) : (
+                 : 
                   <Button 
                     variant="outline" 
                     className="w-full h-24 border-2 border-dashed rounded-[2rem] flex flex-col gap-2 hover:border-primary/50 hover:bg-primary/5 p-0"
@@ -1155,14 +1160,13 @@ export function EditorForm({ initialData, onSubmit, onChange, isPro = false, can
                       </>
                     )}
                   </Button>
-                )}
+                }
                 <p className="text-[10px] text-muted-foreground ml-1">
                   Máximo 10MB. Suporta vídeos (MP4) e imagens (JPG, PNG).
                 </p>
               </div>
             </div>
-          </div>
-        </TabsContent>
+          </TabsContent>
 
           <TabsContent value="seo" className="space-y-6 mt-0">
             {!isPro ? (

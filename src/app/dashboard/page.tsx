@@ -301,7 +301,7 @@ function DashboardContent() {
                     onSubmit={handleAutoSave}
                     onChange={setCurrentData}
                     isPro={isPro}
-                    canCustomizeTheme={profile?.can_customize_theme ?? true}
+                    canCustomizeTheme={profile?.role === 'admin' || (profile?.can_customize_theme ?? true)}
                   />
                 </div>
 
@@ -614,7 +614,7 @@ function DashboardContent() {
       </main>
 
         <footer className="max-w-[1400px] mx-auto px-6 py-12 flex flex-col sm:flex-row items-center justify-between gap-6 border-t border-border/30 mt-12 pb-32 lg:pb-12 text-center sm:text-left">
-          <p className="text-[10px] font-black uppercase tracking-widest text-slate-400">© 2024 Konnexy</p>
+          <p className="text-[10px] font-black uppercase tracking-widest text-slate-400">© 2026 Konnexy</p>
           <div className="flex items-center gap-6">
              <Link href="/terms" className="text-[10px] font-black uppercase tracking-widest text-slate-400 hover:text-primary">Termos</Link>
              <Link href="/privacy" className="text-[10px] font-black uppercase tracking-widest text-slate-400 hover:text-primary">Privacidade</Link>
