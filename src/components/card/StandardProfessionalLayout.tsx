@@ -1,6 +1,6 @@
 "use client";
 
-import { motion } from 'framer-motion';
+import { motion, Variants } from 'framer-motion';
 import { 
   MessageCircle, 
   MapPin, 
@@ -39,12 +39,16 @@ export function StandardProfessionalLayout({ data, isPro }: StandardProfessional
   )}`;
 
   // Animation variants
-  const fadeIn = {
+  const fadeIn: Variants = {
     hidden: { opacity: 0, y: 20 },
     visible: (i: number) => ({
       opacity: 1,
       y: 0,
-      transition: { delay: i * 0.1, duration: 0.5, ease: [0.21, 1.02, 0.47, 0.98] }
+      transition: { 
+        delay: i * 0.1, 
+        duration: 0.5, 
+        ease: [0.21, 1.02, 0.47, 0.98] 
+      }
     })
   };
 
@@ -63,7 +67,7 @@ export function StandardProfessionalLayout({ data, isPro }: StandardProfessional
           )} />
           <div className="relative w-full h-full rounded-full border-4 border-white dark:border-slate-800 shadow-2xl overflow-hidden z-10">
             {data.photo_url ? (
-               <img src={data.photo_url} alt={data.business_name} className="w-full h-full object-cover transition-transform group-hover:scale-110 duration-700" />
+               <img src={data.photo_url || ''} alt={data.business_name || ''} className="w-full h-full object-cover transition-transform group-hover:scale-110 duration-700" />
             ) : (
                <div className="w-full h-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center">
                   <span className="text-4xl font-black opacity-20">{data.business_name?.[0] || '?'}</span>
