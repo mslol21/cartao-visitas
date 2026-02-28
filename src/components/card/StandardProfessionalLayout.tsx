@@ -14,7 +14,14 @@ import {
   Calendar,
   Sparkles,
   Award,
-  Zap
+  Zap,
+  Briefcase,
+  Facebook,
+  Linkedin,
+  Twitter,
+  Youtube,
+  GlobeIcon,
+  Crown
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Profile, Service, CustomFields, ProfessionCategory } from '@/types/profile';
@@ -52,28 +59,91 @@ export function StandardProfessionalLayout({ data, isPro }: StandardProfessional
     })
   };
 
+  const getPhotoFilter = (): string => {
+    if (!isPro) return 'none';
+    switch (data.photo_filter) {
+      case 'bw':      return 'grayscale(100%) contrast(1.1)';
+      case 'vintage': return 'sepia(55%) contrast(1.08) brightness(0.92) saturate(0.8)';
+      case 'vivid':   return 'saturate(1.9) contrast(1.12) brightness(1.05)';
+      case 'golden':  return 'sepia(35%) saturate(1.4) brightness(1.1) hue-rotate(-5deg)';
+      case 'cold':    return 'hue-rotate(195deg) saturate(1.3) brightness(1.05)';
+      case 'dramatic':return 'contrast(1.4) brightness(0.85) saturate(1.2)';
+      default:        return 'none';
+    }
+  };
+
+  const effect = data.photo_border_effect || 'none';
+  const hasEffect = effect !== 'none' && isPro;
+  const themeHex = data.theme_color || '#2563EB';
+
+  const ringStyles: Record<string, React.CSSProperties> = {
+    none:    {},
+    glow:    { background: themeHex, filter: `blur(8px)`, opacity: 0.7 },
+    spin:    { background: 'conic-gradient(from 0deg, #3b82f6, #8b5cf6, #ef4444, #f59e0b, #22c55e, #3b82f6)' },
+    rainbow: { background: 'conic-gradient(from 0deg, #ef4444, #f59e0b, #22c55e, #3b82f6, #8b5cf6, #ef4444)' },
+    pulse:   { background: themeHex, opacity: 0.85 },
+    shimmer: { background: 'linear-gradient(105deg, #94a3b8 30%, #f8fafc 50%, #94a3b8 70%)', backgroundSize: '200% 100%' },
+    orbit:   { border: `3px dashed ${themeHex}`, background: 'transparent' },
+  };
+
+  const ringAnimations: Record<string, string> = {
+    spin:    'aura-spin 3s linear infinite',
+    rainbow: 'aura-spin 4s linear infinite',
+    pulse:   'pulse 1.8s ease-in-out infinite',
+    shimmer: 'shine 2s linear infinite',
+    orbit:   'aura-spin 6s linear infinite',
+  };
+
   return (
-    <div className="w-full flex flex-col gap-8 pb-12 animate-in fade-in duration-700">
+    <div className="w-full flex flex-col gap-6 pb-12 animate-in fade-in duration-700">
       
       {/* 1-5. HEADER SECTION (Identity) */}
       <motion.div 
         custom={0} initial="hidden" animate="visible" variants={fadeIn}
-        className="flex flex-col items-center text-center px-4"
+        className="flex flex-col items-center text-center px-4 pt-4"
       >
-        <div className="relative w-32 h-32 mb-6 group">
+        <div className={cn("konnexy-aura mb-6", isPro && "scale-105")}>
+          {isPro && !hasEffect && (
+            <>
+              <div className="aura-glow" style={{ opacity: 0.4, filter: 'blur(16px)', background: themeHex }} />
+              <div className="aura-arc" style={{ borderTopColor: themeHex, borderRightColor: themeHex }} />
+            </>
+          )}
+
+          {hasEffect && (
+            <div
+              className="absolute rounded-full z-[5]"
+              style={{ inset: '-6px', ...ringStyles[effect], animation: ringAnimations[effect] }}
+            />
+          )}
+
           <div className={cn(
-            "absolute inset-0 rounded-full blur-2xl opacity-20 animate-pulse",
-            `bg-${config.theme.color}-500`
-          )} />
-          <div className="relative w-full h-full rounded-full border-4 border-white dark:border-slate-800 shadow-2xl overflow-hidden z-10">
+            "relative w-32 h-32 rounded-full border-4 shadow-2xl overflow-hidden z-10 transition-all duration-700",
+            isPro ? "border-white/20" : "border-white dark:border-slate-800"
+          )}
+          style={isPro ? { borderColor: themeHex + '60' } : {}}
+          >
             {data.photo_url ? (
-               <img src={data.photo_url || ''} alt={data.business_name || ''} className="w-full h-full object-cover transition-transform group-hover:scale-110 duration-700" />
+               <img 
+                 src={data.photo_url || ''} 
+                 alt={data.business_name || ''} 
+                 className="w-full h-full object-cover transition-transform group-hover:scale-110 duration-700" 
+                 style={{ filter: getPhotoFilter() }}
+               />
             ) : (
                <div className="w-full h-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center">
                   <span className="text-4xl font-black opacity-20">{data.business_name?.[0] || '?'}</span>
                </div>
             )}
           </div>
+
+          {isPro && (
+            <div className="absolute -bottom-1 right-1 p-1 bg-white dark:bg-slate-900 rounded-full shadow-lg z-20">
+              <div className="p-1 rounded-full bg-primary/10">
+                <Crown className="w-3 h-3 text-primary shadow-sm" />
+              </div>
+            </div>
+          )}
         </div>
 
         <h1 className="text-3xl font-black tracking-tighter text-slate-900 dark:text-white mb-2 leading-none uppercase">
@@ -108,24 +178,38 @@ export function StandardProfessionalLayout({ data, isPro }: StandardProfessional
         </div>
       </motion.div>
 
-      {/* 6. MAIN CTA */}
+      {/* 6. MAIN CONTACT GROUP */}
       <motion.div 
         custom={1} initial="hidden" animate="visible" variants={fadeIn}
-        className="px-6"
+        className="px-6 flex flex-col gap-3"
       >
         <Button 
           asChild
           className={cn(
-            "w-full h-16 rounded-[1.5rem] text-lg font-black uppercase tracking-tighter shadow-xl transition-all hover:scale-[1.02] border-none flex items-center justify-center gap-3",
+            "w-full h-14 rounded-[1.2rem] text-base font-black uppercase tracking-tighter shadow-lg transition-all hover:scale-[1.01] border-none flex items-center justify-center gap-3",
             "bg-[#25D366] hover:bg-[#20ba59] text-white shadow-[#25D366]/20"
           )}
         >
           <a href={whatsappLink} target="_blank" rel="noopener noreferrer">
-            <MessageCircle className="w-6 h-6 fill-white" />
+            <MessageCircle className="w-5 h-5 fill-white" />
             <span>Chamar no WhatsApp</span>
-            <ArrowRight className="w-5 h-5 ml-auto opacity-40" />
           </a>
         </Button>
+
+        {data.instagram && (
+          <Button 
+            asChild
+            variant="outline"
+            className="w-full h-12 rounded-xl border border-slate-200 dark:border-white/10 bg-white dark:bg-slate-900 hover:bg-slate-50 dark:hover:bg-slate-800 transition-all group overflow-hidden"
+          >
+            <a href={`https://instagram.com/${data.instagram}`} target="_blank" rel="noopener noreferrer" className="flex items-center justify-center gap-2">
+              <Instagram className="w-4 h-4 text-[#E1306C]" />
+              <span className="text-[10px] font-black uppercase tracking-widest text-slate-700 dark:text-white/80">Instagram</span>
+              <span className="text-[9px] text-slate-400 font-bold ml-auto opacity-60 group-hover:opacity-100">@{data.instagram}</span>
+              <ChevronRight className="w-3 h-3 text-slate-300 ml-1" />
+            </a>
+          </Button>
+        )}
       </motion.div>
 
       {/* 7. BIO PROFISSIONAL */}
@@ -258,25 +342,7 @@ export function StandardProfessionalLayout({ data, isPro }: StandardProfessional
         </motion.div>
       )}
 
-      {/* 12. INSTAGRAM */}
-      {data.instagram && (
-        <motion.div 
-          custom={7} initial="hidden" animate="visible" variants={fadeIn}
-          className="px-6"
-        >
-          <Button 
-            asChild
-            variant="outline"
-            className="w-full h-14 rounded-2xl border-none bg-gradient-to-r from-[#833ab4]/10 via-[#fd1d1d]/10 to-[#fcb045]/10 hover:scale-[1.02] transition-all group overflow-hidden"
-          >
-            <a href={`https://instagram.com/${data.instagram}`} target="_blank" rel="noopener noreferrer" className="flex items-center justify-center gap-3">
-              <Instagram className="w-5 h-5 text-[#E1306C]" />
-              <span className="text-xs font-black uppercase tracking-widest text-[#E1306C]">Siga no Instagram</span>
-              <span className="text-[10px] opacity-40 font-bold ml-1">@{data.instagram}</span>
-            </a>
-          </Button>
-        </motion.div>
-      )}
+
 
       {/* PLATFORM BRANDING */}
       <div className="mt-12 flex flex-col items-center gap-4 opacity-30">

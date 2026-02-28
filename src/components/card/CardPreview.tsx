@@ -608,11 +608,7 @@ END:VCARD`;
              )}
           </div>
 
-          {isStandardized ? (
-            <div className="relative flex flex-col w-full min-h-[600px] z-10 overflow-y-auto scroll-hide">
-               <StandardProfessionalLayout data={data} isPro={isPro} />
-            </div>
-          ) : isBarbearia ? (
+          {isBarbearia ? (
             <div className="relative flex flex-col items-center w-full min-h-[600px] z-10 px-6 py-10 overflow-y-auto scroll-hide">
               {/* Header */}
               <div className="flex flex-col items-center mb-8">
@@ -623,7 +619,7 @@ END:VCARD`;
                       alt={data.name || 'Barbearia'}
                       fill
                       className="object-cover"
-                      style={{ filter: 'grayscale(15%) contrast(1.1)' }}
+                      style={{ filter: getPhotoFilter() }}
                       priority
                     />
                   ) : (
@@ -824,6 +820,7 @@ END:VCARD`;
                       alt={data.name || 'Profile'}
                       fill
                       className="object-cover"
+                      style={{ filter: getPhotoFilter() }}
                       unoptimized
                     />
                   ) : (
@@ -1158,12 +1155,13 @@ END:VCARD`;
                   <div className="relative w-full aspect-[16/9] rounded-3xl overflow-hidden shadow-xl mb-6 border-b-4 border-[#8b5cf6]">
                     {data.photo_url ? (
                       <Image
-                        src={data.photo_url}
-                        alt={data.name || 'Vendas'}
-                        fill
-                        className="object-cover"
-                        unoptimized
-                      />
+                      src={data.photo_url}
+                      alt={data.name || 'Vendas'}
+                      fill
+                      className="object-cover"
+                      style={{ filter: getPhotoFilter() }}
+                      unoptimized
+                    />
                     ) : (
                       <div className="w-full h-full flex items-center justify-center bg-violet-50 dark:bg-violet-900/10">
                         <ShoppingBag className="w-12 h-12 text-[#8b5cf6]/40" />
@@ -2266,6 +2264,10 @@ END:VCARD`;
                  <div className="mt-auto opacity-20 text-center">
                     <p className="text-[8px] font-black uppercase tracking-[0.5em]">Advocacia de Excelência</p>
                  </div>
+              </div>
+            ) : isStandardized ? (
+              <div className="relative flex flex-col w-full min-h-[600px] z-10 overflow-y-auto scroll-hide">
+                 <StandardProfessionalLayout data={data} isPro={isPro} />
               </div>
             ) : (
             <>

@@ -991,11 +991,12 @@ export function EditorForm({ initialData, onSubmit, onChange, isPro = false, can
                       </SelectTrigger>
                       <SelectContent>
                         <SelectItem value="none">Padrão</SelectItem>
-                        <SelectItem value="grayscale">Preto e Branco</SelectItem>
-                        <SelectItem value="sepia">Sépia (Vintage)</SelectItem>
-                        <SelectItem value="brightness-110">Mais Brilho</SelectItem>
-                        <SelectItem value="contrast-125">Alto Contraste</SelectItem>
-                        <SelectItem value="saturate-150">Cores Vibrantes</SelectItem>
+                        <SelectItem value="bw">Preto e Branco</SelectItem>
+                        <SelectItem value="vintage">Vintage (Sépia)</SelectItem>
+                        <SelectItem value="vivid">Vibrante</SelectItem>
+                        <SelectItem value="golden">Dourado</SelectItem>
+                        <SelectItem value="cold">Frio / Azulado</SelectItem>
+                        <SelectItem value="dramatic">Dramático</SelectItem>
                       </SelectContent>
                     </Select>
                   </div>
@@ -1013,8 +1014,10 @@ export function EditorForm({ initialData, onSubmit, onChange, isPro = false, can
                       <SelectContent>
                         <SelectItem value="none">Simples</SelectItem>
                         <SelectItem value="glow">Brilho Neon</SelectItem>
-                        <SelectItem value="gradient">Borda Arco-íris</SelectItem>
-                        <SelectItem value="pulse">Pulsação Suave</SelectItem>
+                        <SelectItem value="rainbow">Arco-íris (Giro)</SelectItem>
+                        <SelectItem value="pulse">Pulsação</SelectItem>
+                        <SelectItem value="shimmer">Brilho Metálico</SelectItem>
+                        <SelectItem value="spin">Giro Cromático</SelectItem>
                       </SelectContent>
                     </Select>
                   </div>
