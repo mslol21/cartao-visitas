@@ -64,7 +64,9 @@ import {
   Car,
   ChevronRight,
   PawPrint,
-  Info
+  Info,
+  FileText,
+  Tag
 } from 'lucide-react';
 import { 
   Popover,
@@ -702,35 +704,38 @@ export function EditorForm({ initialData, onSubmit, onChange, isPro = false, can
                    <div className="p-2 bg-primary/10 rounded-lg">
                       <FileText className="w-4 h-4 text-primary" />
                    </div>
-                   <h3 className="text-sm font-black uppercase tracking-widest">Biografia & Diferenciais</h3>
+                   <h3 className="text-sm font-black uppercase tracking-widest text-slate-800 dark:text-white">Biografia & Diferenciais</h3>
                 </div>
 
-                <div className="space-y-2">
-                  <div className="flex justify-between items-center">
-                    <Label className="text-xs font-bold uppercase tracking-wider opacity-60">Bio Profissional (Mín. 120 caracteres)</Label>
-                    <span className={cn(
-                      "text-[10px] font-bold",
-                      (formData.bio_profissional?.length || 0) < 120 ? "text-amber-500" : "text-green-500"
-                    )}>
-                      {formData.bio_profissional?.length || 0}/120
-                    </span>
+                <div className="space-y-4">
+                  <div className="space-y-2">
+                    <div className="flex justify-between items-center">
+                      <Label className="text-xs font-bold uppercase tracking-wider opacity-60">Bio Profissional (Mín. 120 caracteres)</Label>
+                      <span className={cn(
+                        "text-[10px] font-bold",
+                        (formData.bio_profissional?.length || 0) < 120 ? "text-amber-500" : "text-green-500"
+                      )}>
+                        {formData.bio_profissional?.length || 0}/120
+                      </span>
+                    </div>
+                    <Textarea
+                      value={formData.bio_profissional || ''}
+                      onChange={(e) => handleChange('bio_profissional', e.target.value)}
+                      placeholder="Conte sobre sua trajetória, valores e especialidades..."
+                      className="rounded-2xl min-h-[120px] bg-white dark:bg-slate-950"
+                    />
+                    <p className="text-[10px] text-muted-foreground italic">Uma bio bem escrita ajuda a transmitir profissionalismo e confiança.</p>
                   </div>
-                  <Textarea
-                    value={formData.bio_profissional || ''}
-                    onChange={(e) => handleChange('bio_profissional', e.target.value)}
-                    placeholder="Conte sobre sua trajetória, valores e o que te torna único... (Mínimo de 120 caracteres para passar confiança)"
-                    className="rounded-2xl min-h-[120px]"
-                  />
-                </div>
 
-                <div className="space-y-2">
-                  <Label className="text-xs font-bold uppercase tracking-wider opacity-60">Seus Diferenciais (Um por linha)</Label>
-                  <Textarea
-                    value={formData.diferenciais?.join('\n') || ''}
-                    onChange={(e) => handleChange('diferenciais', e.target.value.split('\n').filter(l => l.trim()))}
-                    placeholder="Ex: 5 anos de experiência&#10;Atendimento Premium&#10;Garantia de Satisfação"
-                    className="rounded-2xl min-h-[100px]"
-                  />
+                  <div className="space-y-2">
+                    <Label className="text-xs font-bold uppercase tracking-wider opacity-60">Diferenciais (Um por linha)</Label>
+                    <Textarea
+                      value={formData.diferenciais?.join('\n') || ''}
+                      onChange={(e) => handleChange('diferenciais', e.target.value.split('\n').filter(l => l.trim()))}
+                      placeholder="Ex: 5 anos de experiência&#10;Atendimento Premium&#10;Produtos de alta qualidade"
+                      className="rounded-2xl min-h-[100px] bg-white dark:bg-slate-950"
+                    />
+                  </div>
                 </div>
               </div>
 
