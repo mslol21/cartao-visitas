@@ -1,15 +1,14 @@
 "use client";
 
-import { Check, Sparkles, X } from 'lucide-react';
+import { Check, Sparkles, X, ArrowRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
-import { UpgradeButton } from './UpgradeButton';
 
 const plans = [
   {
     name: 'Plano Free',
-    price: '0',
+    priceText: 'Gratuito',
     description: 'Teste seu cartão agora',
     features: [
       { text: 'Cartão de visitas digital', excluded: false },
@@ -29,7 +28,7 @@ const plans = [
   },
   {
     name: 'Plano Pro',
-    price: '19',
+    priceText: 'Premium',
     description: 'Para quem quer vender mais',
     features: [
       { text: 'Tudo do Free e mais:', excluded: false },
@@ -38,12 +37,12 @@ const plans = [
       { text: 'Redes sociais ilimitadas', excluded: false },
       { text: 'Até 20 especialidades', excluded: false },
       { text: 'Estatísticas completas', excluded: false },
-      { text: 'Fundo em vídeo premium', excluded: false },
+      { text: 'Temas Vip & Videos de Fundo', excluded: false },
       { text: 'Selo de perfil verificado', excluded: false },
-      { text: 'Suporte prioritário', excluded: false },
+      { text: 'QR Code Dinâmico Animado', excluded: false },
     ],
     cta: 'Ser Profissional agora',
-    href: '/pricing',
+    href: '/login?upgrade=true',
     popular: true,
     subText: 'O investimento que se paga sozinho',
   },
@@ -51,28 +50,29 @@ const plans = [
 
 export function Pricing() {
   return (
-    <section id="precos" className="py-32 bg-slate-50 dark:bg-slate-950 relative overflow-hidden">
-      {/* Background decoration matching PlanComparison */}
-      <div className="absolute inset-0 opacity-[0.02] pointer-events-none">
-        <div className="absolute top-0 left-1/4 w-96 h-96 bg-primary rounded-full blur-3xl" />
-        <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-purple-500 rounded-full blur-3xl" />
+    <section id="precos" className="py-32 bg-slate-950 relative overflow-hidden text-white border-t border-white/5">
+      {/* Background decoration */}
+      <div className="absolute inset-0 opacity-100 pointer-events-none overflow-hidden">
+        <div className="absolute top-1/2 left-0 w-[500px] h-[500px] bg-primary/20 rounded-full blur-[120px] mix-blend-screen" />
+        <div className="absolute bottom-0 right-0 w-[600px] h-[600px] bg-purple-500/20 rounded-full blur-[150px] mix-blend-screen" />
+        <div className="absolute inset-0 bg-[url('/noise.png')] opacity-[0.03] mix-blend-overlay" />
       </div>
       
       <div className="container relative z-10 px-6">
-        <div className="text-center max-w-3xl mx-auto mb-20 space-y-4">
-           <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 text-primary text-[10px] font-black uppercase tracking-[0.4em]">
-             Preços
+        <div className="text-center max-w-3xl mx-auto mb-20 space-y-6">
+           <div className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-white/5 backdrop-blur-md border border-white/10 text-white text-[11px] font-black uppercase tracking-[0.4em] shadow-xl">
+             Investimento
            </div>
-           <h2 className="text-3xl sm:text-4xl md:text-6xl font-black tracking-tighter leading-tight">
+           <h2 className="text-4xl sm:text-5xl md:text-7xl font-black tracking-tighter leading-tight text-white">
              O visual profissional <br />
-             <span className="gradient-text">que você merece.</span>
+             <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-primary to-purple-400">que você merece.</span>
            </h2>
-           <p className="text-muted-foreground text-lg font-medium max-w-2xl mx-auto">
-             Aumente suas vendas com um cartão digital que transmite confiança e facilita o contato dos seus clientes.
+           <p className="text-slate-400 text-lg font-medium max-w-2xl mx-auto">
+             Aumente suas vendas com um cartão digital que transmite confiança superlativa e facilita o contato para seus clientes.
            </p>
         </div>
 
-        <div className="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto">
+        <div className="grid md:grid-cols-2 gap-8 lg:gap-12 max-w-5xl mx-auto">
           {plans.map((plan, index) => (
             <motion.div
               key={plan.name}
@@ -82,90 +82,92 @@ export function Pricing() {
               transition={{ delay: index * 0.1 }}
               className={`group relative rounded-[2.5rem] transition-all duration-500 ${
                 plan.popular
-                  ? 'md:scale-105 shadow-[0_40px_100px_-20px_rgba(59,130,246,0.3)]'
-                  : 'shadow-[0_20px_50px_-15px_rgba(0,0,0,0.1)] hover:shadow-xl'
+                  ? 'md:scale-105 z-10'
+                  : ''
               }`}
             >
               {/* Card Background Layers */}
-              <div className={`absolute inset-0 bg-gradient-to-br opacity-50 rounded-[2.5rem] ${
-                plan.popular ? 'from-primary/5 to-purple-50' : 'from-slate-50 to-slate-100'
-              }`} />
+              {plan.popular && (
+                 <div className="absolute -inset-1 bg-gradient-to-b from-primary to-purple-600 rounded-[2.5rem] blur-md opacity-20 group-hover:opacity-40 transition-opacity duration-500" />
+              )}
+              
+              <div className={`relative p-8 sm:p-12 backdrop-blur-2xl rounded-[2.5rem] flex flex-col h-full overflow-hidden ${
+                 plan.popular ? 'bg-gradient-to-b from-slate-900 to-slate-950 border border-primary/30 shadow-[0_0_50px_rgba(59,130,246,0.15)]' : 'bg-white/5 border border-white/10'
+              }`}>
+                
+                {/* Internal Glow for Popular */}
+                {plan.popular && (
+                  <div className="absolute top-0 right-0 w-64 h-64 bg-primary/10 rounded-full blur-[80px] pointer-events-none" />
+                )}
 
-              <div className={`absolute inset-0 border-2 rounded-[2.5rem] ${
-                plan.popular ? 'border-primary shadow-[inset_0_0_60px_rgba(59,130,246,0.1)]' : 'border-border/50'
-              }`} />
-
-              <div className="relative p-8 sm:p-12 bg-white/80 dark:bg-slate-900/80 backdrop-blur-xl rounded-[2.5rem] flex flex-col h-full">
+                {/* Popular Badge */}
                 {plan.popular && (
                   <div className="absolute -top-5 left-1/2 -translate-x-1/2">
-                    <div className="inline-flex items-center gap-2 px-6 py-2 rounded-full bg-gradient-to-r from-orange-500 to-pink-500 text-white text-[10px] font-black uppercase tracking-widest whitespace-nowrap shadow-lg">
-                      <Sparkles className="w-3 h-3 animate-pulse" />
-                      Mais escolhido
+                    <div className="inline-flex items-center gap-2 px-6 py-2 rounded-full bg-gradient-to-r from-blue-500 to-purple-500 text-white text-[11px] font-black uppercase tracking-widest whitespace-nowrap shadow-xl border border-white/20">
+                      <Sparkles className="w-3.5 h-3.5 animate-pulse text-yellow-300" />
+                      Acesso Vitalício Vip
                     </div>
                   </div>
                 )}
 
-                <div className="mb-10 text-center">
-                  <h3 className="text-2xl font-black mb-3 italic tracking-tight uppercase tracking-[0.1em]">
+                <div className="mb-10 text-center relative z-10">
+                  <h3 className="text-3xl font-black mb-3 tracking-tight text-white">
                     {plan.name}
                   </h3>
-                  <p className="text-sm text-muted-foreground font-medium leading-relaxed max-w-[280px] mx-auto italic">
+                  <p className="text-sm text-slate-400 font-medium leading-relaxed max-w-[280px] mx-auto italic">
                     “{plan.description}”
                   </p>
                 </div>
 
-                <div className="mb-10 text-center">
-                  <div className="flex items-start justify-center">
-                    <span className="text-xl sm:text-2xl font-bold mt-2">R$</span>
-                    <span className="text-6xl sm:text-8xl font-black tracking-tighter text-slate-900 dark:text-white">{plan.price}</span>
+                <div className="mb-10 text-center relative z-10">
+                  <div className="flex items-center justify-center">
+                    <h4 className="text-5xl sm:text-6xl font-black tracking-tighter text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-primary">
+                       {plan.priceText}
+                    </h4>
                   </div>
-                  <div className="text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground/60">Por Mês • Sem fidelidade</div>
+                  <div className="mt-4 text-[11px] font-black uppercase tracking-[0.3em] text-slate-500">Sem Fidelidade • Flexível</div>
                 </div>
 
-                <div className="space-y-4 mb-12 flex-grow">
-                  {plan.features.map((feature) => (
-                    <div key={feature.text} className={`flex items-center gap-4 ${feature.excluded ? 'opacity-50' : ''}`}>
-                      <div className={`w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 transition-colors ${
+                <div className="space-y-4 mb-12 flex-grow relative z-10 pt-8 border-t border-white/10">
+                  {plan.features.map((feature, i) => (
+                    <div key={i} className={`flex items-center gap-4 ${feature.excluded ? 'opacity-40' : ''}`}>
+                      <div className={`w-8 h-8 rounded-xl flex items-center justify-center flex-shrink-0 transition-colors ${
                         feature.excluded 
-                          ? 'bg-slate-100 dark:bg-slate-800' 
-                          : (plan.popular ? 'bg-primary/10' : 'bg-slate-100 dark:bg-slate-800')
+                          ? 'bg-white/5 border border-white/5' 
+                          : (plan.popular ? 'bg-primary/20 border border-primary/30' : 'bg-white/10 border border-white/10')
                       }`}>
                         {feature.excluded ? (
-                          <X className="w-4 h-4 text-slate-400" />
+                          <X className="w-4 h-4 text-red-400" />
                         ) : (
-                          <Check className={`w-4 h-4 ${plan.popular ? 'text-primary' : 'text-slate-500'}`} />
+                          <Check className={`w-4 h-4 ${plan.popular ? 'text-blue-400' : 'text-slate-300'}`} />
                         )}
                       </div>
-                      <span className={`text-sm font-bold ${feature.excluded ? 'line-through decoration-slate-400 text-slate-400' : 'text-slate-700 dark:text-slate-300'}`}>
+                      <span className={`text-sm font-bold ${feature.excluded ? 'line-through decoration-slate-500 text-slate-500' : 'text-slate-200'}`}>
                         {feature.text}
                       </span>
                     </div>
                   ))}
                 </div>
 
-                <div className="mt-auto">
-                  {plan.popular ? (
-                    <UpgradeButton />
-                  ) : (
-                    <div className="space-y-4">
-                      <Button
-                        asChild
-                        variant="outline"
-                        className="w-full h-16 rounded-2xl text-sm font-black uppercase tracking-widest shadow-lg hover:shadow-xl transition-all active:scale-95 border-2 hover:bg-slate-50 dark:hover:bg-slate-800"
-                      >
-                        <Link href={plan.href}>
-                          {plan.cta}
-                        </Link>
-                      </Button>
-                      <p className="text-center text-[11px] font-bold text-primary/80 italic">
-                        {plan.subText}
-                      </p>
-                    </div>
-                  )}
-                  
-                  <p className="mt-6 text-center text-[10px] font-bold text-muted-foreground/40 uppercase tracking-widest">
-                     Cancelamento instantâneo
-                  </p>
+                <div className="mt-auto relative z-10">
+                  <div className="space-y-4">
+                    <Button
+                      asChild
+                      className={`w-full h-16 rounded-[2rem] text-sm font-black uppercase tracking-widest transition-all ${
+                         plan.popular 
+                         ? 'bg-gradient-to-r from-primary to-purple-600 hover:from-primary/80 hover:to-purple-500 text-white shadow-[0_0_30px_rgba(59,130,246,0.5)] border-0' 
+                         : 'bg-white/5 hover:bg-white/10 border border-white/20 text-white'
+                      }`}
+                    >
+                      <Link href={plan.href} className="flex items-center justify-center gap-2">
+                        {plan.cta}
+                        <ArrowRight className="w-5 h-5" />
+                      </Link>
+                    </Button>
+                    <p className={`text-center text-[11px] font-bold italic tracking-wider ${plan.popular ? 'text-primary' : 'text-slate-500'}`}>
+                      {plan.subText}
+                    </p>
+                  </div>
                 </div>
               </div>
             </motion.div>

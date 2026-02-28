@@ -1,68 +1,45 @@
 "use client";
 
 import { motion } from 'framer-motion';
-import { Play, Sparkles, Crown, Check, X } from 'lucide-react';
+import { Play, Sparkles, Crown, Check, X, Info } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import Image from 'next/image';
+import { Button } from '@/components/ui/button';
+import Link from 'next/link';
 
-const comparisonData = [
-  {
-    plan: 'Free',
-    title: 'Plano Free',
-    subtitle: 'Para quem está começando',
-    imageSrc: '/videos/1000032806.png',
-    highlights: [
-      { text: 'Link profissional básico', included: true },
-      { text: 'Com logo da Konnexy', included: true },
-      { text: 'Cliques no WhatsApp limitados', included: true },
-      { text: 'Sem saber quem te visitou', included: false },
-      { text: 'Visual estático padrão', included: false },
-    ],
-    badge: 'Básico',
-    badgeColor: 'bg-slate-500',
-    borderColor: 'border-slate-300',
-    bgGradient: 'from-slate-50 to-slate-100',
-  },
-  {
-    plan: 'Pro',
-    title: 'Plano Pro',
-    subtitle: 'O máximo profissionalismo',
-    imageSrc: '/videos/1000032805.png',
-    highlights: [
-      { text: 'Visual Premium com Vídeo', included: true },
-      { text: 'Sua marca (Sem logo Konnexy)', included: true },
-      { text: 'Cliques no WhatsApp ilimitados', included: true },
-      { text: 'Saiba quem acessou seu perfil', included: true },
-      { text: 'Selo Perfil Verificado', included: true },
-    ],
-    badge: 'Profissional',
-    badgeColor: 'bg-gradient-to-r from-orange-500 to-pink-500',
-    borderColor: 'border-primary',
-    bgGradient: 'from-primary/5 to-purple-50',
-    featured: true,
-  },
+const featuresList = [
+  { name: 'Link personalizado (konnexy.com.br/seu-nome)', free: true, pro: true },
+  { name: 'Botão de WhatsApp', free: 'Apenas 1', pro: 'Ilimitados' },
+  { name: 'Redes Sociais', free: 'Limitadas', pro: 'Ilimitadas (Instagram, TikTok, LinkedIn, etc)' },
+  { name: 'Catálogo de Serviços', free: true, pro: true },
+  { name: 'Branding', free: 'Com Logo Konnexy', pro: '100% Sua Marca' },
+  { name: 'Painel de Analytics & Visitas', free: false, pro: true },
+  { name: 'Temas Profissionais (Imóveis, TI, Petshop, etc)', free: false, pro: true },
+  { name: 'Vídeo no Fundo da Tela', free: false, pro: true },
+  { name: 'Selo de Conta Verificada 👑', free: false, pro: true },
+  { name: 'Assinatura Interativa em QR Code', free: false, pro: true },
 ];
 
 export function PlanComparison() {
   return (
-    <section className="py-32 relative overflow-hidden bg-gradient-to-b from-white via-slate-50 to-white dark:from-slate-950 dark:via-slate-900 dark:to-slate-950">
-      {/* Background decoration */}
-      <div className="absolute inset-0 opacity-[0.02]">
-        <div className="absolute top-0 left-1/4 w-96 h-96 bg-primary rounded-full blur-3xl" />
-        <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-purple-500 rounded-full blur-3xl" />
+    <section className="py-32 relative overflow-hidden bg-slate-950 text-white">
+      {/* Dynamic Background Effects */}
+      <div className="absolute inset-0 overflow-hidden">
+        <div className="absolute top-1/4 left-1/4 w-[500px] h-[500px] bg-primary/20 rounded-full blur-[120px] mix-blend-screen animate-pulse" />
+        <div className="absolute bottom-1/4 right-1/4 w-[600px] h-[600px] bg-purple-500/20 rounded-full blur-[150px] mix-blend-screen" />
+        <div className="absolute inset-0 bg-[url('/noise.png')] opacity-20 mix-blend-overlay" />
       </div>
 
       <div className="container relative z-10 px-6">
         {/* Section Header */}
         <div className="text-center max-w-4xl mx-auto mb-20 space-y-6">
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
+            initial={{ opacity: 0, scale: 0.9 }}
+            whileInView={{ opacity: 1, scale: 1 }}
             viewport={{ once: true }}
-            className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 text-primary text-[10px] font-black uppercase tracking-[0.4em]"
+            className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-white text-[11px] font-black uppercase tracking-[0.4em] shadow-2xl"
           >
-            <Play className="w-3 h-3" />
-            Comparação Visual
+            <Crown className="w-4 h-4 text-yellow-400" />
+            Tabela Comparativa
           </motion.div>
           
           <motion.h2
@@ -70,10 +47,9 @@ export function PlanComparison() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ delay: 0.1 }}
-            className="text-4xl md:text-6xl font-black tracking-tighter"
+            className="text-4xl md:text-6xl font-black tracking-tighter text-white"
           >
-            Veja a diferença <br />
-            <span className="gradient-text">em ação</span>
+            Escolha o plano <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400">ideal para você</span>
           </motion.h2>
           
           <motion.p
@@ -81,162 +57,78 @@ export function PlanComparison() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ delay: 0.2 }}
-            className="text-muted-foreground text-lg font-medium max-w-2xl mx-auto"
+            className="text-slate-400 text-lg font-medium max-w-2xl mx-auto"
           >
-            Compare lado a lado como seu cartão digital aparece no Plano Free versus o Plano Pro. 
-            A diferença é visível e impactante.
+            Compare detalhadamente todos os recursos e descubra por que os profissionais de sucesso escolhem o plano PRO.
           </motion.p>
         </div>
 
-        {/* Comparison Grid */}
-        <div className="grid md:grid-cols-2 gap-8 lg:gap-12 max-w-7xl mx-auto">
-          {comparisonData.map((item, index) => (
-            <motion.div
-              key={item.plan}
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: index * 0.2 }}
-              className={cn(
-                "group relative rounded-[2.5rem] overflow-hidden transition-all duration-500",
-                item.featured 
-                  ? "md:scale-105 shadow-[0_40px_100px_-20px_rgba(59,130,246,0.3)]" 
-                  : "shadow-[0_20px_50px_-15px_rgba(0,0,0,0.1)]"
-              )}
-            >
-              {/* Card Background */}
-              <div className={cn(
-                "absolute inset-0 bg-gradient-to-br opacity-50",
-                item.bgGradient
-              )} />
-
-              {/* Border Glow Effect */}
-              <div className={cn(
-                "absolute inset-0 border-2 rounded-[2.5rem]",
-                item.borderColor,
-                item.featured && "shadow-[inset_0_0_60px_rgba(59,130,246,0.1)]"
-              )} />
-
-              <div className="relative p-8 bg-white/80 dark:bg-slate-900/80 backdrop-blur-xl rounded-[2.5rem]">
-                {/* Badge */}
-                <div className="flex items-center justify-between mb-6">
-                  <div className={cn(
-                    "inline-flex items-center gap-2 px-4 py-2 rounded-full text-white text-[10px] font-black uppercase tracking-widest",
-                    item.badgeColor
-                  )}>
-                    {item.featured ? (
-                      <>
-                        <Crown className="w-3 h-3" />
-                        {item.badge}
-                      </>
-                    ) : (
-                      <>{item.badge}</>
-                    )}
-                  </div>
-                  
-                  {item.featured && (
-                    <div className="flex items-center gap-1 text-orange-500 text-xs font-bold">
-                      <Sparkles className="w-4 h-4 animate-pulse" />
-                      Recomendado
-                    </div>
-                  )}
-                </div>
-
-                {/* Title */}
-                <div className="mb-6">
-                  <h3 className="text-3xl font-black mb-2 tracking-tight">
-                    {item.title}
-                  </h3>
-                  <p className="text-sm text-muted-foreground font-medium italic">
-                    "{item.subtitle}"
-                  </p>
-                </div>
-
-                {/* Image Container */}
-                <div className="relative mb-8 rounded-2xl overflow-hidden bg-slate-900 aspect-[9/16] max-w-[280px] mx-auto shadow-2xl">
-                  {/* Phone Frame Effect */}
-                  <div className="absolute inset-0 z-10 pointer-events-none">
-                    <div className="absolute top-0 left-1/2 -translate-x-1/2 w-32 h-6 bg-slate-900 rounded-b-3xl" />
-                  </div>
-                  
-                  <Image
-                    src={item.imageSrc}
-                    alt={`${item.title} Screenshot`}
-                    fill
-                    className="object-cover"
-                    priority={item.featured}
-                  />
-                </div>
-
-                {/* Highlights */}
-                <div className="space-y-3">
-                  {item.highlights.map((highlight, idx) => (
-                    <motion.div
-                      key={idx}
-                      initial={{ opacity: 0, x: -20 }}
-                      whileInView={{ opacity: 1, x: 0 }}
-                      viewport={{ once: true }}
-                      transition={{ delay: index * 0.2 + idx * 0.05 }}
-                      className="flex items-center gap-3"
-                    >
-                      <div className={cn(
-                        "w-5 h-5 rounded-full flex items-center justify-center flex-shrink-0",
-                        highlight.included 
-                          ? item.featured 
-                            ? "bg-primary/10" 
-                            : "bg-slate-100 dark:bg-slate-800"
-                          : "bg-red-50 dark:bg-red-900/20"
-                      )}>
-                        {highlight.included ? (
-                          <Check className={cn(
-                            "w-3 h-3",
-                            item.featured ? "text-primary" : "text-slate-600"
-                          )} />
-                        ) : (
-                          <X className="w-3 h-3 text-red-500" />
-                        )}
-                      </div>
-                      <span className={cn(
-                        "text-sm font-bold",
-                        highlight.included ? "text-slate-700 dark:text-slate-300" : "text-red-500 line-through"
-                      )}>
-                        {highlight.text}
-                      </span>
-                    </motion.div>
-                  ))}
-                </div>
-
-                {/* Bottom CTA hint */}
-                {item.featured && (
-                  <motion.div
-                    initial={{ opacity: 0 }}
-                    whileInView={{ opacity: 1 }}
-                    viewport={{ once: true }}
-                    transition={{ delay: 0.5 }}
-                    className="mt-8 pt-6 border-t border-primary/20"
-                  >
-                    <p className="text-center text-xs font-black uppercase tracking-widest text-primary/80">
-                      ⚡ Upgrade disponível abaixo
-                    </p>
-                  </motion.div>
-                )}
-              </div>
-            </motion.div>
-          ))}
-        </div>
-
-        {/* Bottom Note */}
+        {/* Beautiful Comparison Table */}
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: 40 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ delay: 0.6 }}
-          className="mt-16 text-center"
+          transition={{ delay: 0.3 }}
+          className="max-w-5xl mx-auto relative group rounded-[2.5rem] bg-white/5 backdrop-blur-xl border border-white/10 shadow-[0_0_100px_rgba(0,0,0,0.5)] overflow-hidden"
         >
-          <p className="text-sm text-muted-foreground font-medium max-w-2xl mx-auto">
-            💡 <strong>Dica:</strong> O Plano Pro inclui fundo em vídeo que roda em loop, 
-            criando uma experiência muito mais profissional e memorável para seus clientes.
-          </p>
+           {/* Top headers */}
+           <div className="grid grid-cols-3 border-b border-white/10 bg-black/20">
+              <div className="p-6 md:p-8 flex items-center">
+                 <span className="text-sm font-black uppercase tracking-widest text-slate-400">Recursos</span>
+              </div>
+              <div className="p-6 md:p-8 text-center flex flex-col items-center justify-center border-l border-white/10">
+                 <h3 className="text-xl font-bold text-white mb-1">Plano Free</h3>
+                 <span className="text-xs font-medium text-slate-500">O Básico</span>
+              </div>
+              <div className="p-6 md:p-8 text-center flex flex-col items-center justify-center border-l border-white/10 bg-primary/10 relative overflow-hidden">
+                 <div className="absolute top-0 w-full h-1 bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500" />
+                 <div className="flex items-center gap-1.5 mb-1">
+                   <Sparkles className="w-4 h-4 text-yellow-400 animate-pulse" />
+                   <h3 className="text-xl md:text-2xl font-black text-white">Plano PRO</h3>
+                 </div>
+                 <span className="text-xs font-bold text-primary uppercase tracking-widest">Recomendado</span>
+              </div>
+           </div>
+
+           {/* Table Body */}
+           <div className="divide-y divide-white/5">
+             {featuresList.map((feature, i) => (
+                <div key={i} className="grid grid-cols-3 hover:bg-white-[0.02] transition-colors">
+                  <div className="p-5 md:p-6 flex items-center">
+                    <span className="text-sm font-medium text-slate-300">{feature.name}</span>
+                  </div>
+                  <div className="p-5 md:p-6 flex items-center justify-center border-l border-white/5 opacity-70">
+                    {typeof feature.free === 'boolean' ? (
+                       feature.free ? <Check className="w-5 h-5 text-slate-400" /> : <X className="w-5 h-5 text-red-500/50" />
+                    ) : (
+                       <span className="text-xs font-bold text-slate-400 text-center">{feature.free}</span>
+                    )}
+                  </div>
+                  <div className="p-5 md:p-6 flex items-center justify-center border-l border-white/5 bg-primary/5">
+                    {typeof feature.pro === 'boolean' ? (
+                       feature.pro ? <Check className="w-6 h-6 text-green-400" /> : <X className="w-5 h-5 text-red-500" />
+                    ) : (
+                       <span className="text-xs md:text-sm font-black text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-400 text-center">{feature.pro}</span>
+                    )}
+                  </div>
+                </div>
+             ))}
+           </div>
+
+           {/* CTA Row */}
+           <div className="grid grid-cols-3 border-t border-white/10 bg-black/40">
+              <div className="p-6"></div>
+              <div className="p-6 flex items-center justify-center border-l border-white/10">
+                 <Link href="/signup" className="text-sm font-bold text-slate-400 hover:text-white transition-colors underline underline-offset-4">
+                   Criar Grátis
+                 </Link>
+              </div>
+              <div className="p-6 flex items-center justify-center border-l border-white/10">
+                 <Button asChild className="w-full bg-gradient-to-r from-primary to-purple-600 hover:from-primary/80 hover:to-purple-500 text-white font-black uppercase tracking-widest border-0 shadow-[0_0_30px_rgba(59,130,246,0.5)]">
+                    <Link href="/pricing">Quero ser PRO</Link>
+                 </Button>
+              </div>
+           </div>
         </motion.div>
       </div>
     </section>
