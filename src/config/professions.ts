@@ -135,6 +135,129 @@ export const professionsMap: Record<ProfessionCategory, ProfessionConfig> = {
       { name: 'procedimentos', label: 'Procedimentos Principais', type: 'array', placeholder: 'Ex: Limpeza de Pele' }
     ]
   },
+  pedreiro: {
+    id: 'pedreiro',
+    label: 'Pedreiro & Obras',
+    theme: { color: 'orange', style: 'standard' },
+    customFields: [
+      { name: 'trabalha_com_reforma', label: 'Faz Reformas?', type: 'boolean' },
+      { name: 'anos_experiencia', label: 'Anos de Experiência', type: 'text', placeholder: 'Ex: 10 anos' }
+    ]
+  },
+  mecanico: {
+    id: 'mecanico',
+    label: 'Mecânico / Auto',
+    theme: { color: 'zinc', style: 'oled' },
+    customFields: [
+      { name: 'socorro_24h', label: 'Socorro 24h?', type: 'boolean' },
+      { name: 'especialidade_carros', label: 'Especialista em', type: 'text', placeholder: 'Ex: Câmbio, Suspensão' }
+    ]
+  },
+  eletricista: {
+    id: 'eletricista',
+    label: 'Eletricista',
+    theme: { color: 'amber', style: 'standard' },
+    customFields: [
+      { name: 'nr10_ativo', label: 'NR10 Ativo?', type: 'boolean' },
+      { name: 'atendimento_emergencial', label: 'Atendimento Emergencial?', type: 'boolean' }
+    ]
+  },
+  encanador: {
+    id: 'encanador',
+    label: 'Encanador / Hidráulica',
+    theme: { color: 'blue', style: 'standard' },
+    customFields: [
+      { name: 'caca_vazamento', label: 'Caça Vazamento?', type: 'boolean' }
+    ]
+  },
+  diarista: {
+    id: 'diarista',
+    label: 'Diarista / Limpeza',
+    theme: { color: 'sky', style: 'glass' },
+    customFields: [
+      { name: 'leva_produtos', label: 'Leva produtos próprios?', type: 'boolean' },
+      { name: 'faxina_pos_obra', label: 'Faz pós-obra?', type: 'boolean' }
+    ]
+  },
+  frete: {
+    id: 'frete',
+    label: 'Fretes & Carretos',
+    theme: { color: 'zinc', style: 'oled' },
+    customFields: [
+      { name: 'possui_ajudante', label: 'Possui Ajudante?', type: 'boolean' },
+      { name: 'tipo_veiculo', label: 'Tipo de Veículo', type: 'text', placeholder: 'Ex: Fiorino, HR, Caminhão' }
+    ]
+  },
+  ar_condicionado: {
+    id: 'ar_condicionado',
+    label: 'Ar Condicionado',
+    theme: { color: 'cyan', style: 'glass' },
+    customFields: [
+      { name: 'instalacao_higienizacao', label: 'Instalação e Higienização?', type: 'boolean' }
+    ]
+  },
+  montador_moveis: {
+    id: 'montador_moveis',
+    label: 'Montador de Móveis',
+    theme: { color: 'stone', style: 'standard' },
+    customFields: [
+      { name: 'ferramentas_proprias', label: 'Ferramentas Próprias?', type: 'boolean' }
+    ]
+  },
+  beauty: {
+    id: 'beauty',
+    label: 'Beleza & Estética',
+    theme: { color: 'rose', style: 'glass' },
+    customFields: []
+  },
+  health: {
+    id: 'health',
+    label: 'Saúde & Bem-Estar',
+    theme: { color: 'emerald', style: 'standard' },
+    customFields: []
+  },
+  sales: {
+    id: 'sales',
+    label: 'Vendas & Comércio',
+    theme: { color: 'violet', style: 'standard' },
+    customFields: []
+  },
+  food: {
+    id: 'food',
+    label: 'Gastronomia / Delivery',
+    theme: { color: 'red', style: 'standard' },
+    customFields: []
+  },
+  tech: {
+    id: 'tech',
+    label: 'Tecnologia / Digital',
+    theme: { color: 'blue', style: 'oled' },
+    customFields: []
+  },
+  real_estate: {
+    id: 'real_estate',
+    label: 'Imobiliários',
+    theme: { color: 'emerald', style: 'glass' },
+    customFields: []
+  },
+  driver: {
+    id: 'driver',
+    label: 'Motorista / Entregas',
+    theme: { color: 'slate', style: 'standard' },
+    customFields: []
+  },
+  petshop: {
+    id: 'petshop',
+    label: 'Petshop / Veterinária',
+    theme: { color: 'purple', style: 'glass' },
+    customFields: []
+  },
+  service: {
+    id: 'service',
+    label: 'Manutenção / Serviços',
+    theme: { color: 'amber', style: 'standard' },
+    customFields: []
+  },
   default: {
     id: 'default',
     label: 'Outros Profissionais',

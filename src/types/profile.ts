@@ -10,6 +10,23 @@ export type ProfessionCategory =
   | 'fotografo' 
   | 'tecnico_informatica' 
   | 'esteticista'
+  | 'pedreiro'
+  | 'mecanico'
+  | 'eletricista'
+  | 'encanador'
+  | 'diarista'
+  | 'frete'
+  | 'ar_condicionado'
+  | 'montador_moveis'
+  | 'beauty'
+  | 'health'
+  | 'sales'
+  | 'food'
+  | 'tech'
+  | 'real_estate'
+  | 'driver'
+  | 'petshop'
+  | 'service'
   | 'default';
 
 export interface Service {

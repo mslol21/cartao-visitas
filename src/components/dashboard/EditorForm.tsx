@@ -522,9 +522,28 @@ export function EditorForm({ initialData, onSubmit, onChange, isPro = false, can
                      <Label className="text-xs font-bold uppercase tracking-wider opacity-60">Sua Profissão</Label>
                      <Select 
                        value={formData.profession || 'default'} 
-                       onValueChange={(val) => {
-                         handleChange('profession', val);
-                       }}
+                        onValueChange={(val) => {
+                          const conf = (professionsMap as any)[val] || professionsMap.default;
+                          const updates = { 
+                            profession: val,
+                            category: val === 'default' ? 'default' : val,
+                            theme_color: conf.theme.color === 'amber' ? '#f59e0b' :
+                                        conf.theme.color === 'blue' ? '#3b82f6' :
+                                        conf.theme.color === 'orange' ? '#f97316' :
+                                        conf.theme.color === 'red' ? '#ef4444' :
+                                        conf.theme.color === 'zinc' ? '#71717a' :
+                                        conf.theme.color === 'violet' ? '#8b5cf6' :
+                                        conf.theme.color === 'emerald' ? '#10b981' : '#3b82f6',
+                            theme_style: conf.theme.style,
+                            font_family: val === 'barbearia' ? 'Sora' : 
+                                        val === 'advogado' ? 'Playfair Display' : 
+                                        val === 'tech' ? 'JetBrains Mono' : 'Inter',
+                            cta_text: val === 'barbearia' ? 'Agendar Corte 💈' : 'Falar no WhatsApp'
+                          };
+                          const updated = { ...formData, ...updates };
+                          setFormData(updated);
+                          if (onChange) onChange(updated);
+                        }}
                      >
                        <SelectTrigger className="rounded-2xl h-12 bg-white dark:bg-slate-950">
                          <SelectValue placeholder="Selecione sua profissão" />

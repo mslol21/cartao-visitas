@@ -113,18 +113,25 @@ export function CardPreview({
   const isPaid = isPaidUser(data as Profile) || forceProPreview;
   const isPro = isPaid;
   const isBarbearia = data.profession === 'barbearia' || data.category === 'barbearia';
-  const isBeauty = data.profession === 'beauty' || data.category === 'beauty';
-  const isHealth = data.profession === 'health' || data.category === 'health';
+  const isBeauty = ['beauty', 'manicure', 'cabeleireiro', 'esteticista'].includes(data.profession as string) || data.category === 'beauty';
+  const isHealth = ['health', 'personal_trainer', 'psicologo'].includes(data.profession as string) || data.category === 'health';
   const isSales = data.profession === 'sales' || data.category === 'sales';
   const isFood = data.profession === 'food' || data.category === 'food';
-  const isService = data.profession === 'service' || data.category === 'service';
+  const isService = ['service', 'pedreiro', 'mecanico', 'eletricista', 'encanador', 'diarista', 'frete', 'ar_condicionado', 'montador_moveis'].includes(data.profession as string) || data.category === 'service';
   const isAdvogado = data.profession === 'advogado' || data.category === 'advogado';
-  const isTech = data.profession === 'tech' || data.category === 'tech';
+  const isTech = ['tech', 'tecnico_informatica', 'designer', 'fotografo'].includes(data.profession as string) || data.category === 'tech';
   const isRealEstate = data.profession === 'real_estate' || data.category === 'real_estate';
   const isDriver = data.profession === 'driver' || data.category === 'driver';
   const isPetshop = data.profession === 'petshop' || data.category === 'petshop';
   
   const isStandardized = !!data.profession && data.profession !== 'default';
+
+  // Data helpers that prefer new fields but fall back to old ones for compatibility
+  const previewName = data.business_name || data.name || 'Seu Nome';
+  const previewTagline = data.subtitle || data.tagline || 'Sua Especialidade';
+  const previewAddress = data.endereco_completo || data.address;
+  const previewArea = data.area_atendimento || data.service_area;
+  const previewHours = data.horario_funcionamento || '';
 
   const handleTrackClick = async (type: AnalyticsEventType) => {
     if (suppressTracking || !data.id || isDownloadMode) return;
@@ -164,7 +171,7 @@ export function CardPreview({
       });
       
       pdf.addImage(imgData, 'PNG', 0, 0, 85, 150, undefined, 'FAST');
-      pdf.save(`Konnexy_${data.name || 'Card'}.pdf`);
+      pdf.save(`Konnexy_${previewName}.pdf`);
       toast.success('PDF baixado!');
     } catch (err) {
       console.error(err);
@@ -189,7 +196,7 @@ export function CardPreview({
       });
       
       const link = document.createElement('a');
-      link.download = `Konnexy_${data.name || 'Card'}.png`;
+      link.download = `Konnexy_${previewName}.png`;
       link.href = canvas.toDataURL('image/png', 1.0);
       link.click();
       toast.success('Imagem salva!');
@@ -205,8 +212,8 @@ export function CardPreview({
     // Basic vCard generation
     const vcard = `BEGIN:VCARD
 VERSION:3.0
-FN:${data.name || 'Contato'}
-ORG:${data.tagline || ''}
+FN:${data.business_name || data.name || 'Contato'}
+ORG:${data.subtitle || data.tagline || ''}
 TEL;TYPE=CELL:${formattedWhatsapp}
 URL:${typeof window !== 'undefined' ? window.location.href : ''}
 END:VCARD`;
@@ -215,7 +222,7 @@ END:VCARD`;
     const url = window.URL.createObjectURL(blob);
     const link = document.createElement('a');
     link.href = url;
-    link.setAttribute('download', `${data.name || 'contato'}.vcf`);
+    link.setAttribute('download', `${previewName}.vcf`);
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
@@ -249,7 +256,15 @@ END:VCARD`;
   
   // Logic: Pro sees everything. Free sees only 1st and others are disabled.
   const activeServicesLimit = isPro ? 20 : 5; // Increased limit for better grid demo
-  const services = data.services?.map(s => typeof s === 'string' ? { name: s, icon: 'Sparkles' } : s).filter(s => s.name?.trim() !== '') || [];
+  const rawServices = data.servicos || data.services || [];
+  const services = rawServices.map(s => {
+    if (typeof s === 'string') return { name: s, icon: 'Sparkles' };
+    // Map new field names to old ones for compatibility with preview layouts
+    const nome = (s as any).nome || (s as any).name;
+    const preco = (s as any).preco || (s as any).price;
+    const descricao = (s as any).descricao || (s as any).description;
+    return { name: nome, price: preco, description: descricao, icon: (s as any).icon || 'Sparkles' };
+  }).filter(s => s.name?.trim() !== '') || [];
   const activeServicesArr = services.slice(0, activeServicesLimit);
   
   const mainService = activeServicesArr[0];
@@ -266,8 +281,8 @@ END:VCARD`;
     e.preventDefault();
     if (navigator.share) {
       navigator.share({
-        title: data.name || 'Konnexy',
-        text: data.tagline || 'Confira meu perfil profissional',
+        title: data.business_name || data.name || 'Konnexy',
+        text: data.subtitle || data.tagline || 'Confira meu perfil profissional',
         url: typeof window !== 'undefined' ? window.location.href : '',
       });
     }
@@ -616,7 +631,7 @@ END:VCARD`;
                   {data.photo_url ? (
                     <Image
                       src={data.photo_url}
-                      alt={data.name || 'Barbearia'}
+                      alt={previewName || 'Barbearia'}
                       fill
                       className="object-cover"
                       style={{ filter: getPhotoFilter() }}
@@ -628,8 +643,8 @@ END:VCARD`;
                     </div>
                   )}
                 </div>
-                <h1 className="text-3xl font-black text-white tracking-tighter uppercase mb-1 text-center">{data.name || 'Barbearia'}</h1>
-                <p className="text-[#C6A75E] font-bold text-sm tracking-widest uppercase italic text-center">{data.tagline || 'Corte com estilo e precisão 💈'}</p>
+                <h1 className="text-3xl font-black text-white tracking-tighter uppercase mb-1 text-center">{previewName}</h1>
+                <p className="text-[#C6A75E] font-bold text-sm tracking-widest uppercase italic text-center">{previewTagline}</p>
               </div>
 
               {/* Main Call to Action */}
@@ -676,14 +691,14 @@ END:VCARD`;
                   </Button>
                 )}
 
-                {data.address && (
+                {previewAddress && (
                   <Button 
                     variant="outline" 
                     className="rounded-lg h-12 bg-white/5 border-white/10 text-white/80 text-[10px] font-black uppercase tracking-widest hover:bg-white/10"
                     asChild
                     onClick={() => handleTrackClick('click_address')}
                   >
-                    <a href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(data.address)}`} target="_blank" rel="noopener noreferrer">
+                    <a href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(previewAddress || data.address)}`} target="_blank" rel="noopener noreferrer">
                       <MapPin className="w-4 h-4 mr-2 text-[#C6A75E]" />
                       Localização
                     </a>
@@ -760,18 +775,18 @@ END:VCARD`;
                 </div>
               )}
 
-              {data.service_area && (
+              {previewArea && (
                 <div className="w-full mb-10 px-4 py-3 rounded-xl bg-[#C6A75E]/5 border border-[#C6A75E]/20 text-center">
                   <span className="text-[8px] font-black uppercase text-[#C6A75E] tracking-widest block mb-1">Área de Atuação</span>
-                  <p className="text-xs font-bold text-white italic">{data.service_area}</p>
+                  <p className="text-xs font-bold text-white italic">{previewArea}</p>
                 </div>
               )}
 
               {/* Footer */}
               <div className="mt-auto w-full text-center space-y-6 pt-10 pb-4">
-                {data.address && (
+                {previewAddress && (
                   <p className="text-white/40 text-[10px] font-medium leading-relaxed max-w-[200px] mx-auto uppercase tracking-tighter">
-                    {data.address}
+                    {previewAddress}
                   </p>
                 )}
                 
@@ -817,7 +832,7 @@ END:VCARD`;
                   {data.photo_url ? (
                     <Image
                       src={data.photo_url}
-                      alt={data.name || 'Profile'}
+                      alt={previewName || 'Profile'}
                       fill
                       className="object-cover"
                       style={{ filter: getPhotoFilter() }}
@@ -830,10 +845,10 @@ END:VCARD`;
                   )}
                 </div>
                 <h1 className="text-3xl font-serif text-[#1e1e1e] dark:text-white text-center leading-tight">
-                  {data.name || 'Seu Nome'}
+                  {previewName}
                 </h1>
-                <p className="text-xs font-medium uppercase tracking-[0.25em] text-[#DB2777] dark:text-[#F472B6] mt-2 italic">
-                  {data.tagline || 'Especialista em Beleza'}
+                <p className="text-xs font-medium uppercase tracking-[0.2em] text-[#DB2777] dark:text-[#F472B6] mt-2 italic">
+                  {previewTagline}
                 </p>
                 {data.city && (
                   <div className="flex items-center gap-1.5 mt-3 opacity-60">
@@ -934,21 +949,21 @@ END:VCARD`;
               </div>
 
               {/* Endereço */}
-              {data.address && (
+              {previewAddress && (
                 <div className="w-full p-6 rounded-[2rem] bg-white/40 dark:bg-white/5 border border-[#F472B6]/10 mb-10 text-center backdrop-blur-md">
                   <MapPin className="w-5 h-5 text-[#DB2777] mx-auto mb-2 opacity-60" />
                   <p className="text-xs font-medium text-slate-800 dark:text-pink-50/80 leading-relaxed">
-                    {data.address}
+                    {previewAddress}
                   </p>
                 </div>
               )}
               {/* Atuação e Horários Beleza */}
               <div className="w-full space-y-4 mb-10">
-                {data.service_area && (
+                {previewArea && (
                   <div className="flex flex-col items-center p-4 rounded-[1.5rem] bg-[#F472B6]/5 border border-[#F472B6]/10 text-center">
                     <Globe className="w-4 h-4 text-[#DB2777] mb-2 opacity-60" />
                     <span className="text-[8px] font-black uppercase tracking-widest opacity-40 mb-1">Região de Atendimento</span>
-                    <p className="text-[10px] font-bold text-[#DB2777] dark:text-pink-300">{data.service_area}</p>
+                    <p className="text-[10px] font-bold text-[#DB2777] dark:text-pink-300">{previewArea}</p>
                   </div>
                 )}
 
@@ -1005,7 +1020,7 @@ END:VCARD`;
                     <div className="absolute inset-0 rounded-full bg-gradient-to-tr from-[#10b981] to-[#6ee7b7] opacity-20 blur-2xl animate-pulse" />
                     <div className="relative w-full h-full rounded-full border-[6px] border-white dark:border-slate-900 shadow-2xl overflow-hidden z-10">
                       {data.photo_url ? (
-                        <Image src={data.photo_url} alt={data.name || 'Saúde'} fill className="object-cover" unoptimized />
+                        <Image src={data.photo_url} alt={previewName || 'Saúde'} fill className="object-cover" unoptimized />
                       ) : (
                         <div className="w-full h-full flex items-center justify-center bg-emerald-50 dark:bg-emerald-950">
                           <Stethoscope className="w-16 h-16 text-[#10b981]/40" />
@@ -1018,12 +1033,12 @@ END:VCARD`;
                   </motion.div>
                   
                   <h1 className="text-3xl font-black text-slate-900 dark:text-white text-center tracking-tighter leading-none mb-3">
-                    {data.name || 'Seu Nome'}
+                    {previewName}
                   </h1>
                   <div className="flex items-center gap-2 bg-emerald-50 dark:bg-emerald-900/20 px-4 py-1.5 rounded-full border border-emerald-100 dark:border-emerald-800/30">
                     <ShieldCheck className="w-3.5 h-3.5 text-[#10b981]" />
                     <span className="text-[10px] font-black uppercase tracking-[0.2em] text-[#059669]">
-                      {data.tagline || 'Especialista em Saúde'}
+                      {previewTagline}
                     </span>
                   </div>
                 </div>
@@ -1083,14 +1098,14 @@ END:VCARD`;
                       </div>
                       
                       <div className="relative z-10 space-y-6">
-                        {data.address && (
+                        {previewAddress && (
                           <div className="flex items-start gap-4">
                             <div className="w-10 h-10 rounded-2xl bg-white dark:bg-slate-900 flex items-center justify-center shrink-0 shadow-sm">
                               <MapPin className="w-5 h-5 text-[#10b981]" />
                             </div>
                             <div className="flex flex-col">
                               <span className="text-[9px] font-black uppercase text-emerald-600/60 mb-1 tracking-widest">Endereço Clínica</span>
-                              <p className="text-xs font-bold text-slate-700 dark:text-emerald-50 leading-relaxed">{data.address}</p>
+                              <p className="text-xs font-bold text-slate-700 dark:text-emerald-50 leading-relaxed">{previewAddress}</p>
                             </div>
                           </div>
                         )}
@@ -1118,14 +1133,14 @@ END:VCARD`;
                       </div>
                     </div>
 
-                    {data.service_area && (
+                    {previewArea && (
                       <div className="flex items-center gap-4 p-5 rounded-[2.5rem] bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 shadow-sm">
                         <div className="w-10 h-10 rounded-full bg-emerald-50 dark:bg-emerald-950 flex items-center justify-center shrink-0">
                           <Globe className="w-5 h-5 text-[#10b981]" />
                         </div>
                         <div className="flex flex-col">
                           <span className="text-[9px] font-black uppercase text-slate-400 mb-0.5 tracking-widest">Área de Atendimento</span>
-                          <p className="text-[11px] font-bold text-slate-700 dark:text-emerald-50">{data.service_area}</p>
+                          <p className="text-[11px] font-bold text-slate-700 dark:text-emerald-50">{previewArea}</p>
                         </div>
                       </div>
                     )}
@@ -1156,7 +1171,7 @@ END:VCARD`;
                     {data.photo_url ? (
                       <Image
                       src={data.photo_url}
-                      alt={data.name || 'Vendas'}
+                      alt={previewName || 'Vendas'}
                       fill
                       className="object-cover"
                       style={{ filter: getPhotoFilter() }}
@@ -1170,12 +1185,12 @@ END:VCARD`;
                     <div className="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-black/60 to-transparent" />
                     <div className="absolute bottom-4 left-6 right-6">
                       <h1 className="text-xl font-black text-white uppercase italic tracking-tighter">
-                        {data.name || 'Loja / Consultor'}
+                        {previewName}
                       </h1>
                     </div>
                   </div>
                   <p className="text-xs font-bold text-[#8b5cf6] dark:text-violet-300 italic">
-                    {data.tagline || 'Confira nossas ofertas e produtos'}
+                    {previewTagline}
                   </p>
                 </div>
 
@@ -1216,22 +1231,22 @@ END:VCARD`;
 
                 {/* Detalhes Vendas */}
                 <div className="w-full space-y-4 mb-8">
-                  {data.address && (
+                  {previewAddress && (
                     <div className="p-5 rounded-3xl bg-slate-900 border-l-4 border-[#8b5cf6] text-white">
                       <div className="flex items-center gap-2 mb-2">
                         <MapPin className="w-4 h-4 text-[#8b5cf6]" />
                         <span className="text-[9px] font-black uppercase tracking-[0.2em] text-[#8b5cf6]">Localização</span>
                       </div>
-                      <p className="text-xs font-medium opacity-80">{data.address}</p>
+                      <p className="text-xs font-medium opacity-80">{previewAddress}</p>
                     </div>
                   )}
-                  {data.service_area && (
+                  {previewArea && (
                     <div className="p-5 rounded-3xl bg-violet-50 dark:bg-violet-900/10 border border-violet-100 dark:border-violet-800/30">
                       <div className="flex items-center gap-2 mb-2">
                         <Globe className="w-4 h-4 text-[#8b5cf6]" />
                         <span className="text-[9px] font-black uppercase tracking-[0.2em] text-[#8b5cf6]">Atendimento</span>
                       </div>
-                      <p className="text-xs font-bold italic text-slate-700 dark:text-violet-100">{data.service_area}</p>
+                      <p className="text-xs font-bold italic text-slate-700 dark:text-violet-100">{previewArea}</p>
                     </div>
                   )}
                   
@@ -1306,7 +1321,7 @@ END:VCARD`;
                     {data.photo_url ? (
                       <Image
                         src={data.photo_url}
-                        alt={data.name || 'Gastronomia'}
+                        alt={previewName || 'Gastronomia'}
                         fill
                         className="object-cover -rotate-3 scale-110"
                         unoptimized
@@ -1318,10 +1333,10 @@ END:VCARD`;
                     )}
                   </div>
                   <h1 className="text-3xl font-black text-slate-900 dark:text-white text-center leading-none tracking-tighter uppercase">
-                    {data.name || 'Seu Restaurante'}
+                    {previewName}
                   </h1>
                   <span className="mt-2 px-3 py-1 rounded-full bg-red-600 text-white text-[9px] font-black uppercase tracking-widest">
-                    {data.tagline || 'Sabor que Apaixona'}
+                    {previewTagline}
                   </span>
                 </div>
 
@@ -1369,20 +1384,20 @@ END:VCARD`;
 
                 {/* Detalhes Comida */}
                 <div className="w-full space-y-3 mb-10">
-                  {data.address && (
+                  {previewAddress && (
                     <div className="flex flex-col items-center p-6 rounded-[2.5rem] bg-orange-50 dark:bg-orange-950/10 border-2 border-dashed border-orange-200 dark:border-orange-900/30 text-center">
                       <MapPin className="w-6 h-6 text-red-600 mb-2" />
                       <span className="text-[9px] font-black uppercase tracking-widest text-red-600/50 mb-1">Onde nos Encontrar</span>
-                      <p className="text-xs font-bold text-slate-800 dark:text-orange-50 leading-relaxed">{data.address}</p>
+                      <p className="text-xs font-bold text-slate-800 dark:text-orange-50 leading-relaxed">{previewAddress}</p>
                     </div>
                   )}
 
                   <div className="grid grid-cols-2 gap-3">
-                    {data.service_area && (
+                    {previewArea && (
                       <div className="p-5 rounded-[2rem] bg-white dark:bg-slate-900 border border-red-50 dark:border-red-900/20 text-center">
                         <Globe className="w-5 h-5 text-red-600 mx-auto mb-2" />
                         <span className="text-[8px] font-black uppercase text-slate-400 block mb-1">Entregas em</span>
-                        <p className="text-[10px] font-black text-red-600 uppercase">{data.service_area}</p>
+                        <p className="text-[10px] font-black text-red-600 uppercase">{previewArea}</p>
                       </div>
                     )}
                     {data.business_hours && Object.values(data.business_hours).some(v => v) && (
@@ -1458,10 +1473,10 @@ END:VCARD`;
                          <Terminal className="w-5 h-5 text-blue-400" />
                        </div>
                        <h1 className="text-2xl font-bold text-white tracking-tighter leading-none">
-                         {data.name || 'Tech Expert'}
+                         {previewName}
                        </h1>
                        <p className="text-[10px] font-black uppercase tracking-[0.2em] text-blue-500 mt-2">
-                          {data.expert_area || 'Soluções Digitais'}
+                          {data.expert_area || previewTagline}
                        </p>
                      </div>
                      <div className="relative w-24 h-24 rounded-2xl border-2 border-blue-500/50 p-1 bg-blue-500/5 overflow-hidden group/photo">
@@ -1470,7 +1485,7 @@ END:VCARD`;
                            {data.photo_url ? (
                              <Image
                                src={data.photo_url}
-                               alt={data.name || 'Tech'}
+                               alt={previewName || 'Tech'}
                                fill
                                className="object-cover"
                                unoptimized
@@ -1532,7 +1547,7 @@ END:VCARD`;
                          <MapPin className="w-5 h-5 text-blue-400 mt-1 shrink-0" />
                          <div className="flex flex-col">
                            <span className="text-[10px] font-black uppercase text-blue-500/60 mb-1 tracking-widest">Base de Operações</span>
-                           <p className="text-xs font-bold text-slate-300 leading-relaxed">{data.address} {data.city ? `- ${data.city}` : ''}</p>
+                           <p className="text-xs font-bold text-slate-300 leading-relaxed">{previewAddress} {data.city ? `- ${data.city}` : ''}</p>
                          </div>
                        </div>
                      )}
@@ -1603,7 +1618,7 @@ END:VCARD`;
                      <div className="relative w-32 h-32 rounded-full border-4 border-emerald-500/30 p-1.5 mb-6 shadow-2xl">
                         <div className="w-full h-full rounded-full overflow-hidden border-2 border-emerald-500/20">
                            {data.photo_url ? (
-                             <Image src={data.photo_url} alt={data.name || 'Imóveis'} fill className="object-cover" unoptimized />
+                             <Image src={data.photo_url} alt={previewName || 'Imóveis'} fill className="object-cover" unoptimized />
                            ) : (
                              <div className="w-full h-full bg-slate-900 flex items-center justify-center">
                                <User className="w-10 h-10 text-emerald-500/30" />
@@ -1615,7 +1630,7 @@ END:VCARD`;
                         </div>
                      </div>
                      <h1 className="text-2xl font-bold text-white tracking-tight leading-none mb-3">
-                       {data.name || 'Consultor Imobiliário'}
+                       {previewName}
                      </h1>
                      <div className="px-4 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/20">
                        <span className="text-[9px] font-black uppercase tracking-[0.2em] text-emerald-500">
@@ -1669,7 +1684,7 @@ END:VCARD`;
                          <MapPin className="w-6 h-6 text-emerald-500 mt-1 shrink-0" />
                          <div className="flex flex-col">
                            <span className="text-[10px] font-black uppercase text-emerald-600/60 mb-1 tracking-widest">Escritório</span>
-                           <p className="text-xs font-bold text-slate-700 dark:text-emerald-50 leading-relaxed">{data.address} {data.city ? `- ${data.city}` : ''}</p>
+                           <p className="text-xs font-bold text-slate-700 dark:text-emerald-50 leading-relaxed">{previewAddress} {data.city ? `- ${data.city}` : ''}</p>
                          </div>
                        </div>
                      )}
@@ -1735,18 +1750,18 @@ END:VCARD`;
                   <div className="w-full flex justify-between items-center mb-10 pt-4">
                      <div className="flex flex-col">
                        <h1 className="text-2xl font-black text-white uppercase italic tracking-tighter leading-none mb-1">
-                         {data.name || 'Professional Driver'}
+                         {previewName}
                        </h1>
                        <div className="flex items-center gap-2">
                          <div className="w-2 h-2 rounded-full bg-orange-500 animate-pulse" />
                          <span className="text-[9px] font-black uppercase tracking-[0.2em] text-orange-500">
-                           {data.expert_area || 'Transporte & Delivery'}
+                           {data.expert_area || previewTagline}
                          </span>
                        </div>
                      </div>
                      <div className="relative w-20 h-20 rounded-full border-4 border-orange-500 overflow-hidden shadow-[0_0_20px_rgba(249,115,22,0.3)]">
                         {data.photo_url ? (
-                          <Image src={data.photo_url} alt={data.name || 'Driver'} fill className="object-cover" unoptimized />
+                          <Image src={data.photo_url} alt={previewName || 'Driver'} fill className="object-cover" unoptimized />
                         ) : (
                           <div className="w-full h-full bg-slate-900 flex items-center justify-center">
                             <Car className="w-8 h-8 text-orange-500/50" />
@@ -1801,7 +1816,7 @@ END:VCARD`;
                         <div className="absolute inset-0 bg-mint-500/20 rounded-[2.5rem] -rotate-3" />
                         <div className="relative w-full h-full rounded-[2rem] overflow-hidden border-4 border-white dark:border-slate-800 shadow-xl">
                            {data.photo_url ? (
-                             <Image src={data.photo_url} alt={data.name || 'Petshop'} fill className="object-cover" unoptimized />
+                             <Image src={data.photo_url} alt={previewName || 'Petshop'} fill className="object-cover" unoptimized />
                            ) : (
                              <div className="w-full h-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center">
                                <PawPrint className="w-10 h-10 text-purple-400" />
@@ -1811,10 +1826,10 @@ END:VCARD`;
                      </div>
                      <div className="flex flex-col">
                        <h1 className="text-2xl font-black text-purple-600 dark:text-purple-400 leading-none mb-2">
-                         {data.name || 'Pet Care'}
+                         {previewName}
                        </h1>
                        <span className="text-[10px] font-black uppercase tracking-widest text-slate-500">
-                          {data.expert_area || 'Estética e Saúde Animal'}
+                          {data.expert_area || previewTagline}
                        </span>
                      </div>
                   </div>
@@ -1874,7 +1889,7 @@ END:VCARD`;
                          </div>
                          <div className="flex flex-col pt-1">
                            <span className="text-[10px] font-black uppercase text-purple-600/60 mb-1 tracking-widest">Onde Estamos</span>
-                           <p className="text-xs font-bold text-slate-700 dark:text-purple-50 leading-relaxed">{data.address} {data.city ? `- ${data.city}` : ''}</p>
+                           <p className="text-xs font-bold text-slate-700 dark:text-purple-50 leading-relaxed">{previewAddress} {data.city ? `- ${data.city}` : ''}</p>
                          </div>
                        </div>
                      )}
@@ -1939,7 +1954,7 @@ END:VCARD`;
                         {data.photo_url ? (
                           <Image
                             src={data.photo_url}
-                            alt={data.name || 'Serviços'}
+                            alt={previewName || 'Serviços'}
                             fill
                             className="object-cover -rotate-3 scale-110 group-hover:rotate-0 transition-transform"
                             unoptimized
@@ -1952,11 +1967,11 @@ END:VCARD`;
                       </div>
                     </div>
                     <h1 className="text-2xl font-black text-white uppercase tracking-tighter leading-none mb-2">
-                      {data.name || 'Nome da Empresa'}
+                      {previewName}
                     </h1>
                     <div className="px-3 py-1 bg-[#f59e0b] rounded-lg inline-block">
                       <p className="text-[9px] font-black text-slate-900 uppercase tracking-[0.2em]">
-                        {data.tagline || 'Excelência Industrial'}
+                        {previewTagline}
                       </p>
                     </div>
                   </div>
@@ -2006,7 +2021,7 @@ END:VCARD`;
                 {/* Localização e Atendimento */}
                 {(data.address || data.service_area) && (
                   <div className="w-full mb-8 space-y-3">
-                    {data.address && (
+                    {previewAddress && (
                       <div className="flex items-start gap-4 p-5 rounded-2xl bg-slate-900 text-white shadow-xl border border-slate-800 relative overflow-hidden">
                         <div className="absolute top-0 right-0 w-20 h-20 bg-white/5 rounded-full -mr-10 -mt-10 blur-2xl pointer-events-none" />
                         <div className="w-10 h-10 rounded-xl bg-[#f59e0b] flex items-center justify-center shrink-0">
@@ -2014,18 +2029,18 @@ END:VCARD`;
                         </div>
                         <div className="flex flex-col">
                           <span className="text-[9px] font-black uppercase text-[#f59e0b] mb-1">Localização</span>
-                          <p className="text-xs font-bold leading-relaxed">{data.address}</p>
+                          <p className="text-xs font-bold leading-relaxed">{previewAddress}</p>
                         </div>
                       </div>
                     )}
-                    {data.service_area && (
+                    {previewArea && (
                       <div className="flex items-center gap-4 p-5 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800">
                         <div className="w-10 h-10 rounded-xl bg-slate-100 dark:bg-slate-800 flex items-center justify-center shrink-0">
                           <Globe className="w-5 h-5 text-[#f59e0b]" />
                         </div>
                         <div className="flex flex-col">
                           <span className="text-[9px] font-black uppercase text-slate-400 mb-1">Raio de Atuação</span>
-                          <span className="text-xs font-black uppercase text-slate-800 dark:text-white">{data.service_area}</span>
+                          <span className="text-xs font-black uppercase text-slate-800 dark:text-white">{previewArea}</span>
                         </div>
                       </div>
                     )}
@@ -2130,10 +2145,10 @@ END:VCARD`;
                     <div className="flex flex-col">
                       <Scale className="w-8 h-8 text-slate-400 mb-3" />
                       <h1 className="text-2xl font-serif text-white tracking-tight leading-none">
-                        {data.name || 'Advogado(a)'}
+                        {previewName}
                       </h1>
                       <p className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-500 mt-2">
-                         {data.expert_area || 'Consultoria Jurídica'}
+                         {data.expert_area || previewTagline}
                       </p>
                     </div>
                     <div className="relative w-24 h-24 rounded-full border-2 border-slate-700 p-1">
@@ -2141,7 +2156,7 @@ END:VCARD`;
                           {data.photo_url ? (
                             <Image
                               src={data.photo_url}
-                              alt={data.name || 'Advogado'}
+                              alt={previewName || 'Advogado'}
                               fill
                               className="object-cover"
                               unoptimized
@@ -2198,13 +2213,13 @@ END:VCARD`;
                    {data.city && (
                       <div className="flex items-center gap-3 p-4 rounded-xl bg-slate-800/50 border border-slate-700/50">
                         <MapPin className="w-4 h-4 text-slate-400" />
-                        <span className="text-xs font-medium text-slate-300">{data.city} {data.address && `- ${data.address}`}</span>
+                        <span className="text-xs font-medium text-slate-300">{data.city} {data.address && `- ${previewAddress}`}</span>
                       </div>
                    )}
-                   {data.service_area && (
+                   {previewArea && (
                       <div className="flex items-center gap-3 p-4 rounded-xl bg-slate-800/50 border border-slate-700/50">
                         <Globe className="w-4 h-4 text-slate-400" />
-                        <span className="text-[10px] font-black uppercase tracking-widest text-slate-400">Atendimento: {data.service_area}</span>
+                        <span className="text-[10px] font-black uppercase tracking-widest text-slate-400">Atendimento: {previewArea}</span>
                       </div>
                    )}
                  </div>
@@ -2283,7 +2298,7 @@ END:VCARD`;
                       Premium
                     </div>
                     {/* ZL Badge - Regional Focus */}
-                    {(data.city?.toLowerCase().includes('zona leste') || data.service_area?.toLowerCase().includes('zona leste')) && (
+                    {(data.city?.toLowerCase().includes('zona leste') || previewArea?.toLowerCase().includes('zona leste')) && (
                       <div className="px-3 py-1 rounded-full bg-red-600 text-white text-[9px] font-black uppercase tracking-widest shadow-lg border border-red-500 animate-[pulse_2s_infinite]">
                         Zona Leste - SP
                       </div>
@@ -2548,7 +2563,7 @@ END:VCARD`;
                         {data.photo_url ? (
                           <Image
                             src={data.photo_url}
-                            alt={data.name || 'Avatar'}
+                            alt={previewName || 'Avatar'}
                             fill
                             className="object-cover"
                             style={{ filter: getPhotoFilter() }}
@@ -2591,13 +2606,13 @@ END:VCARD`;
                    "text-2xl md:text-3xl font-black tracking-tight mb-1 capitalize leading-tight text-center font-sora",
                    isPro ? "text-white drop-shadow-sm" : "text-slate-900 dark:text-white"
                  )}>
-                   {data.name || 'Seu Nome'}
+                   {previewName}
                  </h1>
                  <p className={cn(
                    "text-sm md:text-base font-medium leading-relaxed opacity-90 mb-3 text-center max-w-[280px]",
                    isPro ? "text-white/80" : "text-slate-600 dark:text-slate-400"
                  )}>
-                   {data.tagline || 'Sua profissão ou frase de impacto'}
+                   {previewTagline}
                  </p>
                  
                  <div className="flex flex-col gap-2.5 mt-2 w-full">
@@ -2627,7 +2642,7 @@ END:VCARD`;
                             "bg-amber-500/10 text-amber-500 border border-amber-500/20"
                           )}>
                             <Target className="w-3 h-3" />
-                            Atendimento em {data.service_area}
+                            Atendimento em {previewArea}
                           </div>
                         )}
 
@@ -2642,9 +2657,9 @@ END:VCARD`;
                         )}
                      </div>
 
-                     {data.address && (
+                     {previewAddress && (
                        <a 
-                         href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(data.address)}`}
+                         href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(previewAddress || data.address)}`}
                          target="_blank"
                          rel="noopener noreferrer"
                          onClick={() => handleTrackClick('click_address')}
@@ -2655,7 +2670,7 @@ END:VCARD`;
                            : "bg-white border-slate-200 text-slate-600 hover:bg-slate-50"
                        )}>
                          <MapPin className="w-3 h-3 opacity-50" />
-                         <span className="opacity-80 truncate max-w-[150px]">{data.address}</span>
+                         <span className="opacity-80 truncate max-w-[150px]">{previewAddress}</span>
                        </a>
                      )}
                   </div>
