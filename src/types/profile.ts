@@ -44,11 +44,14 @@ export interface Service {
 }
 
 export interface CustomFields {
-  // Barbearia
+  // Barbearia / Cabeleireiro
   aceita_agendamento?: boolean;
   trabalha_com_horario_marcado?: boolean;
-  // Manicure
+  atende_noiva?: boolean;
+  especialista_loiras?: boolean;
+  // Manicure / Estética
   atende_domicilio?: boolean;
+  procedimentos?: string[];
   // Personal Trainer
   atende_em_academia?: boolean;
   online?: boolean;
@@ -58,16 +61,50 @@ export interface CustomFields {
   // Psicólogo
   abordagem_terapeutica?: string;
   atendimento_online?: boolean;
-  // Fotógrafo
+  // Fotógrafo / Designer / Tech
   tipo_eventos?: string[];
   entrega_digital?: boolean;
-  // Técnico Informática
-  atende_empresas?: boolean;
-  suporte_remoto?: boolean;
-  // Esteticista
-  procedimentos?: string[];
-  // Designer
   tipos_de_servico?: string[];
+  suporte_remoto?: boolean;
+  atende_empresas?: boolean;
+  remoto_presencial?: string;
+  stack?: string[];
+  // Construção / Manutenção
+  trabalha_com_reforma?: boolean;
+  anos_experiencia?: string;
+  nr10_ativo?: boolean;
+  atendimento_emergencial?: boolean;
+  caca_vazamento?: boolean;
+  leva_produtos?: boolean;
+  faxina_pos_obra?: boolean;
+  possu_ajudante?: boolean;
+  instalacao_higienizacao?: boolean;
+  ferramentas_proprias?: boolean;
+  faz_sanca?: boolean;
+  drywall?: boolean;
+  vidro_temperado?: boolean;
+  box_banheiro?: boolean;
+  pintura_residencial?: boolean;
+  pintura_comercial?: boolean;
+  trabalha_aluminio?: boolean;
+  trabalha_ferro?: boolean;
+  moveis_planejados?: boolean;
+  // Automotivo
+  socorro_24h?: boolean;
+  especialidade_carros?: string;
+  tipo_veiculo?: string;
+  atende_viagens?: boolean;
+  // Vendas / Gastronomia
+  tem_delivery?: boolean;
+  aceita_vr?: boolean;
+  delivery_proprio?: boolean;
+  retirada_local?: boolean;
+  // Imobiliário / Outros
+  creci?: string;
+  venda_aluguel?: string;
+  banho_tosa?: boolean;
+  atendimento_clinico?: boolean;
+  pecas_originais?: boolean;
 }
 
 // Keeping old items for backwards compatibility during migration

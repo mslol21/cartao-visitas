@@ -72,7 +72,10 @@ export const professionsMap: Record<ProfessionCategory, ProfessionConfig> = {
     id: 'cabeleireiro',
     label: 'Cabeleireiro',
     theme: { color: 'rose', style: 'glass' },
-    customFields: []
+    customFields: [
+      { name: 'atende_noiva', label: 'Atendimento Noivas / Debutantes?', type: 'boolean' },
+      { name: 'especialista_loiras', label: 'Especialista em Loiras / Mechas?', type: 'boolean' }
+    ]
   },
   personal_trainer: {
     id: 'personal_trainer',
@@ -270,55 +273,83 @@ export const professionsMap: Record<ProfessionCategory, ProfessionConfig> = {
     id: 'beauty',
     label: 'Beleza & Estética',
     theme: { color: 'rose', style: 'glass' },
-    customFields: []
+    customFields: [
+      { name: 'atende_domicilio', label: 'Atendimento em Domicílio?', type: 'boolean' },
+      { name: 'aceita_agendamento', label: 'Aceita Agendamento Online?', type: 'boolean' }
+    ]
   },
   health: {
     id: 'health',
     label: 'Saúde & Bem-Estar',
     theme: { color: 'emerald', style: 'standard' },
-    customFields: []
+    customFields: [
+      { name: 'atendimento_online', label: 'Faz Atendimento Online?', type: 'boolean' },
+      { name: 'convenios', label: 'Aceita Convênios?', type: 'boolean' }
+    ]
   },
   sales: {
     id: 'sales',
     label: 'Vendas & Comércio',
     theme: { color: 'violet', style: 'standard' },
-    customFields: []
+    customFields: [
+      { name: 'entrega_rapida', label: 'Possui Entrega Rápida?', type: 'boolean' },
+      { name: 'catalogo_online', label: 'Possui Catálogo Online?', type: 'boolean' }
+    ]
   },
   food: {
     id: 'food',
     label: 'Gastronomia / Delivery',
     theme: { color: 'red', style: 'standard' },
-    customFields: []
+    customFields: [
+      { name: 'tem_delivery', label: 'Atende Delivery?', type: 'boolean' },
+      { name: 'retirada_local', label: 'Aceita Retirada no Local?', type: 'boolean' },
+      { name: 'aceita_vr', label: 'Aceita VR / Ticket?', type: 'boolean' }
+    ]
   },
   tech: {
     id: 'tech',
     label: 'Tecnologia / Digital',
     theme: { color: 'blue', style: 'oled' },
-    customFields: []
+    customFields: [
+      { name: 'remoto_presencial', label: 'Forma de Trabalho', type: 'text', placeholder: 'Ex: 100% Remoto' },
+      { name: 'stack', label: 'Tecnologias (Separado por vírgula)', type: 'array', placeholder: 'Ex: React, Node, SQL' }
+    ]
   },
   real_estate: {
     id: 'real_estate',
     label: 'Imobiliários',
     theme: { color: 'emerald', style: 'glass' },
-    customFields: []
+    customFields: [
+      { name: 'creci', label: 'Número do CRECI', type: 'text', placeholder: 'Ex: 123456-F' },
+      { name: 'venda_aluguel', label: 'Tipos de Imóveis', type: 'text', placeholder: 'Ex: Venda e Aluguel' }
+    ]
   },
   driver: {
     id: 'driver',
     label: 'Motorista / Entregas',
     theme: { color: 'slate', style: 'standard' },
-    customFields: []
+    customFields: [
+      { name: 'tipo_veiculo', label: 'Seu Veículo', type: 'text', placeholder: 'Ex: Carro Sedan' },
+      { name: 'atende_viagens', label: 'Faz Viagens Intermunicipais?', type: 'boolean' }
+    ]
   },
   petshop: {
     id: 'petshop',
     label: 'Petshop / Veterinária',
     theme: { color: 'purple', style: 'glass' },
-    customFields: []
+    customFields: [
+      { name: 'banho_tosa', label: 'Oferece Banho e Tosa?', type: 'boolean' },
+      { name: 'atendimento_clinico', label: 'Possui Atendimento Clínico?', type: 'boolean' }
+    ]
   },
   service: {
     id: 'service',
     label: 'Manutenção / Serviços',
     theme: { color: 'amber', style: 'standard' },
-    customFields: []
+    customFields: [
+      { name: 'orcamento_gratis', label: 'Orçamento Gratuito?', type: 'boolean' },
+      { name: 'garantia_servico', label: 'Oferece Garantia?', type: 'boolean' }
+    ]
   },
   default: {
     id: 'default',

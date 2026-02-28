@@ -21,7 +21,16 @@ import {
   Twitter,
   Youtube,
   GlobeIcon,
-  Crown
+  Crown,
+  ShieldCheck,
+  Home,
+  Truck,
+  HeartPulse,
+  History,
+  HardHat,
+  Monitor,
+  Smartphone,
+  Check
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Profile, Service, CustomFields, ProfessionCategory } from '@/types/profile';
@@ -92,6 +101,20 @@ export function StandardProfessionalLayout({ data, isPro }: StandardProfessional
     pulse:   'pulse 1.8s ease-in-out infinite',
     shimmer: 'shine 2s linear infinite',
     orbit:   'aura-spin 6s linear infinite',
+  };
+
+  const getFieldIcon = (fieldName: string) => {
+     if (fieldName.includes('atende_domicilio') || fieldName.includes('residencial')) return Home;
+     if (fieldName.includes('agendamento') || fieldName.includes('horario')) return Calendar;
+     if (fieldName.includes('oab') || fieldName.includes('creci') || fieldName.includes('nr10')) return ShieldCheck;
+     if (fieldName.includes('delivery') || fieldName.includes('frete') || fieldName.includes('veiculo')) return Truck;
+     if (fieldName.includes('online') || fieldName.includes('remoto') || fieldName.includes('digital')) return Monitor;
+     if (fieldName.includes('experiencia')) return History;
+     if (fieldName.includes('socorro') || fieldName.includes('emergencia')) return Zap;
+     if (fieldName.includes('clinico') || fieldName.includes('saude')) return HeartPulse;
+     if (fieldName.includes('celular')) return Smartphone;
+     if (['reforma', 'ferramentas', 'obra'].some(k => fieldName.includes(k))) return HardHat;
+     return Award;
   };
 
   return (
@@ -292,23 +315,28 @@ export function StandardProfessionalLayout({ data, isPro }: StandardProfessional
           <div className="grid grid-cols-2 gap-3">
             {config.customFields.map((field) => {
               const value = (data.custom_fields as any)?.[field.name];
-              if (!value) return null;
+              if (!value && typeof value !== 'boolean') return null;
+              if (field.type === 'boolean' && value === false) return null;
+
+              const Icon = getFieldIcon(field.name);
 
               return (
-                <div key={field.name} className="p-4 rounded-[1.5rem] bg-primary/5 border border-primary/20 flex flex-col items-center text-center gap-2">
+                <div key={field.name} className="p-4 rounded-[1.5rem] bg-primary/5 border border-primary/20 flex flex-col items-center text-center gap-2 group hover:bg-primary/10 transition-colors">
                    {field.type === 'boolean' ? (
                      <>
-                        <Zap className="w-5 h-5 text-primary" />
+                        <Icon className="w-5 h-5 text-primary group-hover:scale-110 transition-transform" />
                         <span className="text-[10px] font-black uppercase tracking-tight leading-tight">{field.label}</span>
-                        <div className="w-6 h-1 bg-primary rounded-full" />
+                        <Check className="w-3 h-3 text-primary/40" />
                      </>
                    ) : (
                      <>
-                        <Award className="w-5 h-5 text-primary" />
-                        <span className="text-[8px] font-black uppercase tracking-widest opacity-40">{field.label}</span>
-                        <span className="text-[11px] font-black text-slate-800 dark:text-white uppercase leading-tight italic tracking-tighter">
-                          {Array.isArray(value) ? value.join(', ') : value}
-                        </span>
+                        <Icon className="w-5 h-5 text-primary/40" />
+                        <div className="flex flex-col gap-0.5">
+                           <span className="text-[8px] font-black uppercase tracking-widest opacity-40">{field.label}</span>
+                           <span className="text-[11px] font-black text-slate-800 dark:text-white uppercase leading-tight italic tracking-tighter">
+                             {Array.isArray(value) ? value.join(', ') : value}
+                           </span>
+                        </div>
                      </>
                    )}
                 </div>
