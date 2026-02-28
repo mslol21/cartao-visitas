@@ -522,28 +522,43 @@ export function EditorForm({ initialData, onSubmit, onChange, isPro = false, can
                      <Label className="text-xs font-bold uppercase tracking-wider opacity-60">Sua Profissão</Label>
                      <Select 
                        value={formData.profession || 'default'} 
-                        onValueChange={(val) => {
-                          const conf = (professionsMap as any)[val] || professionsMap.default;
-                          const updates = { 
-                            profession: val,
-                            category: val === 'default' ? 'default' : val,
-                            theme_color: conf.theme.color === 'amber' ? '#f59e0b' :
-                                        conf.theme.color === 'blue' ? '#3b82f6' :
-                                        conf.theme.color === 'orange' ? '#f97316' :
-                                        conf.theme.color === 'red' ? '#ef4444' :
-                                        conf.theme.color === 'zinc' ? '#71717a' :
-                                        conf.theme.color === 'violet' ? '#8b5cf6' :
-                                        conf.theme.color === 'emerald' ? '#10b981' : '#3b82f6',
-                            theme_style: conf.theme.style,
-                            font_family: val === 'barbearia' ? 'Sora' : 
-                                        val === 'advogado' ? 'Playfair Display' : 
-                                        val === 'tech' ? 'JetBrains Mono' : 'Inter',
-                            cta_text: val === 'barbearia' ? 'Agendar Corte 💈' : 'Falar no WhatsApp'
-                          };
-                          const updated = { ...formData, ...updates };
-                          setFormData(updated);
-                          if (onChange) onChange(updated);
-                        }}
+                         onValueChange={(val) => {
+                           const conf = (professionsMap as any)[val] || professionsMap.default;
+                           const colorMap: Record<string, string> = {
+                             amber: '#f59e0b',
+                             blue: '#3b82f6',
+                             orange: '#f97316',
+                             red: '#ef4444',
+                             zinc: '#71717a',
+                             violet: '#8b5cf6',
+                             emerald: '#10b981',
+                             stone: '#78716c',
+                             cyan: '#06b6d4',
+                             indigo: '#6366f1',
+                             sky: '#0ea5e9',
+                             pink: '#ec4899',
+                             rose: '#f43f5e',
+                             teal: '#14b8a6',
+                             purple: '#a855f7',
+                             slate: '#64748b'
+                           };
+                           const updates = { 
+                             profession: val,
+                             category: val === 'default' ? 'default' : val,
+                             theme_color: colorMap[conf.theme.color] || '#3b82f6',
+                             theme_style: conf.theme.style,
+                             font_family: val === 'barbearia' ? 'Sora' : 
+                                         val === 'advogado' ? 'Playfair Display' : 
+                                         val === 'tech' ? 'JetBrains Mono' : 'Inter',
+                             cta_text: val === 'barbearia' ? 'Agendar Corte 💈' :
+                                      val === 'manicure' ? 'Agendar Horário ✨' :
+                                      val === 'quentinhas' ? 'Fazer Pedido 🍱' :
+                                      ['mecanico', 'encanador', 'eletricista', 'serralheiro'].includes(val) ? 'Pedir Orçamento 🛠️' : 'Falar no WhatsApp'
+                           };
+                           const updated = { ...formData, ...updates };
+                           setFormData(updated);
+                           if (onChange) onChange(updated);
+                         }}
                      >
                        <SelectTrigger className="rounded-2xl h-12 bg-white dark:bg-slate-950">
                          <SelectValue placeholder="Selecione sua profissão" />

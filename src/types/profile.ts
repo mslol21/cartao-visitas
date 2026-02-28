@@ -18,6 +18,13 @@ export type ProfessionCategory =
   | 'frete'
   | 'ar_condicionado'
   | 'montador_moveis'
+  | 'gesseiro'
+  | 'vidraceiro'
+  | 'pintor'
+  | 'serralheiro'
+  | 'marceneiro'
+  | 'assistencia_celular'
+  | 'quentinhas'
   | 'beauty'
   | 'health'
   | 'sales'
@@ -111,7 +118,7 @@ export interface Profile {
   billing_type: 'stripe' | 'manual';
   plan_expires_at: string | null;
   is_founder: boolean;
-  category: 'default' | 'barbearia' | 'beauty' | 'health' | 'sales' | 'food' | 'service' | 'advogado' | 'tech' | 'real_estate' | 'driver' | 'petshop';
+  category: ProfessionCategory | string | null;
   can_customize_theme: boolean;
   role: 'user' | 'admin';
   verified: boolean;

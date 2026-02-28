@@ -204,6 +204,68 @@ export const professionsMap: Record<ProfessionCategory, ProfessionConfig> = {
       { name: 'ferramentas_proprias', label: 'Ferramentas Próprias?', type: 'boolean' }
     ]
   },
+  gesseiro: {
+    id: 'gesseiro',
+    label: 'Gesseiro / Drywall',
+    theme: { color: 'stone', style: 'standard' },
+    customFields: [
+      { name: 'faz_sanca', label: 'Faz Sancas?', type: 'boolean' },
+      { name: 'drywall', label: 'Trabalha com Drywall?', type: 'boolean' }
+    ]
+  },
+  vidraceiro: {
+    id: 'vidraceiro',
+    label: 'Vidraceiro',
+    theme: { color: 'cyan', style: 'glass' },
+    customFields: [
+      { name: 'vidro_temperado', label: 'Vidro Temperado?', type: 'boolean' },
+      { name: 'box_banheiro', label: 'Instala Box de Banheiro?', type: 'boolean' }
+    ]
+  },
+  pintor: {
+    id: 'pintor',
+    label: 'Pintor',
+    theme: { color: 'indigo', style: 'standard' },
+    customFields: [
+      { name: 'pintura_residencial', label: 'Pintura Residencial?', type: 'boolean' },
+      { name: 'pintura_comercial', label: 'Pintura Comercial?', type: 'boolean' }
+    ]
+  },
+  serralheiro: {
+    id: 'serralheiro',
+    label: 'Serralheiro',
+    theme: { color: 'zinc', style: 'oled' },
+    customFields: [
+      { name: 'trabalha_aluminio', label: 'Trabalha com Alumínio?', type: 'boolean' },
+      { name: 'trabalha_ferro', label: 'Trabalha com Ferro?', type: 'boolean' }
+    ]
+  },
+  marceneiro: {
+    id: 'marceneiro',
+    label: 'Marceneiro',
+    theme: { color: 'orange', style: 'standard' },
+    customFields: [
+      { name: 'moveis_planejados', label: 'Faz Móveis Planejados?', type: 'boolean' }
+    ]
+  },
+  assistencia_celular: {
+    id: 'assistencia_celular',
+    label: 'Assistência Celular',
+    theme: { color: 'blue', style: 'oled' },
+    customFields: [
+      { name: 'troca_tela', label: 'Faz Troca de Tela?', type: 'boolean' },
+      { name: 'peças_originais', label: 'Peças Originais?', type: 'boolean' }
+    ]
+  },
+  quentinhas: {
+    id: 'quentinhas',
+    label: 'Quentinhas / Marmitex',
+    theme: { color: 'red', style: 'standard' },
+    customFields: [
+      { name: 'tem_delivery', label: 'Tem Delivery?', type: 'boolean' },
+      { name: 'aceita_vr', label: 'Aceita VR / Ticket?', type: 'boolean' }
+    ]
+  },
   beauty: {
     id: 'beauty',
     label: 'Beleza & Estética',

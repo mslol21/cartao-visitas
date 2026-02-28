@@ -116,8 +116,8 @@ export function CardPreview({
   const isBeauty = ['beauty', 'manicure', 'cabeleireiro', 'esteticista'].includes(data.profession as string) || data.category === 'beauty';
   const isHealth = ['health', 'personal_trainer', 'psicologo'].includes(data.profession as string) || data.category === 'health';
   const isSales = data.profession === 'sales' || data.category === 'sales';
-  const isFood = data.profession === 'food' || data.category === 'food';
-  const isService = ['service', 'pedreiro', 'mecanico', 'eletricista', 'encanador', 'diarista', 'frete', 'ar_condicionado', 'montador_moveis'].includes(data.profession as string) || data.category === 'service';
+  const isFood = ['food', 'quentinhas'].includes(data.profession as string) || data.category === 'food';
+  const isService = ['service', 'pedreiro', 'mecanico', 'eletricista', 'encanador', 'diarista', 'frete', 'ar_condicionado', 'montador_moveis', 'gesseiro', 'vidraceiro', 'pintor', 'serralheiro', 'marceneiro', 'assistencia_celular'].includes(data.profession as string) || data.category === 'service';
   const isAdvogado = data.profession === 'advogado' || data.category === 'advogado';
   const isTech = ['tech', 'tecnico_informatica', 'designer', 'fotografo'].includes(data.profession as string) || data.category === 'tech';
   const isRealEstate = data.profession === 'real_estate' || data.category === 'real_estate';
