@@ -340,6 +340,19 @@ export const professionsMap: Record<ProfessionCategory, ProfessionConfig> = {
       'https://images.unsplash.com/photo-1599616611502-0fa13d91cca3?auto=format&fit=crop&q=80&w=1080&h=1920'
     ]
   },
+  serralheiro: {
+    id: 'serralheiro',
+    label: 'Serralheiro',
+    theme: { color: 'zinc', style: 'standard' },
+    customFields: [
+      { name: 'trabalha_aluminio', label: 'Trabalha com Alumínio?', type: 'boolean' },
+      { name: 'trabalha_ferro', label: 'Trabalha com Ferro?', type: 'boolean' }
+    ],
+    suggestedBackgrounds: [
+      'https://images.unsplash.com/photo-1504917595217-d4dc5f6127b0?auto=format&fit=crop&q=80&w=1080&h=1920',
+      'https://images.unsplash.com/photo-1518709268805-4e9042af9f23?auto=format&fit=crop&q=80&w=1080&h=1920'
+    ]
+  },
   marceneiro: {
     id: 'marceneiro',
     label: 'Marceneiro',
