@@ -322,25 +322,41 @@ export function EditorForm({ initialData, onSubmit, onChange, isPro = false, can
       // Small delay for better UX feel
       await new Promise(r => setTimeout(r, 600));
       
-      // 1. First check our curated Pixabay-based premium library
+      // 1. First check our curated Pixabay-based premium library (Always works)
       const localMatches = findImages(pixabaySearch);
       
       // 2. Dynamic Fetch from Pixabay API
-      const API_KEY = '48995393-9c869be7400d92297af0e2069'; // Public key for this context or use your own
-      const response = await fetch(`https://pixabay.com/api/?key=${API_KEY}&q=${encodeURIComponent(pixabaySearch)}&image_type=photo&orientation=vertical&per_page=12&safesearch=true`);
-      const data = await response.json();
+      // Use env variable or fallback to a placeholder if not set
+      const API_KEY = process.env.NEXT_PUBLIC_PIXABAY_API_KEY || '48995393-9c869be7400d92297af0e2069';
       
-      const apiResults = data.hits?.map((hit: any) => hit.largeImageURL) || [];
+      const response = await fetch(`https://pixabay.com/api/?key=${API_KEY}&q=${encodeURIComponent(pixabaySearch)}&image_type=photo&orientation=vertical&per_page=12&safesearch=true`);
+      
+      let apiResults: string[] = [];
+      
+      if (response.ok) {
+        const data = await response.json();
+        apiResults = data.hits?.map((hit: any) => hit.largeImageURL) || [];
+      } else {
+        const errorText = await response.text();
+        console.warn('Pixabay API Error:', errorText);
+        // If API fails (usually invalid key), we still have local matches
+        if (localMatches.length === 0) {
+          toast.error('Erro na chave do Pixabay. Usando banco de dados fixo.');
+        }
+      }
+      
       const combined = Array.from(new Set([...localMatches, ...apiResults])).slice(0, 15);
 
       if (combined.length > 0) {
         setSearchResults(combined);
       } else {
-        toast.error('Nenhuma imagem encontrada para este termo no Pixabay.');
+        toast.error('Nenhuma imagem encontrada para este termo.');
       }
     } catch (error) {
-      console.error('Pixabay search error:', error);
-      toast.error('Erro na conexão com Pixabay.');
+      console.error('Search crash:', error);
+      // Fallback behavior even if everything fails
+      const fallback = findImages(pixabaySearch);
+      setSearchResults(fallback);
     } finally {
       setIsSearching(false);
     }
