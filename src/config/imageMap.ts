@@ -69,6 +69,11 @@ export const imageDatabase: Record<string, string[]> = {
     'https://images.unsplash.com/photo-1504307651254-35680f43b1d4?auto=format&fit=crop&q=80&w=1080&h=1920',
     'https://images.unsplash.com/photo-1541888941259-79273a460da1?auto=format&fit=crop&q=80&w=1080&h=1920'
   ],
+  'serralheiro': [
+    'https://images.unsplash.com/photo-1504917595217-d4dcfa996373?auto=format&fit=crop&q=80&w=1080&h=1920',
+    'https://images.unsplash.com/photo-1516937941344-00b4e0337589?auto=format&fit=crop&q=80&w=1080&h=1920',
+    'https://images.unsplash.com/photo-1530124560676-4cb45cc9ed42?auto=format&fit=crop&q=80&w=1080&h=1920'
+  ],
 
   // --- OUTROS ---
   'pet': [
