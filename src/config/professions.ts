@@ -48,6 +48,7 @@ export interface ProfessionConfig {
     style: 'standard' | 'oled' | 'glass' | 'minimalist';
   };
   customFields: FieldConfig[];
+  suggestedBackgrounds?: string[];
 }
 
 export const professionsMap: Record<ProfessionCategory, ProfessionConfig> = {
@@ -58,6 +59,11 @@ export const professionsMap: Record<ProfessionCategory, ProfessionConfig> = {
     customFields: [
       { name: 'aceita_agendamento', label: 'Aceita Agendamento Online?', type: 'boolean' },
       { name: 'trabalha_com_horario_marcado', label: 'Horário Marcado?', type: 'boolean' }
+    ],
+    suggestedBackgrounds: [
+      'https://images.unsplash.com/photo-1503951914875-452162b0f3f1?auto=format&fit=crop&q=80&w=1080&h=1920',
+      'https://images.unsplash.com/photo-1585744944847-1c39059e74cf?auto=format&fit=crop&q=80&w=1080&h=1920',
+      'https://images.unsplash.com/photo-1621605815971-fbc98d665033?auto=format&fit=crop&q=80&w=1080&h=1920'
     ]
   },
   manicure: {
@@ -66,6 +72,11 @@ export const professionsMap: Record<ProfessionCategory, ProfessionConfig> = {
     theme: { color: 'pink', style: 'glass' },
     customFields: [
       { name: 'atende_domicilio', label: 'Atende em Domicílio?', type: 'boolean' }
+    ],
+    suggestedBackgrounds: [
+      'https://images.unsplash.com/photo-1621236304846-859dabc6a101?auto=format&fit=crop&q=80&w=1080&h=1920',
+      'https://images.unsplash.com/photo-1519014816548-bf5fe059798b?auto=format&fit=crop&q=80&w=1080&h=1920',
+      'https://images.unsplash.com/photo-1632345680197-23517df40df2?auto=format&fit=crop&q=80&w=1080&h=1920'
     ]
   },
   cabeleireiro: {
@@ -75,6 +86,11 @@ export const professionsMap: Record<ProfessionCategory, ProfessionConfig> = {
     customFields: [
       { name: 'atende_noiva', label: 'Atendimento Noivas / Debutantes?', type: 'boolean' },
       { name: 'especialista_loiras', label: 'Especialista em Loiras / Mechas?', type: 'boolean' }
+    ],
+    suggestedBackgrounds: [
+      'https://images.unsplash.com/photo-1560066984-138dadb4c035?auto=format&fit=crop&q=80&w=1080&h=1920',
+      'https://images.unsplash.com/photo-1522337660859-02fbefca4702?auto=format&fit=crop&q=80&w=1080&h=1920',
+      'https://images.unsplash.com/photo-1521590832167-7bcbfaa6381f?auto=format&fit=crop&q=80&w=1080&h=1920'
     ]
   },
   personal_trainer: {
@@ -84,6 +100,11 @@ export const professionsMap: Record<ProfessionCategory, ProfessionConfig> = {
     customFields: [
       { name: 'online', label: 'Consultoria Online?', type: 'boolean' },
       { name: 'atende_em_academia', label: 'Atende em Academias Parceiras?', type: 'boolean' }
+    ],
+    suggestedBackgrounds: [
+      'https://images.unsplash.com/photo-1534438327276-14e5300c3a48?auto=format&fit=crop&q=80&w=1080&h=1920',
+      'https://images.unsplash.com/photo-1517836357463-d25dfeac3438?auto=format&fit=crop&q=80&w=1080&h=1920',
+      'https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?auto=format&fit=crop&q=80&w=1080&h=1920'
     ]
   },
   advogado: {
@@ -93,6 +114,11 @@ export const professionsMap: Record<ProfessionCategory, ProfessionConfig> = {
     customFields: [
       { name: 'numero_oab', label: 'Número da OAB', type: 'text', placeholder: 'Ex: 123456/SP' },
       { name: 'especialidades', label: 'Especialidades', type: 'array', placeholder: 'Ex: Direito Civil' }
+    ],
+    suggestedBackgrounds: [
+      'https://images.unsplash.com/photo-1589829545856-d10d557cf95f?auto=format&fit=crop&q=80&w=1080&h=1920',
+      'https://images.unsplash.com/photo-1450101499163-c8848c66ca85?auto=format&fit=crop&q=80&w=1080&h=1920',
+      'https://images.unsplash.com/photo-1505664194779-8beaceb93744?auto=format&fit=crop&q=80&w=1080&h=1920'
     ]
   },
   psicologo: {
@@ -102,6 +128,11 @@ export const professionsMap: Record<ProfessionCategory, ProfessionConfig> = {
     customFields: [
       { name: 'abordagem_terapeutica', label: 'Abordagem Terapêutica', type: 'text', placeholder: 'Ex: TCC, Psicanálise' },
       { name: 'atendimento_online', label: 'Atendimento Online?', type: 'boolean' }
+    ],
+    suggestedBackgrounds: [
+      'https://images.unsplash.com/photo-1527689368864-3a821dbccc48?auto=format&fit=crop&q=80&w=1080&h=1920',
+      'https://images.unsplash.com/photo-1516302752625-fbb345ebb1e5?auto=format&fit=crop&q=80&w=1080&h=1920',
+      'https://images.unsplash.com/photo-1518101645466-7795880fb9f8?auto=format&fit=crop&q=80&w=1080&h=1920'
     ]
   },
   designer: {
@@ -110,6 +141,11 @@ export const professionsMap: Record<ProfessionCategory, ProfessionConfig> = {
     theme: { color: 'purple', style: 'glass' },
     customFields: [
       { name: 'tipos_de_servico', label: 'Tipos de Serviços', type: 'array', placeholder: 'Ex: Identidade Visual, UI/UX' }
+    ],
+    suggestedBackgrounds: [
+      'https://images.unsplash.com/photo-1558655146-d09347e92766?auto=format&fit=crop&q=80&w=1080&h=1920',
+      'https://images.unsplash.com/photo-1550684848-fac1c5b4e853?auto=format&fit=crop&q=80&w=1080&h=1920',
+      'https://images.unsplash.com/photo-1545231027-4144e1c6680a?auto=format&fit=crop&q=80&w=1080&h=1920'
     ]
   },
   fotografo: {
@@ -119,6 +155,11 @@ export const professionsMap: Record<ProfessionCategory, ProfessionConfig> = {
     customFields: [
       { name: 'tipo_eventos', label: 'Tipos de Eventos', type: 'array', placeholder: 'Ex: Casamentos, Ensaios' },
       { name: 'entrega_digital', label: 'Entrega Digital?', type: 'boolean' }
+    ],
+    suggestedBackgrounds: [
+      'https://images.unsplash.com/photo-1493863641943-9b68992a8d07?auto=format&fit=crop&q=80&w=1080&h=1920',
+      'https://images.unsplash.com/photo-1542038784456-1ea8e935640e?auto=format&fit=crop&q=80&w=1080&h=1920',
+      'https://images.unsplash.com/photo-1516033519934-84640108db88?auto=format&fit=crop&q=80&w=1080&h=1920'
     ]
   },
   tecnico_informatica: {
@@ -128,6 +169,11 @@ export const professionsMap: Record<ProfessionCategory, ProfessionConfig> = {
     customFields: [
       { name: 'suporte_remoto', label: 'Suporte Remoto?', type: 'boolean' },
       { name: 'atende_empresas', label: 'Atende Empresas?', type: 'boolean' }
+    ],
+    suggestedBackgrounds: [
+      'https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&q=80&w=1080&h=1920',
+      'https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&q=80&w=1080&h=1920',
+      'https://images.unsplash.com/photo-1563770660941-20978e87081b?auto=format&fit=crop&q=80&w=1080&h=1920'
     ]
   },
   esteticista: {
@@ -136,6 +182,11 @@ export const professionsMap: Record<ProfessionCategory, ProfessionConfig> = {
     theme: { color: 'rose', style: 'glass' },
     customFields: [
       { name: 'procedimentos', label: 'Procedimentos Principais', type: 'array', placeholder: 'Ex: Limpeza de Pele' }
+    ],
+    suggestedBackgrounds: [
+      'https://images.unsplash.com/photo-1570172619664-2af9fbeca001?auto=format&fit=crop&q=80&w=1080&h=1920',
+      'https://images.unsplash.com/photo-1544161515-4365f1007221?auto=format&fit=crop&q=80&w=1080&h=1920',
+      'https://images.unsplash.com/photo-1616394584738-fc6e612e71b9?auto=format&fit=crop&q=80&w=1080&h=1920'
     ]
   },
   pedreiro: {
@@ -145,6 +196,11 @@ export const professionsMap: Record<ProfessionCategory, ProfessionConfig> = {
     customFields: [
       { name: 'trabalha_com_reforma', label: 'Faz Reformas?', type: 'boolean' },
       { name: 'anos_experiencia', label: 'Anos de Experiência', type: 'text', placeholder: 'Ex: 10 anos' }
+    ],
+    suggestedBackgrounds: [
+      'https://images.unsplash.com/photo-1581094794329-c8112a89af12?auto=format&fit=crop&q=80&w=1080&h=1920',
+      'https://images.unsplash.com/photo-1504307651254-35680f43b1d4?auto=format&fit=crop&q=80&w=1080&h=1920',
+      'https://images.unsplash.com/photo-1541888941259-79273a460da1?auto=format&fit=crop&q=80&w=1080&h=1920'
     ]
   },
   mecanico: {
@@ -154,6 +210,11 @@ export const professionsMap: Record<ProfessionCategory, ProfessionConfig> = {
     customFields: [
       { name: 'socorro_24h', label: 'Socorro 24h?', type: 'boolean' },
       { name: 'especialidade_carros', label: 'Especialista em', type: 'text', placeholder: 'Ex: Câmbio, Suspensão' }
+    ],
+    suggestedBackgrounds: [
+      'https://images.unsplash.com/photo-1486006396193-471068589dca?auto=format&fit=crop&q=80&w=1080&h=1920',
+      'https://images.unsplash.com/photo-1517524008436-bbdb53c54434?auto=format&fit=crop&q=80&w=1080&h=1920',
+      'https://images.unsplash.com/photo-1530046339160-ce3e5b0c792f?auto=format&fit=crop&q=80&w=1080&h=1920'
     ]
   },
   eletricista: {
@@ -163,6 +224,11 @@ export const professionsMap: Record<ProfessionCategory, ProfessionConfig> = {
     customFields: [
       { name: 'nr10_ativo', label: 'NR10 Ativo?', type: 'boolean' },
       { name: 'atendimento_emergencial', label: 'Atendimento Emergencial?', type: 'boolean' }
+    ],
+    suggestedBackgrounds: [
+      'https://images.unsplash.com/photo-1621905251918-48416bd8575a?auto=format&fit=crop&q=80&w=1080&h=1920',
+      'https://images.unsplash.com/photo-1621905252507-b352224075e8?auto=format&fit=crop&q=80&w=1080&h=1920',
+      'https://images.unsplash.com/photo-1558403194-611308249627?auto=format&fit=crop&q=80&w=1080&h=1920'
     ]
   },
   encanador: {
@@ -171,6 +237,11 @@ export const professionsMap: Record<ProfessionCategory, ProfessionConfig> = {
     theme: { color: 'blue', style: 'standard' },
     customFields: [
       { name: 'caca_vazamento', label: 'Caça Vazamento?', type: 'boolean' }
+    ],
+    suggestedBackgrounds: [
+      'https://images.unsplash.com/photo-1585704032915-c3400ca199e7?auto=format&fit=crop&q=80&w=1080&h=1920',
+      'https://images.unsplash.com/photo-1605667504813-f66e067c268d?auto=format&fit=crop&q=80&w=1080&h=1920',
+      'https://images.unsplash.com/photo-1542013976693-87748472f3ff?auto=format&fit=crop&q=80&w=1080&h=1920'
     ]
   },
   diarista: {
@@ -180,6 +251,11 @@ export const professionsMap: Record<ProfessionCategory, ProfessionConfig> = {
     customFields: [
       { name: 'leva_produtos', label: 'Leva produtos próprios?', type: 'boolean' },
       { name: 'faxina_pos_obra', label: 'Faz pós-obra?', type: 'boolean' }
+    ],
+    suggestedBackgrounds: [
+      'https://images.unsplash.com/photo-1581578731522-745d05db9ad0?auto=format&fit=crop&q=80&w=1080&h=1920',
+      'https://images.unsplash.com/photo-1584622650111-993a426fbf0a?auto=format&fit=crop&q=80&w=1080&h=1920',
+      'https://images.unsplash.com/photo-1527515637462-cff94eecc1ac?auto=format&fit=crop&q=80&w=1080&h=1920'
     ]
   },
   frete: {
@@ -189,6 +265,11 @@ export const professionsMap: Record<ProfessionCategory, ProfessionConfig> = {
     customFields: [
       { name: 'possui_ajudante', label: 'Possui Ajudante?', type: 'boolean' },
       { name: 'tipo_veiculo', label: 'Tipo de Veículo', type: 'text', placeholder: 'Ex: Fiorino, HR, Caminhão' }
+    ],
+    suggestedBackgrounds: [
+      'https://images.unsplash.com/photo-1586528116311-ad86d72b220b?auto=format&fit=crop&q=80&w=1080&h=1920',
+      'https://images.unsplash.com/photo-1494412574743-0112f0424888?auto=format&fit=crop&q=80&w=1080&h=1920',
+      'https://images.unsplash.com/photo-1519003722824-19fd3599e19d?auto=format&fit=crop&q=80&w=1080&h=1920'
     ]
   },
   ar_condicionado: {
@@ -197,6 +278,11 @@ export const professionsMap: Record<ProfessionCategory, ProfessionConfig> = {
     theme: { color: 'cyan', style: 'glass' },
     customFields: [
       { name: 'instalacao_higienizacao', label: 'Instalação e Higienização?', type: 'boolean' }
+    ],
+    suggestedBackgrounds: [
+      'https://images.unsplash.com/photo-1563453392212-326f5e854473?auto=format&fit=crop&q=80&w=1080&h=1920',
+      'https://images.unsplash.com/photo-1621814674068-07e793910c6d?auto=format&fit=crop&q=80&w=1080&h=1920',
+      'https://images.unsplash.com/photo-1615818968853-90d5257904e2?auto=format&fit=crop&q=80&w=1080&h=1920'
     ]
   },
   montador_moveis: {
@@ -205,6 +291,11 @@ export const professionsMap: Record<ProfessionCategory, ProfessionConfig> = {
     theme: { color: 'stone', style: 'standard' },
     customFields: [
       { name: 'ferramentas_proprias', label: 'Ferramentas Próprias?', type: 'boolean' }
+    ],
+    suggestedBackgrounds: [
+      'https://images.unsplash.com/photo-1517036660161-aa8e935640e?auto=format&fit=crop&q=80&w=1080&h=1920',
+      'https://images.unsplash.com/photo-1502005229762-cf1b2da7c5d6?auto=format&fit=crop&q=80&w=1080&h=1920',
+      'https://images.unsplash.com/photo-1622396481328-9b1b78cdd9fd?auto=format&fit=crop&q=80&w=1080&h=1920'
     ]
   },
   gesseiro: {
@@ -214,6 +305,11 @@ export const professionsMap: Record<ProfessionCategory, ProfessionConfig> = {
     customFields: [
       { name: 'faz_sanca', label: 'Faz Sancas?', type: 'boolean' },
       { name: 'drywall', label: 'Trabalha com Drywall?', type: 'boolean' }
+    ],
+    suggestedBackgrounds: [
+      'https://images.unsplash.com/photo-1534237711011-41864f2a9316?auto=format&fit=crop&q=80&w=1080&h=1920',
+      'https://images.unsplash.com/photo-1508967566542-f3d212a4bcf6?auto=format&fit=crop&q=80&w=1080&h=1920',
+      'https://images.unsplash.com/photo-1513519245088-0e12902e5a38?auto=format&fit=crop&q=80&w=1080&h=1920'
     ]
   },
   vidraceiro: {
@@ -223,6 +319,11 @@ export const professionsMap: Record<ProfessionCategory, ProfessionConfig> = {
     customFields: [
       { name: 'vidro_temperado', label: 'Vidro Temperado?', type: 'boolean' },
       { name: 'box_banheiro', label: 'Instala Box de Banheiro?', type: 'boolean' }
+    ],
+    suggestedBackgrounds: [
+      'https://images.unsplash.com/photo-1520038410233-7141ec7ae74d?auto=format&fit=crop&q=80&w=1080&h=1920',
+      'https://images.unsplash.com/photo-1601050690533-33df45f47055?auto=format&fit=crop&q=80&w=1080&h=1920',
+      'https://images.unsplash.com/photo-1497233538033-edfa5950a6da?auto=format&fit=crop&q=80&w=1080&h=1920'
     ]
   },
   pintor: {
@@ -232,15 +333,11 @@ export const professionsMap: Record<ProfessionCategory, ProfessionConfig> = {
     customFields: [
       { name: 'pintura_residencial', label: 'Pintura Residencial?', type: 'boolean' },
       { name: 'pintura_comercial', label: 'Pintura Comercial?', type: 'boolean' }
-    ]
-  },
-  serralheiro: {
-    id: 'serralheiro',
-    label: 'Serralheiro',
-    theme: { color: 'zinc', style: 'oled' },
-    customFields: [
-      { name: 'trabalha_aluminio', label: 'Trabalha com Alumínio?', type: 'boolean' },
-      { name: 'trabalha_ferro', label: 'Trabalha com Ferro?', type: 'boolean' }
+    ],
+    suggestedBackgrounds: [
+      'https://images.unsplash.com/photo-1589939705384-5185138a04b9?auto=format&fit=crop&q=80&w=1080&h=1920',
+      'https://images.unsplash.com/photo-1562944061-0b5ef9c8114f?auto=format&fit=crop&q=80&w=1080&h=1920',
+      'https://images.unsplash.com/photo-1599616611502-0fa13d91cca3?auto=format&fit=crop&q=80&w=1080&h=1920'
     ]
   },
   marceneiro: {
@@ -249,6 +346,11 @@ export const professionsMap: Record<ProfessionCategory, ProfessionConfig> = {
     theme: { color: 'orange', style: 'standard' },
     customFields: [
       { name: 'moveis_planejados', label: 'Faz Móveis Planejados?', type: 'boolean' }
+    ],
+    suggestedBackgrounds: [
+      'https://images.unsplash.com/photo-1533090161767-e6ffed986c88?auto=format&fit=crop&q=80&w=1080&h=1920',
+      'https://images.unsplash.com/photo-1501139083526-77839736aaed?auto=format&fit=crop&q=80&w=1080&h=1920',
+      'https://images.unsplash.com/photo-1475518883-ec22d4cb3707?auto=format&fit=crop&q=80&w=1080&h=1920'
     ]
   },
   assistencia_celular: {
@@ -258,15 +360,25 @@ export const professionsMap: Record<ProfessionCategory, ProfessionConfig> = {
     customFields: [
       { name: 'troca_tela', label: 'Faz Troca de Tela?', type: 'boolean' },
       { name: 'peças_originais', label: 'Peças Originais?', type: 'boolean' }
+    ],
+    suggestedBackgrounds: [
+      'https://images.unsplash.com/photo-1597075095440-b617688536be?auto=format&fit=crop&q=80&w=1080&h=1920',
+      'https://images.unsplash.com/photo-1604754737202-31dd242ba98c?auto=format&fit=crop&q=80&w=1080&h=1920',
+      'https://images.unsplash.com/photo-1551817418-471249e02379?auto=format&fit=crop&q=80&w=1080&h=1920'
     ]
   },
   quentinhas: {
     id: 'quentinhas',
-    label: 'Quentinhas / Marmitex',
+    label: 'Gastronomia / Marmitas',
     theme: { color: 'red', style: 'standard' },
     customFields: [
       { name: 'tem_delivery', label: 'Tem Delivery?', type: 'boolean' },
       { name: 'aceita_vr', label: 'Aceita VR / Ticket?', type: 'boolean' }
+    ],
+    suggestedBackgrounds: [
+      'https://images.unsplash.com/photo-1543339308-43e59d6b73a6?auto=format&fit=crop&q=80&w=1080&h=1920',
+      'https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&q=80&w=1080&h=1920',
+      'https://images.unsplash.com/photo-1547592166-23ac45744acd?auto=format&fit=crop&q=80&w=1080&h=1920'
     ]
   },
   beauty: {
@@ -276,6 +388,11 @@ export const professionsMap: Record<ProfessionCategory, ProfessionConfig> = {
     customFields: [
       { name: 'atende_domicilio', label: 'Atendimento em Domicílio?', type: 'boolean' },
       { name: 'aceita_agendamento', label: 'Aceita Agendamento Online?', type: 'boolean' }
+    ],
+    suggestedBackgrounds: [
+      'https://images.unsplash.com/photo-1512290923902-8a9f81dc2069?auto=format&fit=crop&q=80&w=1080&h=1920',
+      'https://images.unsplash.com/photo-1616394584738-fc6e612e71b9?auto=format&fit=crop&q=80&w=1080&h=1920',
+      'https://images.unsplash.com/photo-1596178065887-1198b6148b2b?auto=format&fit=crop&q=80&w=1080&h=1920'
     ]
   },
   health: {
@@ -285,6 +402,12 @@ export const professionsMap: Record<ProfessionCategory, ProfessionConfig> = {
     customFields: [
       { name: 'atendimento_online', label: 'Faz Atendimento Online?', type: 'boolean' },
       { name: 'convenios', label: 'Aceita Convênios?', type: 'boolean' }
+    ],
+    suggestedBackgrounds: [
+      'https://images.unsplash.com/photo-1576091160550-217359f4ecf8?auto=format&fit=crop&q=80&w=1080&h=1920',
+      'https://images.unsplash.com/photo-1582719478250-c29ade595da7?auto=format&fit=crop&q=80&w=1080&h=1920',
+      'https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?auto=format&fit=crop&q=80&w=1080&h=1920',
+      'https://images.unsplash.com/photo-1629909613654-28e377c37b09?auto=format&fit=crop&q=80&w=1080&h=1920'
     ]
   },
   sales: {
@@ -294,6 +417,11 @@ export const professionsMap: Record<ProfessionCategory, ProfessionConfig> = {
     customFields: [
       { name: 'entrega_rapida', label: 'Possui Entrega Rápida?', type: 'boolean' },
       { name: 'catalogo_online', label: 'Possui Catálogo Online?', type: 'boolean' }
+    ],
+    suggestedBackgrounds: [
+      'https://images.unsplash.com/photo-1556740738-b6a63e27c4df?auto=format&fit=crop&q=80&w=1080&h=1920',
+      'https://images.unsplash.com/photo-1556742049-02e53695219e?auto=format&fit=crop&q=80&w=1080&h=1920',
+      'https://images.unsplash.com/photo-1441986300913-9af03067ee0a?auto=format&fit=crop&q=80&w=1080&h=1920'
     ]
   },
   food: {
@@ -304,6 +432,11 @@ export const professionsMap: Record<ProfessionCategory, ProfessionConfig> = {
       { name: 'tem_delivery', label: 'Atende Delivery?', type: 'boolean' },
       { name: 'retirada_local', label: 'Aceita Retirada no Local?', type: 'boolean' },
       { name: 'aceita_vr', label: 'Aceita VR / Ticket?', type: 'boolean' }
+    ],
+    suggestedBackgrounds: [
+      'https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=1080&h=1920&q=80',
+      'https://images.unsplash.com/photo-1476224203421-9ac39bcb3327?auto=format&fit=crop&w=1080&h=1920&q=80',
+      'https://images.unsplash.com/photo-1493770348161-369560ae357d?auto=format&fit=crop&w=1080&h=1920&q=80'
     ]
   },
   tech: {
@@ -313,6 +446,11 @@ export const professionsMap: Record<ProfessionCategory, ProfessionConfig> = {
     customFields: [
       { name: 'remoto_presencial', label: 'Forma de Trabalho', type: 'text', placeholder: 'Ex: 100% Remoto' },
       { name: 'stack', label: 'Tecnologias (Separado por vírgula)', type: 'array', placeholder: 'Ex: React, Node, SQL' }
+    ],
+    suggestedBackgrounds: [
+      'https://images.unsplash.com/photo-1517694712202-14dd9538aa97?auto=format&fit=crop&q=80&w=1080&h=1920',
+      'https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&q=80&w=1080&h=1920',
+      'https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&q=80&w=1080&h=1920'
     ]
   },
   real_estate: {
@@ -322,6 +460,11 @@ export const professionsMap: Record<ProfessionCategory, ProfessionConfig> = {
     customFields: [
       { name: 'creci', label: 'Número do CRECI', type: 'text', placeholder: 'Ex: 123456-F' },
       { name: 'venda_aluguel', label: 'Tipos de Imóveis', type: 'text', placeholder: 'Ex: Venda e Aluguel' }
+    ],
+    suggestedBackgrounds: [
+      'https://images.unsplash.com/photo-1560518883-ce09059eeffa?auto=format&fit=crop&q=80&w=1080&h=1920',
+      'https://images.unsplash.com/photo-1582408921715-18e7806365bb?auto=format&fit=crop&q=80&w=1080&h=1920',
+      'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&q=80&w=1080&h=1920'
     ]
   },
   driver: {
@@ -331,6 +474,11 @@ export const professionsMap: Record<ProfessionCategory, ProfessionConfig> = {
     customFields: [
       { name: 'tipo_veiculo', label: 'Seu Veículo', type: 'text', placeholder: 'Ex: Carro Sedan' },
       { name: 'atende_viagens', label: 'Faz Viagens Intermunicipais?', type: 'boolean' }
+    ],
+    suggestedBackgrounds: [
+      'https://images.unsplash.com/photo-1449965408869-eaa3f722e40d?auto=format&fit=crop&q=80&w=1080&h=1920',
+      'https://images.unsplash.com/photo-1533512930330-4e2e6ca42dc3?auto=format&fit=crop&q=80&w=1080&h=1920',
+      'https://images.unsplash.com/photo-1507136766453-762bc250fbd3?auto=format&fit=crop&q=80&w=1080&h=1920'
     ]
   },
   petshop: {
@@ -340,6 +488,11 @@ export const professionsMap: Record<ProfessionCategory, ProfessionConfig> = {
     customFields: [
       { name: 'banho_tosa', label: 'Oferece Banho e Tosa?', type: 'boolean' },
       { name: 'atendimento_clinico', label: 'Possui Atendimento Clínico?', type: 'boolean' }
+    ],
+    suggestedBackgrounds: [
+      'https://images.unsplash.com/photo-1516734212186-a967f81ad0d7?auto=format&fit=crop&q=80&w=1080&h=1920',
+      'https://images.unsplash.com/photo-1583511655857-d19b40a7a54e?auto=format&fit=crop&q=80&w=1080&h=1920',
+      'https://images.unsplash.com/photo-1537151608828-ea2b11777ee8?auto=format&fit=crop&q=80&w=1080&h=1920'
     ]
   },
   service: {
@@ -349,6 +502,10 @@ export const professionsMap: Record<ProfessionCategory, ProfessionConfig> = {
     customFields: [
       { name: 'orcamento_gratis', label: 'Orçamento Gratuito?', type: 'boolean' },
       { name: 'garantia_servico', label: 'Oferece Garantia?', type: 'boolean' }
+    ],
+    suggestedBackgrounds: [
+      'https://images.unsplash.com/photo-1581447100595-3a72cb9b60b3?auto=format&fit=crop&q=80&w=1080&h=1920',
+      'https://images.unsplash.com/photo-1504307651254-35680f43b1d4?auto=format&fit=crop&q=80&w=1080&h=1920'
     ]
   },
   default: {

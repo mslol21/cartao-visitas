@@ -507,35 +507,39 @@ END:VCARD`;
               : "border border-slate-200 dark:border-slate-800 shadow-sm bg-white dark:bg-slate-950"
           )}
         >
-          {/* --- BACKGROUND LAYER (Video or Digital Field) --- */}
           <div 
-            className="absolute inset-0 z-0"
-            style={isPro && data.background_video_url ? {
-              maskImage: 'linear-gradient(to bottom, black 60%, transparent 100%)',
-              WebkitMaskImage: 'linear-gradient(to bottom, black 60%, transparent 100%)'
-            } : undefined}
+            className="absolute inset-0 z-0 bg-transparent"
           >
               {isPro && data.background_video_url ? (
-               <>
-                 {data.background_video_url.match(/\.(mp4|webm|ogg|mov)$/i) ? (
-                   <video 
-                     src={data.background_video_url}
-                     autoPlay 
-                     muted 
-                     loop 
-                     playsInline 
-                     className="w-full h-full object-cover"
-                   />
-                 ) : (
-                   <img 
-                     src={data.background_video_url}
-                     alt="Background"
-                     className="w-full h-full object-cover"
-                   />
-                 )}
-                 <div className="absolute inset-0 bg-black/40 backdrop-blur-[1px]" />
-                 <div className="absolute inset-x-0 bottom-0 h-32 bg-gradient-to-t from-slate-950 to-transparent opacity-80" />
-               </>
+               <div className="absolute inset-x-0 top-0 h-[65%] overflow-hidden">
+                 <div 
+                   className="w-full h-full relative"
+                   style={{
+                     maskImage: 'linear-gradient(to bottom, black 0%, black 50%, transparent 100%)',
+                     WebkitMaskImage: 'linear-gradient(to bottom, black 0%, black 50%, transparent 100%)'
+                   }}
+                 >
+                   {data.background_video_url.match(/\.(mp4|webm|ogg|mov)$/i) ? (
+                     <video 
+                       src={data.background_video_url}
+                       autoPlay 
+                       muted 
+                       loop 
+                       playsInline 
+                       className="w-full h-full object-cover object-top"
+                     />
+                   ) : (
+                     <img 
+                       src={data.background_video_url}
+                       alt="Background"
+                       className="w-full h-full object-cover object-top"
+                     />
+                   )}
+                 </div>
+                  {/* Premium depth overlay */}
+                  <div className="absolute inset-0 bg-black/10 backdrop-blur-[0.3px] pointer-events-none" />
+                  <div className="absolute inset-0 ring-1 ring-inset ring-white/5 pointer-events-none" />
+               </div>
              ) : (
                <div 
                  className={cn(
@@ -604,15 +608,17 @@ END:VCARD`;
                          backgroundSize: '30px 30px'
                        }} />
                     </>
-                  ) : isTech ? (
-                    <>
-                       <div className="absolute inset-0 bg-gradient-to-br from-[#020617] via-[#0f172a] to-[#020617]" />
-                       <div className="absolute inset-0 opacity-[0.05]" style={{
-                         backgroundImage: `linear-gradient(rgba(59, 130, 246, 0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(59, 130, 246, 0.1) 1px, transparent 1px)`,
-                         backgroundSize: '20px 20px'
-                       }} />
-                       <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(59,130,246,0.1),transparent_70%)]" />
-                    </>
+                   ) : isTech ? (
+                     <>
+                        <div className="absolute inset-0 bg-gradient-to-br from-[#020617] via-[#0f172a] to-[#0141ff20]" />
+                        <div className="absolute inset-0 opacity-[0.1]" style={{
+                          backgroundImage: `linear-gradient(rgba(59, 130, 246, 0.2) 1px, transparent 1px), linear-gradient(90deg, rgba(59, 130, 246, 0.2) 1px, transparent 1px)`,
+                          backgroundSize: '30px 30px'
+                        }} />
+                        <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(59,130,246,0.15),transparent_80%)]" />
+                        {/* Matrix-like light effect */}
+                        <div className="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-blue-500 to-transparent opacity-50 shadow-[0_0_20px_rgba(59,130,246,0.5)]" />
+                     </>
                   ) : isRealEstate ? (
                     <>
                        <div className="absolute inset-0 bg-gradient-to-br from-[#ffffff] via-[#f8fafc] to-[#f1f5f9]" />

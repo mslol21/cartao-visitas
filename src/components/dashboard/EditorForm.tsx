@@ -87,6 +87,7 @@ import { createClient } from '@/utils/supabase/client';
 import { toast } from 'sonner';
 import { cn } from '@/lib/utils';
 import Link from 'next/link';
+import { findImages } from '@/config/imageMap';
 
 interface EditorFormProps {
   initialData: Partial<ProfileFormData>;
@@ -109,6 +110,9 @@ export function EditorForm({ initialData, onSubmit, onChange, isPro = false, can
   const supabase = createClient();
   const firstRender = useRef(true);
   const [isDirty, setIsDirty] = useState(false);
+  const [unsplashSearch, setUnsplashSearch] = useState('');
+  const [isSearching, setIsSearching] = useState(false);
+  const [searchResults, setSearchResults] = useState<string[]>([]);
 
   const handleSave = useCallback(async (silent = false) => {
     if (isSaving) return;
@@ -299,12 +303,38 @@ export function EditorForm({ initialData, onSubmit, onChange, isPro = false, can
         .getPublicUrl(filePath);
 
       handleChange('background_video_url', publicUrl);
-      toast.success('Fundo atualizado com sucesso!');
-    } catch (error: unknown) {
-      const err = error as Error;
-      toast.error('Erro ao carregar arquivo: ' + err.message);
+      toast.success('Fundo atualizado!');
+    } catch (error: any) {
+      toast.error('Erro ao subir arquivo.');
     } finally {
       setUploading(false);
+    }
+  };
+
+  const handleUnsplashSearch = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!unsplashSearch.trim()) return;
+
+    setIsSearching(true);
+    setSearchResults([]); // Limpa para mostrar o loading
+    
+    try {
+      // Pequeno delay para simular busca e evitar piscada
+      await new Promise(r => setTimeout(r, 600));
+      
+      const matches = findImages(unsplashSearch);
+      
+      if (matches && matches.length > 0) {
+        setSearchResults(matches);
+      } else {
+        toast.error('Não encontramos termos específicos, mas estamos buscando gerais...');
+        // O findImages já cuida do fallback universal agora
+      }
+    } catch (error) {
+      console.error('Search error:', error);
+      toast.error('Ocorreu um erro na busca.');
+    } finally {
+      setIsSearching(false);
     }
   };
 
@@ -1172,6 +1202,116 @@ export function EditorForm({ initialData, onSubmit, onChange, isPro = false, can
                 <p className="text-[10px] text-muted-foreground ml-1">
                   Máximo 10MB. Suporta vídeos (MP4) e imagens (JPG, PNG).
                 </p>
+
+                {/* --- SEARCH & SUGGESTED GALLERY --- */}
+                {isPro && (
+                  <div className="mt-8 space-y-6 animate-in fade-in slide-in-from-bottom-4">
+                    {/* Search Bar */}
+                    <div className="space-y-3">
+                      <div className="flex items-center gap-2">
+                        <Search className="w-3 h-3 text-primary" />
+                        <span className="text-[10px] font-black uppercase tracking-widest text-slate-500">Pesquisar Banco de Imagens</span>
+                      </div>
+                      <form onSubmit={handleUnsplashSearch} className="flex gap-2">
+                        <Input 
+                          placeholder="Ex: coffee, barber, office, nature..."
+                          value={unsplashSearch}
+                          onChange={(e) => setUnsplashSearch(e.target.value)}
+                          className="h-10 rounded-xl text-xs bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800"
+                        />
+                        <Button 
+                          type="submit" 
+                          disabled={isSearching}
+                          className="h-10 px-4 rounded-xl bg-primary hover:bg-primary/90"
+                        >
+                          {isSearching ? <Loader2 className="w-4 h-4 animate-spin" /> : <Search className="w-4 h-4" />}
+                        </Button>
+                      </form>
+                      <p className="text-[8px] text-muted-foreground italic px-1">
+                        * Dica: Use palavras em inglês para melhores resultados.
+                      </p>
+                    </div>
+
+                    {/* Search Results */}
+                    {searchResults.length > 0 && (
+                      <div className="space-y-3">
+                        <div className="flex items-center gap-2">
+                          <Check className="w-3 h-3 text-green-500" />
+                          <span className="text-[10px] font-black uppercase tracking-widest text-slate-500">Resultados da Pesquisa</span>
+                          <Button 
+                            variant="ghost" 
+                            size="sm" 
+                            className="h-4 p-0 ml-auto text-[8px] font-black text-slate-400 uppercase hover:text-red-500"
+                            onClick={() => setSearchResults([])}
+                          >
+                            Limpar
+                          </Button>
+                        </div>
+                        <div className="grid grid-cols-2 xs:grid-cols-3 sm:grid-cols-4 md:grid-cols-6 gap-3">
+                          {searchResults.map((url, i) => (
+                            <button
+                              key={i}
+                              onClick={() => handleChange('background_video_url', url)}
+                              className={cn(
+                                "relative aspect-[3/4] rounded-2xl overflow-hidden border-2 transition-all hover:scale-110 active:scale-95 group/search-item shadow-sm",
+                                formData.background_video_url === url ? "border-primary ring-4 ring-primary/20 shadow-xl" : "border-slate-200 dark:border-slate-800 opacity-90 hover:opacity-100"
+                              )}
+                            >
+                              <img 
+                                src={url} 
+                                className="w-full h-full object-cover transition-opacity duration-500" 
+                                alt="Search result" 
+                                loading="lazy"
+                                onLoad={(e) => {
+                                  (e.target as HTMLImageElement).classList.add('opacity-100');
+                                }}
+                                onError={(e) => {
+                                  // Se falhar o link dinâmico, coloca um fallback de luz/negócios
+                                  (e.target as HTMLImageElement).src = 'https://images.unsplash.com/photo-1497366216548-37526070297c?q=80&w=1080&auto=format&fit=crop';
+                                }}
+                              />
+                              <div className="absolute inset-x-0 bottom-0 h-10 bg-gradient-to-t from-black/80 to-transparent opacity-0 group-hover/search-item:opacity-100 transition-opacity flex items-center justify-center">
+                                <span className="text-[7px] font-black text-white uppercase tracking-tighter">Selecionar</span>
+                              </div>
+                            </button>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+
+                    {/* Recommendations */}
+                    <div className="space-y-4 pt-2">
+                      <div className="flex items-center gap-2">
+                        <SparklesIcon className="w-3 h-3 text-amber-500" />
+                        <span className="text-[10px] font-black uppercase tracking-widest text-slate-500">Sugestões para sua Profissão</span>
+                      </div>
+                      <div className="grid grid-cols-2 xs:grid-cols-3 sm:grid-cols-4 gap-3">
+                        {(professionConfig.suggestedBackgrounds || []).map((bgUrl, idx) => (
+                          <button
+                            key={idx}
+                            onClick={() => handleChange('background_video_url', bgUrl)}
+                            className={cn(
+                              "relative aspect-[3/4] rounded-2xl overflow-hidden border-2 transition-all hover:scale-[1.05] active:scale-95 group/suggest",
+                              formData.background_video_url === bgUrl ? "border-primary ring-4 ring-primary/20" : "border-slate-200 dark:border-slate-800 opacity-80 hover:opacity-100"
+                            )}
+                          >
+                            <img 
+                              src={bgUrl} 
+                              alt={`Suggested background ${idx + 1}`} 
+                              className="w-full h-full object-cover"
+                              onError={(e) => {
+                                (e.target as HTMLImageElement).src = 'https://images.unsplash.com/photo-1497366754035-f200968a6e72?q=80&w=1000&auto=format&fit=crop';
+                              }}
+                            />
+                            <div className="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover/suggest:opacity-100 transition-opacity">
+                              <span className="text-[8px] font-black text-white uppercase tracking-widest bg-primary px-2 py-1 rounded-full shadow-lg">Usar</span>
+                            </div>
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                )}
               </div>
             </div>
           </TabsContent>
