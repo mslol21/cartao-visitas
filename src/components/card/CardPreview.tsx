@@ -677,7 +677,9 @@ END:VCARD`;
              )}
           </div>
           {isPro && isStandardized ? (
-            <StandardProfessionalLayout data={data as Profile} isPro={isPro} />
+            <div className="relative flex flex-col w-full min-h-[600px] z-10 overflow-y-auto scroll-hide">
+              <StandardProfessionalLayout data={data as Profile} isPro={isPro} />
+            </div>
           ) : isBarbearia ? (
             <div className="relative flex flex-col items-center w-full min-h-[600px] z-10 px-6 py-10 overflow-y-auto scroll-hide">
               {/* Header */}

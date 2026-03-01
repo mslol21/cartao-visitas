@@ -303,24 +303,30 @@ export function StandardProfessionalLayout({ data, isPro }: StandardProfessional
              <div className="h-px flex-1 bg-slate-200 dark:bg-white/10" />
           </div>
           
-          <div className="space-y-3">
-            {(data.servicos && data.servicos.length > 0 ? data.servicos : (data.services || []).map(s => ({
-              nome: typeof s === 'string' ? s : s.name,
-              preco: typeof s === 'string' ? '' : s.price,
-              descricao: typeof s === 'string' ? '' : s.description
-            }))).map((service: any, idx) => (
-              <div key={idx} className="group p-5 rounded-[1.8rem] bg-white dark:bg-white/5 border border-slate-100 dark:border-white/10 hover:border-primary/40 transition-all flex justify-between items-center shadow-sm">
-                 <div className="flex flex-col gap-1">
-                    <span className="text-sm font-black uppercase tracking-tighter text-slate-800 dark:text-white">{service.nome}</span>
-                    {service.descricao && <p className="text-[10px] text-slate-500 leading-tight italic opacity-70">{service.descricao}</p>}
+           <div className="space-y-3">
+             {(data.servicos && data.servicos.length > 0 ? data.servicos : (data.services || [])).map((s: any, idx) => {
+               const service = {
+                 nome: typeof s === 'string' ? s : (s.nome || s.name),
+                 preco: typeof s === 'string' ? '' : (s.preco || s.price),
+                 descricao: typeof s === 'string' ? '' : (s.descricao || s.description)
+               };
+               
+               if (!service.nome) return null;
+
+               return (
+                 <div key={idx} className="group p-5 rounded-[1.8rem] bg-white dark:bg-white/5 border border-slate-100 dark:border-white/10 hover:border-primary/40 transition-all flex justify-between items-center shadow-sm">
+                    <div className="flex flex-col gap-1">
+                       <span className="text-sm font-black uppercase tracking-tighter text-slate-800 dark:text-white">{service.nome}</span>
+                       {service.descricao && <p className="text-[10px] text-slate-500 leading-tight italic opacity-70">{service.descricao}</p>}
+                    </div>
+                    <div className="flex flex-col items-end gap-1">
+                       <span className="text-sm font-black text-primary">{service.preco || 'Sob consulta'}</span>
+                       <ChevronRight className="w-3 h-3 opacity-20 bg-primary/10 rounded-full" />
+                    </div>
                  </div>
-                 <div className="flex flex-col items-end gap-1">
-                    <span className="text-sm font-black text-primary">{service.preco || 'Sob consulta'}</span>
-                    <ChevronRight className="w-3 h-3 opacity-20 bg-primary/10 rounded-full" />
-                 </div>
-              </div>
-            ))}
-          </div>
+               );
+             })}
+           </div>
         </motion.div>
       )}
 
