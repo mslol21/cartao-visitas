@@ -69,7 +69,9 @@ import {
   Truck,
   HardHat,
   HeartPulse,
-  Check
+  Check,
+  Calendar,
+  Monitor
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Profile } from '@/types/profile';
@@ -1524,7 +1526,6 @@ END:VCARD`;
                        <p className="text-center text-xs opacity-20 italic py-10">Adicione seus pratos no painel</p>
                      )}
                    </div>
-                </div>
 
                 {/* Detalhes Comida */}
                 <div className="w-full space-y-3 mb-10">
@@ -2472,9 +2473,9 @@ END:VCARD`;
                       </div>
                     )}
                     {/* Profession Specific Label */}
-                    {profConfig?.label && (
+                    {frameConfig?.label && (
                       <div className="px-3 py-1 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-white text-[9px] font-bold uppercase tracking-wider">
-                        {profConfig.label}
+                        {frameConfig.label}
                       </div>
                     )}
                   </div>
@@ -2492,8 +2493,8 @@ END:VCARD`;
                   const effect = data.photo_border_effect || 'none';
                   const themeColor = data.theme_color || '#2563EB';
                   const hasEffect = effect !== 'none';
-                  const profAccent = data.theme_color || profConfig?.accent || '#00D4FF';
-                  const ProfIcon = profConfig?.icon;
+                  const profAccent = data.theme_color || frameConfig?.accent || '#00D4FF';
+                  const ProfIcon = frameConfig?.icon;
 
                   // --- Ring styles for each border effect ---
                   const ringStyles: Record<string, React.CSSProperties> = {
@@ -2515,7 +2516,7 @@ END:VCARD`;
 
                    // ── Profession-specific animations ──────────────────────────
                   const renderProfAnim = (): React.ReactNode => {
-                    if (!profConfig || !isPro) return null;
+                    if (!frameConfig || !isPro) return null;
                     const frame = data.avatar_frame;
 
                       switch (frame) {
@@ -2665,8 +2666,8 @@ END:VCARD`;
                             style={{
                               opacity: isPro ? 0.75 : 0.55,
                               filter: `blur(${isPro ? 16 : 12}px)`,
-                              background: profConfig
-                                ? `conic-gradient(from 0deg, ${profAccent}, ${profConfig.gradient.includes('#') ? profConfig.gradient.split('#')[2] ? '#' + profConfig.gradient.split('#')[2].slice(0,6) : profAccent : profAccent}, ${profAccent})`
+                              background: frameConfig
+                                ? `conic-gradient(from 0deg, ${profAccent}, ${frameConfig.gradient.includes('#') ? frameConfig.gradient.split('#')[2] ? '#' + frameConfig.gradient.split('#')[2].slice(0,6) : profAccent : profAccent}, ${profAccent})`
                                 : 'conic-gradient(from 0deg, #00D4FF, #3B82F6, #22D3EE, #00D4FF)',
                             }}
                           />
@@ -2674,8 +2675,8 @@ END:VCARD`;
                           <div
                             className="aura-arc"
                             style={{
-                              borderTopColor:   profConfig ? profAccent : '#00D4FF',
-                              borderRightColor: profConfig ? profAccent : '#3B82F6',
+                              borderTopColor:   frameConfig ? profAccent : '#00D4FF',
+                              borderRightColor: frameConfig ? profAccent : '#3B82F6',
                               borderWidth: isPro ? '3px' : '2px',
                               opacity: isPro ? 0.7 : 0.4,
                             }}
@@ -2692,7 +2693,7 @@ END:VCARD`;
                                 animationDuration:`${3 + (i % 3)}s`,
                                 transform:       `scale(${isPro ? 1 + (i % 3) * 0.3 : 0.6 + (i % 3) * 0.2})`,
                                 opacity:         isPro ? 0.45 : 0.2,
-                                background:      profConfig ? profAccent : '#00D4FF',
+                                background:      frameConfig ? profAccent : '#00D4FF',
                               }}
                             />
                           ))}
@@ -2720,13 +2721,13 @@ END:VCARD`;
                       {/* Profile Photo */}
                       <div className={cn(
                         "relative w-36 h-36 md:w-40 md:h-40 rounded-full overflow-hidden z-10 shadow-2xl transition-all duration-700",
-                        !hasEffect && isPro && profConfig
+                        !hasEffect && isPro && frameConfig
                           ? "border-[3px]"
                           : !hasEffect && isPro
                           ? "border-4 border-white/40 ring-4 ring-konnexy-cian/20"
                           : "border-4 border-white/10"
                       )}
-                      style={!hasEffect && isPro && profConfig ? { borderColor: profAccent + '80' } : {}}
+                      style={!hasEffect && isPro && frameConfig ? { borderColor: profAccent + '80' } : {}}
                       >
                         {data.photo_url ? (
                           <Image
@@ -2748,7 +2749,7 @@ END:VCARD`;
                       {isPro && ProfIcon && !hasEffect && (
                         <div
                           className="absolute -bottom-1 right-1 p-1.5 rounded-full shadow-lg border-2 border-slate-900 z-20"
-                          style={{ background: profConfig!.gradient }}
+                          style={{ background: frameConfig!.gradient }}
                         >
                           <ProfIcon className="w-4 h-4 text-white drop-shadow" />
                         </div>
@@ -2887,7 +2888,7 @@ END:VCARD`;
                     
                     <MessageCircle className={cn("w-6 h-6 flex-shrink-0 z-10", isPro ? "fill-white" : "fill-white/80")} />
                     <span className="font-black uppercase tracking-[0.05em] z-10">
-                       {isPro ? (data.cta_text || (isBarbearia ? 'Agendar Corte 💈' : (profConfig?.cta || 'Falar no WhatsApp'))) : 'WhatsApp'}
+                       {isPro ? (data.cta_text || (isBarbearia ? 'Agendar Corte 💈' : (frameConfig?.cta || 'Falar no WhatsApp'))) : 'WhatsApp'}
                     </span>
                   </a>
                 </Button>
@@ -3129,8 +3130,8 @@ END:VCARD`;
                 <AnimatedQR
                   url={`${process.env.NEXT_PUBLIC_APP_URL || 'https://konnexy.com.br'}/${data.username || data.id}`}
                   photoUrl={data.photo_url || undefined}
-                  accentColor={profConfig?.accent || '#00D4FF'}
-                  profGradient={profConfig?.gradient}
+                  accentColor={frameConfig?.accent || '#00D4FF'}
+                  profGradient={frameConfig?.gradient}
                   size={120}
                   active={isPro}
                 />
