@@ -35,7 +35,7 @@ import {
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Profile, Service, CustomFields, ProfessionCategory } from '@/types/profile';
-import { cn } from '@/lib/utils';
+import { cn, hexToHsl } from '@/lib/utils';
 import Image from 'next/image';
 import { getProfessionConfig } from '@/config/professions';
 
@@ -119,7 +119,10 @@ export function StandardProfessionalLayout({ data, isPro }: StandardProfessional
   };
 
   return (
-    <div className="w-full flex flex-col gap-6 pb-12 animate-in fade-in duration-700">
+    <div 
+      className="w-full flex flex-col gap-6 pb-12 animate-in fade-in duration-700"
+      style={{ '--primary': isPro ? hexToHsl(data.theme_color || '#3b82f6') : undefined } as React.CSSProperties}
+    >
       
       {/* 1-5. HEADER SECTION (Identity) */}
       <motion.div 

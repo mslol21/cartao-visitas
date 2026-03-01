@@ -69,7 +69,7 @@ import {
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Profile } from '@/types/profile';
-import { cn } from '@/lib/utils';
+import { cn, hexToHsl } from '@/lib/utils';
 import { motion, AnimatePresence } from 'framer-motion';
 import Image from 'next/image';
 import {
@@ -506,9 +506,12 @@ END:VCARD`;
           className={cn(
             "relative overflow-hidden rounded-[2.5rem] transition-all duration-500 flex flex-col min-h-[600px]",
             isPro 
-              ? "bg-slate-950 border-2 border-primary/20 shadow-[0_40px_100px_-20px_rgba(59,130,246,0.3)] shadow-[inset_0_0_60px_rgba(59,130,246,0.1)]" 
+              ? "bg-slate-950 border-2 border-primary/20 shadow-[0_40px_100px_-20px_hsl(var(--primary)/0.3)] shadow-[inset_0_0_60px_hsl(var(--primary)/0.1)]" 
               : "border border-slate-200 dark:border-slate-800 shadow-sm bg-white dark:bg-slate-950"
           )}
+          style={{ 
+            '--primary': isPro ? hexToHsl(data.theme_color || '#3b82f6') : undefined,
+          } as React.CSSProperties}
         >
           <div 
             className="absolute inset-0 z-0 bg-transparent"
@@ -2386,7 +2389,7 @@ END:VCARD`;
                   const effect = data.photo_border_effect || 'none';
                   const themeColor = data.theme_color || '#2563EB';
                   const hasEffect = effect !== 'none';
-                  const profAccent = profConfig?.accent || '#00D4FF';
+                  const profAccent = data.theme_color || profConfig?.accent || '#00D4FF';
                   const ProfIcon = profConfig?.icon;
 
                   // --- Ring styles for each border effect ---

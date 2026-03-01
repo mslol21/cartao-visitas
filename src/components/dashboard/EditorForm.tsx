@@ -1031,18 +1031,40 @@ export function EditorForm({ initialData, onSubmit, onChange, isPro = false, can
           <TabsContent value="visual" className="space-y-6 mt-0">
             <div className="space-y-2">
               <Label className="flex items-center gap-2 opacity-60"><Palette className="w-4 h-4" /> Cor de Destaque</Label>
-              <div className={cn("flex flex-wrap gap-2", (formData.category === 'barbearia' && !canCustomizeTheme) && "opacity-40 pointer-events-none")}>
-                {['#3b82f6', '#25D366', '#000000', '#f43f5e', '#8b5cf6', '#f59e0b'].map((color) => (
+              <div className={cn("flex flex-wrap items-center gap-2", (formData.category === 'barbearia' && !canCustomizeTheme) && "opacity-40 pointer-events-none")}>
+                {['#3b82f6', '#25D366', '#000000', '#f43f5e', '#8b5cf6', '#f59e0b', '#ef4444', '#10b981'].map((color) => (
                   <button
                     key={color}
+                    type="button"
                     onClick={() => handleChange('theme_color', color)}
                     className={cn(
-                      "w-10 h-10 rounded-2xl border-2 transition-all",
-                      formData.theme_color === color ? "border-primary scale-110 shadow-lg" : "border-transparent opacity-50"
+                      "w-10 h-10 rounded-2xl border-2 transition-all hover:scale-105 active:scale-95",
+                      formData.theme_color === color ? "border-primary scale-110 shadow-lg" : "border-slate-200 dark:border-slate-800"
                     )}
                     style={{ backgroundColor: color }}
                   />
                 ))}
+                <div className="relative group">
+                   <input 
+                     type="color" 
+                     id="custom-color-picker"
+                     value={formData.theme_color || '#3b82f6'}
+                     onChange={(e) => handleChange('theme_color', e.target.value)}
+                     className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10"
+                   />
+                   <div 
+                     className={cn(
+                       "w-10 h-10 rounded-2xl border-2 border-dashed flex items-center justify-center transition-all bg-white dark:bg-slate-900 group-hover:border-primary",
+                       !['#3b82f6', '#25D366', '#000000', '#f43f5e', '#8b5cf6', '#f59e0b', '#ef4444', '#10b981'].includes(formData.theme_color || '') ? "border-primary ring-2 ring-primary/20" : "border-slate-300 dark:border-slate-700"
+                     )}
+                   >
+                     <div 
+                       className="w-6 h-6 rounded-lg shadow-sm"
+                       style={{ backgroundColor: formData.theme_color || '#3b82f6' }}
+                     />
+                   </div>
+                </div>
+                <span className="text-[10px] font-bold text-muted-foreground ml-1 uppercase tracking-tighter">Cor Personalizada</span>
               </div>
             </div>
 
