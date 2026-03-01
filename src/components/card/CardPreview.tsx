@@ -65,7 +65,11 @@ import {
   Home,
   Gem,
   Navigation,
-  Package
+  Package,
+  Truck,
+  HardHat,
+  HeartPulse,
+  Check
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Profile } from '@/types/profile';
@@ -90,9 +94,9 @@ import html2canvas from 'html2canvas';
 import { jsPDF } from 'jspdf';
 import { DigitalField } from '@/components/pro/DigitalField';
 import { AnimatedQR } from '@/components/pro/AnimatedQR';
-
 import { isPaidUser } from '@/utils/planUtils';
 import { StandardProfessionalLayout } from './StandardProfessionalLayout';
+import { getProfessionConfig as getGlobalConfig } from '@/config/professions';
 
 interface CardPreviewProps {
   data: Partial<Profile>;
@@ -340,7 +344,7 @@ END:VCARD`;
     }
   };
 
-  const getProfessionConfig = () => {
+  const getFrameConfig = () => {
     if (!isPro) return null;
     
     switch (data.avatar_frame) {
@@ -443,8 +447,77 @@ END:VCARD`;
     }
   };
 
-  const profConfig = getProfessionConfig();
-  const premiumGradient = profConfig?.gradient || (isPro ? `linear-gradient(135deg, ${data.theme_color || '#3b82f6'} 0%, #8b5cf6 100%)` : undefined);
+  const frameConfig = getFrameConfig();
+  const premiumGradient = frameConfig?.gradient || (isPro ? `linear-gradient(135deg, ${data.theme_color || '#3b82f6'} 0%, #8b5cf6 100%)` : undefined);
+
+  const getFieldIcon = (fieldName: string) => {
+    const name = fieldName.toLowerCase();
+    if (name.includes('atende_domicilio') || name.includes('residencial') || name.includes('home')) return Home;
+    if (name.includes('agendamento') || name.includes('horario') || name.includes('schedule')) return Calendar;
+    if (name.includes('oab') || name.includes('creci') || name.includes('nr10') || name.includes('registro')) return ShieldCheck;
+    if (name.includes('delivery') || name.includes('entreg') || name.includes('frete') || name.includes('veiculo') || name.includes('truck')) return Truck;
+    if (name.includes('online') || name.includes('remoto') || name.includes('digital') || name.includes('zoom')) return Monitor;
+    if (name.includes('experiencia') || name.includes('anos')) return History;
+    if (name.includes('socorro') || name.includes('emergencia') || name.includes('urgencia')) return Zap;
+    if (name.includes('clinico') || name.includes('saude') || name.includes('medico') || name.includes('vital')) return HeartPulse;
+    if (name.includes('celular') || name.includes('mobile') || name.includes('phone')) return Smartphone;
+    if (['reforma', 'ferramentas', 'obra', 'construction', 'hard_hat'].some(k => name.includes(k))) return HardHat;
+    if (name.includes('banho') || name.includes('tosa') || name.includes('grooming') || name.includes('animal') || name.includes('pet')) return PawPrint;
+    return Award;
+  };
+
+  const renderProfessionHighlights = (themeColor: string = '#8b5cf6') => {
+    const globalConfig = getGlobalConfig(data.profession || data.category);
+    if (!globalConfig || globalConfig.customFields.length === 0) return null;
+
+    const fields = globalConfig.customFields.filter(field => {
+       const value = (data.custom_fields as any)?.[field.name];
+       // Show if it's a boolean true, or a non-empty string/array
+       if (field.type === 'boolean') return value === true;
+       return (value !== undefined && value !== null && value !== '' && (Array.isArray(value) ? value.length > 0 : true));
+    });
+
+    if (fields.length === 0) return null;
+
+    return (
+       <div className="w-full mb-8 px-1">
+          <div className="flex items-center gap-3 mb-6">
+             <div className="h-px flex-1 bg-current opacity-10" />
+             <span className="text-[9px] font-black uppercase tracking-[0.3em] opacity-30">Destaques Profissionais</span>
+             <div className="h-px flex-1 bg-current opacity-10" />
+          </div>
+          <div className="grid grid-cols-2 gap-3">
+             {fields.map((field) => {
+                const value = (data.custom_fields as any)?.[field.name];
+                const Icon = getFieldIcon(field.name);
+                return (
+                   <div key={field.name} className="p-4 rounded-2xl bg-white dark:bg-white/5 border border-current/10 flex flex-col items-center text-center gap-2 group hover:bg-current/10 transition-all hover:scale-[1.02] active:scale-95 shadow-sm">
+                      {field.type === 'boolean' ? (
+                        <>
+                           <div className="p-2 rounded-xl bg-current opacity-10 group-hover:opacity-20 transition-opacity" style={{ color: themeColor }}>
+                             <Icon className="w-5 h-5" style={{ color: themeColor }} />
+                           </div>
+                           <span className="text-[10px] font-black uppercase tracking-tight leading-tight opacity-80 mt-1">{field.label}</span>
+                           <Check className="w-3 h-3 opacity-60 mt-1" style={{ color: themeColor }} />
+                        </>
+                      ) : (
+                        <>
+                           <Icon className="w-5 h-5 opacity-40 group-hover:scale-110 transition-transform" style={{ color: themeColor }} />
+                           <div className="flex flex-col gap-0.5 w-full">
+                              <span className="text-[7px] font-black uppercase tracking-widest opacity-40">{field.label}</span>
+                              <span className="text-[10px] font-black uppercase leading-tight italic tracking-tighter truncate w-full">
+                                {Array.isArray(value) ? value.join(', ') : value}
+                              </span>
+                           </div>
+                        </>
+                      )}
+                   </div>
+                );
+             })}
+          </div>
+       </div>
+    );
+  };
 
   const renderCustomPortfolio = () => {
     if (!isPro || customLinks.length === 0) return null;
@@ -668,7 +741,7 @@ END:VCARD`;
                         <div className="absolute inset-0 bg-gradient-to-t from-slate-900 via-transparent to-transparent" />
                      </>
                    ) : (
-                     <DigitalField accentColor={profConfig?.accent || '#00D4FF'} active={isPro} />
+                     <DigitalField accentColor={frameConfig?.accent || '#00D4FF'} active={isPro} />
                    )}
                   {!isPro && (
                     <div className="absolute inset-0 bg-slate-50 dark:bg-slate-900/50" />
@@ -722,6 +795,9 @@ END:VCARD`;
                   </a>
                 </Button>
               </motion.div>
+
+              {/* Highlights Barbearia */}
+              {renderProfessionHighlights('#C6A75E')}
 
               {/* Secondary Buttons Grid (Max 4) */}
               <div className="grid grid-cols-2 gap-3 w-full mb-10">
@@ -1006,6 +1082,9 @@ END:VCARD`;
                 )}
               </div>
 
+              {/* Highlights Beauty */}
+              {renderProfessionHighlights('#db2777')}
+
               {/* Endereço */}
               {previewAddress && (
                 <div className="w-full p-6 rounded-[2rem] bg-white/40 dark:bg-white/5 border border-[#F472B6]/10 mb-10 text-center backdrop-blur-md">
@@ -1130,6 +1209,9 @@ END:VCARD`;
                     {data.cta_text || 'Agendar Consulta 🩺'}
                   </a>
                 </Button>
+
+                {/* Highlights Health */}
+                {renderProfessionHighlights('#10b981')}
 
                 {/* Serviços Saúde */}
                 <div className="w-full mb-8">
@@ -1268,6 +1350,9 @@ END:VCARD`;
                     {data.cta_text || 'Faça seu Pedido 🛍️'}
                   </a>
                 </Button>
+
+                {/* Highlights Sales */}
+                {renderProfessionHighlights('#8b5cf6')}
 
                 {/* Grid de Produtos/Serviços */}
                 <div className="w-full mb-8">
@@ -1416,28 +1501,8 @@ END:VCARD`;
                   </a>
                 </Button>
 
-                {/* Menu Destaque */}
-                <div className="w-full mb-8">
-                   {/* Destaques Delivery/VR/Retirada */}
-                   {(data.custom_fields?.tem_delivery || data.custom_fields?.retirada_local || data.custom_fields?.aceita_vr) && (
-                     <div className="flex flex-wrap justify-center gap-2 mb-6">
-                       {data.custom_fields?.tem_delivery && (
-                         <div className="px-3 py-1 rounded-full bg-red-100 dark:bg-red-900/20 text-red-600 text-[9px] font-black uppercase tracking-widest border border-red-200 dark:border-red-800/30">
-                           Delivery
-                         </div>
-                       )}
-                       {data.custom_fields?.retirada_local && (
-                         <div className="px-3 py-1 rounded-full bg-orange-100 dark:bg-orange-900/20 text-orange-600 text-[9px] font-black uppercase tracking-widest border border-orange-200 dark:border-orange-800/30">
-                           Retirada Local
-                         </div>
-                       )}
-                       {data.custom_fields?.aceita_vr && (
-                         <div className="px-3 py-1 rounded-full bg-blue-100 dark:bg-blue-900/20 text-blue-600 text-[9px] font-black uppercase tracking-widest border border-blue-200 dark:border-blue-800/30">
-                           Aceita VR / Ticket
-                         </div>
-                       )}
-                     </div>
-                   )}
+                  {/* Highlights Food (Dynamic from config) */}
+                  {renderProfessionHighlights('#ef4444')}
 
                    <div className="flex items-center gap-2 mb-4">
                      <div className="h-px flex-1 bg-red-100" />
@@ -1591,6 +1656,9 @@ END:VCARD`;
                     </a>
                   </Button>
 
+                  {/* Highlights Tech */}
+                  {renderProfessionHighlights('#3b82f6')}
+
                   {/* Tech Stack (Services) */}
                   <div className="w-full mb-10">
                      <div className="flex items-center gap-3 mb-6">
@@ -1732,6 +1800,9 @@ END:VCARD`;
                     </a>
                   </Button>
 
+                  {/* Highlights Real Estate */}
+                  {renderProfessionHighlights('#10b981')}
+
                   {/* Properties / Services */}
                   <div className="w-full mb-10">
                      <div className="flex items-center gap-3 mb-6">
@@ -1864,6 +1935,9 @@ END:VCARD`;
                     </a>
                   </Button>
 
+                  {/* Highlights Driver */}
+                  {renderProfessionHighlights('#f97316')}
+
                   {/* Driver Services */}
                   <div className="w-full mb-10">
                     <p className="text-[10px] font-black uppercase tracking-[0.3em] text-slate-500 mb-6 border-l-4 border-orange-500 pl-3">Serviços e Rotas</p>
@@ -1928,6 +2002,9 @@ END:VCARD`;
                        {data.cta_text || 'Agendar Banho & Tosa'}
                     </a>
                   </Button>
+
+                  {/* Highlights Highlights */}
+                  {renderProfessionHighlights('#a855f7')}
 
                   {/* Pet Services - Changed to List format similar to barbearia */}
                   <div className="w-full mb-8">
@@ -2102,6 +2179,9 @@ END:VCARD`;
                   </a>
                 </Button>
 
+                {/* Highlights Service */}
+                {renderProfessionHighlights('#f59e0b')}
+
                 {/* Localização e Atendimento */}
                 {(data.address || data.service_area) && (
                   <div className="w-full mb-8 space-y-3">
@@ -2266,6 +2346,9 @@ END:VCARD`;
                       {data.cta_text || 'Agendar Consulta'}
                    </a>
                  </Button>
+
+                 {/* Highlights Advogado */}
+                 {renderProfessionHighlights('#94a3b8')}
 
                  {/* Especialidades Jurídicas */}
                  <div className="w-full mb-10">
