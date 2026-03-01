@@ -327,7 +327,7 @@ export function EditorForm({ initialData, onSubmit, onChange, isPro = false, can
       
       // 2. Dynamic Fetch from Pixabay API
       // Use env variable or fallback to a placeholder if not set
-      const API_KEY = process.env.NEXT_PUBLIC_PIXABAY_API_KEY || '48995393-9c869be7400d92297af0e2069';
+      const API_KEY = process.env.NEXT_PUBLIC_PIXABAY_API_KEY || '54849600-485c3db402c9183a8d3f5db23';
       
       const response = await fetch(`https://pixabay.com/api/?key=${API_KEY}&q=${encodeURIComponent(pixabaySearch)}&image_type=photo&orientation=vertical&per_page=12&safesearch=true`);
       
