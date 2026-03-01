@@ -77,11 +77,32 @@ export const imageDatabase: Record<string, string[]> = {
   ],
   'advogado': [
     'https://images.unsplash.com/photo-1589829545856-d10d557cf95f?auto=format&fit=crop&q=80&w=1080&h=1920',
-    'https://images.unsplash.com/photo-1505664194779-8beaceb93744?auto=format&fit=crop&q=80&w=1080&h=1920'
+    'https://images.unsplash.com/photo-1505664194779-8beaceb93744?auto=format&fit=crop&q=80&w=1080&h=1920',
+    'https://images.unsplash.com/photo-1450101499163-c8848c66ca85?auto=format&fit=crop&q=80&w=1080&h=1920'
   ],
   'academia': [
     'https://images.unsplash.com/photo-1534438327276-14e5300c3a48?auto=format&fit=crop&q=80&w=1080&h=1920',
     'https://images.unsplash.com/photo-1517836357463-d25dfeac3438?auto=format&fit=crop&q=80&w=1080&h=1920'
+  ],
+  'financeiro': [
+    'https://images.unsplash.com/photo-1554224155-6726b3ff858f?auto=format&fit=crop&q=80&w=1080&h=1920',
+    'https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&q=80&w=1080&h=1920'
+  ],
+  'barbearia': [
+    'https://images.unsplash.com/photo-1503951914875-452162b0f3f1?auto=format&fit=crop&q=80&w=1080&h=1920',
+    'https://images.unsplash.com/photo-1585747860715-2ba37e788b70?auto=format&fit=crop&q=80&w=1080&h=1920'
+  ],
+  'tecnologia': [
+    'https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&q=80&w=1080&h=1920',
+    'https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&q=80&w=1080&h=1920'
+  ],
+  'esmalteria': [
+    'https://images.unsplash.com/photo-1604654894610-df49ff66a7cb?auto=format&fit=crop&q=80&w=1080&h=1920',
+    'https://images.unsplash.com/photo-1632345031435-8727f6897d03?auto=format&fit=crop&q=80&w=1080&h=1920'
+  ],
+  'salao': [
+    'https://images.unsplash.com/photo-1560066984-138dadb4c035?auto=format&fit=crop&q=80&w=1080&h=1920',
+    'https://images.unsplash.com/photo-1522337660859-02fbefca4702?auto=format&fit=crop&q=80&w=1080&h=1920'
   ]
 };
 
@@ -91,11 +112,14 @@ const synonyms: Record<string, string[]> = {
   'burguer': ['burger', 'hambúrguer', 'artesanal', 'carne'],
   'doce': ['bolo', 'doces', 'festa', 'confeitaria', 'chocolate', 'açúcar'],
   'marmita': ['quentinhas', 'refeição', 'fit', 'fitness', 'almoço', 'jantar'],
-  'medico': ['doutor', 'consulta', 'hospital', 'saúde', 'exame', 'clínica', 'instrumentos'],
-  'estetica': ['beleza', 'sobrancelha', 'cílios', 'maquiagem', 'spa', 'pele', 'harmonização', 'massagem'],
-  'obra': ['construção', 'reforma', 'casa', 'pedreiro', 'pintura', 'tijolo'],
-  'carro': ['veículo', 'motorista', 'transporte', 'frete', 'táxi', 'uber', 'oficina'],
-  'academia': ['treino', 'musculação', 'exercício', 'esporte', 'crossfit', 'yoga']
+  'medico': ['doutor', 'consulta', 'hospital', 'saúde', 'exame', 'clínica', 'instrumentos', 'estetoscopio', 'saude'],
+  'estetica': ['beleza', 'sobrancelha', 'cílios', 'maquiagem', 'spa', 'pele', 'harmonização', 'massagem', 'unha', 'esmalte'],
+  'obra': ['construção', 'reforma', 'casa', 'pedreiro', 'pintura', 'tijolo', 'ferramenta', 'serralheiro', 'ferro', 'aluminio'],
+  'carro': ['veículo', 'motorista', 'transporte', 'frete', 'táxi', 'uber', 'oficina', 'mecanico'],
+  'academia': ['treino', 'musculação', 'exercício', 'esporte', 'crossfit', 'yoga', 'personal', 'corpo'],
+  'financeiro': ['contabilidade', 'contador', 'dinheiro', 'investimento', 'escritorio', 'mei', 'gestao', 'planilha'],
+  'tecnologia': ['ti', 'programador', 'software', 'codigo', 'web', 'computador', 'celular', 'manutencao'],
+  'barbearia': ['barba', 'corte', 'cabelo', 'navalha', 'disfarce', 'fade']
 };
 
 /**

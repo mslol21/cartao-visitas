@@ -110,7 +110,7 @@ export function EditorForm({ initialData, onSubmit, onChange, isPro = false, can
   const supabase = createClient();
   const firstRender = useRef(true);
   const [isDirty, setIsDirty] = useState(false);
-  const [unsplashSearch, setUnsplashSearch] = useState('');
+  const [pixabaySearch, setPixabaySearch] = useState('');
   const [isSearching, setIsSearching] = useState(false);
   const [searchResults, setSearchResults] = useState<string[]>([]);
 
@@ -311,18 +311,18 @@ export function EditorForm({ initialData, onSubmit, onChange, isPro = false, can
     }
   };
 
-  const handleUnsplashSearch = async (e: React.FormEvent) => {
+  const handlePixabaySearch = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!unsplashSearch.trim()) return;
+    if (!pixabaySearch.trim()) return;
 
     setIsSearching(true);
-    setSearchResults([]); // Limpa para mostrar o loading
+    setSearchResults([]); // Clear for loading state
     
     try {
-      // Pequeno delay para simular busca e evitar piscada
+      // Small delay for better UX feel
       await new Promise(r => setTimeout(r, 600));
       
-      const matches = findImages(unsplashSearch);
+      const matches = findImages(pixabaySearch);
       
       if (matches && matches.length > 0) {
         setSearchResults(matches);
@@ -1206,17 +1206,17 @@ export function EditorForm({ initialData, onSubmit, onChange, isPro = false, can
                 {/* --- SEARCH & SUGGESTED GALLERY --- */}
                 {isPro && (
                   <div className="mt-8 space-y-6 animate-in fade-in slide-in-from-bottom-4">
-                    {/* Search Bar */}
+                    {/* Pixabay Search Bar */}
                     <div className="space-y-3">
                       <div className="flex items-center gap-2">
                         <Search className="w-3 h-3 text-primary" />
-                        <span className="text-[10px] font-black uppercase tracking-widest text-slate-500">Pesquisar Banco de Imagens</span>
+                        <span className="text-[10px] font-black uppercase tracking-widest text-slate-500">Pesquisar Banco Pixabay (Premium)</span>
                       </div>
-                      <form onSubmit={handleUnsplashSearch} className="flex gap-2">
+                      <form onSubmit={handlePixabaySearch} className="flex gap-2">
                         <Input 
-                          placeholder="Ex: coffee, barber, office, nature..."
-                          value={unsplashSearch}
-                          onChange={(e) => setUnsplashSearch(e.target.value)}
+                          placeholder="Ex: dentista, barbearia, advocacia..."
+                          value={pixabaySearch}
+                          onChange={(e) => setPixabaySearch(e.target.value)}
                           className="h-10 rounded-xl text-xs bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800"
                         />
                         <Button 
@@ -1228,7 +1228,7 @@ export function EditorForm({ initialData, onSubmit, onChange, isPro = false, can
                         </Button>
                       </form>
                       <p className="text-[8px] text-muted-foreground italic px-1">
-                        * Dica: Use palavras em inglês para melhores resultados.
+                        * Busca inteligente em Português e Inglês para profissionais.
                       </p>
                     </div>
 

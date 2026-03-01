@@ -383,12 +383,12 @@ export function StandardProfessionalLayout({ data, isPro }: StandardProfessional
             <span className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400">Links Úteis</span>
             <div className="h-px flex-1 bg-slate-200 dark:bg-slate-800" />
           </div>
-          <div className="flex flex-col gap-2">
+          <div className="flex flex-col gap-3">
             {data.custom_links.map((link, idx) => (
-              <Button key={idx} asChild variant="outline" className="w-full h-12 rounded-2xl border-slate-200 dark:border-slate-800 hover:bg-primary/5 hover:border-primary/30 transition-all font-bold text-xs justify-between group">
-                <a href={link.url.startsWith('http') ? link.url : `https://${link.url}`} target="_blank" rel="noopener noreferrer">
+              <Button key={idx} asChild variant="outline" className="w-full h-14 rounded-2xl border-slate-200 dark:border-slate-800 hover:bg-primary/5 hover:border-primary/30 transition-all font-bold text-sm justify-between group px-6">
+                <a href={link.url.startsWith('http') ? link.url : `https://${link.url}`} target="_blank" rel="noopener noreferrer" className="w-full flex items-center justify-between">
                   <span className="truncate">{link.title}</span>
-                  <ExternalLink className="w-4 h-4 opacity-30 group-hover:opacity-100 transition-opacity" />
+                  <ExternalLink className="w-4 h-4 opacity-30 group-hover:opacity-100 transition-opacity shrink-0" />
                 </a>
               </Button>
             ))}

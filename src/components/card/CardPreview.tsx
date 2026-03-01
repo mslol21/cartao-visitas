@@ -455,23 +455,26 @@ END:VCARD`;
           <span className={cn("text-[10px] font-black uppercase tracking-[0.2em]", isDark ? "text-white/40" : "text-slate-400")}>Links & Portfólio</span>
           <div className={cn("h-[1px] flex-1", isDark ? "bg-white/10" : "bg-slate-200 dark:bg-slate-800")} />
         </div>
-        <div className="grid gap-3">
+        <div className="flex flex-col gap-3 w-full">
           {customLinks.map((link, i) => (
             <motion.a
               key={i}
-              whileHover={{ scale: 1.02 }}
+              whileHover={{ scale: 1.02, y: -2 }}
               whileTap={{ scale: 0.98 }}
               href={link.url.startsWith('http') ? link.url : `https://${link.url}`}
               target="_blank"
               rel="noopener noreferrer"
               className={cn(
-                "w-full px-4 py-4 rounded-3xl flex items-center justify-center text-center gap-3 border transition-all text-sm font-bold shadow-md",
+                "w-full px-5 py-4 rounded-3xl flex items-center justify-center text-center gap-3 border transition-all text-sm font-bold shadow-md",
                 isDark 
                   ? "bg-white/10 backdrop-blur-xl border-white/20 text-white hover:bg-white/20" 
                   : "bg-white border-slate-200/50 hover:border-primary/30 text-slate-800 hover:shadow-lg"
               )}
             >
-              <span className="truncate">{link.title}</span>
+              <div className="w-full flex items-center justify-center relative">
+                <span className="truncate px-2">{link.title}</span>
+                <ChevronRight className="w-3.5 h-3.5 absolute right-0 opacity-20" />
+              </div>
             </motion.a>
           ))}
         </div>
@@ -2966,23 +2969,26 @@ END:VCARD`;
                   <span className={cn("text-[10px] font-black uppercase tracking-[0.2em]", data.background_video_url ? "text-white/60" : "text-slate-400")}>Links Úteis</span>
                   <div className={cn("h-[1px] flex-1", data.background_video_url ? "bg-white/20" : "bg-slate-200 dark:bg-slate-800")} />
                 </div>
-                <div className="grid gap-3">
+                <div className="flex flex-col gap-3 w-full">
                   {customLinks.map((link, i) => (
                     <motion.a
                       key={i}
-                      whileHover={{ scale: 1.02 }}
+                      whileHover={{ scale: 1.02, y: -1 }}
                       whileTap={{ scale: 0.98 }}
                       href={link.url.startsWith('http') ? link.url : `https://${link.url}`}
                       target="_blank"
                       rel="noopener noreferrer"
                       className={cn(
-                        "w-full px-4 py-4 rounded-2xl flex items-center justify-center text-center gap-3 border transition-all text-sm font-bold shadow-sm",
+                        "w-full px-5 py-4 rounded-2xl flex items-center justify-center text-center gap-3 border transition-all text-sm font-bold shadow-sm",
                         data.background_video_url 
                           ? "bg-white/10 backdrop-blur-xl border-white/20 text-white hover:bg-white/20" 
                           : "bg-white border-slate-100 hover:border-primary/30 text-slate-800"
                       )}
                     >
-                      <span className="truncate">{link.title}</span>
+                      <div className="w-full flex items-center justify-center relative">
+                        <span className="truncate px-2">{link.title}</span>
+                        <ChevronRight className="w-3 h-3 absolute right-0 opacity-10" />
+                      </div>
                     </motion.a>
                   ))}
                 </div>
