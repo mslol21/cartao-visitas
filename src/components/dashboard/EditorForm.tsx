@@ -322,17 +322,25 @@ export function EditorForm({ initialData, onSubmit, onChange, isPro = false, can
       // Small delay for better UX feel
       await new Promise(r => setTimeout(r, 600));
       
-      const matches = findImages(pixabaySearch);
+      // 1. First check our curated Pixabay-based premium library
+      const localMatches = findImages(pixabaySearch);
       
-      if (matches && matches.length > 0) {
-        setSearchResults(matches);
+      // 2. Dynamic Fetch from Pixabay API
+      const API_KEY = '48995393-9c869be7400d92297af0e2069'; // Public key for this context or use your own
+      const response = await fetch(`https://pixabay.com/api/?key=${API_KEY}&q=${encodeURIComponent(pixabaySearch)}&image_type=photo&orientation=vertical&per_page=12&safesearch=true`);
+      const data = await response.json();
+      
+      const apiResults = data.hits?.map((hit: any) => hit.largeImageURL) || [];
+      const combined = Array.from(new Set([...localMatches, ...apiResults])).slice(0, 15);
+
+      if (combined.length > 0) {
+        setSearchResults(combined);
       } else {
-        toast.error('Não encontramos termos específicos, mas estamos buscando gerais...');
-        // O findImages já cuida do fallback universal agora
+        toast.error('Nenhuma imagem encontrada para este termo no Pixabay.');
       }
     } catch (error) {
-      console.error('Search error:', error);
-      toast.error('Ocorreu um erro na busca.');
+      console.error('Pixabay search error:', error);
+      toast.error('Erro na conexão com Pixabay.');
     } finally {
       setIsSearching(false);
     }
@@ -1267,7 +1275,7 @@ export function EditorForm({ initialData, onSubmit, onChange, isPro = false, can
                                 }}
                                 onError={(e) => {
                                   // Se falhar o link dinâmico, coloca um fallback de luz/negócios
-                                  (e.target as HTMLImageElement).src = 'https://images.unsplash.com/photo-1497366216548-37526070297c?q=80&w=1080&auto=format&fit=crop';
+                                  (e.target as HTMLImageElement).src = 'https://cdn.pixabay.com/photo/2016/03/26/13/09/workspace-1280538_1280.jpg';
                                 }}
                               />
                               <div className="absolute inset-x-0 bottom-0 h-10 bg-gradient-to-t from-black/80 to-transparent opacity-0 group-hover/search-item:opacity-100 transition-opacity flex items-center justify-center">
@@ -1300,7 +1308,7 @@ export function EditorForm({ initialData, onSubmit, onChange, isPro = false, can
                               alt={`Suggested background ${idx + 1}`} 
                               className="w-full h-full object-cover"
                               onError={(e) => {
-                                (e.target as HTMLImageElement).src = 'https://images.unsplash.com/photo-1497366754035-f200968a6e72?q=80&w=1000&auto=format&fit=crop';
+                                (e.target as HTMLImageElement).src = 'https://cdn.pixabay.com/photo/2016/03/26/13/09/workspace-1280538_1280.jpg';
                               }}
                             />
                             <div className="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover/suggest:opacity-100 transition-opacity">

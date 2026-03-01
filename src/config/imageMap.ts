@@ -6,108 +6,103 @@
 export const imageDatabase: Record<string, string[]> = {
   // --- GASTRONOMIA & LANCHES ---
   'lanches': [
-    'https://images.unsplash.com/photo-1561758033-d89a9ad46330?auto=format&fit=crop&q=80&w=1080&h=1920',
-    'https://images.unsplash.com/photo-1550547660-d9450f859349?auto=format&fit=crop&q=80&w=1080&h=1920',
-    'https://images.unsplash.com/photo-1568901346375-23c9450c58cd?auto=format&fit=crop&q=80&w=1080&h=1920',
-    'https://images.unsplash.com/photo-1513104890138-7c749659a591?auto=format&fit=crop&q=80&w=1080&h=1920'
+    'https://cdn.pixabay.com/photo/2016/03/05/19/02/hamburger-1238246_1280.jpg',
+    'https://cdn.pixabay.com/photo/2017/12/09/08/18/pizza-3007395_1280.jpg',
+    'https://cdn.pixabay.com/photo/2016/11/20/09/06/bowl-1842294_1280.jpg',
+    'https://cdn.pixabay.com/photo/2015/07/12/14/06/cupcakes-842031_1280.jpg'
   ],
   'pastel': [
-    'https://images.unsplash.com/photo-1561758033-d89a9ad46330?auto=format&fit=crop&q=80&w=1080&h=1920',
-    'https://images.unsplash.com/photo-1626379616459-b2ce1d9decbb?auto=format&fit=crop&q=80&w=1080&h=1920'
+    'https://cdn.pixabay.com/photo/2014/10/19/20/59/brazilian-food-494632_1280.jpg',
+    'https://cdn.pixabay.com/photo/2017/09/20/19/40/food-2769970_1280.jpg'
   ],
   'burguer': [
-    'https://images.unsplash.com/photo-1571091718767-18b5b1457add?auto=format&fit=crop&q=80&w=1080&h=1920',
-    'https://images.unsplash.com/photo-1594212699903-ec8a2eca50f5?auto=format&fit=crop&q=80&w=1080&h=1920'
+    'https://cdn.pixabay.com/photo/2016/03/05/19/02/hamburger-1238246_1280.jpg',
+    'https://cdn.pixabay.com/photo/2016/03/05/19/37/appetite-1238459_1280.jpg'
   ],
   'pizza': [
-    'https://images.unsplash.com/photo-1513104890138-7c749659a591?auto=format&fit=crop&q=80&w=1080&h=1920',
-    'https://images.unsplash.com/photo-1593504049359-74330189a355?auto=format&fit=crop&q=80&w=1080&h=1920'
+    'https://cdn.pixabay.com/photo/2017/12/09/08/18/pizza-3007395_1280.jpg',
+    'https://cdn.pixabay.com/photo/2017/01/03/11/33/pizza-1949183_1280.jpg'
   ],
   'acai': [
-    'https://images.unsplash.com/photo-1590301157890-4810ed352733?auto=format&fit=crop&q=80&w=1080&h=1920',
-    'https://images.unsplash.com/photo-1502014822147-1aedfb0676e0?auto=format&fit=crop&q=80&w=1080&h=1920'
+    'https://cdn.pixabay.com/photo/2021/11/18/16/09/berry-6806786_1280.jpg',
+    'https://cdn.pixabay.com/photo/2016/09/27/15/34/a%C3%A7ai-1698656_1280.jpg'
   ],
   'sobremesa': [
-    'https://images.unsplash.com/photo-1535141192574-5d4897c825a1?auto=format&fit=crop&q=80&w=1080&h=1920',
-    'https://images.unsplash.com/photo-1551024506-0bccd828d307?auto=format&fit=crop&q=80&w=1080&h=1920'
+    'https://cdn.pixabay.com/photo/2017/01/11/11/33/cake-1971552_1280.jpg',
+    'https://cdn.pixabay.com/photo/2016/10/31/18/14/dessert-1786311_1280.jpg'
   ],
   'marmita': [
-    'https://images.unsplash.com/photo-1543339308-43e59d6b73a6?auto=format&fit=crop&q=80&w=1080&h=1920',
-    'https://images.unsplash.com/photo-1501139083526-77839736aaed?auto=format&fit=crop&q=80&w=1080&h=1920'
+    'https://cdn.pixabay.com/photo/2017/06/01/18/46/cook-2364221_1280.jpg',
+    'https://cdn.pixabay.com/photo/2014/11/05/15/57/salmon-518032_1280.jpg'
   ],
 
   // --- SAÚDE & BEM-ESTAR ---
   'medico': [
-    'https://images.unsplash.com/photo-1576091160550-217359f4ecf8?auto=format&fit=crop&q=80&w=1080&h=1920',
-    'https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?auto=format&fit=crop&q=80&w=1080&h=1920',
-    'https://images.unsplash.com/photo-1622253692010-333f2da6031d?auto=format&fit=crop&q=80&w=1080&h=1920'
+    'https://cdn.pixabay.com/photo/2017/01/29/21/16/nurse-2019420_1280.jpg',
+    'https://cdn.pixabay.com/photo/2016/11/08/23/56/dentist-1809776_1280.jpg',
+    'https://cdn.pixabay.com/photo/2014/12/10/11/17/doctor-562925_1280.jpg'
   ],
   'dentista': [
-    'https://images.unsplash.com/photo-1588776814546-1ffcf47267a5?auto=format&fit=crop&q=80&w=1080&h=1920',
-    'https://images.unsplash.com/photo-1606811841689-23dfddce3e95?auto=format&fit=crop&q=80&w=1080&h=1920'
+    'https://cdn.pixabay.com/photo/2016/11/08/23/56/dentist-1809776_1280.jpg',
+    'https://cdn.pixabay.com/photo/2017/07/23/10/44/dentist-2530990_1280.jpg'
   ],
   'psicologo': [
-    'https://images.unsplash.com/photo-1527689368864-3a821dbccc48?auto=format&fit=crop&q=80&w=1080&h=1920',
-    'https://images.unsplash.com/photo-1516302752625-fbb345ebb1e5?auto=format&fit=crop&q=80&w=1080&h=1920'
+    'https://cdn.pixabay.com/photo/2018/01/31/10/50/wellness-3120815_1280.jpg',
+    'https://cdn.pixabay.com/photo/2016/11/22/21/42/woman-1850703_1280.jpg'
   ],
   'estetica': [
-    'https://images.unsplash.com/photo-1570172619664-2af9fbeca001?auto=format&fit=crop&q=80&w=1080&h=1920',
-    'https://images.unsplash.com/photo-1512290923902-8a9f81dc2069?auto=format&fit=crop&q=80&w=1080&h=1920'
+    'https://cdn.pixabay.com/photo/2016/10/30/18/35/wellness-1783935_1280.jpg',
+    'https://cdn.pixabay.com/photo/2016/11/29/01/34/manicure-1866571_1280.jpg'
   ],
 
   // --- SERVIÇOS & OBRAS ---
   'mecanico': [
-    'https://images.unsplash.com/photo-1486262715619-67b85e0b08d3?auto=format&fit=crop&q=80&w=1080&h=1920',
-    'https://images.unsplash.com/photo-1487750153077-03c7481523ce?auto=format&fit=crop&q=80&w=1080&h=1920',
-    'https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&q=80&w=1080&h=1920'
+    'https://cdn.pixabay.com/photo/2016/11/23/17/25/automobile-1853939_1280.jpg',
+    'https://cdn.pixabay.com/photo/2014/05/18/19/15/car-347410_1280.jpg'
   ],
   'eletricista': [
-    'https://images.unsplash.com/photo-1621905251918-48416bd8575a?auto=format&fit=crop&q=80&w=1080&h=1920',
-    'https://images.unsplash.com/photo-1621905252507-b352224075e8?auto=format&fit=crop&q=80&w=1080&h=1920'
+    'https://cdn.pixabay.com/photo/2013/07/12/19/22/electrical-signs-154675_1280.png',
+    'https://cdn.pixabay.com/photo/2015/07/11/14/53/plumbing-840835_1280.jpg'
   ],
   'obra': [
-    'https://images.unsplash.com/photo-1504307651254-35680f43b1d4?auto=format&fit=crop&q=80&w=1080&h=1920',
-    'https://images.unsplash.com/photo-1541888941259-79273a460da1?auto=format&fit=crop&q=80&w=1080&h=1920'
+    'https://cdn.pixabay.com/photo/2016/11/23/00/43/brick-wall-1851520_1280.jpg',
+    'https://cdn.pixabay.com/photo/2015/07/28/10/37/bricks-864156_1280.jpg'
   ],
   'serralheiro': [
-    'https://images.unsplash.com/photo-1504917595217-d4dcfa996373?auto=format&fit=crop&q=80&w=1080&h=1920',
-    'https://images.unsplash.com/photo-1516937941344-00b4e0337589?auto=format&fit=crop&q=80&w=1080&h=1920',
-    'https://images.unsplash.com/photo-1530124560676-4cb45cc9ed42?auto=format&fit=crop&q=80&w=1080&h=1920'
+    'https://cdn.pixabay.com/photo/2016/01/19/18/12/welding-1150005_1280.jpg',
+    'https://cdn.pixabay.com/photo/2017/08/30/19/08/welding-2698244_1280.jpg'
   ],
 
   // --- OUTROS ---
   'pet': [
-    'https://images.unsplash.com/photo-1516734212186-a967f81ad0d7?auto=format&fit=crop&q=80&w=1080&h=1920',
-    'https://images.unsplash.com/photo-1583511655857-d19b40a7a54e?auto=format&fit=crop&q=80&w=1080&h=1920'
+    'https://cdn.pixabay.com/photo/2016/12/13/05/15/puppy-1903313_1280.jpg',
+    'https://cdn.pixabay.com/photo/2016/01/19/17/41/friends-1149848_1280.jpg'
   ],
   'advogado': [
-    'https://images.unsplash.com/photo-1589829545856-d10d557cf95f?auto=format&fit=crop&q=80&w=1080&h=1920',
-    'https://images.unsplash.com/photo-1505664194779-8beaceb93744?auto=format&fit=crop&q=80&w=1080&h=1920',
-    'https://images.unsplash.com/photo-1450101499163-c8848c66ca85?auto=format&fit=crop&q=80&w=1080&h=1920'
+    'https://cdn.pixabay.com/photo/2017/01/04/21/00/fire-1953218_1280.jpg',
+    'https://cdn.pixabay.com/photo/2014/12/03/10/30/scales-of-justice-555314_1280.jpg'
   ],
   'academia': [
-    'https://images.unsplash.com/photo-1534438327276-14e5300c3a48?auto=format&fit=crop&q=80&w=1080&h=1920',
-    'https://images.unsplash.com/photo-1517836357463-d25dfeac3438?auto=format&fit=crop&q=80&w=1080&h=1920'
+    'https://cdn.pixabay.com/photo/2017/08/07/14/02/man-2604149_1280.jpg',
+    'https://cdn.pixabay.com/photo/2016/11/19/12/43/bodybuilder-1839086_1280.jpg'
   ],
   'financeiro': [
-    'https://images.unsplash.com/photo-1554224155-6726b3ff858f?auto=format&fit=crop&q=80&w=1080&h=1920',
-    'https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&q=80&w=1080&h=1920'
+    'https://cdn.pixabay.com/photo/2015/05/31/15/07/business-792113_1280.jpg',
+    'https://cdn.pixabay.com/photo/2014/05/18/19/13/car-347408_1280.jpg'
   ],
   'barbearia': [
-    'https://images.unsplash.com/photo-1503951914875-452162b0f3f1?auto=format&fit=crop&q=80&w=1080&h=1920',
-    'https://images.unsplash.com/photo-1585747860715-2ba37e788b70?auto=format&fit=crop&q=80&w=1080&h=1920'
+    'https://cdn.pixabay.com/photo/2016/11/29/03/34/beard-1867083_1280.jpg',
+    'https://cdn.pixabay.com/photo/2020/05/21/11/35/barber-5200384_1280.jpg'
   ],
   'tecnologia': [
-    'https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&q=80&w=1080&h=1920',
-    'https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&q=80&w=1080&h=1920'
+    'https://cdn.pixabay.com/photo/2016/11/19/22/52/coding-1841550_1280.jpg',
+    'https://cdn.pixabay.com/photo/2021/08/04/13/06/software-developer-6521720_1280.jpg'
   ],
   'esmalteria': [
-    'https://images.unsplash.com/photo-1604654894610-df49ff66a7cb?auto=format&fit=crop&q=80&w=1080&h=1920',
-    'https://images.unsplash.com/photo-1632345031435-8727f6897d03?auto=format&fit=crop&q=80&w=1080&h=1920'
+    'https://cdn.pixabay.com/photo/2016/11/29/01/34/manicure-1866571_1280.jpg'
   ],
   'salao': [
-    'https://images.unsplash.com/photo-1560066984-138dadb4c035?auto=format&fit=crop&q=80&w=1080&h=1920',
-    'https://images.unsplash.com/photo-1522337660859-02fbefca4702?auto=format&fit=crop&q=80&w=1080&h=1920'
+    'https://cdn.pixabay.com/photo/2016/02/19/11/40/coffee-shop-1209863_1280.jpg'
   ]
 };
 
@@ -146,15 +141,7 @@ export const findImages = (query: string): string[] => {
     }
   });
 
-  // 3. Fallback Universal: LoremFlickr (Busca Dinâmica Real)
-  // Se não tem curadoria específica, o motor gera 10 opções de busca "viva"
-  if (results.length < 5) {
-    const dynamicSearch = [`https://loremflickr.com/1080/1920/${encodeURIComponent(q)}/all?lock=100`];
-    for (let i = 1; i <= 8; i++) {
-        dynamicSearch.push(`https://loremflickr.com/1080/1920/${encodeURIComponent(q)}?lock=${i}`);
-    }
-    results = [...results, ...dynamicSearch];
-  }
-
+  // 3. Fallback: Se não encontrou nada na curadoria, o EditorForm fará a busca via API real do Pixabay
+  // Retornamos vazio aqui para evitar poluição de imagens genéricas demais
   return Array.from(new Set(results)).slice(0, 15);
 };
