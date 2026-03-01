@@ -253,7 +253,8 @@ END:VCARD`;
     { id: 'tiktok', icon: Music, value: data.tiktok, url: `https://tiktok.com/@${data.tiktok}`, label: 'TikTok', trackType: 'click_tiktok' as const },
     { id: 'twitter', icon: Twitter, value: data.twitter, url: `https://twitter.com/${data.twitter}`, label: 'Twitter', trackType: 'click_twitter' as const },
     { id: 'youtube', icon: Youtube, value: data.youtube, url: `https://youtube.com/@${data.youtube}`, label: 'YouTube', trackType: 'click_youtube' as const },
-    { id: 'website', icon: Link, value: data.website, url: data.website?.startsWith('http') ? data.website : `https://${data.website}`, label: 'Site', trackType: 'click_website' as const },
+    { id: 'website', icon: Globe, value: data.website, url: data.website?.startsWith('http') ? data.website : `https://${data.website}`, label: 'Site', trackType: 'click_website' as const },
+    { id: 'custom_links', icon: Link, value: (data.custom_links?.length || 0) > 0, url: '#custom-links-section', label: 'Links', trackType: 'click_custom_links' as any },
   ];
 
   // All valid links (those with a value)
@@ -443,6 +444,39 @@ END:VCARD`;
 
   const profConfig = getProfessionConfig();
   const premiumGradient = profConfig?.gradient || (isPro ? `linear-gradient(135deg, ${data.theme_color || '#3b82f6'} 0%, #8b5cf6 100%)` : undefined);
+
+  const renderCustomPortfolio = () => {
+    if (!isPro || customLinks.length === 0) return null;
+    const isDark = isBarbearia || isTech || isAdvogado || isDriver || (data.background_video_url);
+    return (
+      <div id="custom-links-section" className="w-full space-y-4 mb-10 scroll-mt-24 px-1">
+        <div className="flex items-center gap-3 mb-2">
+          <span className={cn("text-[10px] font-black uppercase tracking-[0.2em]", isDark ? "text-white/40" : "text-slate-400")}>Links & Portfólio</span>
+          <div className={cn("h-[1px] flex-1", isDark ? "bg-white/10" : "bg-slate-200 dark:bg-slate-800")} />
+        </div>
+        <div className="grid gap-3">
+          {customLinks.map((link, i) => (
+            <motion.a
+              key={i}
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
+              href={link.url.startsWith('http') ? link.url : `https://${link.url}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className={cn(
+                "w-full px-4 py-4 rounded-3xl flex items-center justify-center text-center gap-3 border transition-all text-sm font-bold shadow-md",
+                isDark 
+                  ? "bg-white/10 backdrop-blur-xl border-white/20 text-white hover:bg-white/20" 
+                  : "bg-white border-slate-200/50 hover:border-primary/30 text-slate-800 hover:shadow-lg"
+              )}
+            >
+              <span className="truncate">{link.title}</span>
+            </motion.a>
+          ))}
+        </div>
+      </div>
+    );
+  };
 
   return (
     <TooltipProvider>
@@ -831,6 +865,7 @@ END:VCARD`;
               >
                 <MessageCircle className="w-7 h-7 fill-black" />
               </motion.a>
+            {renderCustomPortfolio()}
             </div>
           ) : isBeauty ? (
             <div className="relative flex flex-col items-center w-full min-h-[600px] z-10 px-6 py-10 overflow-y-auto scroll-hide">
@@ -1015,6 +1050,7 @@ END:VCARD`;
                   />
                 </div>
               )}
+            {renderCustomPortfolio()}
             </div>
             ) : isHealth ? (
               <div className="relative flex flex-col items-center w-full min-h-[600px] z-10 px-6 py-12 overflow-y-auto scroll-hide">
@@ -1170,7 +1206,8 @@ END:VCARD`;
                     />
                   </div>
                 )}
-              </div>
+              {renderCustomPortfolio()}
+            </div>
             ) : isSales ? (
               <div className="relative flex flex-col items-center w-full min-h-[600px] z-10 px-6 py-10 overflow-y-auto scroll-hide">
                 {/* Header Vendas */}
@@ -1320,7 +1357,8 @@ END:VCARD`;
                     />
                   </div>
                 )}
-              </div>
+              {renderCustomPortfolio()}
+            </div>
             ) : isFood ? (
               <div className="relative flex flex-col items-center w-full min-h-[600px] z-10 px-6 py-10 overflow-y-auto scroll-hide">
                 {/* Header Comida */}
@@ -1471,7 +1509,8 @@ END:VCARD`;
                     />
                   </div>
                 )}
-              </div>
+              {renderCustomPortfolio()}
+            </div>
             ) : isTech ? (
               <div className="relative flex flex-col items-center w-full min-h-[600px] z-10 px-6 py-10 overflow-y-auto scroll-hide">
                   {/* Tech Aesthetics - Digital Grid Background simulated via patterns */}
@@ -1618,7 +1657,8 @@ END:VCARD`;
                   <div className="mt-auto opacity-30 flex items-center gap-2">
                      <span className="text-[7px] font-black uppercase tracking-[0.5em] text-blue-400">KONNEXY&trade; DIGITAL SOLUTIONS</span>
                   </div>
-               </div>
+               {renderCustomPortfolio()}
+            </div>
             ) : isRealEstate ? (
               <div className="relative flex flex-col items-center w-full min-h-[600px] z-10 px-6 py-10 overflow-y-auto scroll-hide">
                   {/* Real Estate Theme - Luxurious Gold & Emerald Style */}
@@ -1751,7 +1791,8 @@ END:VCARD`;
                      )}
                      <span className="text-[7px] font-bold uppercase tracking-[0.5em] text-emerald-500/40">Luxury Real Estate Signature</span>
                   </div>
-               </div>
+               {renderCustomPortfolio()}
+            </div>
             ) : isDriver ? (
                <div className="relative flex flex-col items-center w-full min-h-[600px] z-10 px-6 py-10 overflow-y-auto scroll-hide">
                   {/* Driver/Delivery Aesthetics - Mobility and Speed */}
@@ -1814,7 +1855,8 @@ END:VCARD`;
                   <div className="mt-auto flex items-center gap-3 opacity-30">
                      <span className="text-[8px] font-black uppercase tracking-[0.5em]">Fast Route Protocol &trade;</span>
                   </div>
-               </div>
+               {renderCustomPortfolio()}
+            </div>
             ) : isPetshop ? (
                <div className="relative flex flex-col items-center w-full min-h-[600px] z-10 px-6 py-10 overflow-y-auto scroll-hide">
                   {/* Petshop Aesthetics - Playful and Friendly */}
@@ -1946,7 +1988,8 @@ END:VCARD`;
                   <div className="mt-auto opacity-30">
                      <span className="text-[7px] font-black uppercase tracking-[0.4em] text-purple-600 dark:text-purple-400">PetCare Management Signature</span>
                   </div>
-               </div>
+               {renderCustomPortfolio()}
+            </div>
             ) : isService ? (
               <div className="relative flex flex-col items-center w-full min-h-[600px] z-10 px-6 py-10 overflow-y-auto scroll-hide">
                 {/* Header Serviços / Manutenção - INDUSTRIAL REVAMPED */}
@@ -2145,7 +2188,8 @@ END:VCARD`;
                      </div>
                    )}
                 </div>
-              </div>
+              {renderCustomPortfolio()}
+            </div>
             ) : isAdvogado ? (
               <div className="relative flex flex-col items-center w-full min-h-[600px] z-10 px-6 py-10 overflow-y-auto scroll-hide">
                  {/* Header Advogado - Sobriedade e Elegância */}
@@ -2745,10 +2789,18 @@ END:VCARD`;
                       whileHover={isDisabled ? {} : { y: -3 }}
                       whileTap={isDisabled ? {} : { scale: 0.9 }}
                       href={isDisabled ? '#' : social.url}
-                      target={isDisabled ? undefined : "_blank"}
-                      rel={isDisabled ? undefined : "noopener noreferrer"}
+                      target={isDisabled || social.url.startsWith('#') ? undefined : "_blank"}
+                      rel={isDisabled || social.url.startsWith('#') ? undefined : "noopener noreferrer"}
                       aria-label={isDisabled ? `${social.label}` : `Visitar ${social.label}`}
-                      onClick={() => !isDisabled && handleTrackClick(social.trackType)}
+                      onClick={(e) => {
+                        if (isDisabled) return;
+                        if (social.url.startsWith('#')) {
+                          e.preventDefault();
+                          const el = document.getElementById(social.url.substring(1));
+                          if (el) el.scrollIntoView({ behavior: 'smooth' });
+                        }
+                        handleTrackClick(social.trackType);
+                      }}
                       className={cn(
                         "w-12 h-12 flex items-center justify-center rounded-2xl transition-all shadow-sm relative overflow-hidden",
                         isPro 
@@ -2894,7 +2946,7 @@ END:VCARD`;
 
             {/* Custom Links (Pro Only) */}
             {isPro && customLinks.length > 0 && (
-              <div className="w-full space-y-3">
+              <div id="custom-links-section" className="w-full space-y-3 scroll-mt-20">
                 <div className="flex items-center gap-3 mb-2">
                   <span className={cn("text-[10px] font-black uppercase tracking-[0.2em]", data.background_video_url ? "text-white/60" : "text-slate-400")}>Links Úteis</span>
                   <div className={cn("h-[1px] flex-1", data.background_video_url ? "bg-white/20" : "bg-slate-200 dark:bg-slate-800")} />

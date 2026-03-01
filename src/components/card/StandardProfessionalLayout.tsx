@@ -376,7 +376,8 @@ export function StandardProfessionalLayout({ data, isPro }: StandardProfessional
       {data.custom_links && data.custom_links.length > 0 && (
         <motion.div 
           custom={7} initial="hidden" animate="visible" variants={fadeIn}
-          className="px-6 space-y-3"
+          className="px-6 space-y-3 scroll-mt-20"
+          id="custom-links-section"
         >
           <div className="flex items-center gap-3">
             <span className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400">Links Úteis</span>
