@@ -253,8 +253,9 @@ END:VCARD`;
     { id: 'tiktok', icon: Music, value: data.tiktok, url: `https://tiktok.com/@${data.tiktok}`, label: 'TikTok', trackType: 'click_tiktok' as const },
     { id: 'twitter', icon: Twitter, value: data.twitter, url: `https://twitter.com/${data.twitter}`, label: 'Twitter', trackType: 'click_twitter' as const },
     { id: 'youtube', icon: Youtube, value: data.youtube, url: `https://youtube.com/@${data.youtube}`, label: 'YouTube', trackType: 'click_youtube' as const },
-    { id: 'website', icon: Globe, value: data.website, url: data.website?.startsWith('http') ? data.website : `https://${data.website}`, label: 'Site', trackType: 'click_website' as const },
-    { id: 'custom_links', icon: Link, value: (data.custom_links?.length || 0) > 0, url: '#custom-links-section', label: 'Links', trackType: 'click_custom_links' as any },
+    { id: 'professional_website', icon: ExternalLink, value: data.website, url: data.website?.startsWith('http') ? data.website : `https://${data.website}`, label: 'Website', trackType: 'click_website' as const },
+    { id: 'digital_presence', icon: Globe, value: true, url: `${process.env.NEXT_PUBLIC_APP_URL || 'https://konnexy.com.br'}/u/${data.username || data.id}`, label: 'Perfil Digital', trackType: 'click_website' as const },
+    { id: 'portfolio_anchor', icon: Link, value: (data.custom_links?.length || 0) > 0, url: `${process.env.NEXT_PUBLIC_APP_URL || 'https://konnexy.com.br'}/u/${data.username || data.id}#custom-links-section`, label: 'Links & Portfólio', trackType: 'click_custom_links' as any },
   ];
 
   // All valid links (those with a value)
@@ -2779,8 +2780,8 @@ END:VCARD`;
 
               {/* Social Navbar */}
               <div className="flex items-center justify-center gap-2 pt-1">
-                {/* Visible Social Icons (Max 3) */}
-                {validSocialLinks.slice(0, 3).map((social, index) => {
+                {/* Visible Social Icons (Max 5 for Pro) */}
+                {validSocialLinks.slice(0, isPro ? 5 : 3).map((social, index) => {
                   const isDisabled = !isPro && index > 0;
                   
                   const LinkContent = (
@@ -2789,15 +2790,23 @@ END:VCARD`;
                       whileHover={isDisabled ? {} : { y: -3 }}
                       whileTap={isDisabled ? {} : { scale: 0.9 }}
                       href={isDisabled ? '#' : social.url}
-                      target={isDisabled || social.url.startsWith('#') ? undefined : "_blank"}
-                      rel={isDisabled || social.url.startsWith('#') ? undefined : "noopener noreferrer"}
+                      target={isDisabled || social.url.includes('#') ? undefined : "_blank"}
+                      rel={isDisabled || social.url.includes('#') ? undefined : "noopener noreferrer"}
                       aria-label={isDisabled ? `${social.label}` : `Visitar ${social.label}`}
                       onClick={(e) => {
                         if (isDisabled) return;
-                        if (social.url.startsWith('#')) {
-                          e.preventDefault();
-                          const el = document.getElementById(social.url.substring(1));
-                          if (el) el.scrollIntoView({ behavior: 'smooth' });
+                        if (social.url.includes('#')) {
+                          const anchorId = social.url.includes('#') ? social.url.split('#')[1] : null;
+                          if (anchorId) {
+                            e.preventDefault();
+                            const el = document.getElementById(anchorId);
+                            if (el) {
+                              el.scrollIntoView({ behavior: 'smooth' });
+                            } else {
+                              // If on dashboard, maybe the ID isn't in this window, but let's try
+                              window.location.href = social.url;
+                            }
+                          }
                         }
                         handleTrackClick(social.trackType);
                       }}
