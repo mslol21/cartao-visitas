@@ -237,6 +237,20 @@ export function StandardProfessionalLayout({ data, isPro }: StandardProfessional
             </a>
           </Button>
         )}
+
+        {data.website && (
+          <Button 
+            asChild
+            variant="outline"
+            className="w-full h-12 rounded-xl border border-slate-200 dark:border-white/10 bg-white dark:bg-slate-900 hover:bg-slate-50 dark:hover:bg-slate-800 transition-all group overflow-hidden"
+          >
+            <a href={data.website.startsWith('http') ? data.website : `https://${data.website}`} target="_blank" rel="noopener noreferrer" className="flex items-center justify-center gap-2">
+              <Globe className="w-4 h-4 text-primary" />
+              <span className="text-[10px] font-black uppercase tracking-widest text-slate-700 dark:text-white/80">Website Profissional</span>
+              <ChevronRight className="w-3 h-3 text-slate-300 ml-auto" />
+            </a>
+          </Button>
+        )}
       </motion.div>
 
       {/* 7. BIO PROFISSIONAL */}

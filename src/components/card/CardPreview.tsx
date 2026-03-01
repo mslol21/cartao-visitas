@@ -253,9 +253,9 @@ END:VCARD`;
     { id: 'tiktok', icon: Music, value: data.tiktok, url: `https://tiktok.com/@${data.tiktok}`, label: 'TikTok', trackType: 'click_tiktok' as const },
     { id: 'twitter', icon: Twitter, value: data.twitter, url: `https://twitter.com/${data.twitter}`, label: 'Twitter', trackType: 'click_twitter' as const },
     { id: 'youtube', icon: Youtube, value: data.youtube, url: `https://youtube.com/@${data.youtube}`, label: 'YouTube', trackType: 'click_youtube' as const },
-    { id: 'professional_website', icon: ExternalLink, value: data.website, url: data.website?.startsWith('http') ? data.website : `https://${data.website}`, label: 'Website', trackType: 'click_website' as const },
-    { id: 'digital_presence', icon: Globe, value: true, url: `${process.env.NEXT_PUBLIC_APP_URL || 'https://konnexy.com.br'}/u/${data.username || data.id}`, label: 'Perfil Digital', trackType: 'click_website' as const },
-    { id: 'portfolio_anchor', icon: Link, value: (data.custom_links?.length || 0) > 0, url: `${process.env.NEXT_PUBLIC_APP_URL || 'https://konnexy.com.br'}/u/${data.username || data.id}#custom-links-section`, label: 'Links & Portfólio', trackType: 'click_custom_links' as any },
+    { id: 'professional_website', icon: Globe, value: data.website, url: data.website?.startsWith('http') ? data.website : `https://${data.website}`, label: 'Website', trackType: 'click_website' as const },
+    { id: 'digital_presence', icon: User, value: true, url: `${process.env.NEXT_PUBLIC_APP_URL || 'https://konnexy.com.br'}/${data.username || data.id}`, label: 'Perfil Digital', trackType: 'click_website' as const },
+    { id: 'portfolio_anchor', icon: Link, value: (data.custom_links?.length || 0) > 0, url: `${process.env.NEXT_PUBLIC_APP_URL || 'https://konnexy.com.br'}/${data.username || data.id}#custom-links-section`, label: 'Links & Portfólio', trackType: 'click_custom_links' as any },
   ];
 
   // All valid links (those with a value)
@@ -543,7 +543,7 @@ END:VCARD`;
                    )}
                  </div>
                   {/* Premium depth overlay */}
-                  <div className="absolute inset-0 bg-black/10 backdrop-blur-[0.3px] pointer-events-none" />
+                  <div className="absolute inset-0 bg-black/60 backdrop-blur-sm pointer-events-none" />
                   <div className="absolute inset-0 ring-1 ring-inset ring-white/5 pointer-events-none" />
                </div>
              ) : (
@@ -1416,6 +1416,27 @@ END:VCARD`;
 
                 {/* Menu Destaque */}
                 <div className="w-full mb-8">
+                   {/* Destaques Delivery/VR/Retirada */}
+                   {(data.custom_fields?.tem_delivery || data.custom_fields?.retirada_local || data.custom_fields?.aceita_vr) && (
+                     <div className="flex flex-wrap justify-center gap-2 mb-6">
+                       {data.custom_fields?.tem_delivery && (
+                         <div className="px-3 py-1 rounded-full bg-red-100 dark:bg-red-900/20 text-red-600 text-[9px] font-black uppercase tracking-widest border border-red-200 dark:border-red-800/30">
+                           Delivery
+                         </div>
+                       )}
+                       {data.custom_fields?.retirada_local && (
+                         <div className="px-3 py-1 rounded-full bg-orange-100 dark:bg-orange-900/20 text-orange-600 text-[9px] font-black uppercase tracking-widest border border-orange-200 dark:border-orange-800/30">
+                           Retirada Local
+                         </div>
+                       )}
+                       {data.custom_fields?.aceita_vr && (
+                         <div className="px-3 py-1 rounded-full bg-blue-100 dark:bg-blue-900/20 text-blue-600 text-[9px] font-black uppercase tracking-widest border border-blue-200 dark:border-blue-800/30">
+                           Aceita VR / Ticket
+                         </div>
+                       )}
+                     </div>
+                   )}
+
                    <div className="flex items-center gap-2 mb-4">
                      <div className="h-px flex-1 bg-red-100" />
                      <span className="text-[10px] font-black text-red-600 uppercase tracking-widest">Favoritos da Casa</span>
@@ -1430,9 +1451,6 @@ END:VCARD`;
                          </div>
                          <div className="flex items-center gap-2">
                            <span className="text-sm font-black text-red-600">{service.price}</span>
-                           <div className="w-6 h-6 rounded-full bg-red-50 dark:bg-red-900/20 flex items-center justify-center">
-                             <Plus className="w-3 h-3 text-red-600" />
-                           </div>
                          </div>
                        </div>
                      )) : (
@@ -1514,7 +1532,7 @@ END:VCARD`;
                 {isPro && (data.username || data.id) && (
                   <div className="flex flex-col items-center mb-10 w-full">
                     <AnimatedQR
-                      url={`${process.env.NEXT_PUBLIC_APP_URL || 'https://konnexy.com.br'}/u/${data.username || data.id}`}
+                      url={`${process.env.NEXT_PUBLIC_APP_URL || 'https://konnexy.com.br'}/${data.username || data.id}`}
                       photoUrl={data.photo_url || undefined}
                       accentColor="#ef4444"
                       size={100}
@@ -2331,7 +2349,7 @@ END:VCARD`;
                  {isPro && (data.username || data.id) && (
                    <div className="flex flex-col items-center mt-4 mb-10">
                      <AnimatedQR
-                       url={`${process.env.NEXT_PUBLIC_APP_URL || 'https://konnexy.com.br'}/u/${data.username || data.id}`}
+                       url={`${process.env.NEXT_PUBLIC_APP_URL || 'https://konnexy.com.br'}/${data.username || data.id}`}
                        photoUrl={data.photo_url || undefined}
                        accentColor="#94a3b8"
                        size={100}
@@ -3024,7 +3042,7 @@ END:VCARD`;
             {isPro && (data.username || data.id) && (
               <div className="flex flex-col items-center mt-2 mb-4">
                 <AnimatedQR
-                  url={`${process.env.NEXT_PUBLIC_APP_URL || 'https://konnexy.com.br'}/u/${data.username || data.id}`}
+                  url={`${process.env.NEXT_PUBLIC_APP_URL || 'https://konnexy.com.br'}/${data.username || data.id}`}
                   photoUrl={data.photo_url || undefined}
                   accentColor={profConfig?.accent || '#00D4FF'}
                   profGradient={profConfig?.gradient}

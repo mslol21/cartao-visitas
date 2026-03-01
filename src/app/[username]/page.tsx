@@ -31,7 +31,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       description,
       images: profile.photo_url ? [profile.photo_url] : [],
       type: 'profile',
-      url: `https://konnexy.io/${username}`,
+      url: `https://konnexy.com.br/${username}`,
     },
     twitter: {
       card: 'summary_large_image',
@@ -40,7 +40,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       images: profile.photo_url ? [profile.photo_url] : [],
     },
     alternates: {
-      canonical: `https://konnexy.io/${username}`,
+      canonical: `https://konnexy.com.br/${username}`,
     },
   };
 }
