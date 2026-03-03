@@ -9,29 +9,33 @@ export default async function AdminLayout({
 }) {
   const supabase = await createClient();
   
-  // 1. Identificar se há logon usando getSession (mais resiliente em Layouts)
-  const { data: { session } } = await supabase.auth.getSession();
-  const user = session?.user;
+  // 1. Identificar Logon (Dual-Check para estabilidade no servidor)
+  const { data: { user } } = await supabase.auth.getUser();
+  let currentUser = user;
+
+  if (!currentUser) {
+    const { data: { session } } = await supabase.auth.getSession();
+    currentUser = session?.user || null;
+  }
   
-  if (!user) {
-    console.warn('SERVER: Admin Layout - No session found via getSession');
+  if (!currentUser) {
+    console.warn('SERVER: Admin Layout - No user session detected.');
     redirect("/login?message=admin_auth_required");
   }
 
-
-  // 2. Verificar Cargo via Admin Client (Ignora RLS e Garante Confiança)
+  // 2. Verificar Cargo (Admin Client para ignorar RLS)
   const supabaseAdmin = await createAdminClient();
   const { data: profile, error: dbError } = await supabaseAdmin
     .from('profiles')
-    .select('role, email')
-    .eq('user_id', user.id)
+    .select('role')
+    .eq('user_id', currentUser.id)
     .single();
 
   if (dbError || !profile || profile.role !== 'admin') {
-    console.warn(`SERVER: Unauthorized attempt by ${user.email}. Role: ${profile?.role || 'null'}`);
-    // Se o usuário está logado, mas não é admin, mandamos para o dashboard normal
+    console.error(`SERVER: Access Denied for ${currentUser?.email}. Role: ${profile?.role}`);
     redirect("/dashboard?error=permissao-negada-admin");
   }
+
 
   return (
     <div className="flex min-h-screen bg-slate-50 dark:bg-[#020617]">
