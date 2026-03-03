@@ -9,14 +9,15 @@ export default async function AdminLayout({
 }) {
   const supabase = await createClient();
   
-  // 1. Identificar se há logon usando getUser (mais seguro e força sync)
-  const { data: { user }, error: authError } = await supabase.auth.getUser();
+  // 1. Identificar se há logon usando getSession (mais resiliente em Layouts)
+  const { data: { session } } = await supabase.auth.getSession();
+  const user = session?.user;
   
   if (!user) {
-    console.error('SERVER: Admin Layout - No user found:', authError);
-    // Se não há usuário, mandamos para o login com uma mensagem clara
+    console.warn('SERVER: Admin Layout - No session found via getSession');
     redirect("/login?message=admin_auth_required");
   }
+
 
   // 2. Verificar Cargo via Admin Client (Ignora RLS e Garante Confiança)
   const supabaseAdmin = await createAdminClient();
