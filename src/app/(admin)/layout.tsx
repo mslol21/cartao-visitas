@@ -22,11 +22,12 @@ export default async function AdminLayout({
   if (!currentUser) {
      const allCookies = (await cookies()).getAll();
      const hasAuthCookie = allCookies.some(c => c.name.includes('auth-token') || c.name.includes('sb-'));
+     const urlPrefix = (process.env.NEXT_PUBLIC_SUPABASE_URL || 'MISSING').substring(8, 14);
      
      const errorType = hasAuthCookie ? 'auth_sync_error' : 'no_session_cookie';
      console.error(`SERVER: Admin Access Refused (${errorType}). Cookies:`, allCookies.map(c => c.name));
      
-     redirect(`/dashboard?error=admin-auth-failed-${errorType}`);
+     redirect(`/dashboard?error=admin-auth-failed-${errorType}-${urlPrefix}`);
   }
 
   // 2. Verificar Cargo (Ignora RLS)
