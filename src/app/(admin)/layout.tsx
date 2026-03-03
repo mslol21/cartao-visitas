@@ -1,4 +1,5 @@
 import { redirect } from "next/navigation";
+import { cookies } from "next/headers";
 import { createClient, createAdminClient } from "@/utils/supabase/server";
 import { Sidebar } from "@/components/admin/Sidebar";
 
