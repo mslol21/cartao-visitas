@@ -152,5 +152,3 @@ export async function createNewUser(email: string, pass: string, username: strin
     return { success: false, error: err.message };
   }
 }
-
-
