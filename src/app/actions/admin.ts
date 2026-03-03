@@ -13,41 +13,28 @@ export async function getAllUsersOverview() {
     }
 
     // 1. Validar se o usuário atual é admin
-    const { data: { user: authUser }, error: authError } = await supabase.auth.getUser();
+    const { data: { user: authUser } } = await supabase.auth.getUser();
     
-    if (authError || !authUser) {
-      console.error('SERVER ACTION AUTH ERROR:', authError);
-      throw new Error(`Sessão expirada: ${authError?.message || 'Usuário não localizado no servidor'}`);
+    if (!authUser) {
+      throw new Error("Sessão não encontrada. Por favor, faça login novamente.");
     }
 
-    const { data: profile, error: profileError } = await supabaseAdmin
+    const { data: profile } = await supabaseAdmin
       .from('profiles')
       .select('role')
       .eq('user_id', authUser.id)
-      .maybeSingle();
+      .single();
 
-    if (profileError) {
-      console.error('PROFILE FETCH ERROR:', profileError);
-      throw new Error(`Erro ao validar permissões: ${profileError.message}`);
+    if (profile?.role !== 'admin') {
+      throw new Error("Acesso negado: Somente administradores podem ver esta lista.");
     }
 
-    if (!profile || profile.role !== 'admin') {
-      console.warn('Unauthorized access attempt by:', authUser.id);
-      throw new Error("Acesso negado: Perfil de administrador necessário.");
-    }
-
-
-    // 2. Buscar dados usando o cliente Admin (para poder ler auth.users via View)
+    // 2. Buscar dados (usando e-mail ou display_name conforme disponível na View)
     const { data, error } = await supabaseAdmin
       .from('admin_users_overview')
       .select('*')
       .order('created_at', { ascending: false });
 
-    if (error) {
-      console.error('Admin Data Fetch Error:', error);
-      throw error;
-    }
-    
     return { data, success: true };
   } catch (err: any) {
     console.error('CRITICAL ADMIN ERROR:', err);

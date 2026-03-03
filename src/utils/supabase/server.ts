@@ -44,23 +44,21 @@ export async function createClient() {
   return client;
 }
 
+import { createClient as createSupabaseJS } from '@supabase/supabase-js'
+
 export async function createAdminClient() {
   const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
   const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
 
   if (!supabaseUrl || !supabaseServiceKey) {
-    throw new Error('Supabase admin keys missing');
+    throw new Error('CONFIG_MISSING: SUPABASE_SERVICE_ROLE_KEY não configurada no Vercel.');
   }
 
-  return createServerClient(
-    supabaseUrl,
-    supabaseServiceKey,
-    {
-      cookies: {
-        getAll: () => [],
-        setAll: () => {},
-      },
+  return createSupabaseJS(supabaseUrl, supabaseServiceKey, {
+    auth: {
+      autoRefreshToken: false,
+      persistSession: false
     }
-  )
+  });
 }
 
