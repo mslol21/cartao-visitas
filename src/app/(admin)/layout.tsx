@@ -10,15 +10,40 @@ export default async function AdminLayout({
 }) {
   const supabase = await createClient();
   
-  // 1. Identificar Logon (Dual-Check)
-  const { data: { user }, error: getUserError } = await supabase.auth.getUser();
-  let currentUser = user;
-  let getSessionError = null;
+  // 1. Extração direta e blindada do Token (Bypass SSR bugs)
+  const allCookies = (await cookies()).getAll();
+  const authCookie = allCookies.find(c => c.name.includes('-auth-token'));
+  
+  let accessToken: string | undefined = undefined;
+  if (authCookie?.value) {
+    try {
+      // Formato JSON padrão
+      if (authCookie.value.startsWith('{')) {
+        accessToken = JSON.parse(authCookie.value)?.access_token;
+      } else {
+        // Formato base64 (usado em novas versões do SSR)
+        const possibleJson = atob(authCookie.value);
+        accessToken = JSON.parse(possibleJson)?.access_token;
+      }
+    } catch (err) {
+      console.warn('SERVER: Failed to parse auth cookie manually', err);
+    }
+  }
 
+  // 2. Validar o token de forma explícita com o servidor Supabase
+  let currentUser = null;
+  let getUserError = null;
+
+  if (accessToken) {
+    const { data: { user }, error } = await supabase.auth.getUser(accessToken);
+    currentUser = user;
+    getUserError = error;
+  }
+
+  // Fallback se nãop houver token manual
   if (!currentUser) {
-    const { data: { session }, error } = await supabase.auth.getSession();
-    currentUser = session?.user || null;
-    getSessionError = error;
+    const { data } = await supabase.auth.getSession();
+    currentUser = data.session?.user || null;
   }
   
   if (!currentUser) {
@@ -32,7 +57,6 @@ export default async function AdminLayout({
            <div className="bg-black/50 p-4 rounded-xl font-mono text-xs overflow-auto">
              <p className="font-bold text-amber-400 mb-2">Supabase Auth Errors:</p>
              <p>getUser() Error: {JSON.stringify(getUserError)}</p>
-             <p>getSession() Error: {JSON.stringify(getSessionError)}</p>
            </div>
 
            <div className="bg-black/50 p-4 rounded-xl font-mono text-xs overflow-auto">
