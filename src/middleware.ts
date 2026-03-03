@@ -38,14 +38,23 @@ export async function middleware(request: NextRequest) {
     }
   )
 
-  const { data: { user } } = await supabase.auth.getUser()
+  const { data: { user }, error } = await supabase.auth.getUser()
   const pathname = request.nextUrl.pathname
+
+  // Proteção extra: se for admin e não houver usuário, tentamos refrescar a sessão
+  if (!user && pathname.startsWith('/admin')) {
+    const { data: { session } } = await supabase.auth.getSession();
+    if (!session) {
+      return NextResponse.redirect(new URL('/login?message=admin-required', request.url))
+    }
+  }
 
   if (user && (pathname === '/login' || pathname === '/signup')) {
     return NextResponse.redirect(new URL('/dashboard', request.url))
   }
   
   return response
+
 }
 
 export const config = {

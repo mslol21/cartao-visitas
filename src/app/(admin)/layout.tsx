@@ -9,47 +9,28 @@ export default async function AdminLayout({
 }) {
   const supabase = await createClient();
   
-  // 1. Verificação de Identidade (Modo Resiliente)
-  // Tentamos getUser primeiro, se falhar mas houver sessão, podemos tentar prosseguir
-  const { data: { user }, error: authError } = await supabase.auth.getUser();
+  // 1. Identificar Usuário (Método Rápido)
+  const { data: { session } } = await supabase.auth.getSession();
+  const user = session?.user;
   
   if (!user) {
-    console.error('SERVER: Admin Layout - No user found:', authError);
-    // Em vez de redirecionar para login de cara, vamos ver se há uma sessão
-    const { data: { session } } = await supabase.auth.getSession();
-    
-    if (!session) {
-       console.error('SERVER: Admin Layout - No session found either.');
-       redirect("/login?message=Acesso negado. Faça login novamente.");
-    }
-    // Se houver sessão mas getUser falhou, usamos o user da sessão (com cautela)
-    // Mas o ideal é que getUser funcione.
+    console.error('SERVER: No session/user found for admin layout');
+    redirect("/login?message=Faça login para continuar");
   }
 
-  const userId = user?.id || (await supabase.auth.getSession()).data.session?.user.id;
-
-  if (!userId) {
-     redirect("/login");
-  }
-
-  // 2. Verificação de Cargo (Usando Admin Client para total confiabilidade)
+  // 2. Verificação de Cargo (Usando Service Role para evitar falhas de RLS)
   const supabaseAdmin = await createAdminClient();
-  
-  const { data: profile, error: profileError } = await supabaseAdmin
+  const { data: profile, error: dbError } = await supabaseAdmin
     .from('profiles')
-    .select('role, email')
-    .eq('user_id', userId)
+    .select('role')
+    .eq('user_id', user.id)
     .single();
 
-  if (profileError || !profile) {
-    console.error('SERVER: Error fetching admin profile:', profileError);
-    redirect("/dashboard?error=admin_profile_missing");
+  if (dbError || !profile || profile.role !== 'admin') {
+    console.warn(`Unauthorized access attempt by ${user.email}`);
+    redirect("/dashboard?error=permissao-negada");
   }
 
-  if (profile.role !== 'admin') {
-    console.warn(`SERVER: Unauthorized admin access attempt by ${profile.email || userId}`);
-    redirect("/dashboard?error=not_an_admin");
-  }
 
   return (
     <div className="flex min-h-screen bg-slate-50 dark:bg-[#020617]">
