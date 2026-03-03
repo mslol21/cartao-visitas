@@ -4,15 +4,10 @@ import { cookies } from 'next/headers'
 export async function createClient() {
   const cookieStore = await cookies()
 
-  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
-  const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+  const supabaseUrl = (process.env.NEXT_PUBLIC_SUPABASE_URL || '').trim();
+  const supabaseKey = (process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || '').trim();
 
-  // Se as chaves não existirem (comum durante o build do Vercel), 
-  // retornamos um fallback seguro para não quebrar a compilação
   if (!supabaseUrl || !supabaseKey) {
-    if (process.env.NODE_ENV === 'production') {
-      console.warn('CRITICAL: Supabase keys missing in production!');
-    }
     return createServerClient(
       'https://placeholder.supabase.co',
       'placeholder',
@@ -20,7 +15,7 @@ export async function createClient() {
     )
   }
 
-  const client = createServerClient(
+  return createServerClient(
     supabaseUrl,
     supabaseKey,
     {
@@ -28,20 +23,18 @@ export async function createClient() {
         getAll() {
           return cookieStore.getAll()
         },
-        setAll(cookiesToSet: { name: string; value: string; options: Record<string, unknown> }[]) {
-          cookiesToSet.forEach(({ name, value, options }) => {
-            try {
+        setAll(cookiesToSet) {
+          try {
+            cookiesToSet.forEach(({ name, value, options }) =>
               cookieStore.set(name, value, options as any)
-            } catch (error) {
-              // Safe to ignore in Server Components
-            }
-          })
+            )
+          } catch {
+            // Server Components can't set cookies, that's fine
+          }
         },
       },
     }
   )
-
-  return client;
 }
 
 import { createClient as createSupabaseJS } from '@supabase/supabase-js'

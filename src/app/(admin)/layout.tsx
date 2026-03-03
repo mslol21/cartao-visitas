@@ -9,7 +9,7 @@ export default async function AdminLayout({
 }) {
   const supabase = await createClient();
   
-  // 1. Identificar Logon (Dual-Check para estabilidade no servidor)
+  // 1. Identificar Logon (Dual-Check)
   const { data: { user } } = await supabase.auth.getUser();
   let currentUser = user;
 
@@ -19,22 +19,27 @@ export default async function AdminLayout({
   }
   
   if (!currentUser) {
-    console.warn('SERVER: Admin Layout - No user session detected.');
-    redirect("/login?message=admin_auth_required");
+     const allCookies = (await cookies()).getAll();
+     const hasAuthCookie = allCookies.some(c => c.name.includes('auth-token'));
+     console.error('SERVER: Admin Access Refused. Cookies present:', allCookies.map(c => c.name));
+     
+     // Se houver cookie mas não usuário, é erro de sincronização
+     const errorType = hasAuthCookie ? 'auth_sync_error' : 'no_session_cookie';
+     redirect(`/login?message=admin-auth-failed&reason=${errorType}`);
   }
 
-  // 2. Verificar Cargo (Admin Client para ignorar RLS)
+  // 2. Verificar Cargo (Ignora RLS)
   const supabaseAdmin = await createAdminClient();
-  const { data: profile, error: dbError } = await supabaseAdmin
+  const { data: profile, error } = await supabaseAdmin
     .from('profiles')
     .select('role')
     .eq('user_id', currentUser.id)
     .single();
 
-  if (dbError || !profile || profile.role !== 'admin') {
-    console.error(`SERVER: Access Denied for ${currentUser?.email}. Role: ${profile?.role}`);
+  if (error || !profile || profile.role !== 'admin') {
     redirect("/dashboard?error=permissao-negada-admin");
   }
+
 
 
   return (
