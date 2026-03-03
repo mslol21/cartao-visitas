@@ -86,15 +86,32 @@ export async function createNewUser(email: string, pass: string, username: strin
     const supabaseAdmin = await createAdminClient();
     const supabase = await createSupabaseServerClient();
 
-    // 1. Verificar sessão de forma ultra-robusta
+    // 1. Verificar sessão de forma ultra-robusta (com extração manual CSR bypass)
     let authUser = null;
     try {
-      const { data: { user } } = await supabase.auth.getUser();
-      authUser = user;
+      // Extração manual de JWT para Action
+      const { cookies } = await import('next/headers');
+      const allCookies = (await cookies()).getAll();
+      const authCookie = allCookies.find(c => c.name.includes('-auth-token'));
       
+      let accessToken: string | undefined = undefined;
+      if (authCookie?.value) {
+        if (authCookie.value.startsWith('{')) {
+          accessToken = JSON.parse(authCookie.value)?.access_token;
+        } else {
+          const possibleJson = atob(authCookie.value);
+          accessToken = JSON.parse(possibleJson)?.access_token;
+        }
+      }
+
+      if (accessToken) {
+        const { data: { user } } = await supabase.auth.getUser(accessToken);
+        authUser = user;
+      }
+
       if (!authUser) {
-        const { data: { session } } = await supabase.auth.getSession();
-        authUser = session?.user || null;
+        const { data: { user } } = await supabase.auth.getUser();
+        authUser = user;
       }
     } catch (e) {
       console.error('Session retrieval error:', e);
