@@ -11,23 +11,45 @@ export default async function AdminLayout({
   const supabase = await createClient();
   
   // 1. Identificar Logon (Dual-Check)
-  const { data: { user } } = await supabase.auth.getUser();
+  const { data: { user }, error: getUserError } = await supabase.auth.getUser();
   let currentUser = user;
+  let getSessionError = null;
 
   if (!currentUser) {
-    const { data: { session } } = await supabase.auth.getSession();
+    const { data: { session }, error } = await supabase.auth.getSession();
     currentUser = session?.user || null;
+    getSessionError = error;
   }
   
   if (!currentUser) {
      const allCookies = (await cookies()).getAll();
-     const hasAuthCookie = allCookies.some(c => c.name.includes('auth-token') || c.name.includes('sb-'));
-     const urlPrefix = (process.env.NEXT_PUBLIC_SUPABASE_URL || 'MISSING').substring(8, 14);
-     
-     const errorType = hasAuthCookie ? 'auth_sync_error' : 'no_session_cookie';
-     console.error(`SERVER: Admin Access Refused (${errorType}). Cookies:`, allCookies.map(c => c.name));
-     
-     redirect(`/dashboard?error=admin-auth-failed-${errorType}-${urlPrefix}`);
+     return (
+       <div className="p-8 max-w-3xl mx-auto mt-20 bg-slate-900 text-white rounded-3xl shadow-2xl border border-red-500/30">
+         <h1 className="text-2xl font-black text-red-400 mb-4">Acesso Administrativo Bloqueado - Diagnóstico</h1>
+         <p className="text-sm text-slate-400 mb-6">O servidor não conseguiu validar sua sessão do Supabase. Por favor, tire um print desta tela para o desenvolvedor.</p>
+         
+         <div className="space-y-4">
+           <div className="bg-black/50 p-4 rounded-xl font-mono text-xs overflow-auto">
+             <p className="font-bold text-amber-400 mb-2">Supabase Auth Errors:</p>
+             <p>getUser() Error: {JSON.stringify(getUserError)}</p>
+             <p>getSession() Error: {JSON.stringify(getSessionError)}</p>
+           </div>
+
+           <div className="bg-black/50 p-4 rounded-xl font-mono text-xs overflow-auto">
+             <p className="font-bold text-blue-400 mb-2">Environment Config:</p>
+             <p>URL: {process.env.NEXT_PUBLIC_SUPABASE_URL}</p>
+             <p>Has ANON_KEY: {process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY ? 'Yes' : 'No'}</p>
+           </div>
+
+           <div className="bg-black/50 p-4 rounded-xl font-mono text-xs overflow-auto">
+             <p className="font-bold text-emerald-400 mb-2">Server Cookies Received:</p>
+             {allCookies.map(c => (
+               <p key={c.name} className="truncate">{c.name}: {c.value.substring(0, 30)}...</p>
+             ))}
+           </div>
+         </div>
+       </div>
+     );
   }
 
   // 2. Verificar Cargo (Ignora RLS)
