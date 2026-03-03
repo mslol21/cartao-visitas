@@ -117,23 +117,32 @@ export async function createNewUser(email: string, pass: string, username: strin
     }
 
     // 3. Criar o usuário no Auth
+    const cleanEmail = email.trim().toLowerCase();
+    const cleanUsername = username.trim().toLowerCase();
+
     const { data: userData, error: userError } = await supabaseAdmin.auth.admin.createUser({
-      email,
+      email: cleanEmail,
       password: pass,
       email_confirm: true 
     });
 
     if (userError) {
+      console.error('SUPABASE AUTH ERROR:', userError);
       return { success: false, error: `Erro no Supabase Auth: ${userError.message}` };
     }
 
     // 4. Atualizar o profile com o username
     if (userData.user) {
-      await supabaseAdmin
+      const { error: updateError } = await supabaseAdmin
         .from('profiles')
-        .update({ username: username.toLowerCase().trim() })
+        .update({ username: cleanUsername })
         .eq('user_id', userData.user.id);
+      
+      if (updateError) {
+        console.error('PROFILE UPDATE ERROR:', updateError);
+      }
     }
+
 
     revalidatePath('/admin');
     return { success: true, data: userData };
