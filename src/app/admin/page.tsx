@@ -37,6 +37,7 @@ export default function AdminPage() {
   const [selectedUser, setSelectedUser] = useState<any | null>(null);
   const [isCreating, setIsCreating] = useState(false);
   const [newEmail, setNewEmail] = useState('');
+  const [newUsername, setNewUsername] = useState('');
   const [newPassword, setNewPassword] = useState('');
   const [createLoading, setCreateLoading] = useState(false);
 
@@ -66,20 +67,21 @@ export default function AdminPage() {
   }
 
   const filteredUsers = users.filter(u => 
-    u.email?.toLowerCase().includes(search.toLowerCase()) ||
+    u.display_name?.toLowerCase().includes(search.toLowerCase()) ||
     u.id?.toLowerCase().includes(search.toLowerCase())
   );
 
   const handleCreateUser = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!newEmail || !newPassword) return;
+    if (!newEmail || !newPassword || !newUsername) return;
 
     try {
       setCreateLoading(true);
-      const result = await createNewUser(newEmail, newPassword);
+      const result = await createNewUser(newEmail, newPassword, newUsername);
       if (result.success) {
         toast.success("Usuário criado com sucesso!");
         setNewEmail('');
+        setNewUsername('');
         setNewPassword('');
         setIsCreating(false);
         loadUsers();
@@ -149,7 +151,7 @@ export default function AdminPage() {
               <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400 group-focus-within:text-primary transition-colors" />
               <input 
                 type="text"
-                placeholder="Buscar por e-mail..."
+                placeholder="Buscar por nome de usuário..."
                 value={search}
                 onChange={e => setSearch(e.target.value)}
                 className="pl-11 pr-6 h-14 w-full md:w-[250px] rounded-2xl bg-white dark:bg-slate-900 border border-slate-200/60 dark:border-slate-800/60 shadow-sm focus:outline-none focus:ring-2 focus:ring-primary/20 font-medium transition-all"
@@ -167,7 +169,7 @@ export default function AdminPage() {
             <table className="w-full text-left">
               <thead>
                 <tr className="border-b border-slate-100 dark:border-slate-800">
-                  <th className="px-8 py-6 text-[10px] font-black uppercase tracking-widest text-slate-400">Usuário</th>
+                  <th className="px-8 py-6 text-[10px] font-black uppercase tracking-widest text-slate-400">Card / Username</th>
                   <th className="px-8 py-6 text-[10px] font-black uppercase tracking-widest text-slate-400">Plano</th>
                   <th className="px-8 py-6 text-[10px] font-black uppercase tracking-widest text-slate-400">Status</th>
                   <th className="px-8 py-6 text-[10px] font-black uppercase tracking-widest text-slate-400">Expiração</th>
@@ -184,10 +186,10 @@ export default function AdminPage() {
                     <td className="px-8 py-6">
                       <div className="flex items-center gap-4">
                         <div className="w-10 h-10 rounded-xl bg-slate-100 dark:bg-slate-800 flex items-center justify-center font-black text-slate-400">
-                          {u.email?.[0].toUpperCase()}
+                          {u.display_name?.[0].toUpperCase() || 'U'}
                         </div>
                         <div>
-                          <p className="text-sm font-bold truncate max-w-[200px]">{u.email}</p>
+                          <p className="text-sm font-bold truncate max-w-[200px]">{u.display_name || 'Sem username'}</p>
                           <p className="text-[10px] text-muted-foreground font-medium uppercase tracking-widest">{u.role}</p>
                         </div>
                       </div>
@@ -258,7 +260,7 @@ export default function AdminPage() {
             >
               <div className="space-y-2">
                 <h3 className="text-2xl font-black tracking-tight">Gerenciar Plano</h3>
-                <p className="text-sm text-muted-foreground">Atualizando assinatura para: <span className="text-foreground font-bold">{selectedUser.email}</span></p>
+                <p className="text-sm text-muted-foreground">Atualizando assinatura para: <span className="text-foreground font-bold">{selectedUser.display_name}</span></p>
               </div>
 
               <div className="grid grid-cols-2 gap-4">
@@ -362,7 +364,19 @@ export default function AdminPage() {
 
               <form onSubmit={handleCreateUser} className="space-y-4">
                 <div className="space-y-3">
-                  <Label className="text-[10px] font-black uppercase tracking-widest opacity-50">E-mail</Label>
+                  <Label className="text-[10px] font-black uppercase tracking-widest opacity-50">Username (URL do cartão)</Label>
+                  <Input 
+                    type="text"
+                    required
+                    placeholder="ex: joao.silva"
+                    value={newUsername}
+                    onChange={e => setNewUsername(e.target.value)}
+                    className="h-12 rounded-xl bg-slate-100 dark:bg-slate-800"
+                  />
+                </div>
+
+                <div className="space-y-3">
+                  <Label className="text-[10px] font-black uppercase tracking-widest opacity-50">E-mail (Para login)</Label>
                   <Input 
                     type="email"
                     required

@@ -90,7 +90,7 @@ export async function updateUserPlan(userId: string, updates: any) {
   }
 }
 
-export async function createNewUser(email: string, pass: string) {
+export async function createNewUser(email: string, pass: string, username: string) {
   try {
     const supabaseAdmin = await createAdminClient();
     const supabase = await createSupabaseServerClient();
@@ -107,20 +107,31 @@ export async function createNewUser(email: string, pass: string) {
 
     if (profile?.role !== 'admin') throw new Error("Acesso negado");
 
-    // 2. Criar o usuário no Auth usando Service Role (sem logar)
-    const { data, error } = await supabaseAdmin.auth.admin.createUser({
+    // 2. Criar o usuário no Auth usando Service Role
+    const { data: userData, error: userError } = await supabaseAdmin.auth.admin.createUser({
       email,
       password: pass,
       email_confirm: true 
     });
 
-    if (error) throw error;
+    if (userError) throw userError;
+
+    // 3. Atualizar o profile com o username
+    if (userData.user) {
+      const { error: profileError } = await supabaseAdmin
+        .from('profiles')
+        .update({ username: username.toLowerCase() })
+        .eq('user_id', userData.user.id);
+      
+      if (profileError) console.error('Error updating username:', profileError);
+    }
 
     revalidatePath('/admin');
-    return { success: true, data };
+    return { success: true, data: userData };
   } catch (err: any) {
     console.error('CREATE USER ERROR:', err);
     return { success: false, error: err.message };
   }
 }
+
 
