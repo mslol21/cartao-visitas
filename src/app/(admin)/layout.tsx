@@ -9,27 +9,28 @@ export default async function AdminLayout({
 }) {
   const supabase = await createClient();
   
-  // 1. Identificar Usuário (Método Rápido)
+  // 1. Identificar se há logon
   const { data: { session } } = await supabase.auth.getSession();
   const user = session?.user;
   
   if (!user) {
-    console.error('SERVER: No session/user found for admin layout');
-    redirect("/login?message=Faça login para continuar");
+    console.error('SERVER: Admin Layout - Login not detected.');
+    redirect("/login?message=Faça login para acessar esta área.");
   }
 
-  // 2. Verificação de Cargo (Usando Service Role para evitar falhas de RLS)
+  // 2. Verificar Cargo via Admin Client (Ignora RLS e Garante Confiança)
   const supabaseAdmin = await createAdminClient();
-  const { data: profile, error: dbError } = await supabaseAdmin
+  const { data: profile, error } = await supabaseAdmin
     .from('profiles')
-    .select('role')
+    .select('role, email')
     .eq('user_id', user.id)
     .single();
 
-  if (dbError || !profile || profile.role !== 'admin') {
-    console.warn(`Unauthorized access attempt by ${user.email}`);
-    redirect("/dashboard?error=permissao-negada");
+  if (error || !profile || profile.role !== 'admin') {
+    console.warn(`SERVER: Unauthorized attempt by ${user.email}. Role detected: ${profile?.role || 'null'}`);
+    redirect("/dashboard?error=permissao-negada-admin");
   }
+
 
 
   return (
