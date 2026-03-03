@@ -9,7 +9,7 @@ import { Loader2, ArrowLeft, Mail, Lock } from 'lucide-react';
 import { toast } from 'sonner';
 import { z } from 'zod';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { Logo } from '@/components/brand/Logo';
 
 const authSchema = z.object({
@@ -23,6 +23,7 @@ interface AuthFormProps {
 
 export function AuthForm({ mode }: AuthFormProps) {
   const router = useRouter();
+  const searchParams = useSearchParams();
   const { signIn, signUp } = useAuth();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -33,6 +34,13 @@ export function AuthForm({ mode }: AuthFormProps) {
   // Redirecionamento automático se já estiver logado
   const { user, loading: authLoading } = useAuth();
   
+  useEffect(() => {
+    const message = searchParams.get('message');
+    if (message) {
+      toast.info(message);
+    }
+  }, [searchParams]);
+
   useEffect(() => {
     if (user && !authLoading) {
       console.log('🔄 Usuário detectado, redirecionando automaticamente...');
@@ -180,18 +188,20 @@ export function AuthForm({ mode }: AuthFormProps) {
             </Button>
           </form>
 
-          {/* Toggle */}
-          <div className="mt-6 text-center text-sm">
-            <span className="text-muted-foreground">
-              {isSignUp ? 'Já tem uma conta?' : 'Não tem uma conta?'}
-            </span>{' '}
-            <Link
-              href={isSignUp ? '/login' : '/signup'}
-              className="text-primary font-medium hover:underline"
-            >
-              {isSignUp ? 'Entrar' : 'Criar conta'}
-            </Link>
-          </div>
+          {/* Toggle - Removido link de signup público conforme solicitado */}
+          {isSignUp && (
+            <div className="mt-6 text-center text-sm">
+              <span className="text-muted-foreground">
+                Já tem uma conta?
+              </span>{' '}
+              <Link
+                href="/login"
+                className="text-primary font-medium hover:underline"
+              >
+                Entrar
+              </Link>
+            </div>
+          )}
         </div>
       </div>
     </div>

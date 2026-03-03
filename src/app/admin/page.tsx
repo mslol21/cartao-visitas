@@ -3,7 +3,8 @@
 import { useState, useEffect } from 'react';
 import { useAuth } from '@/hooks/useAuth';
 import { useProfile } from '@/hooks/useProfile';
-import { getAllUsersOverview, updateUserPlan } from '@/app/actions/admin';
+import { getAllUsersOverview, updateUserPlan, createNewUser } from '@/app/actions/admin';
+import { UserPlus } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -34,6 +35,10 @@ export default function AdminPage() {
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState('');
   const [selectedUser, setSelectedUser] = useState<any | null>(null);
+  const [isCreating, setIsCreating] = useState(false);
+  const [newEmail, setNewEmail] = useState('');
+  const [newPassword, setNewPassword] = useState('');
+  const [createLoading, setCreateLoading] = useState(false);
 
   useEffect(() => {
     if (profile?.role === 'admin') {
@@ -64,6 +69,29 @@ export default function AdminPage() {
     u.email?.toLowerCase().includes(search.toLowerCase()) ||
     u.id?.toLowerCase().includes(search.toLowerCase())
   );
+
+  const handleCreateUser = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!newEmail || !newPassword) return;
+
+    try {
+      setCreateLoading(true);
+      const result = await createNewUser(newEmail, newPassword);
+      if (result.success) {
+        toast.success("Usuário criado com sucesso!");
+        setNewEmail('');
+        setNewPassword('');
+        setIsCreating(false);
+        loadUsers();
+      } else {
+        toast.error(result.error || "Erro ao criar usuário");
+      }
+    } catch (err) {
+      toast.error("Erro interno");
+    } finally {
+      setCreateLoading(false);
+    }
+  };
 
   const handleUpdate = async (userId: string, updates: any) => {
     try {
@@ -109,6 +137,14 @@ export default function AdminPage() {
           </div>
 
           <div className="flex items-center gap-3">
+            <Button 
+              onClick={() => setIsCreating(true)}
+              variant="hero" 
+              className="h-14 rounded-2xl gap-2 font-bold px-6 shadow-xl shadow-primary/20"
+            >
+               <UserPlus className="w-5 h-5" />
+               <span className="hidden sm:inline">Novo Usuário</span>
+            </Button>
             <div className="relative group">
               <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400 group-focus-within:text-primary transition-colors" />
               <input 
@@ -116,7 +152,7 @@ export default function AdminPage() {
                 placeholder="Buscar por e-mail..."
                 value={search}
                 onChange={e => setSearch(e.target.value)}
-                className="pl-11 pr-6 h-14 w-full md:w-[350px] rounded-2xl bg-white dark:bg-slate-900 border border-slate-200/60 dark:border-slate-800/60 shadow-sm focus:outline-none focus:ring-2 focus:ring-primary/20 font-medium transition-all"
+                className="pl-11 pr-6 h-14 w-full md:w-[250px] rounded-2xl bg-white dark:bg-slate-900 border border-slate-200/60 dark:border-slate-800/60 shadow-sm focus:outline-none focus:ring-2 focus:ring-primary/20 font-medium transition-all"
               />
             </div>
             <Button onClick={loadUsers} variant="secondary" className="h-14 w-14 rounded-2xl p-0">
@@ -301,6 +337,77 @@ export default function AdminPage() {
           </div>
         )}
       </AnimatePresence>
+      
+      {/* Create User Modal */}
+      <AnimatePresence>
+        {isCreating && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-6">
+            <motion.div 
+               initial={{ opacity: 0 }}
+               animate={{ opacity: 1 }}
+               exit={{ opacity: 0 }}
+               onClick={() => setIsCreating(false)}
+               className="absolute inset-0 bg-slate-900/40 backdrop-blur-sm"
+            />
+            <motion.div 
+              initial={{ scale: 0.9, opacity: 0, y: 20 }}
+              animate={{ scale: 1, opacity: 1, y: 0 }}
+              exit={{ scale: 0.9, opacity: 0, y: 20 }}
+              className="relative w-full max-w-lg bg-white dark:bg-slate-900 rounded-[2.5rem] shadow-2xl p-8 lg:p-10 space-y-8"
+            >
+              <div className="space-y-2">
+                <h3 className="text-2xl font-black tracking-tight">Novo Usuário</h3>
+                <p className="text-sm text-muted-foreground">Cadastre uma nova conta no sistema.</p>
+              </div>
+
+              <form onSubmit={handleCreateUser} className="space-y-4">
+                <div className="space-y-3">
+                  <Label className="text-[10px] font-black uppercase tracking-widest opacity-50">E-mail</Label>
+                  <Input 
+                    type="email"
+                    required
+                    placeholder="email@exemplo.com"
+                    value={newEmail}
+                    onChange={e => setNewEmail(e.target.value)}
+                    className="h-12 rounded-xl bg-slate-100 dark:bg-slate-800"
+                  />
+                </div>
+
+                <div className="space-y-3">
+                  <Label className="text-[10px] font-black uppercase tracking-widest opacity-50">Senha Temp</Label>
+                  <Input 
+                    type="password"
+                    required
+                    placeholder="••••••••"
+                    value={newPassword}
+                    onChange={e => setNewPassword(e.target.value)}
+                    className="h-12 rounded-xl bg-slate-100 dark:bg-slate-800"
+                  />
+                </div>
+
+                <div className="flex items-center gap-4 pt-4">
+                  <Button 
+                    type="submit"
+                    disabled={createLoading}
+                    className="flex-1 h-14 rounded-2xl shadow-xl shadow-primary/20 font-black uppercase tracking-widest text-xs"
+                  >
+                    {createLoading ? "Criando..." : "Criar Conta"}
+                  </Button>
+                  <Button 
+                    type="button"
+                    onClick={() => setIsCreating(false)}
+                    variant="outline" 
+                    className="h-14 px-6 rounded-2xl font-black uppercase tracking-widest text-[10px]"
+                  >
+                    Cancelar
+                  </Button>
+                </div>
+              </form>
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
     </div>
+
   );
 }

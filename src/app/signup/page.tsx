@@ -1,23 +1,14 @@
 import { Metadata } from 'next'
-import { AuthForm } from "@/components/auth/AuthForm";
+import { redirect } from 'next/navigation'
 
 export const metadata: Metadata = {
-  title: 'Criar Conta - Cartão de Visitas Digital Grátis',
-  description: 'Crie sua conta grátis na Konnexy e tenha seu cartão de visitas digital em minutos. Ideal para autônomos e profissionais liberais.',
-  keywords: [
-    'criar conta cartão digital',
-    'cadastro grátis',
-    'registro cartão de visitas',
-    'conta konnexy'
-  ],
-  openGraph: {
-    title: 'Criar Conta Grátis - Konnexy',
-    description: 'Crie seu cartão de visitas digital grátis em minutos',
-    type: 'website',
-  },
-  robots: 'noindex, nofollow', // Não indexar páginas de cadastro
+  title: 'Criar Conta - Konnexy',
+  description: 'O cadastro de novos usuários está temporariamente restrito.',
+  robots: 'noindex, nofollow',
 }
 
 export default function SignupPage() {
-  return <AuthForm mode="signup" />;
+  // Redireciona para o login informando que o cadastro está fechado
+  redirect('/login?message=O cadastro público está desativado. Entre em contato com o administrador.');
 }
+

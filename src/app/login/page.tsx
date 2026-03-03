@@ -12,6 +12,13 @@ export const metadata: Metadata = {
   robots: 'noindex, nofollow', // Não indexar páginas de login
 }
 
+import { Suspense } from 'react'
+
 export default function LoginPage() {
-  return <AuthForm mode="login" />;
+  return (
+    <Suspense fallback={<div className="min-h-screen bg-background" />}>
+      <AuthForm mode="login" />
+    </Suspense>
+  );
 }
+

@@ -1,6 +1,6 @@
 "use server";
 
-import { createClient as createSupabaseServerClient } from '@/utils/supabase/server';
+import { createClient as createSupabaseServerClient, createAdminClient } from '@/utils/supabase/server';
 import { revalidatePath } from 'next/cache';
 
 export async function getAllUsersOverview() {
@@ -100,3 +100,38 @@ export async function updateUserPlan(userId: string, updates: any) {
     return { success: false, error: err.message };
   }
 }
+
+export async function createNewUser(email: string, pass: string) {
+  try {
+    const supabaseAdmin = await createAdminClient();
+    const supabase = await createSupabaseServerClient();
+
+    // 1. Verificar se quem está chamando é admin
+    const { data: { user: authUser } } = await supabase.auth.getUser();
+    if (!authUser) throw new Error("Sessão expirada");
+
+    const { data: profile } = await supabase
+      .from('profiles')
+      .select('role')
+      .eq('user_id', authUser.id)
+      .single();
+
+    if (profile?.role !== 'admin') throw new Error("Acesso negado");
+
+    // 2. Criar o usuário no Auth usando Service Role (sem logar)
+    const { data, error } = await supabaseAdmin.auth.admin.createUser({
+      email,
+      password: pass,
+      email_confirm: true 
+    });
+
+    if (error) throw error;
+
+    revalidatePath('/admin');
+    return { success: true, data };
+  } catch (err: any) {
+    console.error('CREATE USER ERROR:', err);
+    return { success: false, error: err.message };
+  }
+}
+
