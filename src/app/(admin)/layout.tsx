@@ -9,23 +9,29 @@ export default async function AdminLayout({
 }) {
   const supabase = await createClient();
   
-  // 1. Verificação de Identidade (Lado do Servidor - muito mais rápido e seguro)
+  // 1. Verificação de Identidade
   const { data: { user }, error: authError } = await supabase.auth.getUser();
   
   if (authError || !user) {
-    redirect("/login?message=Acesso restrito");
+    console.error('Admin Layout Auth Error:', authError);
+    redirect("/login?message=Sessão expirada. Faça login novamente.");
   }
 
-  // 2. Verificação de Cargo (Admin)
-  const { data: profile } = await supabase
+  // 2. Verificação de Cargo (Usando Admin Client para burlar RLS de leitura)
+  const { createAdminClient } = await import("@/utils/supabase/server");
+  const supabaseAdmin = await createAdminClient();
+  
+  const { data: profile, error: profileError } = await supabaseAdmin
     .from('profiles')
     .select('role')
     .eq('user_id', user.id)
     .single();
 
-  if (profile?.role !== 'admin') {
-    redirect("/dashboard?error=unauthorized");
+  if (profileError || !profile || profile.role !== 'admin') {
+    console.warn('Unauthorized admin access attempt:', user.email, profileError);
+    redirect("/dashboard?message=Acesso restrito: Requer conta de administrador");
   }
+
 
   return (
     <div className="flex min-h-screen bg-slate-50 dark:bg-[#020617]">
