@@ -26,7 +26,12 @@ export async function createClient() {
         setAll(cookiesToSet: { name: string; value: string; options: any }[]) {
           try {
             cookiesToSet.forEach(({ name, value, options }) =>
-              cookieStore.set(name, value, options as any)
+              cookieStore.set(name, value, {
+                ...options,
+                // Remove restrições estritas de path e domain para garantir leitura no Vercel
+                path: '/',
+                domain: undefined,
+              } as any)
             )
           } catch {
             // Server Components can't set cookies, that's fine
