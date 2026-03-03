@@ -99,30 +99,30 @@ export async function createNewUser(email: string, pass: string, username: strin
     const supabaseAdmin = await createAdminClient();
     const supabase = await createSupabaseServerClient();
 
-    // 1. Verificar sessão de forma robusta
-    const { data: { session } } = await supabase.auth.getSession();
-    let authUser = session?.user;
+    // 1. Verificar sessão usando getUser (mais seguro para Server Actions)
+    const { data: { user: authUser }, error: authError } = await supabase.auth.getUser();
 
-    if (!authUser) {
-      const { data: { user } } = await supabase.auth.getUser();
-      authUser = user || undefined;
-    }
-
-    if (!authUser) {
-      throw new Error("Sessão expirada ou inválida. Por favor, saia e entre novamente.");
+    if (authError || !authUser) {
+      console.error('AUTH ERROR DETAILS:', authError);
+      throw new Error("Sessão expirada ou inválida. Por favor, faça login novamente.");
     }
 
     // 2. Verificar se o usuário é admin
-    const { data: profile, error: profileError } = await supabase
+    const { data: profile, error: profileError } = await supabaseAdmin
       .from('profiles')
       .select('role')
       .eq('user_id', authUser.id)
-      .single();
+      .maybeSingle();
 
-    if (profileError || profile?.role !== 'admin') {
-      console.error('Admin check failed:', profileError);
-      throw new Error("Acesso negado: Somente administradores podem criar contas.");
+    if (profileError) {
+      console.error('ADMIN CHECK DB ERROR:', profileError);
+      throw new Error(`Erro de permissão: ${profileError.message}`);
     }
+
+    if (!profile || profile.role !== 'admin') {
+      throw new Error("Acesso negado: Perfil de administrador necessário.");
+    }
+
 
 
     // 2. Criar o usuário no Auth usando Service Role
