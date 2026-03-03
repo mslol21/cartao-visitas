@@ -12,26 +12,30 @@ export async function getAllUsersOverview() {
       throw new Error("Configuração do Supabase ausente no servidor. Verifique o arquivo .env.");
     }
 
-    // 1. Validar se o usuário atual é admin (usando cliente normal para segurança)
-    const { data: { session } } = await supabase.auth.getSession();
-    const user = session?.user;
-
-    if (!user) {
-      const { data: { user: authUser } } = await supabase.auth.getUser();
-      if (!authUser) throw new Error("Sessão expirada");
+    // 1. Validar se o usuário atual é admin
+    const { data: { user: authUser }, error: authError } = await supabase.auth.getUser();
+    
+    if (authError || !authUser) {
+      console.error('SERVER ACTION AUTH ERROR:', authError);
+      throw new Error(`Sessão expirada: ${authError?.message || 'Usuário não localizado no servidor'}`);
     }
 
-    const userId = user?.id || (await supabase.auth.getUser()).data.user?.id;
-    
-    const { data: profile } = await supabase
+    const { data: profile, error: profileError } = await supabaseAdmin
       .from('profiles')
       .select('role')
-      .eq('user_id', userId)
+      .eq('user_id', authUser.id)
       .maybeSingle();
 
+    if (profileError) {
+      console.error('PROFILE FETCH ERROR:', profileError);
+      throw new Error(`Erro ao validar permissões: ${profileError.message}`);
+    }
+
     if (!profile || profile.role !== 'admin') {
+      console.warn('Unauthorized access attempt by:', authUser.id);
       throw new Error("Acesso negado: Perfil de administrador necessário.");
     }
+
 
     // 2. Buscar dados usando o cliente Admin (para poder ler auth.users via View)
     const { data, error } = await supabaseAdmin
