@@ -95,17 +95,31 @@ export async function createNewUser(email: string, pass: string, username: strin
     const supabaseAdmin = await createAdminClient();
     const supabase = await createSupabaseServerClient();
 
-    // 1. Verificar se quem está chamando é admin
-    const { data: { user: authUser } } = await supabase.auth.getUser();
-    if (!authUser) throw new Error("Sessão expirada");
+    // 1. Verificar sessão de forma robusta
+    const { data: { session } } = await supabase.auth.getSession();
+    let authUser = session?.user;
 
-    const { data: profile } = await supabase
+    if (!authUser) {
+      const { data: { user } } = await supabase.auth.getUser();
+      authUser = user || undefined;
+    }
+
+    if (!authUser) {
+      throw new Error("Sessão expirada ou inválida. Por favor, saia e entre novamente.");
+    }
+
+    // 2. Verificar se o usuário é admin
+    const { data: profile, error: profileError } = await supabase
       .from('profiles')
       .select('role')
       .eq('user_id', authUser.id)
       .single();
 
-    if (profile?.role !== 'admin') throw new Error("Acesso negado");
+    if (profileError || profile?.role !== 'admin') {
+      console.error('Admin check failed:', profileError);
+      throw new Error("Acesso negado: Somente administradores podem criar contas.");
+    }
+
 
     // 2. Criar o usuário no Auth usando Service Role
     const { data: userData, error: userError } = await supabaseAdmin.auth.admin.createUser({
