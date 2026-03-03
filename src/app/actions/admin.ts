@@ -86,12 +86,22 @@ export async function createNewUser(email: string, pass: string, username: strin
     const supabaseAdmin = await createAdminClient();
     const supabase = await createSupabaseServerClient();
 
-    // 1. Verificar sessão usando getUser (mais seguro para Server Actions)
-    const { data: { user: authUser }, error: authError } = await supabase.auth.getUser();
+    // 1. Verificar sessão de forma ultra-robusta
+    let authUser = null;
+    try {
+      const { data: { user } } = await supabase.auth.getUser();
+      authUser = user;
+      
+      if (!authUser) {
+        const { data: { session } } = await supabase.auth.getSession();
+        authUser = session?.user || null;
+      }
+    } catch (e) {
+      console.error('Session retrieval error:', e);
+    }
 
-    if (authError || !authUser) {
-      console.error('AUTH ERROR DETAILS:', authError);
-      throw new Error("Sessão expirada ou inválida. Por favor, faça login novamente.");
+    if (!authUser) {
+      return { success: false, error: "Sessão não identificada pelo servidor. Por favor, faça logout e login novamente." };
     }
 
     // 2. Verificar se o usuário é admin
@@ -101,38 +111,33 @@ export async function createNewUser(email: string, pass: string, username: strin
       .eq('user_id', authUser.id)
       .maybeSingle();
 
-    if (profileError) {
-      console.error('ADMIN CHECK DB ERROR:', profileError);
-      throw new Error(`Erro de permissão: ${profileError.message}`);
+    if (profileError || !profile || profile.role !== 'admin') {
+      console.warn('Unauthorized admin attempt:', authUser.id);
+      return { success: false, error: "Acesso negado: Sua conta não tem permissões de administrador." };
     }
 
-    if (!profile || profile.role !== 'admin') {
-      throw new Error("Acesso negado: Perfil de administrador necessário.");
-    }
-
-
-
-    // 2. Criar o usuário no Auth usando Service Role
+    // 3. Criar o usuário no Auth
     const { data: userData, error: userError } = await supabaseAdmin.auth.admin.createUser({
       email,
       password: pass,
       email_confirm: true 
     });
 
-    if (userError) throw userError;
+    if (userError) {
+      return { success: false, error: `Erro no Supabase Auth: ${userError.message}` };
+    }
 
-    // 3. Atualizar o profile com o username
+    // 4. Atualizar o profile com o username
     if (userData.user) {
-      const { error: profileError } = await supabaseAdmin
+      await supabaseAdmin
         .from('profiles')
-        .update({ username: username.toLowerCase() })
+        .update({ username: username.toLowerCase().trim() })
         .eq('user_id', userData.user.id);
-      
-      if (profileError) console.error('Error updating username:', profileError);
     }
 
     revalidatePath('/admin');
     return { success: true, data: userData };
+
   } catch (err: any) {
     console.error('CREATE USER ERROR:', err);
     return { success: false, error: err.message };
