@@ -146,15 +146,19 @@ export async function createNewUser(email: string, pass: string, username: strin
       return { success: false, error: `Erro no Supabase Auth: ${userError.message}` };
     }
 
-    // 4. Atualizar o profile com o username
+    // 4. Inserir ou atualizar o profile (Garante criação mesmo se o trigger de DB falhar)
     if (userData.user) {
-      const { error: updateError } = await supabaseAdmin
+      const { error: upsertError } = await supabaseAdmin
         .from('profiles')
-        .update({ username: cleanUsername })
-        .eq('user_id', userData.user.id);
+        .upsert({ 
+          user_id: userData.user.id,
+          username: cleanUsername,
+          plan: 'free',
+          role: 'user'
+        }, { onConflict: 'user_id' });
       
-      if (updateError) {
-        console.error('PROFILE UPDATE ERROR:', updateError);
+      if (upsertError) {
+        console.error('PROFILE UPSERT ERROR:', upsertError);
       }
     }
 
