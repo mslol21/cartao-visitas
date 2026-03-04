@@ -723,9 +723,9 @@ END:VCARD`;
                </div>
 
               {isPro && data.background_video_url && (
-               <div className="absolute inset-x-0 top-0 h-[65%] overflow-hidden pointer-events-none transition-all">
+               <div className="absolute inset-0 overflow-hidden pointer-events-none transition-all z-0">
                  <div 
-                   className="w-full h-full relative"
+                   className="w-full h-[65%] relative"
                    style={{
                      maskImage: 'linear-gradient(to bottom, black 0%, black 50%, transparent 100%)',
                      WebkitMaskImage: 'linear-gradient(to bottom, black 0%, black 50%, transparent 100%)'
@@ -738,16 +738,17 @@ END:VCARD`;
                        muted 
                        loop 
                        playsInline 
-                       className="w-full h-full object-cover object-top opacity-80 mix-blend-screen"
+                       className="w-full h-full object-cover object-top opacity-50"
                      />
                    ) : (
                      <img 
                        src={data.background_video_url}
                        alt="Background"
-                       className="w-full h-full object-cover object-top opacity-80 mix-blend-screen"
+                       className="w-full h-full object-cover object-top opacity-50"
                      />
                    )}
                  </div>
+                 <div className="absolute inset-0 bg-gradient-to-b from-slate-950/50 via-slate-950/80 to-slate-950" />
                </div>
               )}
           </div>
@@ -1480,10 +1481,10 @@ END:VCARD`;
                       </div>
                     )}
                   </div>
-                  <h1 className="text-3xl font-black text-slate-900 dark:text-white text-center leading-none tracking-tighter uppercase">
+                  <h1 className="text-3xl font-black text-slate-900 dark:text-white text-center leading-none tracking-tighter uppercase drop-shadow-md">
                     {previewName}
                   </h1>
-                  <span className="mt-2 px-3 py-1 rounded-full bg-red-600 text-white text-[9px] font-black uppercase tracking-widest">
+                  <span className="mt-2 px-3 py-1 rounded-full bg-red-600 text-white text-[9px] font-black uppercase tracking-widest shadow-md">
                     {previewTagline}
                   </span>
                 </div>
@@ -1507,49 +1508,49 @@ END:VCARD`;
                   {renderProfessionHighlights('#ef4444')}
 
                    <div className="flex items-center gap-2 mb-4">
-                     <div className="h-px flex-1 bg-red-100" />
-                     <span className="text-[10px] font-black text-red-600 uppercase tracking-widest">Favoritos da Casa</span>
-                     <div className="h-px flex-1 bg-red-100" />
+                     <div className="h-px flex-1 bg-red-100 dark:bg-red-500/20" />
+                     <span className="text-[10px] font-black text-red-600 dark:text-red-400 uppercase tracking-widest drop-shadow-sm">Favoritos da Casa</span>
+                     <div className="h-px flex-1 bg-red-100 dark:bg-red-500/20" />
                    </div>
                    <div className="grid grid-cols-1 gap-2">
                      {activeServicesArr.length > 0 ? activeServicesArr.map((service, i) => (
-                       <div key={i} className="flex justify-between items-center p-4 rounded-2xl bg-white dark:bg-white/5 shadow-sm border border-red-50 dark:border-red-900/10">
+                       <div key={i} className="flex justify-between items-center p-4 rounded-2xl bg-white dark:bg-slate-900/60 shadow-sm border border-red-50 dark:border-red-500/20 backdrop-blur-md">
                          <div className="flex flex-col">
                            <span className="text-sm font-bold text-slate-800 dark:text-white">{service.name}</span>
                            {service.description && <span className="text-[10px] text-slate-400 line-clamp-1">{service.description}</span>}
                          </div>
                          <div className="flex items-center gap-2">
-                           <span className="text-sm font-black text-red-600">{service.price}</span>
+                           <span className="text-sm font-black text-red-600 dark:text-red-400">{service.price}</span>
                          </div>
                        </div>
                      )) : (
-                       <p className="text-center text-xs opacity-20 italic py-10">Adicione seus pratos no painel</p>
+                       <p className="text-center text-xs opacity-40 italic py-10 dark:text-white">Adicione seus pratos no painel</p>
                      )}
                    </div>
 
                 {/* Detalhes Comida */}
                 <div className="w-full space-y-3 mb-10">
                   {previewAddress && (
-                    <div className="flex flex-col items-center p-6 rounded-[2.5rem] bg-orange-50 dark:bg-orange-950/10 border-2 border-dashed border-orange-200 dark:border-orange-900/30 text-center">
-                      <MapPin className="w-6 h-6 text-red-600 mb-2" />
-                      <span className="text-[9px] font-black uppercase tracking-widest text-red-600/50 mb-1">Onde nos Encontrar</span>
-                      <p className="text-xs font-bold text-slate-800 dark:text-orange-50 leading-relaxed">{previewAddress}</p>
+                    <div className="flex flex-col items-center p-6 rounded-[2.5rem] bg-orange-50 dark:bg-slate-900/60 border-2 border-dashed border-orange-200 dark:border-red-500/20 text-center backdrop-blur-md">
+                      <MapPin className="w-6 h-6 text-red-600 dark:text-red-400 mb-2" />
+                      <span className="text-[9px] font-black uppercase tracking-widest text-red-600/50 dark:text-red-400/80 mb-1">Onde nos Encontrar</span>
+                      <p className="text-xs font-bold text-slate-800 dark:text-white leading-relaxed">{previewAddress}</p>
                     </div>
                   )}
 
                   <div className="grid grid-cols-2 gap-3">
                     {previewArea && (
-                      <div className="p-5 rounded-[2rem] bg-white dark:bg-slate-900 border border-red-50 dark:border-red-900/20 text-center">
-                        <Globe className="w-5 h-5 text-red-600 mx-auto mb-2" />
+                      <div className="p-5 rounded-[2rem] bg-white dark:bg-slate-900/60 border border-red-50 dark:border-red-500/20 text-center backdrop-blur-md">
+                        <Globe className="w-5 h-5 text-red-600 dark:text-red-400 mx-auto mb-2" />
                         <span className="text-[8px] font-black uppercase text-slate-400 block mb-1">Entregas em</span>
-                        <p className="text-[10px] font-black text-red-600 uppercase">{previewArea}</p>
+                        <p className="text-[10px] font-black text-red-600 dark:text-red-400 uppercase">{previewArea}</p>
                       </div>
                     )}
                     {data.business_hours && Object.values(data.business_hours).some(v => v) && (
-                      <div className="p-5 rounded-[2rem] bg-white dark:bg-slate-900 border border-red-50 dark:border-red-900/20 text-center">
-                        <Clock className="w-5 h-5 text-red-600 mx-auto mb-2" />
+                      <div className="p-5 rounded-[2rem] bg-white dark:bg-slate-900/60 border border-red-50 dark:border-red-500/20 text-center backdrop-blur-md">
+                        <Clock className="w-5 h-5 text-red-600 dark:text-red-400 mx-auto mb-2" />
                         <span className="text-[8px] font-black uppercase text-slate-400 block mb-1">Estamos</span>
-                        <p className="text-[10px] font-black text-red-600 uppercase">Abertos Hoje</p>
+                        <p className="text-[10px] font-black text-red-600 dark:text-red-400 uppercase">Abertos Hoje</p>
                       </div>
                     )}
                   </div>
