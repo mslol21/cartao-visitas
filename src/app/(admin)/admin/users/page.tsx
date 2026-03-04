@@ -78,26 +78,26 @@ export default function UsersAdminPage() {
           <p className="text-slate-500 font-medium">Gerencie contas, planos e acessos.</p>
         </div>
 
-        <div className="flex items-center gap-3">
-          <Button onClick={() => setIsCreating(true)} className="rounded-xl h-12 px-6 gap-2">
+        <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 w-full md:w-auto">
+          <Button onClick={() => setIsCreating(true)} className="rounded-xl h-12 px-6 gap-2 w-full sm:w-auto">
             <UserPlus className="w-4 h-4" />
             Novo Usuário
           </Button>
-          <div className="relative">
+          <div className="relative w-full sm:w-auto">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
             <input 
               type="text"
               placeholder="Buscar..."
               value={search}
               onChange={e => setSearch(e.target.value)}
-              className="pl-10 pr-4 h-12 w-64 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 outline-none focus:ring-2 focus:ring-primary/20"
+              className="pl-10 pr-4 h-12 w-full sm:w-64 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 outline-none focus:ring-2 focus:ring-primary/20"
             />
           </div>
         </div>
       </div>
 
-      <div className="bg-white dark:bg-slate-900 rounded-3xl border border-slate-200 dark:border-slate-800 shadow-sm overflow-hidden">
-        <table className="w-full text-left">
+      <div className="bg-white dark:bg-slate-900 rounded-3xl border border-slate-200 dark:border-slate-800 shadow-sm overflow-x-auto">
+        <table className="w-full text-left min-w-[600px]">
           <thead className="bg-slate-50 dark:bg-slate-800/50">
             <tr>
               <th className="px-6 py-4 text-[10px] font-black uppercase tracking-widest text-slate-400">Usuário</th>
