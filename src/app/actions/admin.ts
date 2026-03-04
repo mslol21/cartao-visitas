@@ -3,17 +3,45 @@
 import { createClient as createSupabaseServerClient, createAdminClient } from '@/utils/supabase/server';
 import { revalidatePath } from 'next/cache';
 
+export async function getRigidServerSession(supabase: any) {
+  let authUser = null;
+  try {
+    const { cookies } = await import('next/headers');
+    const allCookies = (await cookies()).getAll();
+    const authCookie = allCookies.find(c => c.name.includes('-auth-token'));
+    
+    let accessToken: string | undefined = undefined;
+    if (authCookie?.value) {
+      if (authCookie.value.startsWith('{')) {
+        accessToken = JSON.parse(authCookie.value)?.access_token;
+      } else {
+        const possibleJson = atob(authCookie.value);
+        accessToken = JSON.parse(possibleJson)?.access_token;
+      }
+    }
+
+    if (accessToken) {
+      const { data: { user } } = await supabase.auth.getUser(accessToken);
+      authUser = user;
+    }
+
+    if (!authUser) {
+      const { data: { user } } = await supabase.auth.getUser();
+      authUser = user;
+    }
+  } catch (e) {
+    console.error('SERVER: Auto-Fallback auth check error', e);
+  }
+  return authUser;
+}
+
 export async function getAllUsersOverview() {
   try {
     const supabase = await createSupabaseServerClient();
-    const supabaseAdmin = await createAdminClient(); // Cliente com privilégios de service_role
+    const supabaseAdmin = await createAdminClient(); 
     
-    if (!process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY) {
-      throw new Error("Configuração do Supabase ausente no servidor. Verifique o arquivo .env.");
-    }
-
-    // 1. Validar se o usuário atual é admin
-    const { data: { user: authUser } } = await supabase.auth.getUser();
+    // 1. Validar se o usuário atual é admin (Bypass)
+    const authUser = await getRigidServerSession(supabase);
     
     if (!authUser) {
       throw new Error("Sessão não encontrada. Por favor, faça login novamente.");
@@ -52,11 +80,9 @@ export async function updateUserPlan(userId: string, updates: any) {
     
     if (!supabase || !supabase.auth) throw new Error("Recurso não disponível");
     
-    // Verifica admin
-    const { data: authData, error: authError } = await supabase.auth.getUser();
-    if (authError || !authData?.user) throw new Error("Sessão expirada");
-    
-    const user = authData.user;
+    // Verifica admin (Bypass SSR bugs)
+    const user = await getRigidServerSession(supabase);
+    if (!user) throw new Error("Sessão expirada");
 
     const { data: profile } = await supabase
       .from('profiles')
@@ -87,35 +113,7 @@ export async function createNewUser(email: string, pass: string, username: strin
     const supabase = await createSupabaseServerClient();
 
     // 1. Verificar sessão de forma ultra-robusta (com extração manual CSR bypass)
-    let authUser = null;
-    try {
-      // Extração manual de JWT para Action
-      const { cookies } = await import('next/headers');
-      const allCookies = (await cookies()).getAll();
-      const authCookie = allCookies.find(c => c.name.includes('-auth-token'));
-      
-      let accessToken: string | undefined = undefined;
-      if (authCookie?.value) {
-        if (authCookie.value.startsWith('{')) {
-          accessToken = JSON.parse(authCookie.value)?.access_token;
-        } else {
-          const possibleJson = atob(authCookie.value);
-          accessToken = JSON.parse(possibleJson)?.access_token;
-        }
-      }
-
-      if (accessToken) {
-        const { data: { user } } = await supabase.auth.getUser(accessToken);
-        authUser = user;
-      }
-
-      if (!authUser) {
-        const { data: { user } } = await supabase.auth.getUser();
-        authUser = user;
-      }
-    } catch (e) {
-      console.error('Session retrieval error:', e);
-    }
+    const authUser = await getRigidServerSession(supabase);
 
     if (!authUser) {
       return { success: false, error: "Sessão não identificada pelo servidor. Por favor, faça logout e login novamente." };
