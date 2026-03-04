@@ -77,6 +77,7 @@ export async function updateUserPlan(userId: string, updates: any) {
 
   try {
     const supabase = await createSupabaseServerClient();
+    const supabaseAdmin = await createAdminClient();
     
     if (!supabase || !supabase.auth) throw new Error("Recurso não disponível");
     
@@ -84,7 +85,7 @@ export async function updateUserPlan(userId: string, updates: any) {
     const user = await getRigidServerSession(supabase);
     if (!user) throw new Error("Sessão expirada");
 
-    const { data: profile } = await supabase
+    const { data: profile } = await supabaseAdmin
       .from('profiles')
       .select('role')
       .eq('user_id', user.id)
@@ -115,7 +116,7 @@ export async function updateUserPlan(userId: string, updates: any) {
       }
     }
 
-    const { error } = await supabase
+    const { error } = await supabaseAdmin
       .from('profiles')
       .update(Object.keys(dbUpdates).length > 0 ? dbUpdates : updates)
       .eq('user_id', userId);
