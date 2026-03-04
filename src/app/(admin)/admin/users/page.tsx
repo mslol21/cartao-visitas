@@ -179,6 +179,75 @@ export default function UsersAdminPage() {
             </motion.div>
           </div>
         )}
+
+        {selectedUser && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-6 bg-slate-900/40 backdrop-blur-sm">
+            <motion.div 
+              initial={{ scale: 0.9, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              className="w-full max-w-md bg-white dark:bg-slate-900 rounded-3xl p-8 shadow-2xl space-y-6"
+            >
+              <h2 className="text-2xl font-black">Editar {selectedUser.display_name || 'Usuário'}</h2>
+              
+              <div className="space-y-4">
+                <div className="space-y-1.5">
+                  <Label>ID do Usuário</Label>
+                  <Input disabled value={selectedUser.id} className="bg-slate-50 dark:bg-slate-800" />
+                </div>
+                
+                <div className="space-y-1.5">
+                  <Label>Plano Atual</Label>
+                  <select 
+                    value={selectedUser.plan || 'free'}
+                    onChange={(e) => setSelectedUser({ ...selectedUser, plan: e.target.value })}
+                    className="w-full h-10 px-3 rounded-md border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 text-sm"
+                  >
+                    <option value="free">Free</option>
+                    <option value="pro">Pro</option>
+                  </select>
+                </div>
+
+                <div className="space-y-1.5">
+                  <Label>Status</Label>
+                  <select 
+                    value={selectedUser.status}
+                    onChange={(e) => setSelectedUser({ ...selectedUser, status: e.target.value })}
+                    className="w-full h-10 px-3 rounded-md border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 text-sm"
+                  >
+                    <option value="active">Active (Manual)</option>
+                    <option value="stripe_active">Stripe Active</option>
+                    <option value="canceled">Canceled</option>
+                    <option value="free">Free</option>
+                  </select>
+                </div>
+              </div>
+
+              <div className="flex gap-3 pt-4">
+                <Button 
+                  onClick={async () => {
+                    setCreateLoading(true);
+                    const res = await updateUserPlan(selectedUser.id, { plan: selectedUser.plan, status: selectedUser.status });
+                    if (res.success) {
+                      toast.success('Atualizado com sucesso!');
+                      setSelectedUser(null);
+                      loadUsers();
+                    } else {
+                      toast.error(res.error || 'Erro ao atualizar');
+                    }
+                    setCreateLoading(false);
+                  }} 
+                  disabled={createLoading} 
+                  className="flex-1 rounded-xl bg-amber-500 hover:bg-amber-600 text-white"
+                >
+                  {createLoading ? "Salvando..." : "Salvar Alterações"}
+                </Button>
+                <Button type="button" variant="outline" onClick={() => setSelectedUser(null)} className="rounded-xl">
+                  Cancelar
+                </Button>
+              </div>
+            </motion.div>
+          </div>
+        )}
       </AnimatePresence>
     </div>
   );
