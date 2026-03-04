@@ -92,9 +92,32 @@ export async function updateUserPlan(userId: string, updates: any) {
 
     if (profile?.role !== 'admin') throw new Error("Acesso negado");
 
+    // Mapear status virtual para colunas físicas da tabela profiles
+    const dbUpdates: any = {};
+    if (updates.plan) dbUpdates.plan = updates.plan;
+    
+    if (updates.status) {
+      if (updates.status === 'active') {
+        dbUpdates.billing_type = 'manual';
+        const futureDate = new Date();
+        futureDate.setFullYear(futureDate.getFullYear() + 10);
+        dbUpdates.plan_expires_at = futureDate.toISOString();
+      } else if (updates.status === 'stripe_active') {
+        dbUpdates.billing_type = 'stripe';
+        dbUpdates.plan_expires_at = null;
+      } else if (updates.status === 'free') {
+        dbUpdates.billing_type = 'none';
+        dbUpdates.plan_expires_at = null;
+        dbUpdates.plan = 'free';
+      } else if (updates.status === 'canceled') {
+        dbUpdates.billing_type = 'manual';
+        dbUpdates.plan_expires_at = new Date(0).toISOString(); // Expirado no passado
+      }
+    }
+
     const { error } = await supabase
       .from('profiles')
-      .update(updates)
+      .update(Object.keys(dbUpdates).length > 0 ? dbUpdates : updates)
       .eq('user_id', userId);
 
     if (error) throw error;
