@@ -496,18 +496,19 @@ END:VCARD`;
                    <div key={field.name} className="p-4 rounded-2xl bg-white dark:bg-white/5 border border-current/10 flex flex-col items-center text-center gap-2 group hover:bg-current/10 transition-all hover:scale-[1.02] active:scale-95 shadow-sm">
                       {field.type === 'boolean' ? (
                         <>
-                           <div className="p-2 rounded-xl bg-current opacity-10 group-hover:opacity-20 transition-opacity" style={{ color: themeColor }}>
-                             <Icon className="w-5 h-5" style={{ color: themeColor }} />
+                           <div className="relative p-3 rounded-xl flex items-center justify-center overflow-hidden mb-1 group-hover:scale-110 transition-transform">
+                             <div className="absolute inset-0 opacity-15 transition-opacity group-hover:opacity-25" style={{ backgroundColor: themeColor }} />
+                             <Icon className="w-6 h-6 relative z-10" style={{ color: themeColor }} />
                            </div>
-                           <span className="text-[10px] font-black uppercase tracking-tight leading-tight opacity-80 mt-1">{field.label}</span>
+                           <span className="text-[10px] font-black uppercase tracking-tight leading-tight text-slate-800 dark:text-white opacity-90 mt-1">{field.label}</span>
                            <Check className="w-3 h-3 opacity-60 mt-1" style={{ color: themeColor }} />
                         </>
                       ) : (
                         <>
-                           <Icon className="w-5 h-5 opacity-40 group-hover:scale-110 transition-transform" style={{ color: themeColor }} />
+                           <Icon className="w-5 h-5 opacity-50 group-hover:scale-110 transition-transform" style={{ color: themeColor }} />
                            <div className="flex flex-col gap-0.5 w-full">
-                              <span className="text-[7px] font-black uppercase tracking-widest opacity-40">{field.label}</span>
-                              <span className="text-[10px] font-black uppercase leading-tight italic tracking-tighter truncate w-full">
+                              <span className="text-[7px] font-black uppercase tracking-widest opacity-60 text-slate-600 dark:text-slate-400">{field.label}</span>
+                              <span className="text-[10px] font-black uppercase leading-tight italic tracking-tighter truncate w-full text-slate-900 dark:text-white">
                                 {Array.isArray(value) ? value.join(', ') : value}
                               </span>
                            </div>
@@ -581,7 +582,7 @@ END:VCARD`;
           className={cn(
             "relative overflow-hidden rounded-[2.5rem] transition-all duration-500 flex flex-col min-h-[600px]",
             isPro 
-              ? "bg-slate-950 border-2 border-primary/20 shadow-[0_40px_100px_-20px_hsl(var(--primary)/0.3)] shadow-[inset_0_0_60px_hsl(var(--primary)/0.1)]" 
+              ? "border-2 border-primary/20 shadow-[0_40px_100px_-20px_hsl(var(--primary)/0.3)] shadow-[inset_0_0_60px_hsl(var(--primary)/0.1)]" 
               : "border border-slate-200 dark:border-slate-800 shadow-sm bg-white dark:bg-slate-950"
           )}
           style={{ 
@@ -591,37 +592,6 @@ END:VCARD`;
           <div 
             className="absolute inset-0 z-0 bg-transparent"
           >
-              {isPro && data.background_video_url ? (
-               <div className="absolute inset-x-0 top-0 h-[65%] overflow-hidden">
-                 <div 
-                   className="w-full h-full relative"
-                   style={{
-                     maskImage: 'linear-gradient(to bottom, black 0%, black 50%, transparent 100%)',
-                     WebkitMaskImage: 'linear-gradient(to bottom, black 0%, black 50%, transparent 100%)'
-                   }}
-                 >
-                   {data.background_video_url.match(/\.(mp4|webm|ogg|mov)$/i) ? (
-                     <video 
-                       src={data.background_video_url}
-                       autoPlay 
-                       muted 
-                       loop 
-                       playsInline 
-                       className="w-full h-full object-cover object-top"
-                     />
-                   ) : (
-                     <img 
-                       src={data.background_video_url}
-                       alt="Background"
-                       className="w-full h-full object-cover object-top"
-                     />
-                   )}
-                 </div>
-                  {/* Premium depth overlay */}
-                  <div className="absolute inset-0 bg-black/60 backdrop-blur-sm pointer-events-none" />
-                  <div className="absolute inset-0 ring-1 ring-inset ring-white/5 pointer-events-none" />
-               </div>
-             ) : (
                <div 
                  className={cn(
                     "w-full h-full transition-colors duration-500 relative overflow-hidden",
@@ -632,7 +602,7 @@ END:VCARD`;
                        isSales ? "bg-[#f5f3ff]" : 
                        isFood ? "bg-[#fef2f2]" : 
                        isService ? "bg-[#fff7ed]" : 
-                        isStandardized ? "bg-transparent" : 
+                        isStandardized ? "bg-white dark:bg-slate-950" : 
                         isTech ? "bg-[#020617]" :
                         isRealEstate ? "bg-[#f8fafc]" :
                         isDriver ? "bg-[#111111]" :
@@ -749,7 +719,35 @@ END:VCARD`;
                     <div className="absolute inset-0 bg-slate-50 dark:bg-slate-900/50" />
                   )}
                </div>
-             )}
+
+              {isPro && data.background_video_url && (
+               <div className="absolute inset-x-0 top-0 h-[65%] overflow-hidden pointer-events-none transition-all">
+                 <div 
+                   className="w-full h-full relative"
+                   style={{
+                     maskImage: 'linear-gradient(to bottom, white 0%, white 50%, transparent 100%)',
+                     WebkitMaskImage: 'linear-gradient(to bottom, white 0%, white 50%, transparent 100%)'
+                   }}
+                 >
+                   {data.background_video_url.match(/\.(mp4|webm|ogg|mov)$/i) ? (
+                     <video 
+                       src={data.background_video_url}
+                       autoPlay 
+                       muted 
+                       loop 
+                       playsInline 
+                       className="w-full h-full object-cover object-top opacity-80"
+                     />
+                   ) : (
+                     <img 
+                       src={data.background_video_url}
+                       alt="Background"
+                       className="w-full h-full object-cover object-top opacity-80 mix-blend-normal"
+                     />
+                   )}
+                 </div>
+               </div>
+              )}
           </div>
           {isPro && isStandardized ? (
             <div className="relative flex flex-col w-full min-h-[600px] z-10 overflow-y-auto scroll-hide">
