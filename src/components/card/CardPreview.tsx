@@ -581,6 +581,7 @@ END:VCARD`;
           id="digital-card-content"
           className={cn(
             "relative overflow-hidden rounded-[2.5rem] transition-all duration-500 flex flex-col min-h-[600px]",
+            (isPro && data.background_video_url) ? "dark bg-slate-950" : "",
             isPro 
               ? "border-2 border-primary/20 shadow-[0_40px_100px_-20px_hsl(var(--primary)/0.3)] shadow-[inset_0_0_60px_hsl(var(--primary)/0.1)]" 
               : "border border-slate-200 dark:border-slate-800 shadow-sm bg-white dark:bg-slate-950"
@@ -595,6 +596,7 @@ END:VCARD`;
                <div 
                  className={cn(
                     "w-full h-full transition-colors duration-500 relative overflow-hidden",
+                    (isPro && data.background_video_url) ? "hidden" : "",
                      isPro ? (
                        isBarbearia ? "bg-[#0f0f0f]" : 
                        isBeauty ? "bg-[#fdf2f8]" : 
@@ -725,8 +727,8 @@ END:VCARD`;
                  <div 
                    className="w-full h-full relative"
                    style={{
-                     maskImage: 'linear-gradient(to bottom, white 0%, white 50%, transparent 100%)',
-                     WebkitMaskImage: 'linear-gradient(to bottom, white 0%, white 50%, transparent 100%)'
+                     maskImage: 'linear-gradient(to bottom, black 0%, black 50%, transparent 100%)',
+                     WebkitMaskImage: 'linear-gradient(to bottom, black 0%, black 50%, transparent 100%)'
                    }}
                  >
                    {data.background_video_url.match(/\.(mp4|webm|ogg|mov)$/i) ? (
@@ -736,13 +738,13 @@ END:VCARD`;
                        muted 
                        loop 
                        playsInline 
-                       className="w-full h-full object-cover object-top opacity-80"
+                       className="w-full h-full object-cover object-top opacity-80 mix-blend-screen"
                      />
                    ) : (
                      <img 
                        src={data.background_video_url}
                        alt="Background"
-                       className="w-full h-full object-cover object-top opacity-80 mix-blend-normal"
+                       className="w-full h-full object-cover object-top opacity-80 mix-blend-screen"
                      />
                    )}
                  </div>
