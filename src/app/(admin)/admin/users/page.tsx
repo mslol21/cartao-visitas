@@ -226,7 +226,7 @@ export default function UsersAdminPage() {
                 <Button 
                   onClick={async () => {
                     setCreateLoading(true);
-                    const res = await updateUserPlan(selectedUser.id, { plan: selectedUser.plan, status: selectedUser.status });
+                    const res = await updateUserPlan(selectedUser.user_id, { plan: selectedUser.plan, status: selectedUser.status });
                     if (res.success) {
                       toast.success('Atualizado com sucesso!');
                       setSelectedUser(null);
