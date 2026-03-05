@@ -313,17 +313,26 @@ export function StandardProfessionalLayout({ data, isPro }: StandardProfessional
                
                if (!service.nome) return null;
 
+               const serviceMessage = service.preco && service.preco.toLowerCase() !== 'sob consulta'
+                 ? `Olá! Vi seu perfil na Konnexy e gostaria de saber mais sobre o serviço: *${service.nome}* no valor de *${service.preco}*.`
+                 : `Olá! Vi seu perfil na Konnexy e gostaria de saber mais sobre o serviço: *${service.nome}*.`;
+               const serviceWhatsappLink = formattedWhatsapp ? `https://wa.me/${formattedWhatsapp}?text=${encodeURIComponent(serviceMessage)}` : '#';
+
                return (
-                 <div key={idx} className="group p-5 rounded-[1.8rem] bg-white dark:bg-white/5 border border-slate-100 dark:border-white/10 hover:border-primary/40 transition-all flex justify-between items-center shadow-sm">
-                    <div className="flex flex-col gap-1">
-                       <span className="text-sm font-black uppercase tracking-tighter text-slate-800 dark:text-white">{service.nome}</span>
-                       {service.descricao && <p className="text-[10px] text-slate-500 leading-tight italic opacity-70">{service.descricao}</p>}
+                 <a key={idx} href={serviceWhatsappLink} target={formattedWhatsapp ? "_blank" : "_self"} rel="noopener noreferrer" className="block group p-5 rounded-[1.8rem] bg-white dark:bg-white/5 border border-slate-100 dark:border-white/10 hover:border-primary/40 transition-all shadow-sm hover:-translate-y-1 hover:shadow-md">
+                    <div className="flex justify-between items-center w-full">
+                       <div className="flex flex-col gap-1">
+                          <span className="text-sm font-black uppercase tracking-tighter text-slate-800 dark:text-white group-hover:text-primary transition-colors">{service.nome}</span>
+                          {service.descricao && <p className="text-[10px] text-slate-500 leading-tight italic opacity-70">{service.descricao}</p>}
+                       </div>
+                       <div className="flex flex-col items-end gap-1">
+                          <span className="text-sm font-black text-primary">{service.preco || 'Sob consulta'}</span>
+                          <span className="text-[8px] font-bold text-slate-400 flex items-center gap-1 group-hover:text-primary transition-colors mt-1">
+                            Agendar <ChevronRight className="w-3 h-3 text-white bg-primary rounded-full p-0.5 group-hover:scale-110 transition-transform" />
+                          </span>
+                       </div>
                     </div>
-                    <div className="flex flex-col items-end gap-1">
-                       <span className="text-sm font-black text-primary">{service.preco || 'Sob consulta'}</span>
-                       <ChevronRight className="w-3 h-3 opacity-20 bg-primary/10 rounded-full" />
-                    </div>
-                 </div>
+                 </a>
                );
              })}
            </div>
