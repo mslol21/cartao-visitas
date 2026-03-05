@@ -251,6 +251,9 @@ END:VCARD`;
         data.profession === 'personal_trainer' ? "Olá! Gostaria de informações sobre consultoria/aulas 💪" :
         data.profession === 'esteticista' ? "Olá! Gostaria de marcar uma avaliação estética 💆‍♀️" :
         data.profession === 'fotografo' ? "Olá! Gostaria de um orçamento para fotos 📸" :
+        data.profession === 'designer' ? "Olá! Gostaria de falar sobre um projeto de design 🎨" :
+        data.profession === 'tecnico_informatica' ? "Olá! Gostaria de solicitar um suporte técnico 💻" :
+        data.profession === 'tech' ? "Olá! Gostaria de falar sobre desenvolvimento de um projeto técnico 🚀" :
         isHealth ? "Olá! Gostaria de agendar um atendimento 🩺" :
         isAdvogado ? "Olá! Gostaria de agendar uma consulta jurídica ⚖️" :
         `Olá! Vi seu perfil na Konnexy e gostaria de ${isPro ? 'solicitar um orçamento' : 'conversar'} sobre seus serviços.`

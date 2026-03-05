@@ -177,6 +177,13 @@ export const professionsMap: Record<ProfessionCategory, ProfessionConfig> = {
       'https://images.unsplash.com/photo-1558655146-d09347e92766?auto=format&fit=crop&q=80&w=1080&h=1920',
       'https://images.unsplash.com/photo-1550684848-fac1c5b4e853?auto=format&fit=crop&q=80&w=1080&h=1920',
       'https://images.unsplash.com/photo-1545231027-4144e1c6680a?auto=format&fit=crop&q=80&w=1080&h=1920'
+    ],
+    defaultBio: 'Design estratégico para transformar ideias em experiências visuais únicas. Criação de branding, peças para redes sociais e interfaces web guiadas não apenas pela estética, mas pelo resultado da sua marca.',
+    defaultCta: 'Criar meu Projeto 🎨',
+    defaultServices: [
+      { nome: 'Identidade Visual', descricao: 'Logo, paleta de cores, tipografia e manual da marca para seu negócio.', preco: 'A partir de R$ 800' },
+      { nome: 'Artes para Redes Sociais', descricao: 'Pacote mensal de posts estratégicos para Instagram/Facebook.', preco: 'Sob consulta' },
+      { nome: 'UI/UX Design', descricao: 'Desenho de telas para apps e sites com foco na experiência do usuário.', preco: 'Sob consulta' }
     ]
   },
   fotografo: {
@@ -212,6 +219,13 @@ export const professionsMap: Record<ProfessionCategory, ProfessionConfig> = {
       'https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&q=80&w=1080&h=1920',
       'https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&q=80&w=1080&h=1920',
       'https://images.unsplash.com/photo-1563770660941-20978e87081b?auto=format&fit=crop&q=80&w=1080&h=1920'
+    ],
+    defaultBio: 'Suporte especializado em TI. Manutenção de computadores, redes e sistemas com diagnóstico rápido, seja remoto ou presencial. Ajudamos a manter sua rotina de tecnologia sempre funcionando.',
+    defaultCta: 'Solicitar Suporte 💻',
+    defaultServices: [
+      { nome: 'Formatação & Limpeza', descricao: 'Instalação do Windows, backup e limpeza física profunda da máquina.', preco: 'R$ 150' },
+      { nome: 'Suporte Remoto', descricao: 'Manutenção e resolução de problemas básicos pelo acesso remoto, sem sair de casa.', preco: 'R$ 80 / h' },
+      { nome: 'Infraestrutura de Rede', descricao: 'Cabeamento, configuração de roteadores e sinal Wi-Fi.', preco: 'Sob consulta' }
     ]
   },
   esteticista: {
@@ -537,6 +551,13 @@ export const professionsMap: Record<ProfessionCategory, ProfessionConfig> = {
       'https://images.unsplash.com/photo-1517694712202-14dd9538aa97?auto=format&fit=crop&q=80&w=1080&h=1920',
       'https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&q=80&w=1080&h=1920',
       'https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&q=80&w=1080&h=1920'
+    ],
+    defaultBio: 'Criação de soluções de software, aplicativos e arquitetura digital com código limpo e escalável. Transformamos as necessidades do seu negócio em plataformas modernas através da programação.',
+    defaultCta: 'Iniciar Projeto 🚀',
+    defaultServices: [
+      { nome: 'Desenvolvimento Web', descricao: 'Criação de sites institucionais, e-commerces e landing pages rápidas e responsivas.', preco: 'Sob consulta' },
+      { nome: 'Sistemas Internos', descricao: 'Automacões para o seu time com sistemas criados especificamente para seu modelo.', preco: 'Sob consulta' },
+      { nome: 'Mentoria & Consultoria', descricao: 'Refatoração de código, orientação de carreira e arquitetura para projetos.', preco: 'R$ 200 / h' }
     ]
   },
   real_estate: {
