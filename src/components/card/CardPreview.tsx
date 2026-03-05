@@ -272,12 +272,21 @@ END:VCARD`;
   const activeServicesLimit = isPro ? 20 : 5; // Increased limit for better grid demo
   const rawServices = data.servicos || data.services || [];
   const services = rawServices.map(s => {
-    if (typeof s === 'string') return { name: s, icon: 'Sparkles' };
+    if (typeof s === 'string') return { name: s, icon: 'Sparkles', whatsappUrl: '' };
     // Map new field names to old ones for compatibility with preview layouts
     const nome = (s as any).nome || (s as any).name;
     const preco = (s as any).preco || (s as any).price;
     const descricao = (s as any).descricao || (s as any).description;
-    return { name: nome, price: preco, description: descricao, icon: (s as any).icon || 'Sparkles' };
+    
+    let whatsappUrl = '';
+    if (formattedWhatsapp) {
+      const serviceMessage = preco && preco.toLowerCase() !== 'sob consulta'
+        ? `Olá! Vi seu perfil na Konnexy e gostaria de saber mais sobre: *${nome}* no valor de *${preco}*.`
+        : `Olá! Vi seu perfil na Konnexy e gostaria de saber mais sobre: *${nome}*.`;
+      whatsappUrl = `https://wa.me/${formattedWhatsapp}?text=${encodeURIComponent(serviceMessage)}`;
+    }
+
+    return { name: nome, price: preco, description: descricao, icon: (s as any).icon || 'Sparkles', whatsappUrl };
   }).filter(s => s.name?.trim() !== '') || [];
   const activeServicesArr = services.slice(0, activeServicesLimit);
   
@@ -1514,15 +1523,19 @@ END:VCARD`;
                    </div>
                    <div className="grid grid-cols-1 gap-4 mb-4">
                      {activeServicesArr.length > 0 ? activeServicesArr.map((service, i) => (
-                       <div key={i} className="flex justify-between items-center p-5 rounded-[1.5rem] bg-white/80 dark:bg-slate-900/60 shadow-md border border-red-100 dark:border-red-500/30 backdrop-blur-md transition-transform hover:scale-[1.02]">
-                         <div className="flex flex-col gap-1.5 w-full pr-4">
-                           <span className="text-base font-black text-slate-800 dark:text-white leading-none">{service.name}</span>
-                           {service.description && <span className="text-[11px] text-slate-500 dark:text-slate-400 leading-snug line-clamp-2">{service.description}</span>}
+                       <a key={i} href={service.whatsappUrl || whatsappLink} target="_blank" rel="noopener noreferrer" className="flex justify-between items-center py-4 px-5 rounded-[1.5rem] bg-white/80 dark:bg-slate-900/60 shadow-md border border-red-100 dark:border-red-500/30 backdrop-blur-md transition-transform hover:scale-[1.02] cursor-pointer hover:border-red-500/50 group">
+                         <div className="flex flex-col gap-1 w-full pr-3 relative">
+                           <span className="text-base font-black text-slate-800 dark:text-white leading-none group-hover:text-red-500 transition-colors">{service.name}</span>
+                           {service.description && <span className="text-[11px] text-slate-500 dark:text-slate-400 leading-snug line-clamp-2 mt-1">{service.description}</span>}
+                           <div className="flex items-center gap-1 mt-2">
+                             <span className="text-[9px] font-black uppercase tracking-widest text-red-500/70 group-hover:text-red-500">Adicionar</span>
+                             <ChevronRight className="w-3 h-3 text-red-500/50 group-hover:translate-x-1 group-hover:text-red-500 transition-all" />
+                           </div>
                          </div>
                          <div className="flex items-center justify-end shrink-0">
-                           <span className="text-base font-black text-red-600 dark:text-red-400 whitespace-nowrap">{service.price}</span>
+                           <span className="text-base font-black text-red-600 dark:text-red-400 whitespace-nowrap">{service.price || 'Sob consulta'}</span>
                          </div>
-                       </div>
+                       </a>
                      )) : (
                        <p className="text-center text-xs opacity-40 italic py-10 dark:text-white">Adicione seus pratos no painel</p>
                      )}
