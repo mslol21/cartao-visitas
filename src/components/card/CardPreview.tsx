@@ -991,7 +991,8 @@ END:VCARD`;
                     />
                   ) : (
                     <div className="w-full h-full flex items-center justify-center bg-pink-50 dark:bg-pink-900/10">
-                      <Sparkles className="w-12 h-12 text-[#F472B6]/40" />
+                      {data.profession === 'cabeleireiro' ? <Scissors className="w-12 h-12 text-[#F472B6]/40" /> : 
+                       <Sparkles className="w-12 h-12 text-[#F472B6]/40" />}
                     </div>
                   )}
                 </div>
@@ -1179,12 +1180,16 @@ END:VCARD`;
                         <Image src={data.photo_url} alt={previewName || 'Saúde'} fill className="object-cover" unoptimized />
                       ) : (
                         <div className="w-full h-full flex items-center justify-center bg-emerald-50 dark:bg-emerald-950">
-                          <Stethoscope className="w-16 h-16 text-[#10b981]/40" />
+                          {data.profession === 'personal_trainer' ? <Target className="w-16 h-16 text-[#10b981]/40" /> : 
+                           data.profession === 'psicologo' ? <HeartPulse className="w-16 h-16 text-[#10b981]/40" /> : 
+                           <Stethoscope className="w-16 h-16 text-[#10b981]/40" />}
                         </div>
                       )}
                     </div>
                     <div className="absolute -bottom-2 -right-2 w-12 h-12 rounded-2xl bg-[#10b981] flex items-center justify-center text-white shadow-xl z-20 border-4 border-white dark:border-slate-900">
-                      <Heart className="w-5 h-5 fill-current" />
+                      {data.profession === 'personal_trainer' ? <Zap className="w-5 h-5 fill-current" /> : 
+                       data.profession === 'psicologo' ? <HeartPulse className="w-5 h-5 fill-current" /> : 
+                       <Heart className="w-5 h-5 fill-current" />}
                     </div>
                   </motion.div>
                   
@@ -1199,19 +1204,6 @@ END:VCARD`;
                   </div>
                 </div>
 
-                {/* Trust Stats Saúde */}
-                <div className="grid grid-cols-2 gap-4 w-full mb-10">
-                   <div className="bg-white dark:bg-slate-900/50 p-4 rounded-3xl border border-slate-100 dark:border-slate-800 shadow-sm text-center">
-                      <p className="text-xl font-black text-slate-900 dark:text-white line-tight">
-                        {data.founded_year ? `${new Date().getFullYear() - data.founded_year}+` : '10+'}
-                      </p>
-                      <p className="text-[9px] font-bold text-slate-400 uppercase tracking-widest mt-1">Anos de Experiência</p>
-                   </div>
-                   <div className="bg-white dark:bg-slate-900/50 p-4 rounded-3xl border border-slate-100 dark:border-slate-800 shadow-sm text-center">
-                      <p className="text-xl font-black text-slate-900 dark:text-white line-tight">95%</p>
-                      <p className="text-[9px] font-bold text-slate-400 uppercase tracking-widest mt-1">Satisfação</p>
-                   </div>
-                </div>
 
                 {/* CTA Saúde */}
                 <Button 
@@ -1664,7 +1656,10 @@ END:VCARD`;
                              />
                            ) : (
                              <div className="w-full h-full bg-slate-900 flex items-center justify-center">
-                               <Cpu className="w-8 h-8 text-blue-500/40" />
+                               {data.profession === 'designer' ? <Paintbrush className="w-8 h-8 text-blue-500/40" /> :
+                                data.profession === 'fotografo' ? <Camera className="w-8 h-8 text-blue-500/40" /> :
+                                data.profession === 'tecnico_informatica' ? <Monitor className="w-8 h-8 text-blue-500/40" /> :
+                                <Cpu className="w-8 h-8 text-blue-500/40" />}
                              </div>
                            )}
                         </div>
