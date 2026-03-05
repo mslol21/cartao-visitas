@@ -34,6 +34,7 @@ export type ProfessionCategory =
   | 'driver'
   | 'petshop'
   | 'service'
+  | 'musico'
   | 'default';
 
 export interface Service {
@@ -65,6 +66,10 @@ export interface CustomFields {
   tipo_eventos?: string[];
   entrega_digital?: boolean;
   tipos_de_servico?: string[];
+  // Músico
+  estilo_musical?: string;
+  spotify_link?: string;
+  youtube_link?: string;
   suporte_remoto?: boolean;
   atende_empresas?: boolean;
   remoto_presencial?: string;

@@ -69,9 +69,11 @@ import {
   Truck,
   HardHat,
   HeartPulse,
-  Check,
   Calendar,
-  Monitor
+  Monitor,
+  Play,
+  Headphones,
+  Mic2
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Profile } from '@/types/profile';
@@ -135,6 +137,7 @@ export function CardPreview({
   const isRealEstate = data.profession === 'real_estate' || data.category === 'real_estate';
   const isDriver = data.profession === 'driver' || data.category === 'driver';
   const isPetshop = data.profession === 'petshop' || data.category === 'petshop';
+  const isMusico = data.profession === 'musico' || data.category === 'musico';
   
   const isStandardized = isModernService || ['quentinhas', 'assistencia_celular'].some(p => data.profession === p);
 
@@ -256,6 +259,8 @@ END:VCARD`;
         data.profession === 'tech' ? "Olá! Gostaria de falar sobre desenvolvimento de um projeto técnico 🚀" :
         isHealth ? "Olá! Gostaria de agendar um atendimento 🩺" :
         isAdvogado ? "Olá! Gostaria de agendar uma consulta jurídica ⚖️" :
+        isPetshop ? "Olá! Vi seu perfil na Konnexy e gostaria de agendar um serviço para meu pet 🐾" :
+        isMusico ? "Olá! Gostaria de conversar sobre seu trabalho como músico 🎸" :
         `Olá! Vi seu perfil na Konnexy e gostaria de ${isPro ? 'solicitar um orçamento' : 'conversar'} sobre seus serviços.`
       )}`
     : '#';
@@ -1989,6 +1994,122 @@ END:VCARD`;
                   </div>
                {renderCustomPortfolio()}
             </div>
+            ) : isMusico ? (
+               <div className="relative flex flex-col items-center w-full min-h-[600px] z-10 px-6 py-12 overflow-y-auto scroll-hide">
+                  <div className="absolute inset-0 bg-gradient-to-b from-[#18181b] via-[#09090b] to-black opacity-90 -z-10" />
+                  
+                  {/* Musician Header/Cover style */}
+                  <div className="w-full flex flex-col items-center mb-10 pt-4">
+                     <motion.div 
+                        initial={{ scale: 0.9, opacity: 0 }}
+                        animate={{ scale: 1, opacity: 1 }}
+                        className="relative w-40 h-40 mb-6 group"
+                     >
+                        <div className="absolute inset-0 bg-fuchsia-500/30 rounded-full blur-2xl group-hover:bg-fuchsia-500/50 transition-all duration-700 animate-pulse" />
+                        <div className="absolute inset-2 bg-gradient-to-tr from-fuchsia-600 to-purple-600 rounded-full animate-spin-slow opacity-20" />
+                        <div className="relative w-full h-full rounded-full border-4 border-[#27272a] overflow-hidden z-10 shadow-2xl">
+                           {data.photo_url ? (
+                             <Image src={data.photo_url} alt={previewName || 'Músico'} fill className="object-cover" unoptimized />
+                           ) : (
+                             <div className="w-full h-full bg-[#18181b] flex items-center justify-center">
+                               <Mic2 className="w-16 h-16 text-fuchsia-500/40" />
+                             </div>
+                           )}
+                        </div>
+                        <div className="absolute -bottom-2 -right-2 w-14 h-14 rounded-full bg-fuchsia-500 flex items-center justify-center text-white shadow-xl z-20 border-4 border-[#18181b] hover:scale-110 transition-transform cursor-pointer">
+                           <Play className="w-6 h-6 fill-current ml-1" />
+                        </div>
+                     </motion.div>
+                     
+                     <h1 className="text-3xl font-black text-white text-center tracking-tighter mb-2">
+                        {previewName}
+                     </h1>
+                     <div className="flex items-center justify-center gap-2 bg-white/5 border border-white/10 px-4 py-2 rounded-full backdrop-blur-md">
+                        <Music className="w-3.5 h-3.5 text-fuchsia-400" />
+                        <span className="text-[10px] font-black uppercase tracking-[0.2em] text-fuchsia-300">
+                           {data.expert_area || data.estilo_musical || previewTagline}
+                        </span>
+                     </div>
+                  </div>
+
+                  {/* Musician CTA */}
+                  <Button 
+                    asChild 
+                    className="w-full h-14 rounded-full bg-gradient-to-r from-fuchsia-500 to-purple-600 hover:from-fuchsia-400 hover:to-purple-500 text-white font-black text-sm tracking-widest uppercase mb-10 shadow-[0_10px_30px_-10px_rgba(217,70,239,0.5)] transition-all hover:scale-[1.02] border-none"
+                    onClick={() => handleTrackClick('click_whatsapp')}
+                  >
+                    <a href={whatsappLink} target="_blank" rel="noopener noreferrer">
+                       <Headphones className="w-4 h-4 mr-2" />
+                       {data.cta_text || 'Solicitar Orçamento / Show'}
+                    </a>
+                  </Button>
+
+                  {/* Highlights Musico */}
+                  {renderProfessionHighlights('#d946ef')}
+
+                  {/* Setlist/Services */}
+                  <div className="w-full mb-10">
+                    <div className="flex items-center gap-4 mb-6 opacity-60">
+                       <div className="h-[1px] flex-1 bg-gradient-to-r from-transparent to-fuchsia-500/50" />
+                       <span className="text-[10px] font-black uppercase tracking-[0.3em] text-fuchsia-400">Opções de Show</span>
+                       <div className="h-[1px] flex-1 bg-gradient-to-l from-transparent to-fuchsia-500/50" />
+                    </div>
+                    
+                    <div className="flex flex-col gap-3">
+                       {activeServicesArr.length > 0 ? activeServicesArr.map((service, i) => (
+                         <a key={i} href={service.whatsappUrl || whatsappLink} target="_blank" rel="noopener noreferrer" className="group flex items-center justify-between p-4 rounded-2xl bg-[#27272a]/40 border border-[#3f3f46]/40 hover:bg-[#3f3f46]/60 hover:border-fuchsia-500/50 transition-all cursor-pointer overflow-hidden relative">
+                           <div className="absolute left-0 top-0 bottom-0 w-1 bg-fuchsia-500 scale-y-0 group-hover:scale-y-100 transition-transform origin-top" />
+                           <div className="flex items-center gap-4">
+                             <div className="w-10 h-10 rounded-full bg-black/50 border border-white/5 flex items-center justify-center shrink-0 group-hover:scale-110 transition-transform">
+                               <span className="text-xs font-black text-fuchsia-500 group-hover:text-white transition-colors">{i+1}</span>
+                             </div>
+                             <div className="flex flex-col">
+                               <span className="text-sm font-bold text-white uppercase tracking-tight">{service.name}</span>
+                               {service.description && (
+                                 <span className="text-[10px] text-zinc-400 mt-0.5 line-clamp-1 group-hover:text-zinc-300 transition-colors">{service.description}</span>
+                               )}
+                             </div>
+                           </div>
+                           {service.price && (
+                             <span className="text-xs font-black text-fuchsia-400 group-hover:text-fuchsia-300 transition-colors shrink-0 ml-4">{service.price}</span>
+                           )}
+                         </a>
+                       )) : (
+                         <p className="text-center text-xs opacity-20 italic py-10 text-white">Adicione seus formatos de show</p>
+                       )}
+                    </div>
+                  </div>
+
+                  {/* Spotify / Links Especiais Integrados */}
+                  {(data.spotify_link || data.youtube_link) && (
+                    <div className="w-full mb-10 space-y-3">
+                       {data.spotify_link && (
+                         <a href={data.spotify_link} target="_blank" rel="noopener noreferrer" className="flex items-center gap-4 p-4 rounded-2xl bg-[#1db954]/10 border border-[#1db954]/20 hover:bg-[#1db954]/20 transition-all group">
+                           <div className="w-10 h-10 rounded-full bg-[#1db954] flex items-center justify-center shrink-0 shadow-[0_0_15px_rgba(29,185,84,0.4)] group-hover:scale-110 transition-transform">
+                             <Play className="w-5 h-5 text-black fill-current ml-0.5" />
+                           </div>
+                           <div className="flex flex-col">
+                             <span className="text-[10px] uppercase tracking-widest text-[#1db954] font-black">Ouça no</span>
+                             <span className="text-white font-bold text-lg">Spotify</span>
+                           </div>
+                         </a>
+                       )}
+                       {data.youtube_link && (
+                         <a href={data.youtube_link} target="_blank" rel="noopener noreferrer" className="flex items-center gap-4 p-4 rounded-2xl bg-[#ff0000]/10 border border-[#ff0000]/20 hover:bg-[#ff0000]/20 transition-all group">
+                           <div className="w-10 h-10 rounded-full bg-[#ff0000] flex items-center justify-center shrink-0 shadow-[0_0_15px_rgba(255,0,0,0.4)] group-hover:scale-110 transition-transform">
+                             <Play className="w-5 h-5 text-white fill-current ml-0.5" />
+                           </div>
+                           <div className="flex flex-col">
+                             <span className="text-[10px] uppercase tracking-widest text-[#ff0000] font-black">Assista no</span>
+                             <span className="text-white font-bold text-lg">YouTube</span>
+                           </div>
+                         </a>
+                       )}
+                    </div>
+                  )}
+
+               {renderCustomPortfolio()}
+            </div>
             ) : isPetshop ? (
                <div className="relative flex flex-col items-center w-full min-h-[600px] z-10 px-6 py-10 overflow-y-auto scroll-hide">
                   {/* Petshop Aesthetics - Playful and Friendly */}
@@ -2042,11 +2163,11 @@ END:VCARD`;
                      </div>
                      <div className="bg-white dark:bg-slate-800 rounded-3xl border border-purple-100 dark:border-purple-900/30 p-2 shadow-xl">
                        {activeServicesArr.length > 0 ? activeServicesArr.map((service, i) => (
-                         <div key={i} className="flex justify-between items-center p-4 border-b border-purple-50 dark:border-purple-900/20 last:border-0 hover:bg-purple-50/50 dark:hover:bg-purple-900/10 transition-colors rounded-2xl">
+                         <a key={i} href={service.whatsappUrl || whatsappLink} target="_blank" rel="noopener noreferrer" className="flex justify-between items-center p-4 border-b border-purple-50 dark:border-purple-900/20 last:border-0 hover:bg-purple-50/50 dark:hover:bg-purple-900/10 transition-colors rounded-2xl group cursor-pointer block w-full">
                            <div className="flex flex-col">
                              <div className="flex items-center gap-2">
-                               <Heart className="w-4 h-4 text-purple-400" />
-                               <span className="text-sm font-bold text-slate-800 dark:text-white uppercase tracking-tight">{service.name}</span>
+                               <Heart className="w-4 h-4 text-purple-400 group-hover:text-purple-500 transition-colors" />
+                               <span className="text-sm font-bold text-slate-800 dark:text-white uppercase tracking-tight group-hover:text-purple-600 transition-colors">{service.name}</span>
                              </div>
                              {service.description && (
                                <span className="text-[10px] text-slate-500 dark:text-slate-400 mt-1 line-clamp-1 max-w-[200px] ml-6">{service.description}</span>
@@ -2055,10 +2176,10 @@ END:VCARD`;
                            {service.price && (
                              <div className="flex items-center gap-2 shrink-0">
                                <div className="w-4 h-[1px] bg-purple-200 dark:bg-purple-800 hidden sm:block" />
-                               <span className="text-purple-600 dark:text-purple-400 font-black">{service.price}</span>
+                               <span className="text-purple-600 dark:text-purple-400 font-black group-hover:scale-105 transition-transform">{service.price}</span>
                              </div>
                            )}
-                         </div>
+                         </a>
                        )) : (
                          <p className="text-center text-xs text-slate-400 italic py-8">Nenhum serviço cadastrado.</p>
                        )}

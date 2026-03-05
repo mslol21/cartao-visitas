@@ -622,6 +622,29 @@ export const professionsMap: Record<ProfessionCategory, ProfessionConfig> = {
       'https://images.unsplash.com/photo-1504307651254-35680f43b1d4?auto=format&fit=crop&q=80&w=1080&h=1920'
     ]
   },
+  musico: {
+    id: 'musico',
+    label: 'Músico / Banda / Cantor',
+    theme: { color: 'fuchsia', style: 'glass' },
+    customFields: [
+      { name: 'estilo_musical', label: 'Estilo Musical', type: 'text', placeholder: 'Ex: Sertanejo, Rock, Pop' },
+      { name: 'spotify_link', label: 'Link do Spotify', type: 'text', placeholder: 'https://open.spotify.com/...' },
+      { name: 'youtube_link', label: 'Link do YouTube', type: 'text', placeholder: 'https://youtube.com/...' }
+    ],
+    suggestedBackgrounds: [
+      'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?auto=format&fit=crop&q=80&w=1080&h=1920',
+      'https://images.unsplash.com/photo-1520523839897-bd0b52f945a0?auto=format&fit=crop&q=80&w=1080&h=1920',
+      'https://images.unsplash.com/photo-1493225457124-a1a2a5f4a13e?auto=format&fit=crop&q=80&w=1080&h=1920',
+      'https://images.unsplash.com/photo-1514320291840-2e0a9bf2a9ae?auto=format&fit=crop&q=80&w=1080&h=1920'
+    ],
+    defaultBio: 'Levando música, sentimento e muita energia para o seu evento. Repertório personalizado para casamentos, formaturas, bares e eventos corporativos, garantindo que cada momento tenha a trilha sonora perfeita.',
+    defaultCta: 'Solicitar Orçamento 🎸',
+    defaultServices: [
+      { nome: 'Show Acústico (Voz e Violão)', descricao: 'Ideal para ambientes intimistas, cerimônias e jantares.', preco: 'A partir de R$ 400' },
+      { nome: 'Banda Completa', descricao: 'A energia necessária para fazer todo mundo dançar na sua festa.', preco: 'Sob consulta' },
+      { nome: 'Composição Inédita', descricao: 'Música personalizada para homenagens ou projetos especiais.', preco: 'Sob consulta' }
+    ]
+  },
   default: {
     id: 'default',
     label: 'Outros Profissionais',
