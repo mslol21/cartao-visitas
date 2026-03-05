@@ -17,24 +17,28 @@ export function ProfileClientWrapper({ profile, themeColor }: ProfileClientWrapp
 
   return (
     <>
-      {/* Premium Mesh Gradient Background (Only for Pro) */}
+      {/* Premium Background Noise (Only for Pro) */}
       {isPro ? (
-        <div className="fixed inset-0 pointer-events-none">
-          <div 
-            className="absolute top-[-20%] left-[-10%] w-[70%] h-[70%] rounded-full blur-[120px] opacity-[0.15] dark:opacity-[0.1] animate-pulse-slow transition-all duration-1000"
-            style={{ backgroundColor: themeColor }} 
-          />
-          <div 
-            className="absolute bottom-[-10%] right-[-10%] w-[60%] h-[60%] rounded-full blur-[120px] opacity-[0.1] dark:opacity-[0.05]"
-            style={{ backgroundColor: themeColor }} 
-          />
-          <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-[0.05] contrast-150 brightness-100" />
-        </div>
+        <div className="fixed inset-0 pointer-events-none bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-[0.03] contrast-150 brightness-100 z-0 mix-blend-overlay" />
       ) : (
-        <div className="fixed inset-0 pointer-events-none bg-slate-50 dark:bg-slate-950 opacity-40 transition-all duration-1000" />
+        <div className="fixed inset-0 pointer-events-none bg-slate-50 dark:bg-slate-950 opacity-40 transition-all duration-1000 z-0" />
       )}
 
       <div className="relative w-full max-w-[400px] flex flex-col items-center">
+        {/* Card Aura Effect (Only for Pro) */}
+        {isPro && (
+          <div className="absolute -inset-[100px] pointer-events-none z-[-1] overflow-visible">
+            <div 
+              className="absolute top-[5%] left-1/2 -translate-x-1/2 w-[120%] h-[40%] rounded-full blur-[100px] opacity-[0.25] dark:opacity-[0.15] animate-pulse-slow transition-colors duration-1000 mix-blend-screen"
+              style={{ backgroundColor: themeColor }} 
+            />
+            <div 
+              className="absolute bottom-[20%] left-1/2 -translate-x-1/2 w-[110%] h-[40%] rounded-full blur-[120px] opacity-[0.2] dark:opacity-[0.1] transition-colors duration-1000 mix-blend-screen"
+              style={{ backgroundColor: themeColor }} 
+            />
+          </div>
+        )}
+
         <CardPreview
           data={profile}
           showBranding={profile.plan !== 'pro'}
