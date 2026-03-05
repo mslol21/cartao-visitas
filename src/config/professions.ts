@@ -470,7 +470,7 @@ export const professionsMap: Record<ProfessionCategory, ProfessionConfig> = {
   },
   food: {
     id: 'food',
-    label: 'Gastronomia / Delivery',
+    label: 'Restaurante / Lanchonete',
     theme: { color: 'red', style: 'standard' },
     customFields: [
       { name: 'tem_delivery', label: 'Atende Delivery?', type: 'boolean' },
@@ -481,6 +481,13 @@ export const professionsMap: Record<ProfessionCategory, ProfessionConfig> = {
       'https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=1080&h=1920&q=80',
       'https://images.unsplash.com/photo-1476224203421-9ac39bcb3327?auto=format&fit=crop&w=1080&h=1920&q=80',
       'https://images.unsplash.com/photo-1493770348161-369560ae357d?auto=format&fit=crop&w=1080&h=1920&q=80'
+    ],
+    defaultBio: 'Sabor e qualidade em cada detalhe! Preparamos pratos deliciosos e sanduíches artesanais com os melhores ingredientes. Venha conhecer nosso espaço acolhedor ou peça no conforto da sua casa.',
+    defaultCta: 'Fazer Pedido / Cardápio 🍔',
+    defaultServices: [
+      { nome: 'Pratos Feitos (PF)', descricao: 'Comida caseira, fresquinha e muito bem servida.', preco: 'A partir de R$ 25' },
+      { nome: 'Lanches Artesanais', descricao: 'Hambúrguer de blend especial com fritas.', preco: 'A partir de R$ 35' },
+      { nome: 'Porções e Petiscos', descricao: 'Ideais para dividir com a galera e acompanhar uma bebida gelada.', preco: 'Sob consulta' }
     ]
   },
   tech: {
