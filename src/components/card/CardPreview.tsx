@@ -1507,20 +1507,20 @@ END:VCARD`;
                   {/* Highlights Food (Dynamic from config) */}
                   {renderProfessionHighlights('#ef4444')}
 
-                   <div className="flex items-center gap-2 mb-4">
+                   <div className="flex items-center gap-2 mb-6 mt-4">
                      <div className="h-px flex-1 bg-red-100 dark:bg-red-500/20" />
                      <span className="text-[10px] font-black text-red-600 dark:text-red-400 uppercase tracking-widest drop-shadow-sm">Favoritos da Casa</span>
                      <div className="h-px flex-1 bg-red-100 dark:bg-red-500/20" />
                    </div>
-                   <div className="grid grid-cols-1 gap-2">
+                   <div className="grid grid-cols-1 gap-4 mb-4">
                      {activeServicesArr.length > 0 ? activeServicesArr.map((service, i) => (
-                       <div key={i} className="flex justify-between items-center p-4 rounded-2xl bg-white dark:bg-slate-900/60 shadow-sm border border-red-50 dark:border-red-500/20 backdrop-blur-md">
-                         <div className="flex flex-col">
-                           <span className="text-sm font-bold text-slate-800 dark:text-white">{service.name}</span>
-                           {service.description && <span className="text-[10px] text-slate-400 line-clamp-1">{service.description}</span>}
+                       <div key={i} className="flex justify-between items-center p-5 rounded-[1.5rem] bg-white/80 dark:bg-slate-900/60 shadow-md border border-red-100 dark:border-red-500/30 backdrop-blur-md transition-transform hover:scale-[1.02]">
+                         <div className="flex flex-col gap-1.5 w-full pr-4">
+                           <span className="text-base font-black text-slate-800 dark:text-white leading-none">{service.name}</span>
+                           {service.description && <span className="text-[11px] text-slate-500 dark:text-slate-400 leading-snug line-clamp-2">{service.description}</span>}
                          </div>
-                         <div className="flex items-center gap-2">
-                           <span className="text-sm font-black text-red-600 dark:text-red-400">{service.price}</span>
+                         <div className="flex items-center justify-end shrink-0">
+                           <span className="text-base font-black text-red-600 dark:text-red-400 whitespace-nowrap">{service.price}</span>
                          </div>
                        </div>
                      )) : (
@@ -1531,11 +1531,17 @@ END:VCARD`;
                 {/* Detalhes Comida */}
                 <div className="w-full space-y-3 mb-10">
                   {previewAddress && (
-                    <div className="flex flex-col items-center p-6 rounded-[2.5rem] bg-orange-50 dark:bg-slate-900/60 border-2 border-dashed border-orange-200 dark:border-red-500/20 text-center backdrop-blur-md">
-                      <MapPin className="w-6 h-6 text-red-600 dark:text-red-400 mb-2" />
-                      <span className="text-[9px] font-black uppercase tracking-widest text-red-600/50 dark:text-red-400/80 mb-1">Onde nos Encontrar</span>
-                      <p className="text-xs font-bold text-slate-800 dark:text-white leading-relaxed">{previewAddress}</p>
-                    </div>
+                    <a 
+                      href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(previewAddress)}`}
+                      target="_blank" 
+                      rel="noopener noreferrer"
+                      className="flex flex-col items-center p-6 rounded-[2.5rem] bg-orange-50 dark:bg-slate-900/60 border-2 border-dashed border-orange-200 dark:border-red-500/30 text-center backdrop-blur-md hover:bg-orange-100 dark:hover:bg-slate-800/80 transition-colors cursor-pointer group"
+                    >
+                      <MapPin className="w-8 h-8 text-red-600 dark:text-red-400 mb-3 group-hover:scale-110 transition-transform" />
+                      <span className="text-[9px] font-black uppercase tracking-widest text-red-600/60 dark:text-red-400/80 mb-2">Onde nos Encontrar</span>
+                      <p className="text-sm font-bold text-slate-800 dark:text-white leading-relaxed mb-4">{previewAddress}</p>
+                      <span className="text-[10px] font-black uppercase tracking-widest bg-red-100 dark:bg-red-900/40 text-red-600 dark:text-red-400 px-4 py-2 rounded-full border border-red-200 dark:border-red-500/20">Ver no Mapa</span>
+                    </a>
                   )}
 
                   <div className="grid grid-cols-2 gap-3">
