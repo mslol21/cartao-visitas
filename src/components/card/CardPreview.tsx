@@ -247,6 +247,11 @@ END:VCARD`;
   const whatsappLink = cleanWhatsapp
     ? `https://wa.me/${formattedWhatsapp}?text=${encodeURIComponent(
         isBarbearia ? "Olá! Gostaria de agendar um corte 💈" : 
+        data.profession === 'psicologo' ? "Olá! Gostaria de agendar uma consulta psicológica 🛋️" :
+        data.profession === 'personal_trainer' ? "Olá! Gostaria de informações sobre consultoria/aulas 💪" :
+        data.profession === 'esteticista' ? "Olá! Gostaria de marcar uma avaliação estética 💆‍♀️" :
+        data.profession === 'fotografo' ? "Olá! Gostaria de um orçamento para fotos 📸" :
+        isHealth ? "Olá! Gostaria de agendar um atendimento 🩺" :
         isAdvogado ? "Olá! Gostaria de agendar uma consulta jurídica ⚖️" :
         `Olá! Vi seu perfil na Konnexy e gostaria de ${isPro ? 'solicitar um orçamento' : 'conversar'} sobre seus serviços.`
       )}`
@@ -1049,14 +1054,15 @@ END:VCARD`;
                 
                 <div className="space-y-3">
                   {activeServicesArr.length > 0 ? activeServicesArr.map((service, i) => (
-                    <motion.div 
+                    <motion.a 
                       key={i} 
+                      href={service.whatsappUrl || whatsappLink} target="_blank" rel="noopener noreferrer"
                       initial={{ opacity: 0, y: 10 }}
                       whileInView={{ opacity: 1, y: 0 }}
-                      className="flex justify-between items-center p-5 rounded-[1.5rem] bg-white/60 dark:bg-white/5 border border-[#F472B6]/10 backdrop-blur-md group hover:border-[#F472B6]/40 transition-all shadow-sm"
+                      className="flex justify-between items-center p-5 rounded-[1.5rem] bg-white/60 dark:bg-white/5 border border-[#F472B6]/10 backdrop-blur-md group hover:border-[#DB2777] hover:shadow-md transition-all cursor-pointer"
                     >
                       <div className="flex flex-col gap-0.5">
-                        <span className="text-sm font-bold text-slate-900 dark:text-white/95">{service.name}</span>
+                        <span className="text-sm font-bold text-slate-900 dark:text-white/95 group-hover:text-[#DB2777] transition-colors">{service.name}</span>
                         {service.description && (
                           <p className="text-[10px] text-slate-500 italic opacity-80 leading-tight pr-4">
                             {service.description}
@@ -1067,9 +1073,9 @@ END:VCARD`;
                         <span className="text-sm font-black text-[#DB2777] dark:text-[#F472B6]">
                           {service.price || '—'}
                         </span>
-                        <ChevronRight className="w-3 h-3 opacity-20" />
+                        <ChevronRight className="w-4 h-4 text-[#DB2777] opacity-20 group-hover:opacity-100 group-hover:translate-x-1 transition-all" />
                       </div>
-                    </motion.div>
+                    </motion.a>
                   )) : (
                     <p className="text-center text-xs opacity-20 italic uppercase tracking-[0.2em] py-10">Revele seus serviços aqui</p>
                   )}
@@ -1230,13 +1236,13 @@ END:VCARD`;
                   <p className="text-[9px] font-black uppercase tracking-widest text-slate-400 mb-4 text-center">Procedimentos & Consultas</p>
                   <div className="space-y-2">
                     {activeServicesArr.length > 0 ? activeServicesArr.map((service, i) => (
-                      <div key={i} className="flex justify-between items-center p-4 rounded-3xl bg-white/80 dark:bg-emerald-950/20 border border-emerald-100 dark:border-emerald-900/30 group hover:border-emerald-500 transition-all">
+                      <a key={i} href={service.whatsappUrl || whatsappLink} target="_blank" rel="noopener noreferrer" className="flex justify-between items-center p-4 rounded-3xl bg-white/80 dark:bg-emerald-950/20 border border-emerald-100 dark:border-emerald-900/30 group hover:border-emerald-500 transition-all cursor-pointer">
                         <div className="flex flex-col flex-1">
-                          <span className="text-sm font-bold text-slate-700 dark:text-emerald-50 leading-tight">{service.name}</span>
+                          <span className="text-sm font-bold text-slate-700 dark:text-emerald-50 leading-tight group-hover:text-emerald-600 transition-colors">{service.name}</span>
                           {service.description && <span className="text-[10px] text-slate-400 leading-tight mt-1 opacity-70">{service.description}</span>}
                         </div>
-                        {service.price && <span className="text-sm font-black text-[#10b981] ml-4 bg-[#10b981]/10 px-3 py-1 rounded-xl shrink-0">{service.price}</span>}
-                      </div>
+                        {service.price && <span className="text-sm font-black text-[#10b981] ml-4 bg-[#10b981]/10 px-3 py-1 rounded-xl shrink-0 group-hover:bg-[#10b981] group-hover:text-white transition-colors">{service.price}</span>}
+                      </a>
                     )) : (
                       <p className="text-center text-xs opacity-20 italic py-6">Adicione seus serviços médicos</p>
                     )}
@@ -1688,21 +1694,21 @@ END:VCARD`;
                      </div>
                      <div className="grid grid-cols-1 gap-4">
                        {activeServicesArr.length > 0 ? activeServicesArr.map((service, i) => (
-                         <div key={i} className="group/svc flex flex-col gap-1.5 p-5 rounded-2xl bg-white/5 border border-white/5 hover:border-blue-500/30 transition-all backdrop-blur-md relative overflow-hidden">
-                           <div className="absolute top-0 right-0 w-24 h-24 bg-blue-500/5 blur-2xl rounded-full -mr-8 -mt-8 pointer-events-none" />
+                         <a key={i} href={service.whatsappUrl || whatsappLink} target="_blank" rel="noopener noreferrer" className="group/svc flex flex-col gap-1.5 p-5 rounded-2xl bg-white/5 border border-white/5 hover:border-blue-500/50 transition-all backdrop-blur-md relative overflow-hidden cursor-pointer">
+                           <div className="absolute top-0 right-0 w-24 h-24 bg-blue-500/5 blur-2xl rounded-full -mr-8 -mt-8 pointer-events-none group-hover/svc:bg-blue-500/20 transition-colors" />
                            <div className="flex justify-between items-center relative z-10 w-full">
                              <div className="flex flex-col">
                                <span className="text-xs font-bold text-white uppercase tracking-tight">{service.name}</span>
                                {service.price && <span className="text-[9px] font-black text-blue-400 mt-2 uppercase tracking-[0.1em]">{service.price}</span>}
                              </div>
-                             <div className="w-8 h-8 rounded-lg bg-blue-500/10 flex items-center justify-center opacity-0 group-hover/svc:opacity-100 transition-all">
+                             <div className="w-8 h-8 rounded-lg bg-blue-500/10 flex items-center justify-center opacity-0 group-hover/svc:opacity-100 transition-all group-hover/svc:translate-x-1">
                                <ChevronRight className="w-4 h-4 text-blue-400" />
                              </div>
                            </div>
                            {service.description && (
                              <p className="text-[10px] text-slate-400 leading-relaxed opacity-60 relative z-10">{service.description}</p>
                            )}
-                         </div>
+                         </a>
                        )) : (
                          <p className="text-center text-xs opacity-20 italic py-10">Serviços não configurados</p>
                        )}

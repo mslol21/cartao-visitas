@@ -122,6 +122,13 @@ export const professionsMap: Record<ProfessionCategory, ProfessionConfig> = {
       'https://images.unsplash.com/photo-1534438327276-14e5300c3a48?auto=format&fit=crop&q=80&w=1080&h=1920',
       'https://images.unsplash.com/photo-1517836357463-d25dfeac3438?auto=format&fit=crop&q=80&w=1080&h=1920',
       'https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?auto=format&fit=crop&q=80&w=1080&h=1920'
+    ],
+    defaultBio: 'Especialista em transformação corporal, hipertrofia e emagrecimento. Atendimento personalizado focado em resultados reais, sempre com excelência, acompanhamento diário e metodologias embasadas na ciência do esporte.',
+    defaultCta: 'Agendar Aula 💪',
+    defaultServices: [
+      { nome: 'Consultoria Online', descricao: 'Planilhas de treino personalizadas, suporte diário e ajustes.', preco: 'R$ 150/mês' },
+      { nome: 'Personal Presencial', descricao: 'Acompanhamento lado a lado com correção de movimento.', preco: 'Sob consulta' },
+      { nome: 'Avaliação Física', descricao: 'Análise de biotipo, composição corporal e alinhamento de metas.', preco: 'R$ 80' }
     ]
   },
   advogado: {
@@ -150,6 +157,13 @@ export const professionsMap: Record<ProfessionCategory, ProfessionConfig> = {
       'https://images.unsplash.com/photo-1527689368864-3a821dbccc48?auto=format&fit=crop&q=80&w=1080&h=1920',
       'https://images.unsplash.com/photo-1516302752625-fbb345ebb1e5?auto=format&fit=crop&q=80&w=1080&h=1920',
       'https://images.unsplash.com/photo-1518101645466-7795880fb9f8?auto=format&fit=crop&q=80&w=1080&h=1920'
+    ],
+    defaultBio: 'Atendimento psicológico humanizado, focado na saúde mental, autoconhecimento e desenvolvimento pessoal. Um espaço seguro e acolhedor para que você expresse seus sentimentos e encontre novos caminhos.',
+    defaultCta: 'Agendar Consulta 🛋️',
+    defaultServices: [
+      { nome: 'Psicoterapia Individual', descricao: 'Atendimento focado nas suas demandas emocionais e autoconhecimento.', preco: 'R$ 180 / sessão' },
+      { nome: 'Terapia Online', descricao: 'Sessões por vídeo chamada no conforto e segurança da sua casa.', preco: 'R$ 150 / sessão' },
+      { nome: 'Terapia de Casal', descricao: 'Mediação profissional para criar diálogos saudáveis no relacionamento.', preco: 'R$ 250 / sessão' }
     ]
   },
   designer: {
@@ -177,6 +191,13 @@ export const professionsMap: Record<ProfessionCategory, ProfessionConfig> = {
       'https://images.unsplash.com/photo-1493863641943-9b68992a8d07?auto=format&fit=crop&q=80&w=1080&h=1920',
       'https://images.unsplash.com/photo-1542038784456-1ea8e935640e?auto=format&fit=crop&q=80&w=1080&h=1920',
       'https://images.unsplash.com/photo-1516033519934-84640108db88?auto=format&fit=crop&q=80&w=1080&h=1920'
+    ],
+    defaultBio: 'Capturando momentos inesquecíveis através da lente. Especializado em eternizar emoções com sensibilidade e técnica. Ensaios, retratos autênticos e coberturas de eventos com um olhar único.',
+    defaultCta: 'Solicitar Orçamento 📸',
+    defaultServices: [
+      { nome: 'Ensaio Fotográfico', descricao: 'Sessão fotográfica externa com curadoria e edição premium de fotos.', preco: 'A partir de R$ 350' },
+      { nome: 'Eventos & Casamentos', descricao: 'Fotografia incrível para eternizar o melhor do seu grande dia.', preco: 'Sob consulta' },
+      { nome: 'Retratos Corporativos', descricao: 'Fotos profissionais para fortalecer sua imagem de marca e LinkedIn.', preco: 'R$ 200' }
     ]
   },
   tecnico_informatica: {
@@ -204,6 +225,13 @@ export const professionsMap: Record<ProfessionCategory, ProfessionConfig> = {
       'https://images.unsplash.com/photo-1570172619664-2af9fbeca001?auto=format&fit=crop&q=80&w=1080&h=1920',
       'https://images.unsplash.com/photo-1544161515-4365f1007221?auto=format&fit=crop&q=80&w=1080&h=1920',
       'https://images.unsplash.com/photo-1616394584738-fc6e612e71b9?auto=format&fit=crop&q=80&w=1080&h=1920'
+    ],
+    defaultBio: 'Protocolos estéticos inovadores, com respeito à sua pele e ao seu bem-estar. Especialista em empoderar sua beleza natural, devolvendo auto-estima e promovendo auto-cuidado profundo num espaço tranquilo.',
+    defaultCta: 'Agendar Avaliação 💆‍♀️',
+    defaultServices: [
+      { nome: 'Limpeza de Pele', descricao: 'Remoção de impurezas, extração de cravos e hidratação profunda.', preco: 'R$ 120' },
+      { nome: 'Peeling Químico', descricao: 'Renovação celular para tratar manchas, marcas e linhas de expressão.', preco: 'R$ 180' },
+      { nome: 'Drenagem Linfática', descricao: 'Massagem manual focada na eliminação de retenção e toxinas.', preco: 'R$ 100' }
     ]
   },
   pedreiro: {
@@ -452,6 +480,13 @@ export const professionsMap: Record<ProfessionCategory, ProfessionConfig> = {
       'https://images.unsplash.com/photo-1582719478250-c29ade595da7?auto=format&fit=crop&q=80&w=1080&h=1920',
       'https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?auto=format&fit=crop&q=80&w=1080&h=1920',
       'https://images.unsplash.com/photo-1629909613654-28e377c37b09?auto=format&fit=crop&q=80&w=1080&h=1920'
+    ],
+    defaultBio: 'Atendimento de saúde avançado pensando em você como um todo: corpo, mente e rotina. Foco em soluções de longevidade, diagnósticos de rotina e acompanhamento com máximo rigor e cuidado.',
+    defaultCta: 'Agendar Consulta 🩺',
+    defaultServices: [
+      { nome: 'Consulta Inicial / Avaliação', descricao: 'Análise clínica holística, solicitação de exames e mapeamento.', preco: 'R$ 350' },
+      { nome: 'Retorno Focado', descricao: 'Leitura de exames e acompanhamento. Incluso no primeiro mês.', preco: 'Retorno' },
+      { nome: 'Acompanhamento Contínuo', descricao: 'Sessões recorrentes e renovação de tratamento.', preco: 'Sob consulta' }
     ]
   },
   sales: {
