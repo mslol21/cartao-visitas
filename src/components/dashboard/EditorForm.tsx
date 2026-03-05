@@ -596,7 +596,7 @@ export function EditorForm({ initialData, onSubmit, onChange, isPro = false, can
                              purple: '#a855f7',
                              slate: '#64748b'
                            };
-                           const updates = { 
+                           const updates: any = { 
                              profession: val,
                              category: val === 'default' ? 'default' : val,
                              theme_color: colorMap[conf.theme.color] || '#3b82f6',
@@ -604,11 +604,15 @@ export function EditorForm({ initialData, onSubmit, onChange, isPro = false, can
                              font_family: val === 'barbearia' ? 'Sora' : 
                                          val === 'advogado' ? 'Playfair Display' : 
                                          val === 'tech' ? 'JetBrains Mono' : 'Inter',
-                             cta_text: val === 'barbearia' ? 'Agendar Corte 💈' :
+                             cta_text: conf.defaultCta || (val === 'barbearia' ? 'Agendar Corte 💈' :
                                       val === 'manicure' ? 'Agendar Horário ✨' :
                                       val === 'quentinhas' ? 'Fazer Pedido 🍱' :
-                                      ['mecanico', 'encanador', 'eletricista', 'serralheiro'].includes(val) ? 'Pedir Orçamento 🛠️' : 'Falar no WhatsApp'
+                                      ['mecanico', 'encanador', 'eletricista', 'serralheiro'].includes(val) ? 'Pedir Orçamento 🛠️' : 'Falar no WhatsApp')
                            };
+                           
+                           if (conf.defaultBio) updates.bio_profissional = conf.defaultBio;
+                           if (conf.defaultServices) updates.servicos = conf.defaultServices;
+
                            const updated = { ...formData, ...updates };
                            setFormData(updated);
                            if (onChange) onChange(updated);

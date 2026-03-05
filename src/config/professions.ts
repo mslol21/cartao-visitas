@@ -49,6 +49,9 @@ export interface ProfessionConfig {
   };
   customFields: FieldConfig[];
   suggestedBackgrounds?: string[];
+  defaultBio?: string;
+  defaultCta?: string;
+  defaultServices?: Array<{ nome: string; descricao?: string; preco?: string; duracao?: string; }>;
 }
 
 export const professionsMap: Record<ProfessionCategory, ProfessionConfig> = {
@@ -64,6 +67,13 @@ export const professionsMap: Record<ProfessionCategory, ProfessionConfig> = {
       'https://images.unsplash.com/photo-1503951914875-452162b0f3f1?auto=format&fit=crop&q=80&w=1080&h=1920',
       'https://images.unsplash.com/photo-1585744944847-1c39059e74cf?auto=format&fit=crop&q=80&w=1080&h=1920',
       'https://images.unsplash.com/photo-1621605815971-fbc98d665033?auto=format&fit=crop&q=80&w=1080&h=1920'
+    ],
+    defaultBio: 'Especialista em cortes modernos e clássicos, barba express e selagem. Venha viver uma experiência de cuidado com um ambiente agradável, café gelado e profissionais qualificados para o seu estilo ideal.',
+    defaultCta: 'Agendar Corte 💈',
+    defaultServices: [
+      { nome: 'Corte Degradê', descricao: 'Corte moderno com fade na máquina zero, navalhado ou shavers.', preco: 'R$ 40' },
+      { nome: 'Barba Terapia', descricao: 'Modelagem completa com toalha quente, ozônio e balm hidratante.', preco: 'R$ 35' },
+      { nome: 'Combo (Corte + Barba)', descricao: 'O básico essencial para um visual impecável.', preco: 'R$ 70' }
     ]
   },
   manicure: {
@@ -77,6 +87,13 @@ export const professionsMap: Record<ProfessionCategory, ProfessionConfig> = {
       'https://images.unsplash.com/photo-1621236304846-859dabc6a101?auto=format&fit=crop&q=80&w=1080&h=1920',
       'https://images.unsplash.com/photo-1519014816548-bf5fe059798b?auto=format&fit=crop&q=80&w=1080&h=1920',
       'https://images.unsplash.com/photo-1632345680197-23517df40df2?auto=format&fit=crop&q=80&w=1080&h=1920'
+    ],
+    defaultBio: 'Cuidado e embelezamento das suas unhas com técnicas de biossegurança, alongamentos impecáveis, esmaltação em gel e spa dos pés. Valorize a beleza de suas mãos e pés com quem entende de delicadeza.',
+    defaultCta: 'Agendar Horário ✨',
+    defaultServices: [
+      { nome: 'Manicure & Pedicure', descricao: 'Limpeza, cuticulagem e esmaltação tradicional completa.', preco: 'R$ 60' },
+      { nome: 'Alongamento em Fibra', descricao: 'Unhas longas, naturais e resistentes, inclui primeira esmaltação.', preco: 'R$ 150' },
+      { nome: 'Esmaltação em Gel', descricao: 'Esmaltação de alta durabilidade (até 20 dias) sem descascar.', preco: 'R$ 50' }
     ]
   },
   cabeleireiro: {
@@ -215,6 +232,13 @@ export const professionsMap: Record<ProfessionCategory, ProfessionConfig> = {
       'https://images.unsplash.com/photo-1486006396193-471068589dca?auto=format&fit=crop&q=80&w=1080&h=1920',
       'https://images.unsplash.com/photo-1517524008436-bbdb53c54434?auto=format&fit=crop&q=80&w=1080&h=1920',
       'https://images.unsplash.com/photo-1530046339160-ce3e5b0c792f?auto=format&fit=crop&q=80&w=1080&h=1920'
+    ],
+    defaultBio: 'Oficina mecânica especializada em manutenção preventiva e corretiva, injeção eletrônica, suspensão, freios, troca de óleo e revisão pré-viagem. Trabalhamos com transparência e as melhores ferramentas do mercado para a segurança do seu veículo.',
+    defaultCta: 'Pedir Orçamento 🛠️',
+    defaultServices: [
+      { nome: 'Revisão Completa', descricao: 'Check-up de mais de 40 itens, incluindo freios, fluidos, suspensão.', preco: 'Sob consulta' },
+      { nome: 'Troca de Óleo e Filtros', descricao: 'Proteja o motor do seu carro com óleos recomendados pelo fabricante.', preco: 'A partir de R$ 150' },
+      { nome: 'Escaneamento Avançado', descricao: 'Diagnóstico computadorizado de injeção e módulos eletrônicos.', preco: 'R$ 120' }
     ]
   },
   eletricista: {
@@ -229,6 +253,13 @@ export const professionsMap: Record<ProfessionCategory, ProfessionConfig> = {
       'https://images.unsplash.com/photo-1621905251918-48416bd8575a?auto=format&fit=crop&q=80&w=1080&h=1920',
       'https://images.unsplash.com/photo-1621905252507-b352224075e8?auto=format&fit=crop&q=80&w=1080&h=1920',
       'https://images.unsplash.com/photo-1558403194-611308249627?auto=format&fit=crop&q=80&w=1080&h=1920'
+    ],
+    defaultBio: 'Serviços elétricos residenciais, comerciais e industriais. Profissional qualificado executando instalações, reparos, quadro de distribuição, iluminação LED e padrões de entrada, sempre seguindo as normas de segurança (NR10 / NBR5410).',
+    defaultCta: 'Pedir Orçamento 🛠️',
+    defaultServices: [
+      { nome: 'Visita Técnica / Orçamento', descricao: 'Diagnóstico do problema elétrico no local.', preco: 'R$ 80' },
+      { nome: 'Instalação de Chuveiro', descricao: 'Instalação elétrica e hidráulica com segurança.', preco: 'R$ 100' },
+      { nome: 'Troca de Quadro (Disjuntores)', descricao: 'Atualização e adequação do quadro elétrico.', preco: 'Sob consulta' }
     ]
   },
   encanador: {
@@ -506,6 +537,13 @@ export const professionsMap: Record<ProfessionCategory, ProfessionConfig> = {
       'https://images.unsplash.com/photo-1516734212186-a967f81ad0d7?auto=format&fit=crop&q=80&w=1080&h=1920',
       'https://images.unsplash.com/photo-1583511655857-d19b40a7a54e?auto=format&fit=crop&q=80&w=1080&h=1920',
       'https://images.unsplash.com/photo-1537151608828-ea2b11777ee8?auto=format&fit=crop&q=80&w=1080&h=1920'
+    ],
+    defaultBio: 'Banhos relaxantes, tosas personalizadas, venda de rações premium, acessórios exclusivos e carinho de sobra! Especialistas no bem-estar e na estética do seu melhor amigo com toda a infraestrutura e segurança que ele merece.',
+    defaultCta: 'Agendar Banho e Tosa 🐾',
+    defaultServices: [
+      { nome: 'Banho e Tosa Higiênica', descricao: 'Limpeza completa, tosa, corte das unhas e limpeza dos ouvidos.', preco: 'A partir de R$ 60' },
+      { nome: 'Tosa na Máquina/Tesoura', descricao: 'Modelagem do pelo conforme o padrão da raça.', preco: 'A partir de R$ 80' },
+      { nome: 'Hidratação Premium', descricao: 'Recuperação dos pelos danificados, trazendo brilho e maciez.', preco: 'R$ 40' }
     ]
   },
   service: {
