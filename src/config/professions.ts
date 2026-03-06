@@ -586,6 +586,13 @@ export const professionsMap: Record<ProfessionCategory, ProfessionConfig> = {
       'https://images.unsplash.com/photo-1449965408869-eaa3f722e40d?auto=format&fit=crop&q=80&w=1080&h=1920',
       'https://images.unsplash.com/photo-1533512930330-4e2e6ca42dc3?auto=format&fit=crop&q=80&w=1080&h=1920',
       'https://images.unsplash.com/photo-1507136766453-762bc250fbd3?auto=format&fit=crop&q=80&w=1080&h=1920'
+    ],
+    defaultBio: 'Motorista parceiro qualificado, priorizando pontualidade, segurança e conforto no seu trajeto. Corridas executivas, transporte de encomendas e pequenas viagens com o melhor custo-benefício e um atendimento simpático.',
+    defaultCta: 'Chamar Motorista 🚗',
+    defaultServices: [
+      { nome: 'Corrida Local (Urbana)', descricao: 'Transporte rápido e seguro dentro da cidade.', preco: 'A partir de R$ 15' },
+      { nome: 'Transporte de Encomendas', descricao: 'Coleta e entrega rápida para garantir seu pacote no mesmo dia.', preco: 'Sob consulta' },
+      { nome: 'Viagens / Aeroporto', descricao: 'Corridas longas agendadas com conforto garantido.', preco: 'Sob consulta' }
     ]
   },
   petshop: {
