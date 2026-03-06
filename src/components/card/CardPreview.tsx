@@ -1347,14 +1347,33 @@ END:VCARD`;
                     )}
                     <div className="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-black/60 to-transparent" />
                     <div className="absolute bottom-4 left-6 right-6">
-                      <h1 className="text-xl font-black text-white uppercase italic tracking-tighter">
+                      <h1 className="text-xl font-black text-white uppercase italic tracking-tighter mb-1">
                         {previewName}
                       </h1>
+                      <div className="flex items-center gap-2">
+                         <span className="text-[10px] font-black uppercase tracking-widest text-violet-200">
+                            {data.expert_area || previewTagline}
+                         </span>
+                      </div>
                     </div>
                   </div>
-                  <p className="text-xs font-bold text-[#8b5cf6] dark:text-violet-300 italic">
-                    {previewTagline}
-                  </p>
+                  
+                  <div className="flex flex-col gap-1.5 opacity-80 w-full px-2">
+                     {(data.area_atendimento || data.tipo_atendimento) && (
+                       <div className="flex items-center gap-1.5 text-slate-500">
+                          <Globe className="w-3.5 h-3.5" />
+                          <span className="text-[9px] font-bold uppercase tracking-widest">
+                            {data.area_atendimento} • {data.tipo_atendimento}
+                          </span>
+                       </div>
+                     )}
+                     {data.horario_funcionamento && (
+                       <div className="flex items-center gap-1.5 text-slate-500">
+                          <Clock className="w-3.5 h-3.5" />
+                          <span className="text-[9px] font-bold uppercase tracking-widest">{data.horario_funcionamento}</span>
+                       </div>
+                     )}
+                  </div>
                 </div>
 
                 {/* CTA Principal Vendas */}
@@ -1371,6 +1390,36 @@ END:VCARD`;
                     {data.cta_text || 'Faça seu Pedido 🛍️'}
                   </a>
                 </Button>
+
+                {/* Redes Sociais Vendas */}
+                {validSocialLinks.length > 0 && (
+                  <div className="flex flex-wrap justify-center gap-3 w-full mb-8">
+                    {validSocialLinks.map((social) => {
+                      const Icon = social.icon;
+                      return (
+                        <a 
+                          key={social.id}
+                          href={social.url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="w-12 h-12 rounded-2xl bg-violet-50 dark:bg-slate-800 border-2 border-violet-100 dark:border-violet-900/30 flex items-center justify-center text-[#8b5cf6] shadow-sm hover:border-[#8b5cf6] hover:bg-[#8b5cf6] hover:text-white transition-all hover:scale-110"
+                          onClick={() => handleTrackClick(social.trackType as any)}
+                        >
+                          <Icon className="w-5 h-5" />
+                        </a>
+                      );
+                    })}
+                  </div>
+                )}
+
+                {/* Bio do Vendedor */}
+                {data.bio_profissional && (
+                  <div className="w-full mb-10 text-center px-2">
+                    <p className="text-sm text-slate-600 dark:text-slate-400 leading-relaxed font-medium italic">
+                      "{data.bio_profissional}"
+                    </p>
+                  </div>
+                )}
 
                 {/* Highlights Sales */}
                 {renderProfessionHighlights('#8b5cf6')}
@@ -1394,14 +1443,51 @@ END:VCARD`;
                   )}
                 </div>
               </div>
+                {/* Diferenciais */}
+                {data.diferenciais && data.diferenciais.length > 0 && (
+                  <div className="w-full mb-10">
+                    <h4 className="text-[10px] font-black uppercase tracking-[0.3em] text-center mb-6 opacity-60 text-violet-500">Por que comprar conosco?</h4>
+                    <div className="grid grid-cols-1 gap-3">
+                      {data.diferenciais.map((item, idx) => (
+                        <div key={idx} className="flex items-center gap-4 p-4 rounded-3xl bg-white dark:bg-slate-900 border border-violet-100 dark:border-violet-900/30 shadow-sm hover:border-[#8b5cf6] transition-colors">
+                           <div className="w-8 h-8 rounded-xl bg-violet-100 dark:bg-violet-900/30 flex items-center justify-center shrink-0">
+                              <CheckCircle2 className="w-4 h-4 text-[#8b5cf6]" />
+                           </div>
+                           <span className="text-[11px] font-black uppercase tracking-tight text-slate-700 dark:text-slate-200">{item}</span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {/* Localização Física / Mapa Vendas */}
+                {data.has_physical_location && data.endereco_completo && (
+                  <div className="w-full mb-10">
+                    <div className="p-6 rounded-[2rem] bg-gradient-to-br from-[#8b5cf6] to-violet-800 border border-violet-400 text-white shadow-xl relative overflow-hidden">
+                       <div className="absolute top-0 right-0 p-4 opacity-10 pointer-events-none">
+                          <MapPin className="w-16 h-16" />
+                       </div>
+                       <div className="flex items-center gap-2 mb-4">
+                          <MapPin className="w-4 h-4 text-violet-200" />
+                          <span className="text-[10px] font-black uppercase tracking-widest text-violet-100">Nossa Loja Física</span>
+                       </div>
+                       <p className="text-xs font-bold leading-relaxed mb-6 block truncate">{data.endereco_completo}</p>
+                       <Button asChild className="w-full h-11 rounded-xl font-black uppercase text-[10px] tracking-widest bg-white text-[#8b5cf6] hover:bg-slate-50 border-none">
+                          <a href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(data.endereco_completo)}`} target="_blank" rel="noopener noreferrer">
+                             Ver no Mapa
+                          </a>
+                       </Button>
+                    </div>
+                  </div>
+                )}
 
                 {/* Detalhes Vendas */}
                 <div className="w-full space-y-4 mb-8">
-                  {previewAddress && (
+                  {previewAddress && !data.has_physical_location && (
                     <div className="p-5 rounded-3xl bg-slate-900 border-l-4 border-[#8b5cf6] text-white">
                       <div className="flex items-center gap-2 mb-2">
                         <MapPin className="w-4 h-4 text-[#8b5cf6]" />
-                        <span className="text-[9px] font-black uppercase tracking-[0.2em] text-[#8b5cf6]">Localização</span>
+                        <span className="text-[9px] font-black uppercase tracking-[0.2em] text-[#8b5cf6]">Endereço / Região</span>
                       </div>
                       <p className="text-xs font-medium opacity-80">{previewAddress}</p>
                     </div>
@@ -1436,25 +1522,6 @@ END:VCARD`;
                       </div>
                     </div>
                   )}
-                </div>
-
-                {/* Redes Sociais Vendas */}
-                <div className="flex justify-center gap-3 w-full mb-10">
-                  {validSocialLinks.map((social) => {
-                    const Icon = social.icon;
-                    return (
-                      <a 
-                        key={social.id}
-                        href={social.url}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="w-12 h-12 rounded-2xl bg-white dark:bg-slate-800 border-2 border-slate-50 dark:border-slate-800 flex items-center justify-center text-[#8b5cf6] shadow-sm hover:border-[#8b5cf6] transition-colors"
-                        onClick={() => handleTrackClick(social.trackType as any)}
-                      >
-                        <Icon className="w-5 h-5" />
-                      </a>
-                    );
-                  })}
                 </div>
 
                 {/* Footer Vendas */}
@@ -1938,14 +2005,31 @@ END:VCARD`;
                        <h1 className="text-2xl font-black text-white uppercase italic tracking-tighter leading-none mb-1">
                          {previewName}
                        </h1>
-                       <div className="flex items-center gap-2">
+                       <div className="flex items-center gap-2 mb-3">
                          <div className="w-2 h-2 rounded-full bg-orange-500 animate-pulse" />
                          <span className="text-[9px] font-black uppercase tracking-[0.2em] text-orange-500">
                            {data.expert_area || previewTagline}
                          </span>
                        </div>
+                       
+                       <div className="flex flex-col gap-1.5 opacity-60">
+                          {(data.area_atendimento || data.tipo_atendimento) && (
+                            <div className="flex items-center gap-1.5 text-white">
+                               <Globe className="w-3.5 h-3.5" />
+                               <span className="text-[9px] font-bold uppercase tracking-widest">
+                                 {data.area_atendimento} • {data.tipo_atendimento}
+                               </span>
+                            </div>
+                          )}
+                          {data.horario_funcionamento && (
+                            <div className="flex items-center gap-1.5 text-white">
+                               <Clock className="w-3.5 h-3.5" />
+                               <span className="text-[9px] font-bold uppercase tracking-widest">{data.horario_funcionamento}</span>
+                            </div>
+                          )}
+                       </div>
                      </div>
-                     <div className="relative w-20 h-20 rounded-full border-4 border-orange-500 overflow-hidden shadow-[0_0_20px_rgba(249,115,22,0.3)]">
+                     <div className="relative w-20 h-20 rounded-full border-4 border-orange-500 overflow-hidden shadow-[0_0_20px_rgba(249,115,22,0.3)] shrink-0">
                         {data.photo_url ? (
                           <Image src={data.photo_url} alt={previewName || 'Driver'} fill className="object-cover" unoptimized />
                         ) : (
@@ -1967,6 +2051,33 @@ END:VCARD`;
                        {data.cta_text || 'Chamar Agora'}
                     </a>
                   </Button>
+
+                  {/* Redes Sociais */}
+                  {validSocialLinks.length > 0 && (
+                    <div className="flex flex-wrap justify-center gap-3 mb-8 w-full">
+                      {validSocialLinks.map((link, i) => (
+                        <a 
+                          key={i} 
+                          href={link.url} 
+                          target="_blank" 
+                          rel="noopener noreferrer" 
+                          onClick={() => handleTrackClick(link.trackType)}
+                          className="flex items-center justify-center w-12 h-12 rounded-full bg-white/5 border border-white/10 text-white/70 hover:text-orange-500 hover:bg-orange-500/10 hover:border-orange-500/30 transition-all hover:scale-110 shadow-lg"
+                        >
+                          <link.icon className="w-5 h-5" />
+                        </a>
+                      ))}
+                    </div>
+                  )}
+
+                  {/* Bio do Motorista */}
+                  {data.bio_profissional && (
+                    <div className="w-full mb-10 text-center px-2">
+                      <p className="text-sm text-zinc-400 leading-relaxed font-medium italic">
+                        "{data.bio_profissional}"
+                      </p>
+                    </div>
+                  )}
 
                   {/* Highlights Driver */}
                   {renderProfessionHighlights('#f97316')}
@@ -1994,6 +2105,23 @@ END:VCARD`;
                        )}
                     </div>
                   </div>
+
+                  {/* Diferenciais */}
+                  {data.diferenciais && data.diferenciais.length > 0 && (
+                    <div className="w-full mb-10">
+                      <h4 className="text-[10px] font-black uppercase tracking-[0.3em] text-center mb-6 opacity-50 text-orange-500">Por que viajar comigo?</h4>
+                      <div className="grid grid-cols-1 gap-3">
+                        {data.diferenciais.map((item, idx) => (
+                          <div key={idx} className="flex items-center gap-4 p-4 rounded-2xl bg-white/5 border border-white/5 shadow-sm">
+                             <div className="w-8 h-8 rounded-xl bg-orange-500/10 flex items-center justify-center shrink-0">
+                                <CheckCircle2 className="w-4 h-4 text-orange-500" />
+                             </div>
+                             <span className="text-[11px] font-black uppercase tracking-tight text-zinc-300">{item}</span>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
 
                   {/* Footer Driver */}
                   <div className="mt-auto flex items-center gap-3 opacity-30">
@@ -2219,9 +2347,28 @@ END:VCARD`;
                        <h1 className="text-2xl font-black text-purple-600 dark:text-purple-400 leading-none mb-2">
                          {previewName}
                        </h1>
-                       <span className="text-[10px] font-black uppercase tracking-widest text-slate-500">
-                          {data.expert_area || previewTagline}
-                       </span>
+                       <div className="flex items-center gap-2 mb-3">
+                         <span className="text-[10px] font-black uppercase tracking-widest text-slate-500">
+                            {data.expert_area || previewTagline}
+                         </span>
+                       </div>
+
+                       <div className="flex flex-col gap-1.5 opacity-80">
+                          {(data.area_atendimento || data.tipo_atendimento) && (
+                            <div className="flex items-center gap-1.5 text-slate-500">
+                               <Globe className="w-3.5 h-3.5" />
+                               <span className="text-[9px] font-bold uppercase tracking-widest">
+                                 {data.area_atendimento} • {data.tipo_atendimento}
+                               </span>
+                            </div>
+                          )}
+                          {data.horario_funcionamento && (
+                            <div className="flex items-center gap-1.5 text-slate-500">
+                               <Clock className="w-3.5 h-3.5" />
+                               <span className="text-[9px] font-bold uppercase tracking-widest">{data.horario_funcionamento}</span>
+                            </div>
+                          )}
+                       </div>
                      </div>
                   </div>
 
@@ -2236,6 +2383,33 @@ END:VCARD`;
                        {data.cta_text || 'Agendar Banho & Tosa'}
                     </a>
                   </Button>
+
+                  {/* Redes Sociais */}
+                  {validSocialLinks.length > 0 && (
+                    <div className="flex flex-wrap justify-center gap-3 mb-8 w-full">
+                      {validSocialLinks.map((link, i) => (
+                        <a 
+                          key={i} 
+                          href={link.url} 
+                          target="_blank" 
+                          rel="noopener noreferrer" 
+                          onClick={() => handleTrackClick(link.trackType)}
+                          className="flex items-center justify-center w-12 h-12 rounded-full bg-purple-50 border border-purple-100 dark:bg-slate-800 dark:border-purple-900/30 text-purple-400 hover:text-white hover:bg-purple-500 transition-all hover:scale-110 shadow-lg"
+                        >
+                          <link.icon className="w-5 h-5" />
+                        </a>
+                      ))}
+                    </div>
+                  )}
+
+                  {/* Bio do Petshop */}
+                  {data.bio_profissional && (
+                    <div className="w-full mb-10 text-center px-2">
+                      <p className="text-sm text-slate-600 dark:text-slate-400 leading-relaxed font-medium italic">
+                        "{data.bio_profissional}"
+                      </p>
+                    </div>
+                  )}
 
                   {/* Highlights Highlights */}
                   {renderProfessionHighlights('#a855f7')}
@@ -2274,9 +2448,47 @@ END:VCARD`;
                      </div>
                   </div>
 
+                  {/* Diferenciais */}
+                  {data.diferenciais && data.diferenciais.length > 0 && (
+                    <div className="w-full mb-10">
+                      <h4 className="text-[10px] font-black uppercase tracking-[0.3em] text-center mb-6 opacity-60 text-purple-500">Por que nos escolher?</h4>
+                      <div className="grid grid-cols-1 gap-3">
+                        {data.diferenciais.map((item, idx) => (
+                          <div key={idx} className="flex items-center gap-4 p-4 rounded-3xl bg-white dark:bg-slate-800 border border-purple-100 dark:border-purple-900/30 shadow-sm">
+                             <div className="w-8 h-8 rounded-xl bg-purple-100 dark:bg-purple-900/30 flex items-center justify-center shrink-0">
+                                <CheckCircle2 className="w-4 h-4 text-purple-500" />
+                             </div>
+                             <span className="text-[11px] font-black uppercase tracking-tight text-slate-700 dark:text-slate-200">{item}</span>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Map Pin Petshop */}
+                  {data.has_physical_location && data.endereco_completo && (
+                    <div className="w-full mb-10">
+                      <div className="p-6 rounded-[2rem] bg-gradient-to-br from-purple-500 to-indigo-500 border border-purple-400 text-white shadow-xl relative overflow-hidden">
+                         <div className="absolute top-0 right-0 p-4 opacity-10 pointer-events-none">
+                            <MapPin className="w-16 h-16" />
+                         </div>
+                         <div className="flex items-center gap-2 mb-4">
+                            <MapPin className="w-4 h-4 text-purple-200" />
+                            <span className="text-[10px] font-black uppercase tracking-widest text-purple-100">Como Chegar</span>
+                         </div>
+                         <p className="text-xs font-bold leading-relaxed mb-6 block truncate">{data.endereco_completo}</p>
+                         <Button asChild className="w-full h-11 rounded-xl font-black uppercase text-[10px] tracking-widest bg-white text-purple-600 hover:bg-slate-50 border-none">
+                            <a href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(data.endereco_completo)}`} target="_blank" rel="noopener noreferrer">
+                               Ver no Google Maps
+                            </a>
+                         </Button>
+                      </div>
+                    </div>
+                  )}
+
                   {/* Petshop Contact & Details */}
                   <div className="w-full space-y-4 mb-8">
-                     {(data.address || data.city) && (
+                     {(data.address || data.city) && !data.has_physical_location && (
                        <div className="p-6 rounded-3xl bg-purple-50 dark:bg-purple-900/10 border border-purple-100 dark:border-purple-900/30 flex items-start gap-4">
                          <div className="w-10 h-10 rounded-full bg-purple-100 dark:bg-purple-900/30 flex items-center justify-center shrink-0">
                            <MapPin className="w-5 h-5 text-purple-500" />
@@ -2308,7 +2520,7 @@ END:VCARD`;
                          </div>
                        </div>
                      )}
-                   </div>
+                  </div>
 
                    {/* Petshop Social */}
                    <div className="flex justify-center gap-4 w-full mb-10">
