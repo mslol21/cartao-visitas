@@ -2151,9 +2151,15 @@ END:VCARD`;
                              </div>
                            )}
                         </div>
-                        <div className="absolute -bottom-2 -right-2 w-14 h-14 rounded-full bg-fuchsia-500 flex items-center justify-center text-white shadow-xl z-20 border-4 border-[#18181b] hover:scale-110 transition-transform cursor-pointer">
-                           <Play className="w-6 h-6 fill-current ml-1" />
-                        </div>
+                        <a 
+                          href={data.custom_fields?.spotify_link || data.custom_fields?.youtube_link || whatsappLink} 
+                          target="_blank" 
+                          rel="noopener noreferrer" 
+                          className="absolute -bottom-2 -right-2 w-14 h-14 rounded-full bg-fuchsia-500 flex items-center justify-center text-white shadow-[0_0_20px_rgba(217,70,239,0.5)] z-20 border-4 border-[#18181b] hover:scale-110 hover:bg-fuchsia-400 transition-all cursor-pointer group/play"
+                          onClick={() => handleTrackClick('click_music_play')}
+                        >
+                           <Play className="w-6 h-6 fill-current ml-1 group-hover/play:scale-110 transition-transform" />
+                        </a>
                      </motion.div>
                      
                      <h1 className="text-3xl font-black text-white text-center tracking-tighter mb-2">
