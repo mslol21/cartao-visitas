@@ -69,6 +69,7 @@ import {
   HardHat,
   HeartPulse,
   Check,
+  CheckCircle2,
   Truck,
   Calendar,
   Monitor,
@@ -2036,6 +2037,23 @@ END:VCARD`;
                            {(data as any).expert_area || data.custom_fields?.estilo_musical || previewTagline}
                         </span>
                      </div>
+
+                     <div className="flex flex-wrap justify-center gap-x-6 gap-y-2 mt-4 w-full opacity-60">
+                        {(data.area_atendimento || data.tipo_atendimento) && (
+                          <div className="flex items-center gap-1.5 text-white">
+                             <Globe className="w-3.5 h-3.5" />
+                             <span className="text-[10px] font-bold uppercase tracking-widest">
+                               {data.area_atendimento} • {data.tipo_atendimento}
+                             </span>
+                          </div>
+                        )}
+                        {data.horario_funcionamento && (
+                          <div className="flex items-center gap-1.5 text-white">
+                             <Clock className="w-3.5 h-3.5" />
+                             <span className="text-[10px] font-bold uppercase tracking-widest">{data.horario_funcionamento}</span>
+                          </div>
+                        )}
+                     </div>
                   </div>
 
                   {/* Musician CTA */}
@@ -2049,6 +2067,33 @@ END:VCARD`;
                        {data.cta_text || 'Solicitar Orçamento / Show'}
                     </a>
                   </Button>
+
+                  {/* Redes Sociais */}
+                  {validSocialLinks.length > 0 && (
+                    <div className="flex flex-wrap justify-center gap-3 mb-8 w-full">
+                      {validSocialLinks.map((link, i) => (
+                        <a 
+                          key={i} 
+                          href={link.url} 
+                          target="_blank" 
+                          rel="noopener noreferrer" 
+                          onClick={() => handleTrackClick(link.trackType)}
+                          className="flex items-center justify-center w-12 h-12 rounded-full bg-white/5 border border-white/10 text-white/70 hover:text-fuchsia-400 hover:bg-fuchsia-500/10 hover:border-fuchsia-500/30 transition-all hover:scale-110 shadow-lg"
+                        >
+                          <link.icon className="w-5 h-5" />
+                        </a>
+                      ))}
+                    </div>
+                  )}
+
+                  {/* Bio do Músico */}
+                  {data.bio_profissional && (
+                    <div className="w-full mb-10 text-center">
+                      <p className="text-sm text-zinc-400 leading-relaxed font-medium italic">
+                        "{data.bio_profissional}"
+                      </p>
+                    </div>
+                  )}
 
                   {/* Highlights Musico */}
                   {renderProfessionHighlights('#d946ef')}
@@ -2114,6 +2159,43 @@ END:VCARD`;
                     </div>
                   )}
 
+                  {/* Diferenciais */}
+                  {data.diferenciais && data.diferenciais.length > 0 && (
+                    <div className="w-full mb-10">
+                      <h4 className="text-[10px] font-black uppercase tracking-[0.3em] text-center mb-6 opacity-50 text-fuchsia-400">Diferenciais do Trabalho</h4>
+                      <div className="grid grid-cols-1 gap-3">
+                        {data.diferenciais.map((item, idx) => (
+                          <div key={idx} className="flex items-center gap-4 p-4 rounded-2xl bg-[#27272a]/40 border border-[#3f3f46]/40 shadow-sm">
+                             <div className="w-8 h-8 rounded-xl bg-fuchsia-500/10 flex items-center justify-center shrink-0">
+                                <CheckCircle2 className="w-4 h-4 text-fuchsia-500" />
+                             </div>
+                             <span className="text-[11px] font-black uppercase tracking-tight text-zinc-300">{item}</span>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Endereço (Estúdio/Etc) */}
+                  {data.has_physical_location && data.endereco_completo && (
+                    <div className="w-full mb-10">
+                      <div className="p-6 rounded-[2rem] bg-gradient-to-br from-fuchsia-900/50 to-purple-900/50 border border-fuchsia-500/20 text-white shadow-xl relative overflow-hidden">
+                         <div className="absolute top-0 right-0 p-4 opacity-10 pointer-events-none">
+                            <MapPin className="w-16 h-16" />
+                         </div>
+                         <div className="flex items-center gap-2 mb-4">
+                            <MapPin className="w-4 h-4 text-fuchsia-400" />
+                            <span className="text-[10px] font-black uppercase tracking-widest text-fuchsia-300">Localização / Estúdio</span>
+                         </div>
+                         <p className="text-xs font-bold leading-relaxed mb-6 block truncate">{data.endereco_completo}</p>
+                         <Button asChild className="w-full h-11 rounded-xl font-black uppercase text-[10px] tracking-widest bg-fuchsia-500 hover:bg-fuchsia-600 border-none">
+                            <a href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(data.endereco_completo)}`} target="_blank" rel="noopener noreferrer">
+                               Ver no Mapa
+                            </a>
+                         </Button>
+                      </div>
+                    </div>
+                  )}
                {renderCustomPortfolio()}
             </div>
             ) : isPetshop ? (
