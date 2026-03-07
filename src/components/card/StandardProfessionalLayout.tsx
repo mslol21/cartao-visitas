@@ -352,22 +352,42 @@ export function StandardProfessionalLayout({ data, isPro }: StandardProfessional
               if (field.type === 'boolean' && value === false) return null;
 
               const Icon = getFieldIcon(field.name);
+              const displayLabel = field.label.replace(/\s*\(.*?\)\s*/g, '');
+              const isArray = field.type === 'array' || Array.isArray(value);
 
               return (
-                <div key={field.name} className="p-4 rounded-[1.5rem] bg-primary/5 border border-primary/20 flex flex-col items-center text-center gap-2 group hover:bg-primary/10 transition-colors">
+                <div key={field.name} className={cn("p-4 rounded-[1.5rem] bg-primary/5 border border-primary/20 flex flex-col items-center text-center gap-2 group hover:bg-primary/10 transition-colors", isArray ? "col-span-2" : "")}>
                    {field.type === 'boolean' ? (
                      <>
                         <Icon className="w-5 h-5 text-primary group-hover:scale-110 transition-transform" />
-                        <span className="text-[10px] font-black uppercase tracking-tight leading-tight">{field.label}</span>
+                        <span className="text-[10px] font-black uppercase tracking-tight leading-tight">{displayLabel}</span>
                         <Check className="w-3 h-3 text-primary/40" />
+                     </>
+                   ) : isArray ? (
+                     <>
+                        <div className="flex items-center gap-2 mb-1">
+                           <Icon className="w-4 h-4 text-primary/50" />
+                           <span className="text-[9px] font-black uppercase tracking-widest opacity-50">{displayLabel}</span>
+                        </div>
+                        <div className="flex flex-wrap items-center justify-center gap-1.5 w-full">
+                           {(Array.isArray(value) ? value : String(value).split(/[,;]/)).map((item: string, i: number) => {
+                             const trimmed = item.trim();
+                             if (!trimmed) return null;
+                             return (
+                               <span key={i} className="text-[10px] font-bold text-slate-800 dark:text-slate-100 bg-white dark:bg-slate-800 border border-primary/10 dark:border-primary/20 px-3 py-1.5 rounded-full shadow-sm">
+                                 {trimmed}
+                               </span>
+                             );
+                           })}
+                        </div>
                      </>
                    ) : (
                      <>
                         <Icon className="w-5 h-5 text-primary/40" />
                         <div className="flex flex-col gap-0.5">
-                           <span className="text-[8px] font-black uppercase tracking-widest opacity-40">{field.label}</span>
+                           <span className="text-[8px] font-black uppercase tracking-widest opacity-40">{displayLabel}</span>
                            <span className="text-[11px] font-black text-slate-800 dark:text-white uppercase leading-tight italic tracking-tighter">
-                             {Array.isArray(value) ? value.join(', ') : value}
+                             {value}
                            </span>
                         </div>
                      </>

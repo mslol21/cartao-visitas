@@ -520,24 +520,45 @@ END:VCARD`;
              {fields.map((field) => {
                 const value = (data.custom_fields as any)?.[field.name];
                 const Icon = getFieldIcon(field.name);
+                const displayLabel = field.label.replace(/\s*\(.*?\)\s*/g, '');
+                const isArray = field.type === 'array' || Array.isArray(value);
+
                 return (
-                   <div key={field.name} className="p-4 rounded-2xl bg-white dark:bg-white/5 border border-current/10 flex flex-col items-center text-center gap-2 group hover:bg-current/10 transition-all hover:scale-[1.02] active:scale-95 shadow-sm">
+                   <div key={field.name} className={cn("p-4 rounded-2xl bg-white dark:bg-white/5 border border-current/10 flex flex-col items-center text-center gap-2 group hover:bg-current/10 transition-all hover:scale-[1.02] active:scale-95 shadow-sm", isArray ? "col-span-2" : "")}>
                       {field.type === 'boolean' ? (
                         <>
                            <div className="relative p-3 rounded-xl flex items-center justify-center overflow-hidden mb-1 group-hover:scale-110 transition-transform">
                              <div className="absolute inset-0 opacity-15 transition-opacity group-hover:opacity-25" style={{ backgroundColor: themeColor }} />
                              <Icon className="w-6 h-6 relative z-10" style={{ color: themeColor }} />
                            </div>
-                           <span className="text-[10px] font-black uppercase tracking-tight leading-tight text-slate-800 dark:text-white opacity-90 mt-1">{field.label}</span>
+                           <span className="text-[10px] font-black uppercase tracking-tight leading-tight text-slate-800 dark:text-white opacity-90 mt-1">{displayLabel}</span>
                            <Check className="w-3 h-3 opacity-60 mt-1" style={{ color: themeColor }} />
+                        </>
+                      ) : isArray ? (
+                        <>
+                           <div className="flex items-center gap-2 mb-1">
+                              <Icon className="w-4 h-4 opacity-70" style={{ color: themeColor }} />
+                              <span className="text-[9px] font-black uppercase tracking-widest opacity-60 text-slate-600 dark:text-slate-400">{displayLabel}</span>
+                           </div>
+                           <div className="flex flex-wrap items-center justify-center gap-1.5 w-full">
+                              {(Array.isArray(value) ? value : String(value).split(/[,;]/)).map((item: string, i: number) => {
+                                const trimmed = item.trim();
+                                if (!trimmed) return null;
+                                return (
+                                  <span key={i} className="text-[10px] font-bold text-slate-800 dark:text-slate-100 bg-white dark:bg-white/5 border border-current/10 px-3 py-1.5 rounded-full shadow-sm">
+                                    {trimmed}
+                                  </span>
+                                );
+                              })}
+                           </div>
                         </>
                       ) : (
                         <>
                            <Icon className="w-5 h-5 opacity-50 group-hover:scale-110 transition-transform" style={{ color: themeColor }} />
                            <div className="flex flex-col gap-0.5 w-full">
-                              <span className="text-[7px] font-black uppercase tracking-widest opacity-60 text-slate-600 dark:text-slate-400">{field.label}</span>
+                              <span className="text-[7px] font-black uppercase tracking-widest opacity-60 text-slate-600 dark:text-slate-400">{displayLabel}</span>
                               <span className="text-[10px] font-black uppercase leading-tight italic tracking-tighter truncate w-full text-slate-900 dark:text-white">
-                                {Array.isArray(value) ? value.join(', ') : value}
+                                {value}
                               </span>
                            </div>
                         </>
