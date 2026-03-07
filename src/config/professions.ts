@@ -652,6 +652,29 @@ export const professionsMap: Record<ProfessionCategory, ProfessionConfig> = {
       { nome: 'Composição Inédita', descricao: 'Música personalizada para homenagens ou projetos especiais.', preco: 'Sob consulta' }
     ]
   },
+  van_escolar: {
+    id: 'van_escolar',
+    label: 'Motorista de Van Escolar / Transporte Universitário',
+    theme: { color: 'yellow', style: 'standard' },
+    customFields: [
+      { name: 'possui_monitor', label: 'Possui Monitor(a)?', type: 'boolean' },
+      { name: 'ar_condicionado', label: 'Van com Ar Condicionado?', type: 'boolean' },
+      { name: 'atende_escolas', label: 'Escolas/Faculdades (Separadas por vírgula)', type: 'array', placeholder: 'Ex: Colégio Anglo, USP' }
+    ],
+    suggestedBackgrounds: [
+      'https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?auto=format&fit=crop&q=80&w=1080&h=1920',
+      'https://images.unsplash.com/photo-1554672408-e87f17b34b9d?auto=format&fit=crop&q=80&w=1080&h=1920',
+      'https://images.unsplash.com/photo-1518290372138-cbbcc199b005?auto=format&fit=crop&q=80&w=1080&h=1920',
+      'https://images.unsplash.com/photo-1506869640319-fea1a275306c?auto=format&fit=crop&q=80&w=1080&h=1920'
+    ],
+    defaultBio: 'Transporte escolar e universitário legalizado com total segurança, conforto e pontualidade. Veículos vistoriados frequentemente para a tranquilidade dos pais e garantia de um trajeto agradável aos alunos todos os dias.',
+    defaultCta: 'Chamar no WhatsApp 🚐',
+    defaultServices: [
+      { nome: 'Transporte Escolar (Mensal)', descricao: 'Trajeto de ida e volta da escola para crianças e adolescentes. Trajeto monitorado.', preco: 'Sob consulta' },
+      { nome: 'Transporte Universitário', descricao: 'Ida e volta noturna/diurna focada em faculdades da região.', preco: 'Sob consulta' },
+      { nome: 'Fretamento para Excursões', descricao: 'Locação da van com motorista para passeios, viagens de turma e eventos.', preco: 'Sob consulta' }
+    ]
+  },
   default: {
     id: 'default',
     label: 'Outros Profissionais',

@@ -289,10 +289,10 @@ export function FinalCTASection() {
           <div className="pt-6 relative group inline-block">
             <div className="absolute -inset-2 bg-gradient-to-r from-primary to-purple-600 rounded-[2.5rem] blur-xl opacity-50 group-hover:opacity-100 transition duration-500" />
             <Button asChild className="relative w-full sm:w-auto h-20 px-12 rounded-[2rem] bg-slate-950 hover:bg-slate-900 border border-white/10 text-white text-lg md:text-xl font-black uppercase tracking-widest transition-all shadow-[0_0_50px_rgba(59,130,246,0.3)]">
-              <Link href="/signup" className="flex items-center justify-center gap-3">
+              <a href="https://wa.me/5516991551200?text=Ol%C3%A1%2C%20gostaria%20de%20me%20cadastrar" target="_blank" rel="noopener noreferrer" className="flex items-center justify-center gap-3">
                 <span className="text-center">Gerar Meu Link Profissional</span>
                 <ArrowRight className="w-6 h-6 transition-transform group-hover:translate-x-2 shrink-0" />
-              </Link>
+              </a>
             </Button>
           </div>
         </div>

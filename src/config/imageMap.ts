@@ -103,6 +103,11 @@ export const imageDatabase: Record<string, string[]> = {
   ],
   'salao': [
     'https://cdn.pixabay.com/photo/2016/02/19/11/40/coffee-shop-1209863_1280.jpg'
+  ],
+  'van_escolar': [
+    'https://cdn.pixabay.com/photo/2018/12/10/18/31/vw-bus-3867383_1280.jpg',
+    'https://cdn.pixabay.com/photo/2015/06/20/19/15/children-815894_1280.jpg',
+    'https://cdn.pixabay.com/photo/2016/12/28/19/27/volkswagen-1936855_1280.jpg'
   ]
 };
 
@@ -119,7 +124,8 @@ const synonyms: Record<string, string[]> = {
   'academia': ['treino', 'musculação', 'exercício', 'esporte', 'crossfit', 'yoga', 'personal', 'corpo'],
   'financeiro': ['contabilidade', 'contador', 'dinheiro', 'investimento', 'escritorio', 'mei', 'gestao', 'planilha'],
   'tecnologia': ['ti', 'programador', 'software', 'codigo', 'web', 'computador', 'celular', 'manutencao'],
-  'barbearia': ['barba', 'corte', 'cabelo', 'navalha', 'disfarce', 'fade']
+  'barbearia': ['barba', 'corte', 'cabelo', 'navalha', 'disfarce', 'fade'],
+  'van_escolar': ['van', 'transporte', 'escolar', 'universitario', 'onibus', 'perua', 'motorista']
 };
 
 /**

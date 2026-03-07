@@ -119,13 +119,13 @@ export function PlanComparison() {
            <div className="grid grid-cols-3 border-t border-white/10 bg-black/40">
               <div className="p-6"></div>
               <div className="p-6 flex items-center justify-center border-l border-white/10">
-                 <Link href="/signup" className="text-sm font-bold text-slate-400 hover:text-white transition-colors underline underline-offset-4">
+                 <a href="https://wa.me/5516991551200?text=Ol%C3%A1%2C%20gostaria%20de%20me%20cadastrar" target="_blank" rel="noopener noreferrer" className="text-sm font-bold text-slate-400 hover:text-white transition-colors underline underline-offset-4">
                    Criar Grátis
-                 </Link>
+                 </a>
               </div>
               <div className="p-6 flex items-center justify-center border-l border-white/10">
                  <Button asChild className="w-full bg-gradient-to-r from-primary to-purple-600 hover:from-primary/80 hover:to-purple-500 text-white font-black uppercase tracking-widest border-0 shadow-[0_0_30px_rgba(59,130,246,0.5)]">
-                    <Link href="/pricing">Quero ser PRO</Link>
+                    <a href="https://wa.me/5516991551200?text=Ol%C3%A1%2C%20gostaria%20de%20me%20cadastrar" target="_blank" rel="noopener noreferrer" className="flex justify-center items-center w-full h-full">Quero ser PRO</a>
                  </Button>
               </div>
            </div>

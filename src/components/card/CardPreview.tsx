@@ -482,7 +482,7 @@ END:VCARD`;
     if (name.includes('atende_domicilio') || name.includes('residencial') || name.includes('home')) return Home;
     if (name.includes('agendamento') || name.includes('horario') || name.includes('schedule')) return Calendar;
     if (name.includes('oab') || name.includes('creci') || name.includes('nr10') || name.includes('registro')) return ShieldCheck;
-    if (name.includes('delivery') || name.includes('entreg') || name.includes('frete') || name.includes('veiculo') || name.includes('truck')) return Truck;
+    if (name.includes('delivery') || name.includes('entreg') || name.includes('frete') || name.includes('veiculo') || name.includes('truck') || name.includes('van')) return Truck;
     if (name.includes('online') || name.includes('remoto') || name.includes('digital') || name.includes('zoom')) return Monitor;
     if (name.includes('experiencia') || name.includes('anos')) return History;
     if (name.includes('socorro') || name.includes('emergencia') || name.includes('urgencia')) return Zap;
@@ -490,6 +490,9 @@ END:VCARD`;
     if (name.includes('celular') || name.includes('mobile') || name.includes('phone')) return Smartphone;
     if (['reforma', 'ferramentas', 'obra', 'construction', 'hard_hat'].some(k => name.includes(k))) return HardHat;
     if (name.includes('banho') || name.includes('tosa') || name.includes('grooming') || name.includes('animal') || name.includes('pet')) return PawPrint;
+    if (name.includes('monitor') || name.includes('ajudante')) return UserPlus;
+    if (name.includes('ar_condicionado') || name.includes('climatizacao')) return Zap;
+    if (name.includes('escola') || name.includes('faculdade') || name.includes('universitario')) return GraduationCap;
     return Award;
   };
 

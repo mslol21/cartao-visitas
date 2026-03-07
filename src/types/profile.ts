@@ -35,6 +35,7 @@ export type ProfessionCategory =
   | 'petshop'
   | 'service'
   | 'musico'
+  | 'van_escolar'
   | 'default';
 
 export interface Service {
@@ -94,11 +95,14 @@ export interface CustomFields {
   trabalha_aluminio?: boolean;
   trabalha_ferro?: boolean;
   moveis_planejados?: boolean;
-  // Automotivo
+  // Automotivo / Transporte
   socorro_24h?: boolean;
   especialidade_carros?: string;
   tipo_veiculo?: string;
   atende_viagens?: boolean;
+  possui_monitor?: boolean;
+  bancos_reclinaveis?: boolean;
+  atende_escolas?: string[];
   // Vendas / Gastronomia
   tem_delivery?: boolean;
   aceita_vr?: boolean;

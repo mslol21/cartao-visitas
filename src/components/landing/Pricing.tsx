@@ -22,7 +22,7 @@ const plans = [
       { text: 'Fundo em vídeo premium', excluded: true },
     ],
     cta: 'Começar grátis',
-    href: '/signup',
+    href: 'https://wa.me/5516991551200?text=Ol%C3%A1%2C%20gostaria%20de%20me%20cadastrar',
     popular: false,
     subText: 'Crie seu link em 2 minutos',
   },
@@ -159,10 +159,10 @@ export function Pricing() {
                          : 'bg-white/5 hover:bg-white/10 border border-white/20 text-white'
                       }`}
                     >
-                      <Link href={plan.href} className="flex items-center justify-center gap-2">
+                      <a href={plan.href} target={plan.href.startsWith("http") ? "_blank" : undefined} rel={plan.href.startsWith("http") ? "noopener noreferrer" : undefined} className="flex items-center justify-center gap-2">
                         {plan.cta}
                         <ArrowRight className="w-5 h-5" />
-                      </Link>
+                      </a>
                     </Button>
                     <p className={`text-center text-[11px] font-bold italic tracking-wider ${plan.popular ? 'text-primary' : 'text-slate-500'}`}>
                       {plan.subText}

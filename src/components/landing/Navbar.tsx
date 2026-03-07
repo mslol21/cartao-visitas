@@ -71,10 +71,10 @@ export function Navbar() {
                   <Link href="/login">Entrar</Link>
                 </Button>
                 <Button asChild variant="hero" className="rounded-2xl h-11 px-6 shadow-xl shadow-primary/10 transition-all">
-                  <Link href="/signup">
+                  <a href="https://wa.me/5516991551200?text=Ol%C3%A1%2C%20gostaria%20de%20me%20cadastrar" target="_blank" rel="noopener noreferrer">
                     Começar Grátis
                     <ArrowRight className="w-4 h-4 ml-2" />
-                  </Link>
+                  </a>
                 </Button>
               </>
             )}
@@ -121,7 +121,7 @@ export function Navbar() {
                       <Link href="/login" onClick={() => setIsOpen(false)}>Entrar</Link>
                     </Button>
                     <Button asChild variant="hero" size="lg" className="rounded-2xl w-full">
-                      <Link href="/signup" onClick={() => setIsOpen(false)}>Começar Grátis</Link>
+                      <a href="https://wa.me/5516991551200?text=Ol%C3%A1%2C%20gostaria%20de%20me%20cadastrar" target="_blank" rel="noopener noreferrer" onClick={() => setIsOpen(false)}>Começar Grátis</a>
                     </Button>
                   </>
                 )}
