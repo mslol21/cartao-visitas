@@ -141,7 +141,7 @@ export function CardPreview({
   const isPetshop = data.profession === 'petshop' || data.category === 'petshop';
   const isMusico = data.profession === 'musico' || data.category === 'musico';
   
-  const isStandardized = isModernService || ['quentinhas', 'assistencia_celular'].some(p => data.profession === p);
+  const isStandardized = isModernService || ['quentinhas', 'assistencia_celular', 'van_escolar'].some(p => data.profession === p);
 
   // Data helpers that prefer new fields but fall back to old ones for compatibility
   const previewName = data.business_name || data.name || 'Seu Nome';
