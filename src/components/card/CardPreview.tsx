@@ -2155,7 +2155,7 @@ END:VCARD`;
             </div>
             ) : isMusico ? (
                <div className="relative flex flex-col items-center w-full min-h-[600px] z-10 px-6 py-12 overflow-y-auto scroll-hide">
-                  <div className="absolute inset-0 bg-gradient-to-b from-[#18181b] via-[#09090b] to-black opacity-90 -z-10" />
+                  <div className={cn("absolute inset-0 -z-10", data.background_video_url ? "bg-black/40 backdrop-blur-sm" : "bg-gradient-to-b from-[#18181b] via-[#09090b] to-black opacity-90")} />
                   
                   {/* Musician Header/Cover style */}
                   <div className="w-full flex flex-col items-center mb-10 pt-4">
