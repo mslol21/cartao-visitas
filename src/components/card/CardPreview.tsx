@@ -774,8 +774,11 @@ END:VCARD`;
               {isPro && data.background_video_url && (
                <div className="absolute inset-0 overflow-hidden pointer-events-none transition-all z-0">
                  <div 
-                   className="w-full h-[65%] relative"
-                   style={{
+                   className={cn("w-full relative", isMusico ? "h-full" : "h-[65%]")}
+                   style={isMusico ? {
+                     maskImage: 'linear-gradient(to bottom, black 0%, black 80%, transparent 100%)',
+                     WebkitMaskImage: 'linear-gradient(to bottom, black 0%, black 80%, transparent 100%)'
+                   } : {
                      maskImage: 'linear-gradient(to bottom, black 0%, black 50%, transparent 100%)',
                      WebkitMaskImage: 'linear-gradient(to bottom, black 0%, black 50%, transparent 100%)'
                    }}
@@ -787,17 +790,19 @@ END:VCARD`;
                        muted 
                        loop 
                        playsInline 
-                       className="w-full h-full object-cover object-top opacity-50"
+                       className={cn("w-full h-full object-cover object-top", isMusico ? "opacity-70" : "opacity-50")}
                      />
                    ) : (
                      <img 
                        src={data.background_video_url}
                        alt="Background"
-                       className="w-full h-full object-cover object-top opacity-50"
+                       className={cn("w-full h-full object-cover object-top", isMusico ? "opacity-70" : "opacity-50")}
                      />
                    )}
                  </div>
-                 <div className="absolute inset-0 bg-gradient-to-b from-slate-950/50 via-slate-950/80 to-slate-950" />
+                 {!isMusico && (
+                   <div className="absolute inset-0 bg-gradient-to-b from-slate-950/50 via-slate-950/80 to-slate-950" />
+                 )}
                </div>
               )}
           </div>
