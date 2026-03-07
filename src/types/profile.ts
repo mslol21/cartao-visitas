@@ -46,6 +46,10 @@ export interface Service {
 }
 
 export interface CustomFields {
+  // Pagamentos
+  chave_pix?: string;
+  tipo_chave_pix?: string;
+  
   // Barbearia / Cabeleireiro
   aceita_agendamento?: boolean;
   trabalha_com_horario_marcado?: boolean;

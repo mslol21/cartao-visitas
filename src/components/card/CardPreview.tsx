@@ -75,7 +75,8 @@ import {
   Monitor,
   Play,
   Headphones,
-  Mic2
+  Mic2,
+  Copy
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Profile } from '@/types/profile';
@@ -571,7 +572,52 @@ END:VCARD`;
     );
   };
 
-  const renderCustomPortfolio = () => {
+  const renderPixArea = () => {
+    const pixKey = (data.custom_fields as any)?.chave_pix;
+    const pixType = (data.custom_fields as any)?.tipo_chave_pix;
+    if (!pixKey || !pixType) return null;
+    
+    // We reuse the dark mode logic
+    const isDark = isBarbearia || isTech || isAdvogado || isDriver || isMusico || (data.background_video_url);
+
+    return (
+      <div className="w-full space-y-4 mb-10 px-1">
+        <div className="flex items-center gap-3 mb-2">
+          <span className={cn("text-[10px] font-black uppercase tracking-[0.2em]", isDark ? "text-teal-400/80" : "text-teal-600/80")}>Chave PIX</span>
+          <div className={cn("h-[1px] flex-1", isDark ? "bg-teal-500/20" : "bg-teal-500/20")} />
+        </div>
+        <Button
+          variant="outline"
+          onClick={() => {
+            navigator.clipboard.writeText(pixKey);
+            toast.success('Chave PIX copiada!');
+          }}
+          className={cn(
+            "w-full h-14 rounded-2xl border flex items-center justify-between gap-3 px-4 shadow-sm group",
+            isDark 
+              ? "bg-teal-950/40 backdrop-blur-md border-teal-500/30 text-teal-100 hover:bg-teal-900/60" 
+              : "bg-teal-50 border-teal-200 hover:border-teal-400 text-teal-900 hover:bg-teal-100"
+          )}
+        >
+           <div className="flex items-center gap-3 w-full overflow-hidden">
+             <div className={cn("p-2 rounded-xl group-hover:scale-110 transition-transform", isDark ? "bg-teal-500/20 text-teal-300" : "bg-teal-500/10 text-teal-600")}>
+               <Copy className="w-5 h-5" />
+             </div>
+             <div className="flex flex-col items-start gap-0.5 justify-center overflow-hidden h-full flex-1">
+               <span className={cn("text-[9px] font-black uppercase tracking-widest leading-none border-b border-transparent", isDark ? "text-teal-300/80" : "text-teal-700/80")}>
+                 Copiar Chave ({pixType === 'cpf_cnpj' ? 'CPF/CNPJ' : pixType === 'celular' ? 'Celular' : pixType === 'email' ? 'E-mail' : 'Variada'})
+               </span>
+               <span className="text-sm font-bold font-mono tracking-tight truncate w-full text-left leading-none">
+                 {pixKey}
+               </span>
+             </div>
+           </div>
+        </Button>
+      </div>
+    );
+  };
+
+  const renderOriginalCustomPortfolio = () => {
     if (!isPro || customLinks.length === 0) return null;
     const isDark = isBarbearia || isTech || isAdvogado || isDriver || (data.background_video_url);
     return (
@@ -604,6 +650,15 @@ END:VCARD`;
           ))}
         </div>
       </div>
+    );
+  };
+
+  const renderCustomPortfolio = () => {
+    return (
+      <>
+        {renderPixArea()}
+        {renderOriginalCustomPortfolio()}
+      </>
     );
   };
 

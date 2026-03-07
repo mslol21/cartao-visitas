@@ -27,6 +27,7 @@ import {
   Truck,
   HeartPulse,
   History,
+  Copy,
   HardHat,
   Monitor,
   Smartphone,
@@ -38,6 +39,7 @@ import { Profile, Service, CustomFields, ProfessionCategory } from '@/types/prof
 import { cn, hexToHsl } from '@/lib/utils';
 import Image from 'next/image';
 import { getProfessionConfig } from '@/config/professions';
+import { toast } from 'sonner';
 
 interface StandardProfessionalLayoutProps {
   data: Partial<Profile>;
@@ -251,6 +253,36 @@ export function StandardProfessionalLayout({ data, isPro }: StandardProfessional
             </a>
           </Button>
         )}
+
+        {(data.custom_fields as any)?.chave_pix && (data.custom_fields as any)?.tipo_chave_pix && (
+          <Button 
+            variant="outline"
+            className="w-full h-12 rounded-xl border border-teal-500/30 bg-teal-500/5 hover:bg-teal-500/10 transition-all group overflow-hidden"
+            onClick={() => {
+              navigator.clipboard.writeText((data.custom_fields as any)?.chave_pix);
+              toast.success('Chave PIX copiada!');
+            }}
+          >
+            <div className="flex items-center justify-between gap-2 w-full px-2">
+              <div className="flex items-center gap-2 text-teal-600 dark:text-teal-400">
+                <Copy className="w-4 h-4" />
+                <span className="text-[10px] font-black uppercase tracking-widest hidden sm:inline">Copiar PIX</span>
+                <span className="text-[10px] font-black uppercase tracking-widest sm:hidden">PIX</span>
+              </div>
+              <div className="flex items-center gap-2 ml-auto">
+                <span className="text-[9px] text-teal-600/80 dark:text-teal-400/80 font-bold uppercase truncate max-w-[80px]">
+                   {(data.custom_fields as any)?.tipo_chave_pix === 'cpf_cnpj' ? 'CPF/CNPJ' : 
+                    (data.custom_fields as any)?.tipo_chave_pix === 'celular' ? 'Celular' : 
+                    (data.custom_fields as any)?.tipo_chave_pix === 'email' ? 'E-mail' : 'Variada'}
+                </span>
+                <span className="text-[10px] text-teal-700 dark:text-teal-300 font-mono font-bold truncate max-w-[100px] bg-teal-500/10 px-2 py-0.5 rounded">
+                   {(data.custom_fields as any)?.chave_pix}
+                </span>
+              </div>
+            </div>
+          </Button>
+        )}
+
       </motion.div>
 
       {/* 7. BIO PROFISSIONAL */}

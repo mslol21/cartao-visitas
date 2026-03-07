@@ -706,6 +706,44 @@ export function EditorForm({ initialData, onSubmit, onChange, isPro = false, can
                   </div>
                 </div>
 
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 p-4 rounded-3xl bg-[#32bcad]/5 border border-[#32bcad]/20 mt-2">
+                  <div className="space-y-2">
+                    <Label className="text-[#32bcad] font-bold flex items-center gap-2">
+                      Tipo de Chave PIX (Opcional)
+                    </Label>
+                    <Select
+                      value={(formData.custom_fields as any)?.tipo_chave_pix || 'nenhuma'}
+                      onValueChange={(val) => {
+                        handleCustomFieldChange('tipo_chave_pix', val === 'nenhuma' ? '' : val);
+                        if (val === 'nenhuma') handleCustomFieldChange('chave_pix', '');
+                      }}
+                    >
+                      <SelectTrigger className="rounded-2xl h-12 border-[#32bcad]/30">
+                        <SelectValue placeholder="Selecione o tipo..." />
+                      </SelectTrigger>
+                      <SelectContent className="rounded-2xl">
+                        <SelectItem value="nenhuma">Não aceitar PIX no cartão</SelectItem>
+                        <SelectItem value="cpf_cnpj">CPF / CNPJ</SelectItem>
+                        <SelectItem value="celular">Celular</SelectItem>
+                        <SelectItem value="email">E-mail</SelectItem>
+                        <SelectItem value="aleatoria">Chave Aleatória</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+                  <div className="space-y-2">
+                    <Label className="text-[#32bcad] font-bold flex items-center gap-2">
+                      Sua Chave PIX
+                    </Label>
+                    <Input
+                      value={(formData.custom_fields as any)?.chave_pix || ''}
+                      onChange={(e) => handleCustomFieldChange('chave_pix', e.target.value)}
+                      placeholder="Sua chave..."
+                      disabled={!(formData.custom_fields as any)?.tipo_chave_pix}
+                      className="rounded-2xl h-12 border-[#32bcad]/30"
+                    />
+                  </div>
+                </div>
+
                 <div className="flex items-center gap-3 p-4 bg-white/50 dark:bg-slate-950/50 rounded-2xl border border-slate-200 dark:border-slate-800">
                    <Checkbox 
                      id="has_loc" 
