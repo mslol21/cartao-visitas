@@ -47,6 +47,11 @@ export interface Service {
 }
 
 export interface CustomFields {
+  // Cores personalizadas
+  cor_fundo?: string;
+  cor_botoes?: string;
+  cor_texto_botoes?: string;
+  
   // Pagamentos
   chave_pix?: string;
   tipo_chave_pix?: string;

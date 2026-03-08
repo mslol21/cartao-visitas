@@ -692,6 +692,7 @@ END:VCARD`;
           )}
           style={{ 
             '--primary': isPro ? hexToHsl(data.theme_color || '#3b82f6') : undefined,
+            ...(isPro && (data.custom_fields as any)?.cor_fundo ? { backgroundColor: (data.custom_fields as any).cor_fundo } : {})
           } as React.CSSProperties}
         >
           <div 
@@ -701,6 +702,7 @@ END:VCARD`;
                  className={cn(
                     "w-full h-full transition-colors duration-500 relative overflow-hidden",
                     (isPro && data.background_video_url) ? "hidden" : "",
+                    (isPro && (data.custom_fields as any)?.cor_fundo) ? "bg-transparent" :
                      isPro ? (
                        isBarbearia ? "bg-[#0f0f0f]" : 
                        isBeauty ? "bg-[#fdf2f8]" : 

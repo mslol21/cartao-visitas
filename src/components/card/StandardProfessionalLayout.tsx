@@ -215,12 +215,17 @@ export function StandardProfessionalLayout({ data, isPro }: StandardProfessional
         <Button 
           asChild
           className={cn(
-            "w-full h-14 rounded-[1.2rem] text-base font-black uppercase tracking-tighter shadow-lg transition-all hover:scale-[1.01] border-none flex items-center justify-center gap-3",
-            "bg-[#25D366] hover:bg-[#20ba59] text-white shadow-[#25D366]/20"
+            "w-full h-14 rounded-[1.2rem] text-base font-black uppercase tracking-tighter shadow-lg border-none flex items-center justify-center gap-3 transition-transform hover:scale-[1.02]",
+            !(data.custom_fields as any)?.cor_botoes && "bg-[#25D366] hover:bg-[#20ba59] text-white shadow-[#25D366]/20"
           )}
+          style={(data.custom_fields as any)?.cor_botoes ? {
+             backgroundColor: (data.custom_fields as any).cor_botoes,
+             color: (data.custom_fields as any)?.cor_texto_botoes || '#ffffff',
+             boxShadow: `0 10px 15px -3px ${(data.custom_fields as any).cor_botoes}40`
+          } : undefined}
         >
           <a href={whatsappLink} target="_blank" rel="noopener noreferrer">
-            <MessageCircle className="w-5 h-5 fill-white" />
+            <MessageCircle className={cn("w-5 h-5", (data.custom_fields as any)?.cor_botoes ? "" : "fill-white")} />
             <span>Chamar no WhatsApp</span>
           </a>
         </Button>
@@ -469,10 +474,23 @@ export function StandardProfessionalLayout({ data, isPro }: StandardProfessional
           </div>
           <div className="flex flex-col gap-3">
             {data.custom_links.map((link, idx) => (
-              <Button key={idx} asChild variant="outline" className="w-full h-14 rounded-2xl border-slate-200 dark:border-slate-800 hover:bg-primary/5 hover:border-primary/30 transition-all font-bold text-sm justify-between group px-6">
+              <Button 
+                key={idx} 
+                asChild 
+                variant={(data.custom_fields as any)?.cor_botoes ? "default" : "outline"} 
+                className={cn(
+                  "w-full h-14 rounded-2xl transition-all font-bold text-sm justify-between group px-6",
+                  !(data.custom_fields as any)?.cor_botoes && "border-slate-200 dark:border-slate-800 hover:bg-primary/5 hover:border-primary/30"
+                )}
+                style={(data.custom_fields as any)?.cor_botoes ? {
+                   backgroundColor: (data.custom_fields as any).cor_botoes,
+                   color: (data.custom_fields as any)?.cor_texto_botoes || '#ffffff',
+                   boxShadow: `0 4px 14px 0 ${(data.custom_fields as any).cor_botoes}40`
+                } : undefined}
+              >
                 <a href={link.url.startsWith('http') ? link.url : `https://${link.url}`} target="_blank" rel="noopener noreferrer" className="w-full flex items-center justify-between">
                   <span className="truncate">{link.title}</span>
-                  <ExternalLink className="w-4 h-4 opacity-30 group-hover:opacity-100 transition-opacity shrink-0" />
+                  <ExternalLink className="w-4 h-4 opacity-70 group-hover:scale-110 transition-transform shrink-0" />
                 </a>
               </Button>
             ))}

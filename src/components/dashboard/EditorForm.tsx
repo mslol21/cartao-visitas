@@ -1110,6 +1110,82 @@ export function EditorForm({ initialData, onSubmit, onChange, isPro = false, can
               </div>
             </div>
 
+            {isPro && (
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4 p-4 rounded-3xl bg-slate-50 dark:bg-slate-900/50 border border-slate-200 dark:border-slate-800">
+                <div className="space-y-2">
+                  <Label className="text-xs font-bold uppercase tracking-wider opacity-60">Cor do Fundo</Label>
+                  <div className="flex gap-2 items-center">
+                    <div className="relative group w-10 h-10 shrink-0">
+                      <input 
+                        type="color" 
+                        value={(formData.custom_fields as any)?.cor_fundo || '#000000'}
+                        onChange={(e) => handleCustomFieldChange('cor_fundo', e.target.value)}
+                        className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10"
+                      />
+                      <div 
+                        className="w-full h-full rounded-2xl border-2 border-slate-200 dark:border-slate-800 transition-all group-hover:border-primary"
+                        style={{ backgroundColor: (formData.custom_fields as any)?.cor_fundo || '#000000' }}
+                      />
+                    </div>
+                    <Input 
+                      value={(formData.custom_fields as any)?.cor_fundo || ''}
+                      onChange={(e) => handleCustomFieldChange('cor_fundo', e.target.value)}
+                      placeholder="#000000"
+                      className="rounded-2xl h-10 flex-1 text-xs"
+                    />
+                  </div>
+                </div>
+
+                <div className="space-y-2">
+                  <Label className="text-xs font-bold uppercase tracking-wider opacity-60">Cor dos Botões</Label>
+                  <div className="flex gap-2 items-center">
+                    <div className="relative group w-10 h-10 shrink-0">
+                      <input 
+                        type="color" 
+                        value={(formData.custom_fields as any)?.cor_botoes || '#25D366'}
+                        onChange={(e) => handleCustomFieldChange('cor_botoes', e.target.value)}
+                        className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10"
+                      />
+                      <div 
+                        className="w-full h-full rounded-2xl border-2 border-slate-200 dark:border-slate-800 transition-all group-hover:border-primary"
+                        style={{ backgroundColor: (formData.custom_fields as any)?.cor_botoes || '#25D366' }}
+                      />
+                    </div>
+                    <Input 
+                      value={(formData.custom_fields as any)?.cor_botoes || ''}
+                      onChange={(e) => handleCustomFieldChange('cor_botoes', e.target.value)}
+                      placeholder="#25D366"
+                      className="rounded-2xl h-10 flex-1 text-xs"
+                    />
+                  </div>
+                </div>
+
+                <div className="space-y-2 md:col-span-2">
+                  <Label className="text-xs font-bold uppercase tracking-wider opacity-60">Cor do Texto do Botão</Label>
+                  <div className="flex gap-2 items-center">
+                    <div className="relative group w-10 h-10 shrink-0">
+                      <input 
+                        type="color" 
+                        value={(formData.custom_fields as any)?.cor_texto_botoes || '#ffffff'}
+                        onChange={(e) => handleCustomFieldChange('cor_texto_botoes', e.target.value)}
+                        className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10"
+                      />
+                      <div 
+                        className="w-full h-full rounded-2xl border-2 border-slate-200 dark:border-slate-800 transition-all group-hover:border-primary"
+                        style={{ backgroundColor: (formData.custom_fields as any)?.cor_texto_botoes || '#ffffff' }}
+                      />
+                    </div>
+                    <Input 
+                      value={(formData.custom_fields as any)?.cor_texto_botoes || ''}
+                      onChange={(e) => handleCustomFieldChange('cor_texto_botoes', e.target.value)}
+                      placeholder="#ffffff"
+                      className="rounded-2xl h-10 flex-1 text-xs"
+                    />
+                  </div>
+                </div>
+              </div>
+            )}
+
             <div className="space-y-2">
               <Label className="text-xs font-bold uppercase tracking-wider opacity-60">Chamada Principal (CTA)</Label>
               <Input
