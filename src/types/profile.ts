@@ -36,6 +36,7 @@ export type ProfessionCategory =
   | 'service'
   | 'musico'
   | 'van_escolar'
+  | 'guia_turistico'
   | 'default';
 
 export interface Service {
@@ -118,6 +119,11 @@ export interface CustomFields {
   banho_tosa?: boolean;
   atendimento_clinico?: boolean;
   pecas_originais?: boolean;
+
+  // Guias de Turismo
+  cadastur?: string;
+  idiomas?: string[];
+  veiculo_proprio?: boolean;
 }
 
 // Keeping old items for backwards compatibility during migration

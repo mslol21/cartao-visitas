@@ -108,6 +108,11 @@ export const imageDatabase: Record<string, string[]> = {
     'https://cdn.pixabay.com/photo/2018/12/10/18/31/vw-bus-3867383_1280.jpg',
     'https://cdn.pixabay.com/photo/2015/06/20/19/15/children-815894_1280.jpg',
     'https://cdn.pixabay.com/photo/2016/12/28/19/27/volkswagen-1936855_1280.jpg'
+  ],
+  'guia_turistico': [
+    'https://cdn.pixabay.com/photo/2016/01/09/18/27/journey-1130732_1280.jpg',
+    'https://cdn.pixabay.com/photo/2017/01/20/00/30/maldives-1996256_1280.jpg',
+    'https://cdn.pixabay.com/photo/2016/09/01/10/33/tour-guide-1635790_1280.jpg'
   ]
 };
 
@@ -125,7 +130,8 @@ const synonyms: Record<string, string[]> = {
   'financeiro': ['contabilidade', 'contador', 'dinheiro', 'investimento', 'escritorio', 'mei', 'gestao', 'planilha'],
   'tecnologia': ['ti', 'programador', 'software', 'codigo', 'web', 'computador', 'celular', 'manutencao'],
   'barbearia': ['barba', 'corte', 'cabelo', 'navalha', 'disfarce', 'fade'],
-  'van_escolar': ['van', 'transporte', 'escolar', 'universitario', 'onibus', 'perua', 'motorista']
+  'van_escolar': ['van', 'transporte', 'escolar', 'universitario', 'onibus', 'perua', 'motorista'],
+  'guia_turistico': ['guia', 'turismo', 'viagem', 'passeio', 'ferias', 'excursao', 'trilha']
 };
 
 /**

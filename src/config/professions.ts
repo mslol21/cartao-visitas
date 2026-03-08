@@ -675,6 +675,28 @@ export const professionsMap: Record<ProfessionCategory, ProfessionConfig> = {
       { nome: 'Fretamento para Excursões', descricao: 'Locação da van com motorista para passeios, viagens de turma e eventos.', preco: 'Sob consulta' }
     ]
   },
+  guia_turistico: {
+    id: 'guia_turistico',
+    label: 'Guia de Turismo',
+    theme: { color: 'emerald', style: 'standard' },
+    customFields: [
+      { name: 'cadastur', label: 'Número Cadastur', type: 'text', placeholder: 'Ex: 12.345678.90-1' },
+      { name: 'idiomas', label: 'Idiomas (Separados por vírgula)', type: 'array', placeholder: 'Ex: Português, Inglês' },
+      { name: 'veiculo_proprio', label: 'Possui Veículo Próprio?', type: 'boolean' }
+    ],
+    suggestedBackgrounds: [
+      'https://images.unsplash.com/photo-1527631746610-bca00a040d60?auto=format&fit=crop&q=80&w=1080&h=1920',
+      'https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?auto=format&fit=crop&q=80&w=1080&h=1920',
+      'https://images.unsplash.com/photo-1548013146-72479768bada?auto=format&fit=crop&q=80&w=1080&h=1920'
+    ],
+    defaultBio: 'Explorando destinos incríveis e criando memórias inesquecíveis. Guiamento especializado, roteiros personalizados e profundo conhecimento cultural e histórico da região. Viaje com segurança, conforto e a melhor companhia.',
+    defaultCta: 'Agendar Passeio 🗺️',
+    defaultServices: [
+      { nome: 'City Tour Histórico', descricao: 'Passeio guiado pelos principais pontos históricos e culturais da cidade.', preco: 'Sob consulta' },
+      { nome: 'Trilha & Ecoturismo', descricao: 'Aventuras na natureza com total segurança e respeito ao meio ambiente.', preco: 'Sob consulta' },
+      { nome: 'Roteiro Personalizado', descricao: 'Planejamento e acompanhamento de viagem sob medida para você.', preco: 'Sob consulta' }
+    ]
+  },
   default: {
     id: 'default',
     label: 'Outros Profissionais',
