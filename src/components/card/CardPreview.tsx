@@ -857,7 +857,7 @@ END:VCARD`;
                      />
                    )}
                  </div>
-                 {!isMusico && (
+                 {!isMusico && !(isPro && (data.custom_fields as any)?.cor_fundo) && (
                    <div className="absolute inset-0 bg-gradient-to-b from-slate-950/50 via-slate-950/80 to-slate-950" />
                  )}
                </div>
