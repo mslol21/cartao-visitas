@@ -681,7 +681,7 @@ export const professionsMap: Record<ProfessionCategory, ProfessionConfig> = {
     theme: { color: 'emerald', style: 'standard' },
     customFields: [
       { name: 'cadastur', label: 'Número Cadastur', type: 'text', placeholder: 'Ex: 12.345678.90-1' },
-      { name: 'idiomas', label: 'Idiomas (Separados por vírgula)', type: 'array', placeholder: 'Ex: Português, Inglês' },
+      { name: 'idiomas', label: 'Idiomas', type: 'array', placeholder: 'Ex: Português, Inglês' },
       { name: 'veiculo_proprio', label: 'Possui Veículo Próprio?', type: 'boolean' }
     ],
     suggestedBackgrounds: [
