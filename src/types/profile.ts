@@ -49,6 +49,7 @@ export interface Service {
 export interface CustomFields {
   // Cores personalizadas
   cor_fundo?: string;
+  cor_texto?: string;
   cor_botoes?: string;
   cor_texto_botoes?: string;
   

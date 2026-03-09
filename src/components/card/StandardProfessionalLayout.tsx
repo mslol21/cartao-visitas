@@ -175,7 +175,10 @@ export function StandardProfessionalLayout({ data, isPro }: StandardProfessional
           )}
         </div>
 
-        <h1 className="text-3xl font-black tracking-tighter text-slate-900 dark:text-white mb-2 leading-none uppercase">
+        <h1 
+          className="text-3xl font-black tracking-tighter text-slate-900 dark:text-white mb-2 leading-none uppercase"
+          style={(data.custom_fields as any)?.cor_texto ? { color: (data.custom_fields as any).cor_texto } : undefined}
+        >
           {data.business_name || 'Seu Negócio'}
         </h1>
         
@@ -184,12 +187,18 @@ export function StandardProfessionalLayout({ data, isPro }: StandardProfessional
         </div>
 
         {(data.subtitle || data.tagline) && (
-          <p className="text-sm font-medium text-slate-500 dark:text-slate-400 max-w-[280px] italic leading-relaxed">
+          <p 
+            className="text-sm font-medium text-slate-500 dark:text-slate-400 max-w-[280px] italic leading-relaxed"
+            style={(data.custom_fields as any)?.cor_texto ? { color: (data.custom_fields as any).cor_texto, opacity: 0.8 } : undefined}
+          >
             "{data.subtitle || data.tagline}"
           </p>
         )}
 
-        <div className="flex flex-wrap justify-center gap-x-6 gap-y-2 mt-6 w-full opacity-60">
+        <div 
+          className="flex flex-wrap justify-center gap-x-6 gap-y-2 mt-6 w-full opacity-60"
+          style={(data.custom_fields as any)?.cor_texto ? { color: (data.custom_fields as any).cor_texto } : undefined}
+        >
            {(data.area_atendimento || data.tipo_atendimento) && (
              <div className="flex items-center gap-1.5">
                 <Globe className="w-3.5 h-3.5" />
@@ -300,8 +309,16 @@ export function StandardProfessionalLayout({ data, isPro }: StandardProfessional
              <div className="absolute top-0 right-0 p-4 opacity-[0.03] pointer-events-none">
                 <Info className="w-24 h-24" />
              </div>
-             <h4 className="text-[10px] font-black uppercase tracking-[0.3em] text-primary mb-3">Sobre Mim</h4>
-             <p className="text-sm font-medium text-slate-700 dark:text-slate-300 leading-relaxed text-justify">
+             <h4 
+               className="text-[10px] font-black uppercase tracking-[0.3em] text-primary mb-3"
+               style={(data.custom_fields as any)?.cor_texto ? { color: (data.custom_fields as any).cor_texto } : undefined}
+             >
+               Sobre Mim
+             </h4>
+             <p 
+               className="text-sm font-medium text-slate-700 dark:text-slate-300 leading-relaxed text-justify"
+               style={(data.custom_fields as any)?.cor_texto ? { color: (data.custom_fields as any).cor_texto, opacity: 0.9 } : undefined}
+             >
                {data.bio_profissional}
              </p>
           </div>
@@ -314,14 +331,24 @@ export function StandardProfessionalLayout({ data, isPro }: StandardProfessional
           custom={3} initial="hidden" animate="visible" variants={fadeIn}
           className="px-6"
         >
-          <h4 className="text-[11px] font-black uppercase tracking-[0.3em] text-center mb-6 opacity-30">Por que me escolher?</h4>
+          <h4 
+            className="text-[11px] font-black uppercase tracking-[0.3em] text-center mb-6 opacity-30"
+            style={(data.custom_fields as any)?.cor_texto ? { color: (data.custom_fields as any).cor_texto } : undefined}
+          >
+            Por que me escolher?
+          </h4>
           <div className="grid grid-cols-1 gap-3">
             {data.diferenciais.map((item, idx) => (
               <div key={idx} className="flex items-center gap-4 p-4 rounded-2xl bg-white/50 dark:bg-slate-900 border border-slate-100 dark:border-slate-800 shadow-sm">
                  <div className="w-8 h-8 rounded-xl bg-green-500/10 flex items-center justify-center shrink-0">
                     <CheckCircle2 className="w-4 h-4 text-green-500" />
                  </div>
-                 <span className="text-xs font-black uppercase tracking-tight text-slate-700 dark:text-slate-200">{item}</span>
+                 <span 
+                   className="text-xs font-black uppercase tracking-tight text-slate-700 dark:text-slate-200"
+                   style={(data.custom_fields as any)?.cor_texto ? { color: (data.custom_fields as any).cor_texto } : undefined}
+                 >
+                   {item}
+                 </span>
               </div>
             ))}
           </div>
@@ -336,7 +363,12 @@ export function StandardProfessionalLayout({ data, isPro }: StandardProfessional
         >
           <div className="flex items-center gap-3 mb-6">
              <div className="h-px flex-1 bg-slate-200 dark:bg-white/10" />
-             <span className="text-[10px] font-black uppercase tracking-[0.4em] opacity-40">Nossos Serviços</span>
+             <span 
+               className="text-[10px] font-black uppercase tracking-[0.4em] opacity-40 text-slate-900 dark:text-white"
+               style={(data.custom_fields as any)?.cor_texto ? { color: (data.custom_fields as any).cor_texto } : undefined}
+             >
+               Nossos Serviços
+             </span>
              <div className="h-px flex-1 bg-slate-200 dark:bg-white/10" />
           </div>
           
@@ -359,8 +391,20 @@ export function StandardProfessionalLayout({ data, isPro }: StandardProfessional
                  <a key={idx} href={serviceWhatsappLink} target={formattedWhatsapp ? "_blank" : "_self"} rel="noopener noreferrer" className="block group p-5 rounded-[1.8rem] bg-white dark:bg-white/5 border border-slate-100 dark:border-white/10 hover:border-primary/40 transition-all shadow-sm hover:-translate-y-1 hover:shadow-md">
                     <div className="flex justify-between items-center w-full">
                        <div className="flex flex-col gap-1">
-                          <span className="text-sm font-black uppercase tracking-tighter text-slate-800 dark:text-white group-hover:text-primary transition-colors">{service.nome}</span>
-                          {service.descricao && <p className="text-[10px] text-slate-500 leading-tight italic opacity-70">{service.descricao}</p>}
+                          <span 
+                            className="text-sm font-black uppercase tracking-tighter text-slate-800 dark:text-white group-hover:text-primary transition-colors"
+                            style={(data.custom_fields as any)?.cor_texto ? { color: (data.custom_fields as any).cor_texto } : undefined}
+                          >
+                            {service.nome}
+                          </span>
+                          {service.descricao && (
+                            <p 
+                              className="text-[10px] text-slate-500 leading-tight italic opacity-70"
+                              style={(data.custom_fields as any)?.cor_texto ? { color: (data.custom_fields as any).cor_texto } : undefined}
+                            >
+                              {service.descricao}
+                            </p>
+                          )}
                        </div>
                        <div className="flex flex-col items-end gap-1">
                           <span className="text-sm font-black text-primary">{service.preco || 'Sob consulta'}</span>
@@ -469,7 +513,12 @@ export function StandardProfessionalLayout({ data, isPro }: StandardProfessional
           id="custom-links-section"
         >
           <div className="flex items-center gap-3">
-            <span className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400">Links Úteis</span>
+            <span 
+              className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400"
+              style={(data.custom_fields as any)?.cor_texto ? { color: (data.custom_fields as any).cor_texto } : undefined}
+            >
+              Links Úteis
+            </span>
             <div className="h-px flex-1 bg-slate-200 dark:bg-slate-800" />
           </div>
           <div className="flex flex-col gap-3">

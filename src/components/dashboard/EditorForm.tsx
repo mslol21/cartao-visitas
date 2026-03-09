@@ -1137,6 +1137,31 @@ export function EditorForm({ initialData, onSubmit, onChange, isPro = false, can
                 </div>
 
                 <div className="space-y-2">
+                  <Label className="text-xs font-bold uppercase tracking-wider opacity-60">Cor do Texto</Label>
+                  <div className="flex gap-2 items-center">
+                    <div className="relative group w-10 h-10 shrink-0">
+                      <input 
+                        type="color" 
+                        value={(formData.custom_fields as any)?.cor_texto || '#ffffff'}
+                        onChange={(e) => handleCustomFieldChange('cor_texto', e.target.value)}
+                        className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10"
+                      />
+                      <div 
+                        className="w-full h-full rounded-2xl border-2 border-slate-200 dark:border-slate-800 transition-all group-hover:border-primary"
+                        style={{ backgroundColor: (formData.custom_fields as any)?.cor_texto || '#ffffff' }}
+                      />
+                    </div>
+                    <Input 
+                      value={(formData.custom_fields as any)?.cor_texto || ''}
+                      onChange={(e) => handleCustomFieldChange('cor_texto', e.target.value)}
+                      placeholder="#ffffff"
+                      className="rounded-2xl h-10 flex-1 text-xs"
+                    />
+                  </div>
+                </div>
+
+
+                <div className="space-y-2">
                   <Label className="text-xs font-bold uppercase tracking-wider opacity-60">Cor dos Botões</Label>
                   <div className="flex gap-2 items-center">
                     <div className="relative group w-10 h-10 shrink-0">
