@@ -305,7 +305,7 @@ export function StandardProfessionalLayout({ data, isPro }: StandardProfessional
           custom={2} initial="hidden" animate="visible" variants={fadeIn}
           className="px-6"
         >
-          <div className="p-6 rounded-[2rem] bg-slate-100/50 dark:bg-white/5 border border-slate-200 dark:border-white/10 relative overflow-hidden">
+          <div className="p-6 rounded-[2rem] bg-white/90 dark:bg-black/60 backdrop-blur-md border border-slate-200 dark:border-white/10 relative overflow-hidden">
              <div className="absolute top-0 right-0 p-4 opacity-[0.03] pointer-events-none">
                 <Info className="w-24 h-24" />
              </div>
@@ -339,7 +339,7 @@ export function StandardProfessionalLayout({ data, isPro }: StandardProfessional
           </h4>
           <div className="grid grid-cols-1 gap-3">
             {data.diferenciais.map((item, idx) => (
-              <div key={idx} className="flex items-center gap-4 p-4 rounded-2xl bg-white/50 dark:bg-slate-900 border border-slate-100 dark:border-slate-800 shadow-sm">
+              <div key={idx} className="flex items-center gap-4 p-4 rounded-2xl bg-white/90 dark:bg-black/60 backdrop-blur-md border border-slate-100 dark:border-white/10 shadow-sm">
                  <div className="w-8 h-8 rounded-xl bg-green-500/10 flex items-center justify-center shrink-0">
                     <CheckCircle2 className="w-4 h-4 text-green-500" />
                  </div>
@@ -388,7 +388,7 @@ export function StandardProfessionalLayout({ data, isPro }: StandardProfessional
                const serviceWhatsappLink = formattedWhatsapp ? `https://wa.me/${formattedWhatsapp}?text=${encodeURIComponent(serviceMessage)}` : '#';
 
                return (
-                 <a key={idx} href={serviceWhatsappLink} target={formattedWhatsapp ? "_blank" : "_self"} rel="noopener noreferrer" className="block group p-5 rounded-[1.8rem] bg-white dark:bg-white/5 border border-slate-100 dark:border-white/10 hover:border-primary/40 transition-all shadow-sm hover:-translate-y-1 hover:shadow-md">
+                 <a key={idx} href={serviceWhatsappLink} target={formattedWhatsapp ? "_blank" : "_self"} rel="noopener noreferrer" className="block group p-5 rounded-[1.8rem] bg-white/90 dark:bg-black/60 backdrop-blur-md border border-slate-100 dark:border-white/10 hover:border-primary/40 transition-all shadow-sm hover:-translate-y-1 hover:shadow-md">
                     <div className="flex justify-between items-center w-full">
                        <div className="flex flex-col gap-1">
                           <span 
@@ -553,7 +553,7 @@ export function StandardProfessionalLayout({ data, isPro }: StandardProfessional
           custom={8} initial="hidden" animate="visible" variants={fadeIn}
           className="px-6"
         >
-          <div className="p-6 rounded-[2rem] bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800">
+          <div className="p-6 rounded-[2rem] bg-white/90 dark:bg-black/60 backdrop-blur-md border border-slate-200 dark:border-white/10">
              <div className="flex items-center gap-2 mb-4">
                 <Clock className="w-4 h-4 text-primary" />
                 <span className="text-[10px] font-black uppercase tracking-widest text-slate-400">Horário de Funcionamento</span>
