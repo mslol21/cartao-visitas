@@ -189,14 +189,14 @@ export function StandardProfessionalLayout({ data, isPro }: StandardProfessional
         {(data.subtitle || data.tagline) && (
           <p 
             className="text-sm font-medium text-slate-500 dark:text-slate-400 max-w-[280px] italic leading-relaxed"
-            style={(data.custom_fields as any)?.cor_texto ? { color: (data.custom_fields as any).cor_texto, opacity: 0.8 } : undefined}
+            style={(data.custom_fields as any)?.cor_texto ? { color: (data.custom_fields as any).cor_texto } : undefined}
           >
             "{data.subtitle || data.tagline}"
           </p>
         )}
 
         <div 
-          className="flex flex-wrap justify-center gap-x-6 gap-y-2 mt-6 w-full opacity-60"
+          className={cn("flex flex-wrap justify-center gap-x-6 gap-y-2 mt-6 w-full", !(data.custom_fields as any)?.cor_texto && "opacity-60")}
           style={(data.custom_fields as any)?.cor_texto ? { color: (data.custom_fields as any).cor_texto } : undefined}
         >
            {(data.area_atendimento || data.tipo_atendimento) && (
@@ -316,8 +316,8 @@ export function StandardProfessionalLayout({ data, isPro }: StandardProfessional
                Sobre Mim
              </h4>
              <p 
-               className="text-sm font-medium text-slate-700 dark:text-slate-300 leading-relaxed text-justify"
-               style={(data.custom_fields as any)?.cor_texto ? { color: (data.custom_fields as any).cor_texto, opacity: 0.9 } : undefined}
+               className={cn("text-sm font-medium leading-relaxed text-justify", !(data.custom_fields as any)?.cor_texto && "text-slate-700 dark:text-slate-300")}
+               style={(data.custom_fields as any)?.cor_texto ? { color: (data.custom_fields as any).cor_texto } : undefined}
              >
                {data.bio_profissional}
              </p>
@@ -332,7 +332,7 @@ export function StandardProfessionalLayout({ data, isPro }: StandardProfessional
           className="px-6"
         >
           <h4 
-            className="text-[11px] font-black uppercase tracking-[0.3em] text-center mb-6 opacity-30"
+            className={cn("text-[11px] font-black uppercase tracking-[0.3em] text-center mb-6", !(data.custom_fields as any)?.cor_texto && "opacity-30")}
             style={(data.custom_fields as any)?.cor_texto ? { color: (data.custom_fields as any).cor_texto } : undefined}
           >
             Por que me escolher?
@@ -364,7 +364,7 @@ export function StandardProfessionalLayout({ data, isPro }: StandardProfessional
           <div className="flex items-center gap-3 mb-6">
              <div className="h-px flex-1 bg-slate-200 dark:bg-white/10" />
              <span 
-               className="text-[10px] font-black uppercase tracking-[0.4em] opacity-40 text-slate-900 dark:text-white"
+               className={cn("text-[10px] font-black uppercase tracking-[0.4em]", !(data.custom_fields as any)?.cor_texto && "opacity-40 text-slate-900 dark:text-white")}
                style={(data.custom_fields as any)?.cor_texto ? { color: (data.custom_fields as any).cor_texto } : undefined}
              >
                Nossos Serviços
@@ -399,7 +399,7 @@ export function StandardProfessionalLayout({ data, isPro }: StandardProfessional
                           </span>
                           {service.descricao && (
                             <p 
-                              className="text-[10px] text-slate-500 leading-tight italic opacity-70"
+                              className={cn("text-[10px] leading-tight italic", !(data.custom_fields as any)?.cor_texto && "text-slate-500 opacity-70")}
                               style={(data.custom_fields as any)?.cor_texto ? { color: (data.custom_fields as any).cor_texto } : undefined}
                             >
                               {service.descricao}
