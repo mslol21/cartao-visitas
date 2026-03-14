@@ -140,6 +140,8 @@ export function CardPreview({
   const isRealEstate = data.profession === 'real_estate' || data.category === 'real_estate';
   const isDriver = data.profession === 'driver' || data.category === 'driver';
   const isPetshop = data.profession === 'petshop' || data.category === 'petshop';
+  const isVeterinario = data.profession === 'veterinario' || data.category === 'veterinario';
+  const isArtesao = data.profession === 'artesao' || data.category === 'artesao';
   const isMusico = data.profession === 'musico' || data.category === 'musico';
   
   const isStandardized = isModernService || ['quentinhas', 'assistencia_celular', 'van_escolar', 'guia_turistico'].some(p => data.profession === p);
@@ -263,6 +265,8 @@ END:VCARD`;
         isHealth ? "Olá! Gostaria de agendar um atendimento 🩺" :
         isAdvogado ? "Olá! Gostaria de agendar uma consulta jurídica ⚖️" :
         isPetshop ? "Olá! Vi seu perfil na Konnexy e gostaria de agendar um serviço para meu pet 🐾" :
+        isVeterinario ? "Olá! Vi seu perfil na Konnexy e gostaria de agendar uma consulta veterinária 🩺" :
+        isArtesao ? "Olá! Vi seu perfil na Konnexy e gostaria de falar sobre as suas peças artesanais / encomendas 🎨" :
         isMusico ? "Olá! Gostaria de conversar sobre seu trabalho como músico 🎸" :
         isDriver ? "Olá! Gostaria de agendar uma corrida / entrega 🚗" :
         `Olá! Vi seu perfil na Konnexy e gostaria de ${isPro ? 'solicitar um orçamento' : 'conversar'} sobre seus serviços.`
@@ -354,6 +358,14 @@ END:VCARD`;
 
     if (isPetshop) {
       return "bg-[#fffaf5] text-slate-900 border-orange-100 shadow-[0_20px_50px_rgba(249,115,22,0.05)]";
+    }
+
+    if (isVeterinario) {
+      return "bg-[#ecfdf5] text-slate-900 border-emerald-100 shadow-[0_20px_50px_rgba(16,185,129,0.05)]";
+    }
+
+    if (isArtesao) {
+      return "bg-[#fffbeb] text-slate-900 border-amber-100 shadow-[0_20px_50px_rgba(245,158,11,0.05)]";
     }
     
     if (!isPro) return "bg-white dark:bg-slate-950";
@@ -482,18 +494,19 @@ END:VCARD`;
     const name = fieldName.toLowerCase();
     if (name.includes('atende_domicilio') || name.includes('residencial') || name.includes('home')) return Home;
     if (name.includes('agendamento') || name.includes('horario') || name.includes('schedule')) return Calendar;
-    if (name.includes('oab') || name.includes('creci') || name.includes('nr10') || name.includes('registro')) return ShieldCheck;
+    if (name.includes('oab') || name.includes('creci') || name.includes('nr10') || name.includes('registro') || name.includes('crmv')) return ShieldCheck;
     if (name.includes('delivery') || name.includes('entreg') || name.includes('frete') || name.includes('veiculo') || name.includes('truck') || name.includes('van')) return Truck;
     if (name.includes('online') || name.includes('remoto') || name.includes('digital') || name.includes('zoom')) return Monitor;
     if (name.includes('experiencia') || name.includes('anos')) return History;
-    if (name.includes('socorro') || name.includes('emergencia') || name.includes('urgencia')) return Zap;
+    if (name.includes('socorro') || name.includes('emergencia') || name.includes('urgencia') || name.includes('plantao')) return Zap;
     if (name.includes('clinico') || name.includes('saude') || name.includes('medico') || name.includes('vital')) return HeartPulse;
     if (name.includes('celular') || name.includes('mobile') || name.includes('phone')) return Smartphone;
     if (['reforma', 'ferramentas', 'obra', 'construction', 'hard_hat'].some(k => name.includes(k))) return HardHat;
-    if (name.includes('banho') || name.includes('tosa') || name.includes('grooming') || name.includes('animal') || name.includes('pet')) return PawPrint;
+    if (name.includes('banho') || name.includes('tosa') || name.includes('grooming') || name.includes('animal') || name.includes('pet') || name.includes('vet')) return PawPrint;
     if (name.includes('monitor') || name.includes('ajudante')) return UserPlus;
     if (name.includes('ar_condicionado') || name.includes('climatizacao')) return Zap;
     if (name.includes('escola') || name.includes('faculdade') || name.includes('universitario')) return GraduationCap;
+    if (name.includes('materiais') || name.includes('producao') || name.includes('encomenda') || name.includes('pronta_entrega')) return Package;
     return Award;
   };
 
@@ -511,13 +524,16 @@ END:VCARD`;
     if (fields.length === 0) return null;
 
     return (
-       <div className="w-full mb-8 px-1">
-          <div className="flex items-center gap-3 mb-6">
+       <div className="w-full mb-10 px-1">
              <div className="h-px flex-1 bg-current opacity-10" />
-             <span className="text-[9px] font-black uppercase tracking-[0.3em] opacity-30">Destaques Profissionais</span>
+             <span 
+               className="text-[10px] font-black uppercase tracking-[0.4em] opacity-80 text-center"
+               style={(data.custom_fields as any)?.cor_texto ? { color: (data.custom_fields as any).cor_texto } : undefined}
+             >
+               Especialidades & Atributos
+             </span>
              <div className="h-px flex-1 bg-current opacity-10" />
-          </div>
-          <div className="grid grid-cols-2 gap-3">
+          <div className="grid grid-cols-2 gap-4">
              {fields.map((field) => {
                 const value = (data.custom_fields as any)?.[field.name];
                 const Icon = getFieldIcon(field.name);
@@ -525,28 +541,40 @@ END:VCARD`;
                 const isArray = field.type === 'array' || Array.isArray(value);
 
                 return (
-                   <div key={field.name} className={cn("p-4 rounded-2xl bg-white dark:bg-white/5 border border-current/10 flex flex-col items-center text-center gap-2 group hover:bg-current/10 transition-all hover:scale-[1.02] active:scale-95 shadow-sm", isArray ? "col-span-2" : "")}>
+                   <motion.div 
+                     key={field.name} 
+                     whileHover={{ y: -4, scale: 1.02 }}
+                     className={cn(
+                       "p-5 rounded-[2rem] bg-white/60 dark:bg-slate-900/40 backdrop-blur-md border border-slate-100 dark:border-white/10 flex flex-col items-center text-center gap-3 transition-all shadow-sm hover:shadow-md", 
+                       isArray ? "col-span-2" : ""
+                     )}
+                   >
                       {field.type === 'boolean' ? (
                         <>
-                           <div className="relative p-3 rounded-xl flex items-center justify-center overflow-hidden mb-1 group-hover:scale-110 transition-transform">
-                             <div className="absolute inset-0 opacity-15 transition-opacity group-hover:opacity-25" style={{ backgroundColor: themeColor }} />
+                           <div className="relative p-4 rounded-2xl flex items-center justify-center overflow-hidden transition-transform">
+                             <div className="absolute inset-0 opacity-10" style={{ backgroundColor: themeColor }} />
                              <Icon className="w-6 h-6 relative z-10" style={{ color: themeColor }} />
                            </div>
-                           <span className="text-[10px] font-black uppercase tracking-tight leading-tight text-slate-800 dark:text-white opacity-90 mt-1">{displayLabel}</span>
-                           <Check className="w-3 h-3 opacity-60 mt-1" style={{ color: themeColor }} />
+                           <span className="text-xs font-black uppercase tracking-tight leading-tight text-slate-800 dark:text-white mt-1">{displayLabel}</span>
+                           <div className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/20">
+                             <Check className="w-3 h-3 text-emerald-500" />
+                             <span className="text-[8px] font-black text-emerald-600 uppercase">Confirmado</span>
+                           </div>
                         </>
                       ) : isArray ? (
                         <>
-                           <div className="flex items-center gap-2 mb-1">
-                              <Icon className="w-4 h-4 opacity-70" style={{ color: themeColor }} />
-                              <span className="text-[9px] font-black uppercase tracking-widest opacity-60 text-slate-600 dark:text-slate-400">{displayLabel}</span>
+                           <div className="flex items-center gap-3 mb-2 w-full justify-center">
+                              <div className="w-8 h-8 rounded-xl bg-slate-100 dark:bg-white/5 flex items-center justify-center">
+                                <Icon className="w-4 h-4 opacity-70" style={{ color: themeColor }} />
+                              </div>
+                              <span className="text-[10px] font-black uppercase tracking-widest opacity-60 text-slate-600 dark:text-slate-400">{displayLabel}</span>
                            </div>
-                           <div className="flex flex-wrap items-center justify-center gap-1.5 w-full">
+                           <div className="flex flex-wrap items-center justify-center gap-2 w-full mt-2">
                               {(Array.isArray(value) ? value : String(value).split(/[,;]/)).map((item: string, i: number) => {
                                 const trimmed = item.trim();
                                 if (!trimmed) return null;
                                 return (
-                                  <span key={i} className="text-[10px] font-bold text-slate-800 dark:text-slate-100 bg-white dark:bg-white/5 border border-current/10 px-3 py-1.5 rounded-full shadow-sm">
+                                  <span key={i} className="text-[11px] font-bold text-slate-800 dark:text-slate-100 bg-white dark:bg-white/10 border border-slate-100 dark:border-white/20 px-4 py-2 rounded-2xl shadow-sm hover:border-emerald-500/50 transition-colors">
                                     {trimmed}
                                   </span>
                                 );
@@ -555,16 +583,21 @@ END:VCARD`;
                         </>
                       ) : (
                         <>
-                           <Icon className="w-5 h-5 opacity-50 group-hover:scale-110 transition-transform" style={{ color: themeColor }} />
-                           <div className="flex flex-col gap-0.5 w-full">
-                              <span className="text-[7px] font-black uppercase tracking-widest opacity-60 text-slate-600 dark:text-slate-400">{displayLabel}</span>
-                              <span className="text-[10px] font-black uppercase leading-tight italic tracking-tighter truncate w-full text-slate-900 dark:text-white">
+                           <div className="p-3 rounded-full bg-slate-50 dark:bg-white/5 mb-1 transition-transform group-hover:rotate-12">
+                             <Icon className="w-5 h-5 opacity-60" style={{ color: themeColor }} />
+                           </div>
+                           <div className="flex flex-col gap-1 w-full">
+                              <span className="text-[9px] font-black uppercase tracking-widest opacity-40 text-slate-500 dark:text-slate-400">{displayLabel}</span>
+                              <span 
+                                className="text-sm font-black text-slate-900 dark:text-white leading-none tracking-tight break-words"
+                                style={(data.custom_fields as any)?.cor_texto ? { color: (data.custom_fields as any).cor_texto } : undefined}
+                              >
                                 {value}
                               </span>
                            </div>
                         </>
                       )}
-                   </div>
+                   </motion.div>
                 );
              })}
           </div>
@@ -715,6 +748,8 @@ END:VCARD`;
                         isRealEstate ? "bg-[#f8fafc]" :
                         isDriver ? "bg-[#111111]" :
                         isPetshop ? "bg-[#fffaf5]" :
+                        isVeterinario ? "bg-[#ecfdf5]" :
+                        isArtesao ? "bg-[#fffbeb]" :
                        isAdvogado ? "bg-[#0f172a]" :
                        "konnexy-digital-field"
                      ) : "bg-white dark:bg-slate-950"
@@ -742,14 +777,16 @@ END:VCARD`;
                        {/* Silk/Glossy Effect */}
                        <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/10 to-transparent rotate-45 translate-x-1/2" />
                     </>
-                  ) : isHealth ? (
+                  ) : isHealth || isVeterinario ? (
                     <>
                        <div className="absolute inset-0 bg-gradient-to-br from-[#F0FDF4] via-[#F8FAFC] to-[#DCFCE7] dark:from-[#06100a] dark:to-[#020604]" />
-                       <div className="absolute inset-0 opacity-5" style={{
+                       <div className="absolute inset-0 opacity-10" style={{
                          backgroundImage: `radial-gradient(circle at 10px 10px, #10b981 0.5px, transparent 0)`,
-                         backgroundSize: '20px 20px'
+                         backgroundSize: '24px 24px'
                        }} />
-                       <div className="absolute inset-0 bg-gradient-to-t from-emerald-500/5 to-transparent" />
+                       <div className="absolute inset-0 bg-gradient-to-t from-emerald-500/10 to-transparent" />
+                       <div className="absolute top-0 right-0 w-64 h-64 bg-emerald-400/10 blur-[100px] rounded-full -translate-y-1/2 translate-x-1/2" />
+                       <div className="absolute bottom-0 left-0 w-48 h-48 bg-emerald-600/10 blur-[80px] rounded-full translate-y-1/2 -translate-x-1/2" />
                     </>
                   ) : isSales ? (
                     <>
@@ -802,6 +839,27 @@ END:VCARD`;
                          backgroundImage: `radial-gradient(#f97316 1px, transparent 0)`,
                          backgroundSize: '24px 24px'
                        }} />
+                    </>
+                  ) : isVeterinario ? (
+                    <>
+                       <div className="absolute inset-0 bg-gradient-to-br from-[#ecfdf5] via-[#f0fdf4] to-[#d1fae5]" />
+                       <div className="absolute inset-0 opacity-[0.05]" style={{
+                         backgroundImage: `radial-gradient(#10b981 1px, transparent 0)`,
+                         backgroundSize: '24px 24px'
+                       }} />
+                    </>
+                  ) : isArtesao ? (
+                    <>
+                       <div className="absolute inset-0 bg-gradient-to-br from-[#FFFBEB] via-[#FEF3C7] to-[#FDE68A] dark:from-[#130d05] dark:to-[#0a0702]" />
+                       <div className="absolute inset-0 opacity-10" style={{
+                         backgroundImage: `
+                           linear-gradient(45deg, #d97706 1px, transparent 1px),
+                           linear-gradient(-45deg, #d97706 1px, transparent 1px)
+                         `,
+                         backgroundSize: '40px 40px'
+                       }} />
+                       <div className="absolute inset-0 bg-gradient-to-b from-transparent via-amber-500/[0.03] to-amber-700/[0.05]" />
+                       <div className="absolute -top-24 -left-24 w-64 h-64 bg-amber-500/10 blur-[100px] rounded-full" />
                     </>
                   ) : isStandardized ? null : isService ? (
                      <>
@@ -1262,40 +1320,64 @@ END:VCARD`;
               )}
             {renderCustomPortfolio()}
             </div>
-            ) : isHealth ? (
+            ) : isHealth || isVeterinario ? (
               <div className="relative flex flex-col items-center w-full min-h-[600px] z-10 px-6 py-12 overflow-y-auto scroll-hide">
-                {/* Header Saúde Premium */}
-                <div className="flex flex-col items-center mb-10 w-full">
+                {/* Header Saúde Premium - Enhanced with Glassmorphism and better spacing */}
+                <div className="flex flex-col items-center mb-10 w-full relative">
                   <motion.div 
                     initial={{ scale: 0.9, opacity: 0 }}
                     animate={{ scale: 1, opacity: 1 }}
-                    className="relative w-44 h-44 mb-6"
+                    className="relative w-44 h-44 mb-8"
                   >
-                    <div className="absolute inset-0 rounded-full bg-gradient-to-tr from-[#10b981] to-[#6ee7b7] opacity-20 blur-2xl animate-pulse" />
-                    <div className="relative w-full h-full rounded-full border-[6px] border-white dark:border-slate-900 shadow-2xl overflow-hidden z-10">
+                    {/* Floating background blobs */}
+                    <div className="absolute -inset-4 rounded-full bg-emerald-500/10 dark:bg-emerald-500/5 blur-3xl animate-pulse" />
+                    <div className="absolute -inset-1 rounded-full bg-gradient-to-tr from-[#10b981] via-[#34d399] to-[#6ee7b7] opacity-20" />
+                    
+                    <div className={cn(
+                      "relative w-full h-full rounded-full border-[8px] dark:border-slate-900 shadow-[0_20px_50px_rgba(16,185,129,0.3)] overflow-hidden z-10 transition-transform hover:scale-105 duration-500",
+                      isPro ? "border-white" : "border-emerald-50"
+                    )}>
                       {data.photo_url ? (
-                        <Image src={data.photo_url} alt={previewName || 'Saúde'} fill className="object-cover" unoptimized />
+                        <Image 
+                          src={data.photo_url} 
+                          alt={previewName || 'Saúde'} 
+                          fill 
+                          className="object-cover" 
+                          unoptimized 
+                          style={{ filter: getPhotoFilter() }}
+                        />
                       ) : (
-                        <div className="w-full h-full flex items-center justify-center bg-emerald-50 dark:bg-emerald-950">
+                        <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-emerald-50 to-emerald-100 dark:from-emerald-950 dark:to-emerald-900">
                           {data.profession === 'personal_trainer' ? <Target className="w-16 h-16 text-[#10b981]/40" /> : 
                            data.profession === 'psicologo' ? <HeartPulse className="w-16 h-16 text-[#10b981]/40" /> : 
+                           data.profession === 'veterinario' ? <PawPrint className="w-16 h-16 text-[#10b981]/40" /> : 
                            <Stethoscope className="w-16 h-16 text-[#10b981]/40" />}
                         </div>
                       )}
                     </div>
-                    <div className="absolute -bottom-2 -right-2 w-12 h-12 rounded-2xl bg-[#10b981] flex items-center justify-center text-white shadow-xl z-20 border-4 border-white dark:border-slate-900">
-                      {data.profession === 'personal_trainer' ? <Zap className="w-5 h-5 fill-current" /> : 
-                       data.profession === 'psicologo' ? <HeartPulse className="w-5 h-5 fill-current" /> : 
-                       <Heart className="w-5 h-5 fill-current" />}
+                    
+                    {/* Premium Badge */}
+                    <div className="absolute -bottom-1 -right-1 w-14 h-14 rounded-2xl bg-gradient-to-br from-[#10b981] to-[#059669] flex items-center justify-center text-white shadow-[0_8px_16px_rgba(16,185,129,0.4)] z-20 border-4 border-white dark:border-slate-900 transform rotate-3 hover:rotate-0 transition-transform duration-300">
+                      {data.profession === 'personal_trainer' ? <Zap className="w-6 h-6 fill-current" /> : 
+                       data.profession === 'psicologo' ? <HeartPulse className="w-6 h-6 fill-current" /> : 
+                       data.profession === 'veterinario' ? <PawPrint className="w-6 h-6 fill-current" /> : 
+                       <ShieldCheck className="w-6 h-6 fill-current" />}
                     </div>
                   </motion.div>
                   
-                  <h1 className="text-3xl font-black text-slate-900 dark:text-white text-center tracking-tighter leading-none mb-3">
+                  <h1 
+                    className="text-3xl md:text-4xl font-black text-slate-900 dark:text-white text-center tracking-tighter leading-none mb-3 drop-shadow-sm"
+                    style={(data.custom_fields as any)?.cor_texto ? { color: (data.custom_fields as any).cor_texto } : undefined}
+                  >
                     {previewName}
                   </h1>
-                  <div className="flex items-center gap-2 bg-emerald-50 dark:bg-emerald-900/20 px-4 py-1.5 rounded-full border border-emerald-100 dark:border-emerald-800/30">
-                    <ShieldCheck className="w-3.5 h-3.5 text-[#10b981]" />
-                    <span className="text-[10px] font-black uppercase tracking-[0.2em] text-[#059669]">
+                  
+                  <div className="flex items-center gap-2 bg-emerald-50/80 dark:bg-emerald-900/40 backdrop-blur-md px-6 py-2 rounded-full border border-emerald-100 dark:border-emerald-800/50 shadow-sm">
+                    <ShieldCheck className="w-4 h-4 text-[#10b981]" />
+                    <span 
+                      className="text-xs font-black uppercase tracking-[0.2em] text-[#059669] dark:text-emerald-400"
+                      style={(data.custom_fields as any)?.cor_texto ? { color: (data.custom_fields as any).cor_texto } : undefined}
+                    >
                       {previewTagline}
                     </span>
                   </div>
@@ -1303,37 +1385,86 @@ END:VCARD`;
 
 
                 {/* CTA Saúde */}
-                <Button 
-                  asChild 
-                  className="w-full h-14 rounded-2xl bg-[#10b981] hover:bg-[#059669] text-white font-bold text-sm shadow-[0_10px_20px_-5px_rgba(16,185,129,0.3)] mb-8 transition-all hover:scale-[1.02] border-none"
-                >
-                  <a 
-                    href={whatsappLink} 
-                    target="_blank" 
-                    rel="noopener noreferrer"
-                    onClick={() => handleTrackClick('click_whatsapp')}
-                  >
-                    {data.cta_text || 'Agendar Consulta 🩺'}
-                  </a>
-                </Button>
+                {/* CTA Saúde - Massive Button Upgrade */}
+                    <Button 
+                      asChild 
+                      className={cn(
+                        "w-full h-18 rounded-[1.5rem] font-black text-lg uppercase tracking-widest shadow-2xl transition-all hover:scale-[1.03] active:scale-95 border-none group relative overflow-hidden",
+                        !(data.custom_fields as any)?.cor_botoes && "bg-gradient-to-r from-[#10b981] via-[#34d399] to-[#10b981] bg-[length:200%_100%] animate-gradient text-white"
+                      )}
+                      style={(data.custom_fields as any)?.cor_botoes ? {
+                         backgroundColor: (data.custom_fields as any).cor_botoes,
+                         color: (data.custom_fields as any)?.cor_texto_botoes || '#ffffff',
+                         boxShadow: `0 20px 40px -10px ${(data.custom_fields as any).cor_botoes}60`
+                      } : undefined}
+                    >
+                      <a 
+                        href={whatsappLink} 
+                        target="_blank" 
+                        rel="noopener noreferrer"
+                        onClick={() => handleTrackClick('click_whatsapp')}
+                        className="flex items-center justify-center gap-3 w-full h-full"
+                      >
+                        <div className="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                        <div className="absolute inset-0 bg-white/20 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1000 skew-x-[-20deg]" />
+                        <MessageCircle className="w-6 h-6 fill-current animate-bounce-subtle" />
+                        <span>{data.cta_text || (isVeterinario ? 'Agendar Consulta 🐾' : 'Agendar Agora')}</span>
+                        <ChevronRight className="w-5 h-5 ml-1 opacity-50 group-hover:translate-x-1 transition-transform" />
+                      </a>
+                    </Button>
 
                 {/* Highlights Health */}
-                {renderProfessionHighlights('#10b981')}
+                {renderProfessionHighlights((data.custom_fields as any)?.cor_botoes || '#10b981')}
 
-                {/* Serviços Saúde */}
-                <div className="w-full mb-8">
-                  <p className="text-[9px] font-black uppercase tracking-widest text-slate-400 mb-4 text-center">Procedimentos & Consultas</p>
-                  <div className="space-y-2">
+                {/* Serviços Saúde - Premium Grid/List */}
+                <div className="w-full mb-12">
+                  <div className="flex items-center justify-between mb-6 px-2">
+                    <h2 
+                      className={cn("text-xs font-black uppercase tracking-[0.3em]", isPro ? "text-slate-900/80 dark:text-emerald-50/80" : "text-slate-600")}
+                      style={(data.custom_fields as any)?.cor_texto ? { color: (data.custom_fields as any).cor_texto } : undefined}
+                    >
+                      {isVeterinario ? 'Tabela de Procedimentos' : 'Catálogo de Serviços'}
+                    </h2>
+                    <div className="h-px flex-1 bg-emerald-500/20 ml-6" />
+                  </div>
+                  
+                  <div className="space-y-3">
                     {activeServicesArr.length > 0 ? activeServicesArr.map((service, i) => (
-                      <a key={i} href={service.whatsappUrl || whatsappLink} target="_blank" rel="noopener noreferrer" className="flex justify-between items-center p-4 rounded-3xl bg-white/80 dark:bg-emerald-950/20 border border-emerald-100 dark:border-emerald-900/30 group hover:border-emerald-500 transition-all cursor-pointer">
-                        <div className="flex flex-col flex-1">
-                          <span className="text-sm font-bold text-slate-700 dark:text-emerald-50 leading-tight group-hover:text-emerald-600 transition-colors">{service.name}</span>
-                          {service.description && <span className="text-[10px] text-slate-400 leading-tight mt-1 opacity-70">{service.description}</span>}
+                      <motion.a 
+                         key={i} 
+                         href={service.whatsappUrl || whatsappLink} 
+                         target="_blank" 
+                         rel="noopener noreferrer" 
+                         initial={{ opacity: 0, y: 10 }}
+                         animate={{ opacity: 1, y: 0 }}
+                         transition={{ delay: 0.05 * i }}
+                         whileHover={{ x: 4, backgroundColor: 'rgba(255,255,255,0.9)' }}
+                         className="flex justify-between items-start sm:items-center p-5 rounded-[1.8rem] bg-white/70 dark:bg-emerald-950/20 backdrop-blur-md border border-emerald-100/50 dark:border-emerald-800/30 group hover:border-emerald-400 transition-all cursor-pointer gap-4 shadow-sm hover:shadow-md"
+                         style={(data.custom_fields as any)?.cor_texto ? { borderColor: (data.custom_fields as any).cor_texto + '20' } : undefined}
+                      >
+                        <div className="flex flex-col flex-1 min-w-0">
+                          <span 
+                            className="text-base font-bold text-slate-800 dark:text-emerald-50 leading-tight group-hover:text-emerald-600 transition-colors line-clamp-2"
+                            style={(data.custom_fields as any)?.cor_texto ? { color: (data.custom_fields as any).cor_texto } : undefined}
+                          >{service.name}</span>
+                          {service.description && <span 
+                            className="text-xs text-slate-500 dark:text-slate-400 leading-tight mt-1.5 opacity-80 line-clamp-2"
+                            style={(data.custom_fields as any)?.cor_texto ? { color: (data.custom_fields as any).cor_texto, opacity: 0.6 } : undefined}
+                          >{service.description}</span>}
                         </div>
-                        {service.price && <span className="text-sm font-black text-[#10b981] ml-4 bg-[#10b981]/10 px-3 py-1 rounded-xl shrink-0 group-hover:bg-[#10b981] group-hover:text-white transition-colors">{service.price}</span>}
-                      </a>
+                        {service.price && <div className="flex flex-col items-end shrink-0 gap-1.5">
+                          <span 
+                            className={cn("text-sm font-black px-4 py-1.5 rounded-2xl transition-all group-hover:scale-105", !(data.custom_fields as any)?.cor_botoes && "text-[#10b981] bg-emerald-50 dark:bg-emerald-900/30 group-hover:bg-[#10b981] group-hover:text-white")}
+                            style={(data.custom_fields as any)?.cor_botoes ? {
+                               backgroundColor: (data.custom_fields as any).cor_botoes + '15',
+                               color: (data.custom_fields as any).cor_botoes
+                            } : undefined}
+                          >{service.price}</span>
+                          <span className="text-[8px] font-black uppercase tracking-widest text-[#10b981] opacity-0 group-hover:opacity-100 transition-opacity">Reservar</span>
+                        </div>}
+                      </motion.a>
                     )) : (
-                      <p className="text-center text-xs opacity-20 italic py-6">Adicione seus serviços médicos</p>
+                      <p className="text-center text-xs opacity-20 italic py-10">Personalize seus serviços médicos</p>
                     )}
                   </div>
                 </div>
@@ -1347,15 +1478,21 @@ END:VCARD`;
                       
                       <div className="relative z-10 space-y-6">
                         {previewAddress && (
-                          <div className="flex items-start gap-4">
-                            <div className="w-10 h-10 rounded-2xl bg-white dark:bg-slate-900 flex items-center justify-center shrink-0 shadow-sm">
-                              <MapPin className="w-5 h-5 text-[#10b981]" />
+                          <a 
+                            href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(previewAddress || '')}`}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            onClick={() => handleTrackClick('click_address')}
+                            className="flex items-start gap-4 group/addr"
+                          >
+                            <div className="w-10 h-10 rounded-2xl bg-white dark:bg-slate-900 flex items-center justify-center shrink-0 shadow-sm group-hover/addr:bg-emerald-500 group-hover/addr:text-white transition-colors">
+                              <MapPin className="w-5 h-5 text-[#10b981] group-hover/addr:text-white transition-colors" />
                             </div>
                             <div className="flex flex-col">
-                              <span className="text-[9px] font-black uppercase text-emerald-600/60 mb-1 tracking-widest">Endereço Clínica</span>
-                              <p className="text-xs font-bold text-slate-700 dark:text-emerald-50 leading-relaxed">{previewAddress}</p>
+                              <span className="text-[9px] font-black uppercase text-emerald-600/80 mb-1 tracking-widest">Endereço Clínica</span>
+                              <p className="text-xs font-bold text-slate-700 dark:text-emerald-50 leading-relaxed group-hover/addr:text-emerald-600 transition-colors underline decoration-emerald-500/0 hover:decoration-emerald-500/50">{previewAddress}</p>
                             </div>
-                          </div>
+                          </a>
                         )}
 
                         {data.business_hours && Object.values(data.business_hours).some(v => v) && (
@@ -2839,7 +2976,198 @@ END:VCARD`;
                      </div>
                    )}
                 </div>
-              {renderCustomPortfolio()}
+            ) : isArtesao ? (
+              <div className="relative flex flex-col items-center w-full min-h-[600px] z-10 px-6 py-12 overflow-y-auto scroll-hide">
+                  {/* Artesão Header - Warm and Handmade Aesthetic */}
+                  <div className="flex flex-col items-center mb-12 w-full relative">
+                    <motion.div 
+                      initial={{ scale: 0.9, rotate: -3 }}
+                      animate={{ scale: 1, rotate: 0 }}
+                      className="relative w-44 h-44 mb-10"
+                    >
+                      {/* Stitched effect background */}
+                      <div className="absolute inset-0 bg-amber-100/50 dark:bg-amber-900/20 rounded-[2.8rem] rotate-3 blur-sm" />
+                      <div className="absolute -inset-2 border-2 border-dashed border-amber-400/30 rounded-[3rem] animate-[spin_20s_linear_infinite]" />
+                      
+                      <div className="relative w-full h-full rounded-[2.5rem] overflow-hidden border-4 border-white dark:border-slate-800 shadow-[0_20px_40px_rgba(217,119,6,0.2)] z-10 bg-white">
+                         {data.photo_url ? (
+                           <Image 
+                             src={data.photo_url} 
+                             alt={previewName} 
+                             fill 
+                             className="object-cover" 
+                             unoptimized 
+                             style={{ filter: getPhotoFilter() }}
+                           />
+                         ) : (
+                           <div className="w-full h-full bg-gradient-to-br from-amber-50 to-amber-100 flex items-center justify-center">
+                             <Paintbrush className="w-16 h-16 text-amber-500/30" />
+                           </div>
+                         )}
+                      </div>
+                      
+                      {/* Craftsmanship Badge */}
+                      <div className="absolute -bottom-3 -right-3 w-16 h-16 rounded-3xl bg-amber-600 flex items-center justify-center text-white shadow-lg border-4 border-white dark:border-slate-900 z-20 group-hover:rotate-12 transition-transform">
+                        <Scissors className="w-7 h-7 fill-white/20" />
+                      </div>
+                    </motion.div>
+
+                    <h1 
+                      className="text-4xl font-black text-slate-900 dark:text-amber-50 text-center tracking-tight leading-none mb-3"
+                      style={(data.custom_fields as any)?.cor_texto ? { color: (data.custom_fields as any).cor_texto } : undefined}
+                    >
+                      {previewName}
+                    </h1>
+                    <div className="px-6 py-2 bg-amber-500/10 dark:bg-amber-900/40 rounded-2xl border border-amber-500/20 backdrop-blur-sm">
+                      <p 
+                        className="text-[11px] font-black text-amber-900 dark:text-amber-400 uppercase tracking-[0.3em]"
+                        style={(data.custom_fields as any)?.cor_texto ? { color: (data.custom_fields as any).cor_texto } : undefined}
+                      >
+                        {previewTagline}
+                      </p>
+                    </div>
+                  </div>
+
+                  {/* Artesão Main CTA - Premium Interaction */}
+                  <div className="w-full mb-12">
+                    <Button 
+                      asChild 
+                      className={cn(
+                        "w-full h-18 rounded-[2rem] font-black text-lg uppercase tracking-widest shadow-2xl transition-all hover:scale-[1.03] active:scale-95 border-none group relative overflow-hidden",
+                        !(data.custom_fields as any)?.cor_botoes && "bg-gradient-to-r from-amber-600 via-amber-500 to-amber-600 bg-[length:200%_100%] animate-gradient text-white"
+                      )}
+                      style={(data.custom_fields as any)?.cor_botoes ? {
+                         backgroundColor: (data.custom_fields as any).cor_botoes,
+                         color: (data.custom_fields as any)?.cor_texto_botoes || '#ffffff',
+                         boxShadow: `0 20px_40px_-10px ${(data.custom_fields as any).cor_botoes}60`
+                      } : undefined}
+                    >
+                      <a href={whatsappLink} target="_blank" rel="noopener noreferrer" className="flex items-center justify-center gap-4">
+                         <div className="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity" />
+                         <Tag className="w-6 h-6 fill-current" />
+                         <span>ENCOMENDAR PEÇA</span>
+                         <ChevronRight className="w-5 h-5 opacity-40 group-hover:translate-x-1 transition-transform" />
+                      </a>
+                    </Button>
+                  </div>
+
+                  {/* Artesão Highlights */}
+                  {renderProfessionHighlights((data.custom_fields as any)?.cor_botoes || '#d97706')}
+
+                  {/* Artesão Portfolio/Products Grid */}
+                  <div className="w-full mb-12">
+                    <div className="flex items-center justify-between mb-8 px-2">
+                       <h2 
+                         className="text-[11px] font-black uppercase tracking-[0.4em] text-slate-900/60 dark:text-amber-50/60"
+                         style={(data.custom_fields as any)?.cor_texto ? { color: (data.custom_fields as any).cor_texto, opacity: 0.6 } : undefined}
+                       >
+                         Mostruário Artesanal
+                       </h2>
+                       <div className="h-px flex-1 bg-amber-500/10 ml-6" />
+                    </div>
+
+                    <div className="grid grid-cols-1 gap-4">
+                       {activeServicesArr.length > 0 ? activeServicesArr.map((service, i) => (
+                         <motion.a 
+                           key={i} 
+                           href={service.whatsappUrl || whatsappLink} 
+                           target="_blank" 
+                           rel="noopener noreferrer"
+                           whileHover={{ y: -4 }}
+                           className="flex flex-col p-6 rounded-[2.2rem] bg-white dark:bg-amber-950/10 border-2 border-amber-50/50 dark:border-amber-900/20 group hover:border-amber-500 transition-all cursor-pointer relative shadow-sm"
+                           style={(data.custom_fields as any)?.cor_texto ? { borderColor: (data.custom_fields as any).cor_texto + '20' } : undefined}
+                         >
+                            {/* Paper Tag Hole Effect */}
+                            <div className="absolute top-6 right-6 w-3 h-3 rounded-full bg-slate-100 dark:bg-amber-950 shadow-inner" />
+                            
+                            <div className="flex justify-between items-start mb-3">
+                               <div className="flex flex-col flex-1 pr-8">
+                                  <span 
+                                    className="text-lg font-black text-slate-800 dark:text-amber-50 uppercase tracking-tight group-hover:text-amber-600 transition-colors"
+                                    style={(data.custom_fields as any)?.cor_texto ? { color: (data.custom_fields as any).cor_texto } : undefined}
+                                  >
+                                    {service.name}
+                                  </span>
+                                  <p 
+                                    className="text-xs text-slate-500 dark:text-amber-200/40 mt-1.5 italic"
+                                    style={(data.custom_fields as any)?.cor_texto ? { color: (data.custom_fields as any).cor_texto, opacity: 0.5 } : undefined}
+                                  >
+                                    {service.description || 'Produto exclusivo feito à mão'}
+                                  </p>
+                               </div>
+                            </div>
+                            
+                            <div className="flex items-center justify-between mt-4">
+                               {service.price ? (
+                                 <div 
+                                   className="px-5 py-2 rounded-2xl bg-amber-100/50 dark:bg-amber-900/40 text-amber-700 dark:text-amber-300 font-black text-sm"
+                                   style={(data.custom_fields as any)?.cor_botoes ? { color: (data.custom_fields as any).cor_botoes, backgroundColor: (data.custom_fields as any).cor_botoes + '10' } : undefined}
+                                 >
+                                   {service.price}
+                                 </div>
+                               ) : <div></div>}
+                               <div className="flex items-center gap-2 text-amber-500 opacity-0 group-hover:opacity-100 transition-opacity">
+                                  <span className="text-[10px] font-black uppercase tracking-widest">Ver Detalhes</span>
+                                  <ChevronRight className="w-4 h-4" />
+                               </div>
+                            </div>
+                         </motion.a>
+                       )) : (
+                         <div className="flex flex-col items-center py-12 opacity-30 text-center">
+                            <Sparkles className="w-10 h-10 mb-2" />
+                            <p className="text-xs font-bold uppercase tracking-widest italic">Prepare-se para se encantar...</p>
+                         </div>
+                       )}
+                    </div>
+                  </div>
+
+                  {/* Artesão Location & Socials */}
+                  <div className="w-full space-y-4 mb-12">
+                     {previewAddress && (
+                        <a 
+                          href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(previewAddress || '')}`}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          onClick={() => handleTrackClick('click_address')}
+                          className="flex items-center gap-5 p-6 rounded-[2.5rem] bg-amber-500/5 dark:bg-amber-950/20 border-2 border-amber-100 dark:border-amber-900/30 group/map transition-all hover:bg-amber-500/10"
+                        >
+                           <div className="w-12 h-12 rounded-full bg-white dark:bg-slate-900 flex items-center justify-center shadow-md group-hover/map:scale-110 transition-transform">
+                              <MapPin className="w-6 h-6 text-amber-600" />
+                           </div>
+                           <div className="flex flex-col">
+                              <span className="text-[10px] font-black uppercase text-amber-600/60 mb-1 tracking-widest">Oficina / Retirada</span>
+                              <p 
+                                className="text-xs font-bold text-slate-800 dark:text-amber-100 leading-relaxed underline decoration-amber-500/30"
+                                style={(data.custom_fields as any)?.cor_texto ? { color: (data.custom_fields as any).cor_texto } : undefined}
+                              >
+                                {previewAddress}
+                              </p>
+                           </div>
+                        </a>
+                     )}
+
+                     <div className="flex justify-center gap-4 pt-4">
+                        {validSocialLinks.map((social) => (
+                          <motion.a 
+                            key={social.id} 
+                            href={social.url} 
+                            target="_blank" 
+                            rel="noopener noreferrer"
+                            whileHover={{ y: -6, rotate: 5 }}
+                            className="w-16 h-16 rounded-[1.8rem] bg-white dark:bg-slate-900 shadow-lg flex items-center justify-center text-amber-600 border border-amber-100 dark:border-white/5 transition-all"
+                          >
+                            <social.icon className="w-6 h-6" />
+                          </motion.a>
+                        ))}
+                     </div>
+                  </div>
+
+                  {/* Artisan Texture Footer */}
+                  <div className="mt-auto flex flex-col items-center gap-3 opacity-30">
+                    <div className="w-8 h-px bg-amber-900/50" />
+                    <span className="text-[9px] font-black uppercase tracking-[0.6em] text-amber-900 dark:text-amber-100">Handmade Experience</span>
+                  </div>
+               {renderCustomPortfolio()}
             </div>
             ) : isAdvogado ? (
               <div className="relative flex flex-col items-center w-full min-h-[600px] z-10 px-6 py-10 overflow-y-auto scroll-hide">
@@ -3303,21 +3631,25 @@ END:VCARD`;
                 })()}
 
                 <div className={cn(
-                  "flex flex-col items-center px-6 py-4 rounded-[1.5rem] mt-2 transition-all w-full backdrop-blur-md",
+                  "flex flex-col items-center px-6 py-5 rounded-[2.2rem] mt-3 transition-all w-full backdrop-blur-xl",
                   isPro 
-                    ? "bg-white/5 border border-white/10 shadow-sm"
+                    ? "bg-white/10 border border-white/20 shadow-[0_8px_32px_rgba(0,0,0,0.1)]"
                     : "bg-slate-50/80 dark:bg-slate-900/80 border border-slate-200/50 dark:border-slate-800/50"
                )}>
                  <h1 className={cn(
-                   "text-2xl md:text-3xl font-black tracking-tight mb-1 capitalize leading-tight text-center font-sora",
-                   isPro ? "text-white drop-shadow-sm" : "text-slate-900 dark:text-white"
-                 )}>
+                   "text-2xl md:text-3xl font-black tracking-tight mb-1 capitalize leading-tight text-center font-sora drop-shadow-sm",
+                   isPro ? "text-white" : "text-slate-900 dark:text-white"
+                 )}
+                 style={(data.custom_fields as any)?.cor_texto ? { color: (data.custom_fields as any).cor_texto } : undefined}
+                 >
                    {previewName}
                  </h1>
                  <p className={cn(
-                   "text-sm md:text-base font-medium leading-relaxed opacity-90 mb-3 text-center max-w-[280px]",
-                   isPro ? "text-white/80" : "text-slate-600 dark:text-slate-400"
-                 )}>
+                   "text-sm md:text-base font-semibold leading-relaxed opacity-80 mb-3 text-center max-w-[280px] tracking-wide",
+                   isPro ? "text-white/90" : "text-slate-600 dark:text-slate-400"
+                 )}
+                 style={(data.custom_fields as any)?.cor_texto ? { color: (data.custom_fields as any).cor_texto, opacity: 0.8 } : undefined}
+                 >
                    {previewTagline}
                  </p>
                  

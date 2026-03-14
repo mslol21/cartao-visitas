@@ -597,7 +597,7 @@ export const professionsMap: Record<ProfessionCategory, ProfessionConfig> = {
   },
   petshop: {
     id: 'petshop',
-    label: 'Petshop / Veterinária',
+    label: 'Petshop / Banho e Tosa',
     theme: { color: 'purple', style: 'glass' },
     customFields: [
       { name: 'banho_tosa', label: 'Oferece Banho e Tosa?', type: 'boolean' },
@@ -614,6 +614,29 @@ export const professionsMap: Record<ProfessionCategory, ProfessionConfig> = {
       { nome: 'Banho e Tosa Higiênica', descricao: 'Limpeza completa, tosa, corte das unhas e limpeza dos ouvidos.', preco: 'A partir de R$ 60' },
       { nome: 'Tosa na Máquina/Tesoura', descricao: 'Modelagem do pelo conforme o padrão da raça.', preco: 'A partir de R$ 80' },
       { nome: 'Hidratação Premium', descricao: 'Recuperação dos pelos danificados, trazendo brilho e maciez.', preco: 'R$ 40' }
+    ]
+  },
+  veterinario: {
+    id: 'veterinario',
+    label: 'Médico Veterinário',
+    theme: { color: 'emerald', style: 'glass' },
+    customFields: [
+      { name: 'crmv', label: 'CRMV', type: 'text', placeholder: 'Ex: CRMV-SP 12345' },
+      { name: 'especialidades_vet', label: 'Especialidades', type: 'array', placeholder: 'Ex: Clínica Geral, Cirurgia' },
+      { name: 'plantao_24h', label: 'Plantão 24h?', type: 'boolean' },
+      { name: 'atendimento_domicilio_vet', label: 'Atendimento Domiciliar?', type: 'boolean' }
+    ],
+    suggestedBackgrounds: [
+      'https://images.unsplash.com/photo-1628009368231-7bb7cbcb8122?auto=format&fit=crop&q=80&w=1080&h=1920',
+      'https://images.unsplash.com/photo-1596272875729-ed2ff7d6fa9c?auto=format&fit=crop&q=80&w=1080&h=1920',
+      'https://images.unsplash.com/photo-1576201836106-db1758fd1c97?auto=format&fit=crop&q=80&w=1080&h=1920'
+    ],
+    defaultBio: 'Atendimento veterinário humanizado, ético e especializado, focado no bem-estar, saúde e longevidade do seu melhor amigo. Consultas clínicas, vacinação, exames e orientação preventiva com todo amor e profissionalismo.',
+    defaultCta: 'Agendar Consulta 🩺🐾',
+    defaultServices: [
+      { nome: 'Consulta Clínica Geral', descricao: 'Avaliação completa da saúde do seu pet, diagnóstico e prescrição de tratamentos.', preco: 'R$ 150' },
+      { nome: 'Vacinação (V10, Antirrábica)', descricao: 'Prevenção é o melhor remédio. Mantenha as vacinas do seu pet em dia.', preco: 'A partir de R$ 80' },
+      { nome: 'Consulta Domiciliar', descricao: 'Atendimento no conforto de casa para maior tranquilidade do seu animal.', preco: 'R$ 200' }
     ]
   },
   service: {
@@ -695,6 +718,30 @@ export const professionsMap: Record<ProfessionCategory, ProfessionConfig> = {
       { nome: 'City Tour Histórico', descricao: 'Passeio guiado pelos principais pontos históricos e culturais da cidade.', preco: 'Sob consulta' },
       { nome: 'Trilha & Ecoturismo', descricao: 'Aventuras na natureza com total segurança e respeito ao meio ambiente.', preco: 'Sob consulta' },
       { nome: 'Roteiro Personalizado', descricao: 'Planejamento e acompanhamento de viagem sob medida para você.', preco: 'Sob consulta' }
+    ]
+  },
+  artesao: {
+    id: 'artesao',
+    label: 'Artesão / Feito à Mão',
+    theme: { color: 'amber', style: 'glass' },
+    customFields: [
+      { name: 'materiais_utilizados', label: 'Principais Materiais', type: 'array', placeholder: 'Ex: Madeira, Resina, Fio de Malha' },
+      { name: 'aceita_encomendas', label: 'Aceita Encomendas?', type: 'boolean' },
+      { name: 'prazo_medio_producao', label: 'Prazo de Produção', type: 'text', placeholder: 'Ex: 10 a 15 dias' },
+      { name: 'produtos_pronta_entrega', label: 'Tem Pronta Entrega?', type: 'boolean' }
+    ],
+    suggestedBackgrounds: [
+      'https://images.unsplash.com/photo-1516962215378-7fa2e137ae93?auto=format&fit=crop&q=80&w=1080&h=1920',
+      'https://images.unsplash.com/photo-1456082902841-3335005c3082?auto=format&fit=crop&q=80&w=1080&h=1920',
+      'https://images.unsplash.com/photo-1621814238541-ef12aa0b3b4d?auto=format&fit=crop&q=80&w=1080&h=1920',
+      'https://images.unsplash.com/photo-1533090161767-e6ffed986c88?auto=format&fit=crop&q=80&w=1080&h=1920'
+    ],
+    defaultBio: 'Criação de peças únicas feitas à mão com afeto, qualidade e muita criatividade. Valorize o trabalho artesanal e leve exclusividade para a sua casa, presentes e decoração.',
+    defaultCta: 'Ver Catálogo / Encomendar 🎨',
+    defaultServices: [
+      { nome: 'Peças a Pronta Entrega', descricao: 'Itens exclusivos já produzidos e prontos para envio ou retirada.', preco: 'A partir de R$ 30' },
+      { nome: 'Encomenda Personalizada', descricao: 'Seu projeto sob medida! Escolha as cores, tamanho e detalhes do seu produto.', preco: 'Sob consulta' },
+      { nome: 'Kits / Lembrandoce', descricao: 'Lembrancinhas feitas a mão para casamentos, batizados e eventos infantis.', preco: 'Sob consulta' }
     ]
   },
   default: {

@@ -389,27 +389,27 @@ export function StandardProfessionalLayout({ data, isPro }: StandardProfessional
 
                return (
                  <a key={idx} href={serviceWhatsappLink} target={formattedWhatsapp ? "_blank" : "_self"} rel="noopener noreferrer" className="block group p-5 rounded-[1.8rem] bg-white/90 dark:bg-black/60 backdrop-blur-md border border-slate-100 dark:border-white/10 hover:border-primary/40 transition-all shadow-sm hover:-translate-y-1 hover:shadow-md">
-                    <div className="flex justify-between items-center w-full">
-                       <div className="flex flex-col gap-1">
+                    <div className="flex justify-between items-start sm:items-center w-full gap-3">
+                       <div className="flex flex-col gap-1 flex-1 min-w-0">
                           <span 
-                            className="text-sm font-black uppercase tracking-tighter text-slate-800 dark:text-white group-hover:text-primary transition-colors"
+                            className="text-sm font-black uppercase tracking-tighter text-slate-800 dark:text-white group-hover:text-primary transition-colors line-clamp-2"
                             style={(data.custom_fields as any)?.cor_texto ? { color: (data.custom_fields as any).cor_texto } : undefined}
                           >
                             {service.nome}
                           </span>
                           {service.descricao && (
                             <p 
-                              className={cn("text-[10px] leading-tight italic", !(data.custom_fields as any)?.cor_texto && "text-slate-500 opacity-70")}
+                              className={cn("text-[10px] leading-tight italic line-clamp-3 sm:line-clamp-2", !(data.custom_fields as any)?.cor_texto && "text-slate-500 opacity-70")}
                               style={(data.custom_fields as any)?.cor_texto ? { color: (data.custom_fields as any).cor_texto } : undefined}
                             >
                               {service.descricao}
                             </p>
                           )}
                        </div>
-                       <div className="flex flex-col items-end gap-1">
-                          <span className="text-sm font-black text-primary">{service.preco || 'Sob consulta'}</span>
-                          <span className="text-[8px] font-bold text-slate-400 flex items-center gap-1 group-hover:text-primary transition-colors mt-1">
-                            Agendar <ChevronRight className="w-3 h-3 text-white bg-primary rounded-full p-0.5 group-hover:scale-110 transition-transform" />
+                       <div className="flex flex-col items-end gap-1 shrink-0 max-w-[40%] text-right pt-0.5 sm:pt-0">
+                          <span className="text-sm sm:text-base font-black text-primary leading-tight break-all sm:break-normal">{service.preco || 'Sob consulta'}</span>
+                          <span className="text-[8px] sm:text-[9px] font-bold text-slate-400 flex items-center gap-1 group-hover:text-primary transition-colors mt-1">
+                            Agendar <ChevronRight className="w-3 h-3 text-white bg-primary rounded-full p-0.5 group-hover:scale-110 transition-transform flex-shrink-0" />
                           </span>
                        </div>
                     </div>

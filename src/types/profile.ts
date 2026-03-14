@@ -33,6 +33,8 @@ export type ProfessionCategory =
   | 'real_estate'
   | 'driver'
   | 'petshop'
+  | 'veterinario'
+  | 'artesao'
   | 'service'
   | 'musico'
   | 'van_escolar'
@@ -119,6 +121,12 @@ export interface CustomFields {
   aceita_vr?: boolean;
   delivery_proprio?: boolean;
   retirada_local?: boolean;
+  // Veterinário
+  crmv?: string;
+  especialidades_vet?: string[];
+  plantao_24h?: boolean;
+  atendimento_domicilio_vet?: boolean;
+
   // Imobiliário / Outros
   creci?: string;
   venda_aluguel?: string;
@@ -130,6 +138,12 @@ export interface CustomFields {
   cadastur?: string;
   idiomas?: string[];
   veiculo_proprio?: boolean;
+
+  // Artesão
+  materiais_utilizados?: string[];
+  aceita_encomendas?: boolean;
+  prazo_medio_producao?: string;
+  produtos_pronta_entrega?: boolean;
 }
 
 // Keeping old items for backwards compatibility during migration

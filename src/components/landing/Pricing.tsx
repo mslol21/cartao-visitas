@@ -1,176 +1,247 @@
 "use client";
 
-import { Check, Sparkles, X, ArrowRight } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import Link from 'next/link';
-import { motion } from 'framer-motion';
+import { useState } from "react";
+
+const CheckIcon = () => (
+  <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+    <circle cx="8" cy="8" r="8" fill="#25D366" fillOpacity="0.15" />
+    <path d="M4.5 8L7 10.5L11.5 6" stroke="#25D366" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+  </svg>
+);
+
+const CrownIcon = () => (
+  <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+    <path d="M3 17L5 9L9.5 13L12 6L14.5 13L19 9L21 17H3Z" fill="#f59e0b" stroke="#f59e0b" strokeWidth="1.5" strokeLinejoin="round" />
+    <path d="M3 20H21" stroke="#f59e0b" strokeWidth="1.5" strokeLinecap="round" />
+  </svg>
+);
+
+const StarIcon = () => (
+  <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+    <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z" fill="#a78bfa" stroke="#a78bfa" strokeWidth="1.5" strokeLinejoin="round" />
+  </svg>
+);
+
+const FOUNDING_SPOTS = 20;
+const spotsLeft = 7;
 
 const plans = [
   {
-    name: 'Plano Free',
-    priceText: 'Gratuito',
-    description: 'Teste seu cartão agora',
+    id: "founding",
+    name: "Membro Fundador",
+    price: "R$50",
+    period: "pagamento único",
+    description: "Acesso vitalício completo. Pague uma vez, use para sempre.",
+    accent: "#ef4444",
+    border: "#ef444440",
+    cta: "Garantir minha vaga",
+    ctaStyle: "solid-red",
+    badge: "🔥 OFERTA DE LANÇAMENTO",
     features: [
-      { text: 'Cartão de visitas digital', excluded: false },
-      { text: 'Link personalizado', excluded: false },
-      { text: 'Botão WhatsApp (até 50 cliques)', excluded: false },
-      { text: '1 especialidade/serviço', excluded: false },
-      { text: 'Com marca Konnexy', excluded: false },
-      { text: 'WhatsApp ilimitado', excluded: true },
-      { text: 'Sem marca d\'água', excluded: true },
-      { text: 'Estatísticas de acesso', excluded: true },
-      { text: 'Fundo em vídeo premium', excluded: true },
+      "Perfil público completo",
+      "Links ilimitados",
+      "Todos os temas visuais",
+      "QR Code personalizado",
+      "Analytics completo",
+      "SEO personalizado",
+      "Tipografia premium",
+      "Filtro e borda de foto",
+      "Horário de atendimento",
+      "Banco de imagens Pixabay",
+      "Todas as novidades futuras",
+      "Suporte prioritário via WhatsApp",
     ],
-    cta: 'Começar grátis',
-    href: 'https://wa.me/5516991551200?text=Ol%C3%A1%2C%20gostaria%20de%20me%20cadastrar',
-    popular: false,
-    subText: 'Crie seu link em 2 minutos',
+    href: "/login?upgrade=true",
   },
   {
-    name: 'Plano Pro',
-    priceText: 'Premium',
-    description: 'Para quem quer vender mais',
+    id: "pro",
+    name: "PRO",
+    price: "R$29",
+    period: "por mês",
+    description: "Para profissionais que querem se destacar e converter mais.",
+    icon: <CrownIcon />,
+    accent: "#f59e0b",
+    border: "#f59e0b30",
+    cta: "Assinar PRO",
+    ctaStyle: "solid-gold",
     features: [
-      { text: 'Tudo do Free e mais:', excluded: false },
-      { text: 'Contatos e WhatsApp ilimitados', excluded: false },
-      { text: 'Sem logo Konnexy (Sua marca)', excluded: false },
-      { text: 'Redes sociais ilimitadas', excluded: false },
-      { text: 'Até 20 especialidades', excluded: false },
-      { text: 'Estatísticas completas', excluded: false },
-      { text: 'Temas Vip & Videos de Fundo', excluded: false },
-      { text: 'Selo de perfil verificado', excluded: false },
-      { text: 'QR Code Dinâmico Animado', excluded: false },
+      "Perfil público completo",
+      "Links ilimitados",
+      "Todos os temas visuais",
+      "QR Code personalizado",
+      "Analytics completo",
+      "SEO personalizado",
+      "Tipografia premium",
+      "Filtro e borda de foto",
+      "Horário de atendimento",
+      "Banco de imagens Pixabay",
+      "Suporte via WhatsApp",
     ],
-    cta: 'Ser Profissional agora',
-    href: '/login?upgrade=true',
-    popular: true,
-    subText: 'O investimento que se paga sozinho',
+    href: "/login?upgrade=true",
+  },
+  {
+    id: "business",
+    name: "Business",
+    price: "R$49",
+    period: "por mês",
+    description: "Para empresas e agências que precisam do máximo controle.",
+    icon: <StarIcon />,
+    accent: "#a78bfa",
+    border: "#a78bfa30",
+    cta: "Assinar Business",
+    ctaStyle: "solid-purple",
+    features: [
+      "Tudo do plano PRO",
+      "Domínio próprio",
+      "Remover marca Konnexy",
+      "Analytics avançado",
+      "Suporte prioritário",
+    ],
+    href: "/login?upgrade=true",
   },
 ];
 
 export function Pricing() {
+  const [hovered, setHovered] = useState<string | null>(null);
+  const filled = FOUNDING_SPOTS - spotsLeft;
+
   return (
-    <section id="precos" className="py-32 bg-slate-950 relative overflow-hidden text-white border-t border-white/5">
-      {/* Background decoration */}
-      <div className="absolute inset-0 opacity-100 pointer-events-none overflow-hidden">
-        <div className="absolute top-1/2 left-0 w-[500px] h-[500px] bg-primary/20 rounded-full blur-[120px] mix-blend-screen" />
-        <div className="absolute bottom-0 right-0 w-[600px] h-[600px] bg-purple-500/20 rounded-full blur-[150px] mix-blend-screen" />
-        <div className="absolute inset-0 bg-[url('/noise.png')] opacity-[0.03] mix-blend-overlay" />
-      </div>
-      
-      <div className="container relative z-10 px-6">
-        <div className="text-center max-w-3xl mx-auto mb-20 space-y-6">
-           <div className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-white/5 backdrop-blur-md border border-white/10 text-white text-[11px] font-black uppercase tracking-[0.4em] shadow-xl">
-             Investimento
-           </div>
-           <h2 className="text-4xl sm:text-5xl md:text-7xl font-black tracking-tighter leading-tight text-white">
-             O visual profissional <br />
-             <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-primary to-purple-400">que você merece.</span>
-           </h2>
-           <p className="text-slate-400 text-lg font-medium max-w-2xl mx-auto">
-             Aumente suas vendas com um cartão digital que transmite confiança superlativa e facilita o contato para seus clientes.
-           </p>
+    <section id="precos" style={{
+      minHeight: "100vh",
+      background: "#080c18",
+      fontFamily: "'Sora', sans-serif",
+      color: "#fff",
+      padding: "0 16px 80px",
+      position: "relative",
+      overflow: "hidden",
+    }}>
+      <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+
+      {/* Decorative backgrounds inside section logic */}
+      <div style={{ position: "absolute", top: "-150px", left: "50%", transform: "translateX(-50%)", width: "800px", height: "500px", background: "radial-gradient(ellipse, #ef444410 0%, transparent 65%)", pointerEvents: "none" }} />
+      <div style={{ position: "absolute", bottom: "0", right: "-100px", width: "400px", height: "400px", background: "radial-gradient(ellipse, #a78bfa08 0%, transparent 70%)", pointerEvents: "none" }} />
+
+      <div style={{ maxWidth: "960px", margin: "0 auto", paddingTop: "60px", textAlign: "center", position: "relative", zIndex: 10 }}>
+
+        {/* Logo */}
+        <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: "10px", marginBottom: "48px" }}>
+          <div style={{ width: "36px", height: "36px", borderRadius: "9px", background: "linear-gradient(135deg, #25D366, #1aab52)", display: "flex", alignItems: "center", justifyContent: "center", fontWeight: 800, fontSize: "17px", color: "#fff" }}>K</div>
+          <span style={{ fontWeight: 700, fontSize: "19px", letterSpacing: "-0.5px" }}>Konnexy</span>
         </div>
 
-        <div className="grid md:grid-cols-2 gap-8 lg:gap-12 max-w-5xl mx-auto">
-          {plans.map((plan, index) => (
-            <motion.div
-              key={plan.name}
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: index * 0.1 }}
-              className={`group relative rounded-[2.5rem] transition-all duration-500 ${
-                plan.popular
-                  ? 'md:scale-105 z-10'
-                  : ''
-              }`}
+        {/* Founding banner */}
+        <div style={{ background: "linear-gradient(135deg, #ef444412, #f9731610)", border: "1px solid #ef444428", borderRadius: "14px", padding: "14px 22px", marginBottom: "32px", display: "inline-flex", alignItems: "center", gap: "12px", textAlign: "left" }}>
+          <span style={{ fontSize: "20px" }}>🔥</span>
+          <div style={{ textAlign: "left" }}>
+            <div style={{ fontSize: "12px", fontWeight: 700, color: "#ef4444", letterSpacing: "0.5px" }}>OFERTA DE LANÇAMENTO — VAGAS LIMITADAS</div>
+            <div style={{ fontSize: "12px", color: "#ffffff55", marginTop: "2px" }}>
+              Apenas <strong style={{ color: "#fff" }}>{spotsLeft} vagas restantes</strong> de {FOUNDING_SPOTS} para acesso vitalício por R$50
+            </div>
+          </div>
+        </div>
+
+        {/* Progress bar */}
+        <div style={{ maxWidth: "380px", margin: "0 auto 48px", textAlign: "left" }}>
+          <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "6px" }}>
+            <span style={{ fontSize: "11px", color: "#ffffff35" }}>Vagas preenchidas</span>
+            <span style={{ fontSize: "11px", color: "#ef4444", fontWeight: 700 }}>{filled}/{FOUNDING_SPOTS}</span>
+          </div>
+          <div style={{ height: "5px", background: "#ffffff08", borderRadius: "100px", overflow: "hidden" }}>
+            <div style={{ height: "100%", width: `${(filled / FOUNDING_SPOTS) * 100}%`, background: "linear-gradient(90deg, #ef4444, #f97316)", borderRadius: "100px" }} />
+          </div>
+        </div>
+
+        <h2 style={{ fontSize: "clamp(28px, 5vw, 46px)", fontWeight: 800, lineHeight: 1.1, letterSpacing: "-1.5px", margin: "0 0 12px 0", background: "linear-gradient(135deg, #fff 40%, #ffffff65)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>
+          Seu cartão digital,<br />do seu jeito.
+        </h2>
+        <p style={{ color: "#ffffff45", fontSize: "15px", lineHeight: 1.6, maxWidth: "400px", margin: "0 auto 52px" }}>
+          Sem Linktree. Sem mensalidades ocultas. Presença digital completa em minutos.
+        </p>
+
+        {/* Plans grid */}
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(265px, 1fr))", gap: "14px", alignItems: "start", textAlign: "left" }}>
+          {plans.map((plan) => (
+            <div
+              key={plan.id}
+              onMouseEnter={() => setHovered(plan.id)}
+              onMouseLeave={() => setHovered(null)}
+              style={{
+                background: plan.id === "founding" ? "linear-gradient(160deg, #180a0a 0%, #0d1020 100%)" : "#0c1020",
+                border: `1px solid ${hovered === plan.id ? plan.border.replace("30", "70").replace("40", "80") : plan.border}`,
+                borderRadius: "20px", padding: "28px 22px", position: "relative",
+                transition: "transform 0.2s, border-color 0.2s, box-shadow 0.2s",
+                transform: hovered === plan.id ? "translateY(-5px)" : "translateY(0)",
+                boxShadow: plan.id === "founding" ? `0 0 40px #ef444412` : "none",
+              }}
             >
-              {/* Card Background Layers */}
-              {plan.popular && (
-                 <div className="absolute -inset-1 bg-gradient-to-b from-primary to-purple-600 rounded-[2.5rem] blur-md opacity-20 group-hover:opacity-40 transition-opacity duration-500" />
+              {plan.badge && (
+                <div style={{ position: "absolute", top: "-13px", left: "50%", transform: "translateX(-50%)", background: "linear-gradient(90deg, #ef4444, #f97316)", color: "#fff", fontSize: "10px", fontWeight: 800, padding: "4px 14px", borderRadius: "100px", whiteSpace: "nowrap", letterSpacing: "0.8px" }}>
+                  {plan.badge}
+                </div>
               )}
-              
-              <div className={`relative p-8 sm:p-12 backdrop-blur-2xl rounded-[2.5rem] flex flex-col h-full overflow-hidden ${
-                 plan.popular ? 'bg-gradient-to-b from-slate-900 to-slate-950 border border-primary/30 shadow-[0_0_50px_rgba(59,130,246,0.15)]' : 'bg-white/5 border border-white/10'
-              }`}>
-                
-                {/* Internal Glow for Popular */}
-                {plan.popular && (
-                  <div className="absolute top-0 right-0 w-64 h-64 bg-primary/10 rounded-full blur-[80px] pointer-events-none" />
-                )}
 
-                {/* Popular Badge */}
-                {plan.popular && (
-                  <div className="absolute -top-5 left-1/2 -translate-x-1/2">
-                    <div className="inline-flex items-center gap-2 px-6 py-2 rounded-full bg-gradient-to-r from-blue-500 to-purple-500 text-white text-[11px] font-black uppercase tracking-widest whitespace-nowrap shadow-xl border border-white/20">
-                      <Sparkles className="w-3.5 h-3.5 animate-pulse text-yellow-300" />
-                      Acesso Vitalício Vip
-                    </div>
+              <div style={{ marginBottom: "20px" }}>
+                <div style={{ display: "flex", alignItems: "center", gap: "7px", marginBottom: "10px" }}>
+                  {plan.id === "founding"
+                    ? <span style={{ fontSize: "16px" }}>🔥</span>
+                    : plan.icon}
+                  <span style={{ fontSize: "11px", fontWeight: 700, color: plan.accent, letterSpacing: "1.5px", textTransform: "uppercase" }}>{plan.name}</span>
+                </div>
+
+                <div style={{ display: "flex", alignItems: "baseline", gap: "6px", marginBottom: "6px" }}>
+                  <span style={{ fontSize: "40px", fontWeight: 800, letterSpacing: "-1.5px", color: "#fff" }}>{plan.price}</span>
+                  <span style={{ fontSize: "12px", color: "#ffffff30" }}>{plan.period}</span>
+                </div>
+
+                {plan.id === "founding" && (
+                  <div style={{ display: "inline-flex", alignItems: "center", gap: "5px", background: "#ef444412", border: "1px solid #ef444425", borderRadius: "6px", padding: "3px 8px", marginBottom: "8px" }}>
+                    <span style={{ fontSize: "11px", color: "#ef4444", fontWeight: 600 }}>✦ Pague uma vez, use para sempre</span>
                   </div>
                 )}
 
-                <div className="mb-10 text-center relative z-10">
-                  <h3 className="text-3xl font-black mb-3 tracking-tight text-white">
-                    {plan.name}
-                  </h3>
-                  <p className="text-sm text-slate-400 font-medium leading-relaxed max-w-[280px] mx-auto italic">
-                    “{plan.description}”
-                  </p>
-                </div>
-
-                <div className="mb-10 text-center relative z-10">
-                  <div className="flex items-center justify-center">
-                    <h4 className="text-5xl sm:text-6xl font-black tracking-tighter text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-primary">
-                       {plan.priceText}
-                    </h4>
-                  </div>
-                  <div className="mt-4 text-[11px] font-black uppercase tracking-[0.3em] text-slate-500">Sem Fidelidade • Flexível</div>
-                </div>
-
-                <div className="space-y-4 mb-12 flex-grow relative z-10 pt-8 border-t border-white/10">
-                  {plan.features.map((feature, i) => (
-                    <div key={i} className={`flex items-center gap-4 ${feature.excluded ? 'opacity-40' : ''}`}>
-                      <div className={`w-8 h-8 rounded-xl flex items-center justify-center flex-shrink-0 transition-colors ${
-                        feature.excluded 
-                          ? 'bg-white/5 border border-white/5' 
-                          : (plan.popular ? 'bg-primary/20 border border-primary/30' : 'bg-white/10 border border-white/10')
-                      }`}>
-                        {feature.excluded ? (
-                          <X className="w-4 h-4 text-red-400" />
-                        ) : (
-                          <Check className={`w-4 h-4 ${plan.popular ? 'text-blue-400' : 'text-slate-300'}`} />
-                        )}
-                      </div>
-                      <span className={`text-sm font-bold ${feature.excluded ? 'line-through decoration-slate-500 text-slate-500' : 'text-slate-200'}`}>
-                        {feature.text}
-                      </span>
-                    </div>
-                  ))}
-                </div>
-
-                <div className="mt-auto relative z-10">
-                  <div className="space-y-4">
-                    <Button
-                      asChild
-                      className={`w-full h-16 rounded-[2rem] text-sm font-black uppercase tracking-widest transition-all ${
-                         plan.popular 
-                         ? 'bg-gradient-to-r from-primary to-purple-600 hover:from-primary/80 hover:to-purple-500 text-white shadow-[0_0_30px_rgba(59,130,246,0.5)] border-0' 
-                         : 'bg-white/5 hover:bg-white/10 border border-white/20 text-white'
-                      }`}
-                    >
-                      <a href={plan.href} target={plan.href.startsWith("http") ? "_blank" : undefined} rel={plan.href.startsWith("http") ? "noopener noreferrer" : undefined} className="flex items-center justify-center gap-2">
-                        {plan.cta}
-                        <ArrowRight className="w-5 h-5" />
-                      </a>
-                    </Button>
-                    <p className={`text-center text-[11px] font-bold italic tracking-wider ${plan.popular ? 'text-primary' : 'text-slate-500'}`}>
-                      {plan.subText}
-                    </p>
-                  </div>
-                </div>
+                <p style={{ fontSize: "12px", color: "#ffffff40", lineHeight: 1.5, margin: 0 }}>{plan.description}</p>
               </div>
-            </motion.div>
+
+              <a
+                href={plan.href}
+                style={{
+                  display: "block", textAlign: "center", textDecoration: "none",
+                  width: "100%", padding: "13px", borderRadius: "12px", boxSizing: "border-box",
+                  fontFamily: "'Sora', sans-serif", fontSize: "14px", fontWeight: 700,
+                  cursor: "pointer", marginBottom: "20px", border: "none",
+                  ...(plan.ctaStyle === "solid-red"
+                    ? { background: "linear-gradient(135deg, #ef4444, #f97316)", color: "#fff", boxShadow: "0 4px 24px #ef444435" }
+                    : plan.ctaStyle === "solid-gold"
+                    ? { background: "linear-gradient(135deg, #f59e0b, #fbbf24)", color: "#000", boxShadow: "0 4px 20px #f59e0b25" }
+                    : { background: "linear-gradient(135deg, #7c3aed, #a78bfa)", color: "#fff", boxShadow: "0 4px 20px #a78bfa20" }),
+                }}
+              >
+                {plan.cta} →
+              </a>
+
+              <div style={{ height: "1px", background: "#ffffff07", marginBottom: "18px" }} />
+
+              <ul style={{ listStyle: "none", padding: 0, margin: 0, display: "flex", flexDirection: "column", gap: "10px" }}>
+                {plan.features.map((f, i) => (
+                  <li key={i} style={{ display: "flex", alignItems: "center", gap: "9px", fontSize: "13px", color: "#ffffffa0" }}>
+                    <CheckIcon />{f}
+                  </li>
+                ))}
+              </ul>
+
+              {plan.id === "founding" && (
+                <div style={{ marginTop: "18px", padding: "11px", background: "#ef44440a", borderRadius: "10px", border: "1px solid #ef444418", fontSize: "12px", color: "#ffffff45", textAlign: "center", lineHeight: 1.5 }}>
+                  ⚡ Após as 20 vagas, valor muda para <strong style={{ color: "#fff" }}>R$29/mês</strong>
+                </div>
+              )}
+            </div>
+          ))}
+        </div>
+
+        {/* Trust row */}
+        <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: "28px", marginTop: "44px", flexWrap: "wrap" }}>
+          {["🔒 Pagamento seguro", "💬 Suporte via WhatsApp", "⚡ Acesso imediato"].map((item) => (
+            <span key={item} style={{ fontSize: "12px", color: "#ffffff25", fontWeight: 500 }}>{item}</span>
           ))}
         </div>
       </div>
