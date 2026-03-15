@@ -2976,6 +2976,7 @@ END:VCARD`;
                      </div>
                    )}
                 </div>
+              </div>
             ) : isArtesao ? (
               <div className="relative flex flex-col items-center w-full min-h-[600px] z-10 px-6 py-12 overflow-y-auto scroll-hide">
                   {/* Artesão Header - Warm and Handmade Aesthetic */}
@@ -3319,7 +3320,7 @@ END:VCARD`;
                  <StandardProfessionalLayout data={data} isPro={isPro} />
               </div>
             ) : (
-            <>
+              <div className="w-full flex flex-col items-center">
               {/* --- TOP SECTION (Identity) --- */}
           <div className="relative w-full p-6 pt-12 pb-8 flex flex-col items-center text-center shrink-0 z-10 transition-all">
             
@@ -4018,7 +4019,7 @@ END:VCARD`;
                 </div>
               )}
             </div>
-          </>
+          </div>
         )}
       </div>
 
