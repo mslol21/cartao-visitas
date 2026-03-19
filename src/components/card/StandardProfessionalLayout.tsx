@@ -8,19 +8,12 @@ import {
   Globe, 
   Instagram, 
   CheckCircle2, 
-  ChevronRight, 
-  ArrowRight,
+  ChevronRight,
   Info,
   Calendar,
   Sparkles,
   Award,
   Zap,
-  Briefcase,
-  Facebook,
-  Linkedin,
-  Twitter,
-  Youtube,
-  GlobeIcon,
   Crown,
   ShieldCheck,
   Home,
@@ -45,9 +38,8 @@ import {
   Heart
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { Profile, Service, CustomFields, ProfessionCategory } from '@/types/profile';
+import { Profile, ProfessionCategory } from '@/types/profile';
 import { cn, hexToHsl } from '@/lib/utils';
-import Image from 'next/image';
 import { getProfessionConfig } from '@/config/professions';
 import { toast } from 'sonner';
 
@@ -215,7 +207,7 @@ export function StandardProfessionalLayout({ data, isPro }: StandardProfessional
             className="text-sm font-medium text-slate-500 dark:text-slate-400 max-w-[280px] italic leading-relaxed"
             style={(data.custom_fields as any)?.cor_texto ? { color: (data.custom_fields as any).cor_texto } : undefined}
           >
-            "{data.subtitle || data.tagline}"
+            &quot;{data.subtitle || data.tagline}&quot;
           </p>
         )}
 
