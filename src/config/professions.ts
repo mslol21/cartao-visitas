@@ -61,19 +61,27 @@ export const professionsMap: Record<ProfessionCategory, ProfessionConfig> = {
     theme: { color: 'amber', style: 'oled' },
     customFields: [
       { name: 'aceita_agendamento', label: 'Aceita Agendamento Online?', type: 'boolean' },
-      { name: 'trabalha_com_horario_marcado', label: 'Horário Marcado?', type: 'boolean' }
+      { name: 'trabalha_com_horario_marcado', label: 'Horário Marcado?', type: 'boolean' },
+      { name: 'atendimento_kids', label: 'Atendimento Kids?', type: 'boolean' },
+      { name: 'dia_do_noivo', label: 'Dia do Noivo?', type: 'boolean' },
+      { name: 'quimica_relaxamento', label: 'Relaxamento / Química?', type: 'boolean' },
+      { name: 'produtos_venda', label: 'Venda de Produtos?', type: 'boolean' },
+      { name: 'massagem_facial', label: 'Massagem Facial?', type: 'boolean' },
+      { name: 'lavagem_especial', label: 'Lavagem Especial?', type: 'boolean' }
     ],
     suggestedBackgrounds: [
       'https://images.unsplash.com/photo-1503951914875-452162b0f3f1?auto=format&fit=crop&q=80&w=1080&h=1920',
       'https://images.unsplash.com/photo-1585744944847-1c39059e74cf?auto=format&fit=crop&q=80&w=1080&h=1920',
-      'https://images.unsplash.com/photo-1621605815971-fbc98d665033?auto=format&fit=crop&q=80&w=1080&h=1920'
+      'https://images.unsplash.com/photo-1621605815971-fbc98d665033?auto=format&fit=crop&q=80&w=1080&h=1920',
+      'https://images.unsplash.com/photo-1512690196236-40763bb59023?auto=format&fit=crop&q=80&w=1080&h=1920'
     ],
-    defaultBio: 'Especialista em cortes modernos e clássicos, barba express e selagem. Venha viver uma experiência de cuidado com um ambiente agradável, café gelado e profissionais qualificados para o seu estilo ideal.',
-    defaultCta: 'Agendar Corte 💈',
+    defaultBio: 'Experiência premium em barbearia. Especialista em cortes modernos e clássicos, visagismo, barba terapia com toalha quente e massagem facial. Ambiente climatizado, café gelado e profissionais qualificados para elevar o seu estilo.',
+    defaultCta: 'Agendar Horário 💈',
     defaultServices: [
-      { nome: 'Corte Degradê', descricao: 'Corte moderno com fade na máquina zero, navalhado ou shavers.', preco: 'R$ 40' },
-      { nome: 'Barba Terapia', descricao: 'Modelagem completa com toalha quente, ozônio e balm hidratante.', preco: 'R$ 35' },
-      { nome: 'Combo (Corte + Barba)', descricao: 'O básico essencial para um visual impecável.', preco: 'R$ 70' }
+      { nome: 'Corte Degradê / Moderno', descricao: 'Fade impecável terminando no navalhado ou shaver, com acabamento premium.', preco: 'R$ 45' },
+      { nome: 'Barba Terapia Ritual', descricao: 'Massagem, toalha quente, óleos essenciais e modelagem perfeita.', preco: 'R$ 40' },
+      { nome: 'Combo Master (Corte + Barba)', descricao: 'O cuidado completo para um visual renovado e elegante.', preco: 'R$ 75' },
+      { nome: 'Corte Infantil (Kids)', descricao: 'Atendimento lúdico e cuidadoso para os pequenos.', preco: 'R$ 35' }
     ]
   },
   manicure: {
@@ -81,19 +89,25 @@ export const professionsMap: Record<ProfessionCategory, ProfessionConfig> = {
     label: 'Manicure',
     theme: { color: 'pink', style: 'glass' },
     customFields: [
-      { name: 'atende_domicilio', label: 'Atende em Domicílio?', type: 'boolean' }
+      { name: 'aceita_agendamento', label: 'Aceita Agendamento Online?', type: 'boolean' },
+      { name: 'atende_domicilio', label: 'Atende em Domicílio?', type: 'boolean' },
+      { name: 'unhas_fibra', label: 'Fibra de Vidro?', type: 'boolean' },
+      { name: 'unhas_gel', label: 'Unhas em Gel?', type: 'boolean' },
+      { name: 'blindagem', label: 'Blindagem?', type: 'boolean' },
+      { name: 'spa_pes_maos', label: 'Possui Spa dos Pés/Mãos?', type: 'boolean' }
     ],
     suggestedBackgrounds: [
       'https://images.unsplash.com/photo-1621236304846-859dabc6a101?auto=format&fit=crop&q=80&w=1080&h=1920',
       'https://images.unsplash.com/photo-1519014816548-bf5fe059798b?auto=format&fit=crop&q=80&w=1080&h=1920',
       'https://images.unsplash.com/photo-1632345680197-23517df40df2?auto=format&fit=crop&q=80&w=1080&h=1920'
     ],
-    defaultBio: 'Cuidado e embelezamento das suas unhas com técnicas de biossegurança, alongamentos impecáveis, esmaltação em gel e spa dos pés. Valorize a beleza de suas mãos e pés com quem entende de delicadeza.',
+    defaultBio: 'Especialista em embelezamento de mãos e pés. Ofereço desde a cutilagem clássica até técnicas avançadas de alongamento em fibra, blindagem e esmaltação em gel de alta durabilidade. Foco total em biossegurança e acabamento impecável.',
     defaultCta: 'Agendar Horário ✨',
     defaultServices: [
       { nome: 'Manicure & Pedicure', descricao: 'Limpeza, cuticulagem e esmaltação tradicional completa.', preco: 'R$ 60' },
       { nome: 'Alongamento em Fibra', descricao: 'Unhas longas, naturais e resistentes, inclui primeira esmaltação.', preco: 'R$ 150' },
-      { nome: 'Esmaltação em Gel', descricao: 'Esmaltação de alta durabilidade (até 20 dias) sem descascar.', preco: 'R$ 50' }
+      { nome: 'Esmaltação em Gel', descricao: 'Esmaltação de alta durabilidade (até 20 dias) sem descascar.', preco: 'R$ 50' },
+      { nome: 'Blindagem de Unhas', descricao: 'Fortalecimento da unha natural com camada de gel protetora.', preco: 'R$ 70' }
     ]
   },
   cabeleireiro: {
@@ -101,13 +115,25 @@ export const professionsMap: Record<ProfessionCategory, ProfessionConfig> = {
     label: 'Cabeleireiro',
     theme: { color: 'rose', style: 'glass' },
     customFields: [
-      { name: 'atende_noiva', label: 'Atendimento Noivas / Debutantes?', type: 'boolean' },
-      { name: 'especialista_loiras', label: 'Especialista em Loiras / Mechas?', type: 'boolean' }
+      { name: 'aceita_agendamento', label: 'Aceita Agendamento Online?', type: 'boolean' },
+      { name: 'dia_da_noiva', label: 'Atende Dia da Noiva?', type: 'boolean' },
+      { name: 'mechas_luzes', label: 'Especialista em Mechas?', type: 'boolean' },
+      { name: 'progressiva_botox', label: 'Progressiva / Botox?', type: 'boolean' },
+      { name: 'penteados', label: 'Realiza Penteados para Eventos?', type: 'boolean' },
+      { name: 'cronograma_capilar', label: 'Trabalha com Cronograma?', type: 'boolean' }
     ],
     suggestedBackgrounds: [
       'https://images.unsplash.com/photo-1560066984-138dadb4c035?auto=format&fit=crop&q=80&w=1080&h=1920',
       'https://images.unsplash.com/photo-1522337660859-02fbefca4702?auto=format&fit=crop&q=80&w=1080&h=1920',
       'https://images.unsplash.com/photo-1521590832167-7bcbfaa6381f?auto=format&fit=crop&q=80&w=1080&h=1920'
+    ],
+    defaultBio: 'Transformando sua auto-estima através da colorimetria avançada, cortes que valorizam seu rosto e tratamentos de reconstrução profunda. Especialista em loiros saudáveis e penteados deslumbrantes para o seu grande dia.',
+    defaultCta: 'Consultar Disponibilidade 💇‍♀️',
+    defaultServices: [
+      { nome: 'Corte Feminino Premium', descricao: 'Visagismo e corte personalizado com lavagem especial.', preco: 'R$ 120' },
+      { nome: 'Mechas / Morena Iluminada', descricao: 'Técnica de clareamento preservando a saúde do fio.', preco: 'Sob consulta' },
+      { nome: 'Escova e Tratamento', descricao: 'Lavagem com produtos profissionais e escovação modelada.', preco: 'A partir de R$ 80' },
+      { nome: 'Cronograma Capilar', descricao: 'Pacote de 4 sessões (Nutrição, Hidratação, Reconstrução).', preco: 'R$ 350' }
     ]
   },
   personal_trainer: {
@@ -233,19 +259,24 @@ export const professionsMap: Record<ProfessionCategory, ProfessionConfig> = {
     label: 'Esteticista',
     theme: { color: 'rose', style: 'glass' },
     customFields: [
-      { name: 'procedimentos', label: 'Procedimentos Principais', type: 'array', placeholder: 'Ex: Limpeza de Pele' }
+      { name: 'aceita_agendamento', label: 'Aceita Agendamento Online?', type: 'boolean' },
+      { name: 'limpeza_pele', label: 'Limpeza de Pele?', type: 'boolean' },
+      { name: 'drenagem_linfatica', label: 'Drenagem Linfática?', type: 'boolean' },
+      { name: 'massagem_relaxante', label: 'Massagem Relaxante?', type: 'boolean' },
+      { name: 'micropigmentacao', label: 'Micropigmentação?', type: 'boolean' }
     ],
     suggestedBackgrounds: [
       'https://images.unsplash.com/photo-1570172619664-2af9fbeca001?auto=format&fit=crop&q=80&w=1080&h=1920',
       'https://images.unsplash.com/photo-1544161515-4365f1007221?auto=format&fit=crop&q=80&w=1080&h=1920',
       'https://images.unsplash.com/photo-1616394584738-fc6e612e71b9?auto=format&fit=crop&q=80&w=1080&h=1920'
     ],
-    defaultBio: 'Protocolos estéticos inovadores, com respeito à sua pele e ao seu bem-estar. Especialista em empoderar sua beleza natural, devolvendo auto-estima e promovendo auto-cuidado profundo num espaço tranquilo.',
+    defaultBio: 'Recupere o brilho da sua pele e o equilíbrio do seu corpo com protocolos personalizados de estética avançada. Especialista em tratamentos faciais e corporais focados em resultados reais e relaxamento profundo.',
     defaultCta: 'Agendar Avaliação 💆‍♀️',
     defaultServices: [
-      { nome: 'Limpeza de Pele', descricao: 'Remoção de impurezas, extração de cravos e hidratação profunda.', preco: 'R$ 120' },
-      { nome: 'Peeling Químico', descricao: 'Renovação celular para tratar manchas, marcas e linhas de expressão.', preco: 'R$ 180' },
-      { nome: 'Drenagem Linfática', descricao: 'Massagem manual focada na eliminação de retenção e toxinas.', preco: 'R$ 100' }
+      { nome: 'Limpeza de Pele Profunda', descricao: 'Extração, peeling de diamante e hidratação calmante.', preco: 'R$ 150' },
+      { nome: 'Drenagem Linfática (Sessão)', descricao: 'Redução de medidas e toxinas com técnica exclusiva.', preco: 'R$ 120' },
+      { nome: 'Peeling Químico', descricao: 'Renovação celular para tratar manchas e linhas de expressão.', preco: 'R$ 200' },
+      { nome: 'Microagulhamento', descricao: 'Tratamento para cicatrizes e rejuvenescimento facial.', preco: 'Sob consulta' }
     ]
   },
   pedreiro: {
@@ -472,13 +503,24 @@ export const professionsMap: Record<ProfessionCategory, ProfessionConfig> = {
     label: 'Beleza & Estética',
     theme: { color: 'rose', style: 'glass' },
     customFields: [
+      { name: 'aceita_agendamento', label: 'Aceita Agendamento Online?', type: 'boolean' },
       { name: 'atende_domicilio', label: 'Atendimento em Domicílio?', type: 'boolean' },
-      { name: 'aceita_agendamento', label: 'Aceita Agendamento Online?', type: 'boolean' }
+      { name: 'extensao_cilios', label: 'Extensão de Cílios?', type: 'boolean' },
+      { name: 'design_sobrancelhas', label: 'Design de Sobrancelhas?', type: 'boolean' },
+      { name: 'micropigmentacao', label: 'Micropigmentação?', type: 'boolean' }
     ],
     suggestedBackgrounds: [
       'https://images.unsplash.com/photo-1512290923902-8a9f81dc2069?auto=format&fit=crop&q=80&w=1080&h=1920',
       'https://images.unsplash.com/photo-1616394584738-fc6e612e71b9?auto=format&fit=crop&q=80&w=1080&h=1920',
       'https://images.unsplash.com/photo-1596178065887-1198b6148b2b?auto=format&fit=crop&q=80&w=1080&h=1920'
+    ],
+    defaultBio: 'Realçando seu olhar e sua beleza natural com as técnicas mais modernas do mercado. Especialista em design estratégico de sobrancelhas e extensões de cílios que trazem praticidade e elegância ao seu dia a dia.',
+    defaultCta: 'Agendar Procedimento ✨',
+    defaultServices: [
+      { nome: 'Design de Sobrancelhas', descricao: 'Medição estratégica e remoção de fios com pinça/linha.', preco: 'R$ 45' },
+      { nome: 'Extensão de Cílios Fio a Fio', descricao: 'Olhar marcante e natural com aplicação técnica segura.', preco: 'R$ 180' },
+      { nome: 'Brown Lamination', descricao: 'Técnica para sobrancelhas mais cheias e alinhadas.', preco: 'R$ 120' },
+      { nome: ' Lash Lifting', descricao: 'Curvatura natural dos seus próprios cílios com brilho.', preco: 'R$ 150' }
     ]
   },
   health: {

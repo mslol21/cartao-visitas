@@ -64,9 +64,30 @@ export interface CustomFields {
   trabalha_com_horario_marcado?: boolean;
   atende_noiva?: boolean;
   especialista_loiras?: boolean;
+  atendimento_kids?: boolean;
+  dia_do_noivo?: boolean;
+  quimica_relaxamento?: boolean;
+  produtos_venda?: boolean;
+  massagem_facial?: boolean;
+  lavagem_especial?: boolean;
+  dia_da_noiva?: boolean;
+  mechas_luzes?: boolean;
+  progressiva_botox?: boolean;
+  penteados?: boolean;
+  cronograma_capilar?: boolean;
   // Manicure / Estética
   atende_domicilio?: boolean;
   procedimentos?: string[];
+  unhas_fibra?: boolean;
+  unhas_gel?: boolean;
+  blindagem?: boolean;
+  spa_pes_maos?: boolean;
+  limpeza_pele?: boolean;
+  drenagem_linfatica?: boolean;
+  massagem_relaxante?: boolean;
+  micropigmentacao?: boolean;
+  extensao_cilios?: boolean;
+  design_sobrancelhas?: boolean;
   // Personal Trainer
   atende_em_academia?: boolean;
   online?: boolean;

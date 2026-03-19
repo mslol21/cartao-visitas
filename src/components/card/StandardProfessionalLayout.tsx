@@ -32,7 +32,18 @@ import {
   Monitor,
   Smartphone,
   Check,
-  ExternalLink
+  ExternalLink,
+  Scissors,
+  ShoppingBag,
+  Baby,
+  Wind,
+  Smile,
+  Gemini,
+  Eye,
+  Brush,
+  Flower2,
+  Waves,
+  Heart
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Profile, Service, CustomFields, ProfessionCategory } from '@/types/profile';
@@ -116,7 +127,17 @@ export function StandardProfessionalLayout({ data, isPro }: StandardProfessional
      if (fieldName.includes('socorro') || fieldName.includes('emergencia')) return Zap;
      if (fieldName.includes('clinico') || fieldName.includes('saude')) return HeartPulse;
      if (fieldName.includes('celular')) return Smartphone;
-     if (['reforma', 'ferramentas', 'obra'].some(k => fieldName.includes(k))) return HardHat;
+     if (fieldName.includes('kids') || fieldName.includes('infantil')) return Baby;
+     if (fieldName.includes('noiva') || fieldName.includes('festa')) return Sparkles;
+     if (fieldName.includes('quimica') || fieldName.includes('relaxamento') || fieldName.includes('corte')) return Scissors;
+     if (fieldName.includes('produtos') || fieldName.includes('venda')) return ShoppingBag;
+     if (fieldName.includes('lavagem') || fieldName.includes('higienizacao')) return Wind;
+     if (fieldName.includes('massagem') || fieldName.includes('facial') || fieldName.includes('smile')) return Smile;
+     if (fieldName.includes('cilios') || fieldName.includes('sobrancelha') || fieldName.includes('olhar')) return Eye;
+     if (fieldName.includes('unha') || fieldName.includes('manicure') || fieldName.includes('pigmentacao')) return Brush;
+     if (fieldName.includes('pele') || fieldName.includes('estetica') || fieldName.includes('facial')) return Sparkles;
+     if (fieldName.includes('spa') || fieldName.includes('drenagem') || fieldName.includes('relaxante')) return Flower2;
+     if (fieldName.includes('reforma') || fieldName.includes('ferramentas') || fieldName.includes('obra')) return HardHat;
      return Award;
   };
 
@@ -183,6 +204,10 @@ export function StandardProfessionalLayout({ data, isPro }: StandardProfessional
         </h1>
         
         <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 text-primary border border-primary/20 mb-4">
+           {profession === 'barbearia' && <Scissors className="w-3.5 h-3.5 stroke-[2.5px]" />}
+           {profession === 'cabeleireiro' && <Scissors className="w-3.5 h-3.5 stroke-[2.5px]" />}
+           {profession === 'manicure' && <Brush className="w-3.5 h-3.5 stroke-[2.5px]" />}
+           {(profession === 'esteticista' || profession === 'beauty') && <Sparkles className="w-3.5 h-3.5 stroke-[2.5px]" />}
            <span className="text-[10px] font-black uppercase tracking-[0.2em]">{config.label}</span>
         </div>
 
