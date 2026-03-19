@@ -38,7 +38,6 @@ import {
   Baby,
   Wind,
   Smile,
-  Gemini,
   Eye,
   Brush,
   Flower2,
