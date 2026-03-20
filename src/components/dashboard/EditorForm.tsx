@@ -1073,7 +1073,7 @@ export function EditorForm({ initialData, onSubmit, onChange, isPro = false, can
           <TabsContent value="visual" className="space-y-6 mt-0">
             <div className="space-y-2">
               <Label className="flex items-center gap-2 opacity-60"><Palette className="w-4 h-4" /> Cor de Destaque</Label>
-              <div className={cn("flex flex-wrap items-center gap-2", (formData.category === 'barbearia' && !canCustomizeTheme) && "opacity-40 pointer-events-none")}>
+              <div className={cn("flex flex-wrap items-center gap-2", (formData.profession === 'barbearia' && !canCustomizeTheme && !isPro) && "opacity-40 pointer-events-none")}>
                 {['#3b82f6', '#25D366', '#000000', '#f43f5e', '#8b5cf6', '#f59e0b', '#ef4444', '#10b981'].map((color) => (
                   <button
                     key={color}
@@ -1313,7 +1313,7 @@ export function EditorForm({ initialData, onSubmit, onChange, isPro = false, can
                 {!isPro && <span className="text-[10px] bg-primary/10 text-primary px-2 py-1 rounded-full font-black">PRO</span>}
               </div>
               
-              <div className={cn("grid grid-cols-2 gap-3", (!isPro || (formData.category === 'barbearia' && !canCustomizeTheme)) && "opacity-40 pointer-events-none")}>
+              <div className={cn("grid grid-cols-2 gap-3", (!isPro && formData.profession !== 'barbearia' && (formData.category === 'barbearia' && !canCustomizeTheme)) && "opacity-40 pointer-events-none")}>
                 {['Inter', 'Outfit', 'Playfair Display', 'Sora', 'Plus Jakarta Sans', 'Bento'].map((font) => (
                   <button
                     key={font}
@@ -1335,7 +1335,7 @@ export function EditorForm({ initialData, onSubmit, onChange, isPro = false, can
                 <Label className="flex items-center gap-2 font-black uppercase tracking-widest text-[10px]"><ImageIcon className="w-4 h-4 text-primary" /> Fundo Personalizado</Label>
                 {!isPro && <span className="text-[10px] bg-primary/10 text-primary px-2 py-1 rounded-full font-black">PRO</span>}
               </div>
-              <div className={cn("space-y-3", (!isPro || (formData.category === 'barbearia' && !canCustomizeTheme)) && "opacity-40 pointer-events-none")}>
+              <div className={cn("space-y-3", (!isPro && formData.profession !== 'barbearia') && "opacity-40 pointer-events-none")}>
                 <input
                   type="file"
                   ref={videoInputRef}
@@ -1393,7 +1393,7 @@ export function EditorForm({ initialData, onSubmit, onChange, isPro = false, can
                 </p>
 
                 {/* --- SEARCH & SUGGESTED GALLERY --- */}
-                {isPro && (
+                {(isPro || formData.profession === 'barbearia') && (
                   <div className="mt-8 space-y-6 animate-in fade-in slide-in-from-bottom-4">
                     {/* Pixabay Search Bar */}
                     <div className="space-y-3">

@@ -133,7 +133,7 @@ export function CardPreview({
     'pedreiro', 'mecanico', 'eletricista', 'encanador', 'diarista', 
     'frete', 'ar_condicionado', 'montador_moveis', 'gesseiro', 
     'vidraceiro', 'pintor', 'serralheiro', 'marceneiro', 
-    'assistencia_celular'
+    'assistencia_celular', 'mestre_de_obras'
   ].includes(data.profession as string);
   const isAdvogado = data.profession === 'advogado' || data.category === 'advogado';
   const isTech = ['tech', 'tecnico_informatica', 'designer', 'fotografo'].includes(data.profession as string) || data.category === 'tech';
@@ -267,8 +267,9 @@ END:VCARD`;
         isPetshop ? "Olá! Vi seu perfil na Konnexy e gostaria de agendar um serviço para meu pet 🐾" :
         isVeterinario ? "Olá! Vi seu perfil na Konnexy e gostaria de agendar uma consulta veterinária 🩺" :
         isArtesao ? "Olá! Vi seu perfil na Konnexy e gostaria de falar sobre as suas peças artesanais / encomendas 🎨" :
-        isMusico ? "Olá! Gostaria de conversar sobre seu trabalho como músico 🎸" :
-        isDriver ? "Olá! Gostaria de agendar uma corrida / entrega 🚗" :
+        isMusico ? "Olá! Gostaria de conversar sobre seu trabalho como músico 🎸" : 
+        data.profession === 'mestre_de_obras' ? "Olá! Vi seu perfil na Konnexy e gostaria de um orçamento para minha obra 🏗️" :
+        isDriver ? "Olá! Gostaria de agendar uma corrida / entrega 🚗" : 
         `Olá! Vi seu perfil na Konnexy e gostaria de ${isPro ? 'solicitar um orçamento' : 'conversar'} sobre seus serviços.`
       )}`
     : '#';
@@ -734,7 +735,7 @@ END:VCARD`;
                <div 
                  className={cn(
                     "w-full h-full transition-colors duration-500 relative overflow-hidden",
-                    (isPro && data.background_video_url) ? "hidden" : "",
+                    (data.background_video_url) ? "hidden" : "",
                     (isPro && (data.custom_fields as any)?.cor_fundo) ? "bg-transparent" :
                      isPro ? (
                        isBarbearia ? "bg-[#0f0f0f]" : 
@@ -886,10 +887,10 @@ END:VCARD`;
                   )}
                </div>
 
-              {isPro && data.background_video_url && (
+              {data.background_video_url && (
                <div className="absolute inset-0 overflow-hidden pointer-events-none transition-all z-0">
                  <div 
-                   className={cn("w-full relative", isMusico ? "h-full" : "h-[65%]")}
+                   className={cn("w-full relative", (isMusico || isBarbearia) ? "h-full" : "h-[70%]")}
                    style={isMusico ? {
                      maskImage: 'linear-gradient(to bottom, black 0%, black 80%, transparent 100%)',
                      WebkitMaskImage: 'linear-gradient(to bottom, black 0%, black 80%, transparent 100%)'
@@ -905,18 +906,18 @@ END:VCARD`;
                        muted 
                        loop 
                        playsInline 
-                       className={cn("w-full h-full object-cover object-top", isMusico ? "opacity-70" : "opacity-50")}
+                       className={cn("w-full h-full object-cover object-top", (isMusico || isBarbearia) ? "opacity-70" : "opacity-60")}
                      />
                    ) : (
                      <img 
                        src={data.background_video_url}
                        alt="Background"
-                       className={cn("w-full h-full object-cover object-top", isMusico ? "opacity-70" : "opacity-50")}
+                       className={cn("w-full h-full object-cover object-top", (isMusico || isBarbearia) ? "opacity-70" : "opacity-60")}
                      />
                    )}
                  </div>
                  {!isMusico && !(isPro && (data.custom_fields as any)?.cor_fundo) && (
-                   <div className="absolute inset-0 bg-gradient-to-b from-slate-950/50 via-slate-950/80 to-slate-950" />
+                   <div className="absolute inset-0 bg-gradient-to-b from-slate-950/20 via-slate-950/60 to-slate-950" />
                  )}
                </div>
               )}

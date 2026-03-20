@@ -199,6 +199,7 @@ export function StandardProfessionalLayout({ data, isPro }: StandardProfessional
            {profession === 'cabeleireiro' && <Scissors className="w-3.5 h-3.5 stroke-[2.5px]" />}
            {profession === 'manicure' && <Brush className="w-3.5 h-3.5 stroke-[2.5px]" />}
            {(profession === 'esteticista' || profession === 'beauty') && <Sparkles className="w-3.5 h-3.5 stroke-[2.5px]" />}
+           {(profession === 'pedreiro' || profession === 'mestre_de_obras') && <HardHat className="w-3.5 h-3.5 stroke-[2.5px]" />}
            <span className="text-[10px] font-black uppercase tracking-[0.2em]">{config.label}</span>
         </div>
 

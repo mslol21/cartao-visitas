@@ -39,6 +39,7 @@ export type ProfessionCategory =
   | 'musico'
   | 'van_escolar'
   | 'guia_turistico'
+  | 'mestre_de_obras'
   | 'default';
 
 export interface Service {
@@ -129,6 +130,9 @@ export interface CustomFields {
   trabalha_aluminio?: boolean;
   trabalha_ferro?: boolean;
   moveis_planejados?: boolean;
+  leitura_projetos?: boolean;
+  gerencia_equipe?: boolean;
+  cronograma_obra?: boolean;
   // Automotivo / Transporte
   socorro_24h?: boolean;
   especialidade_carros?: string;

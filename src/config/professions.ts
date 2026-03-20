@@ -293,6 +293,29 @@ export const professionsMap: Record<ProfessionCategory, ProfessionConfig> = {
       'https://images.unsplash.com/photo-1541888941259-79273a460da1?auto=format&fit=crop&q=80&w=1080&h=1920'
     ]
   },
+  mestre_de_obras: {
+    id: 'mestre_de_obras',
+    label: 'Mestre de Obras',
+    theme: { color: 'orange', style: 'standard' },
+    customFields: [
+      { name: 'anos_experiencia', label: 'Anos de Experiência', type: 'text', placeholder: 'Ex: 15 anos' },
+      { name: 'gerencia_equipe', label: 'Gerenciamento de Equipes?', type: 'boolean' },
+      { name: 'leitura_projetos', label: 'Leitura de Projetos / Plantas?', type: 'boolean' },
+      { name: 'cronograma_obra', label: 'Gestão de Cronograma?', type: 'boolean' }
+    ],
+    suggestedBackgrounds: [
+      'https://images.unsplash.com/photo-1541888941259-79273a460da1?auto=format&fit=crop&q=80&w=1080&h=1920',
+      'https://images.unsplash.com/photo-1503387762-592dee58c460?auto=format&fit=crop&q=80&w=1080&h=1920',
+      'https://images.unsplash.com/photo-1590644365607-1c5a519a7a37?auto=format&fit=crop&q=80&w=1080&h=1920'
+    ],
+    defaultBio: 'Mestre de obras com vasta experiência em gestão de canteiros, leitura técnica de projetos e coordenação de equipes. Foco total em qualidade, cumprimento de prazos e otimização de custos para garantir que seu sonho seja construído com segurança e excelência.',
+    defaultCta: 'Solicitar Consultoria 🏗️',
+    defaultServices: [
+      { nome: 'Gerenciamento de Obra', descricao: 'Acompanhamento diário do canteiro, gestão de materiais e conferência de serviços.', preco: 'Sob consulta' },
+      { nome: 'Consultoria de Projetos', descricao: 'Análise detalhada de plantas e auxílio na viabilidade técnica da construção.', preco: 'R$ 250 / h' },
+      { nome: 'Reforma Completa / Gestão', descricao: 'Gestão integral da reforma, desde a demolição até os acabamentos mais finos.', preco: 'Sob consulta' }
+    ]
+  },
   mecanico: {
     id: 'mecanico',
     label: 'Mecânico / Auto',
