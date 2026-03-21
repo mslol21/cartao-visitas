@@ -247,6 +247,13 @@ export function StandardProfessionalLayout({ data, isPro }: StandardProfessional
              </div>
            )}
         </div>
+
+        {profession === 'loja_online' && (data.custom_fields as any)?.envio_nacional && (
+          <div className="mt-4 flex items-center gap-2 px-3 py-1 rounded-full bg-green-500/10 text-green-600 border border-green-500/20 text-[9px] font-black uppercase tracking-widest animate-pulse">
+            <Truck className="w-3 h-3" />
+            <span>Envio para Todo Brasil</span>
+          </div>
+        )}
       </motion.div>
 
       {/* 6. MAIN CONTACT GROUP */}
@@ -279,6 +286,20 @@ export function StandardProfessionalLayout({ data, isPro }: StandardProfessional
             <span>{data.cta_text || config.defaultCta || 'Chamar no WhatsApp'}</span>
           </a>
         </Button>
+
+        {(data.custom_fields as any)?.link_catalogo && (
+          <Button 
+            asChild
+            className={cn(
+              "w-full h-12 rounded-xl text-[10px] font-black uppercase tracking-widest border border-primary/20 bg-primary/5 hover:bg-primary/10 text-primary transition-all",
+            )}
+          >
+            <a href={(data.custom_fields as any).link_catalogo.startsWith('http') ? (data.custom_fields as any).link_catalogo : `https://${(data.custom_fields as any).link_catalogo}`} target="_blank" rel="noopener noreferrer">
+              <ExternalLink className="w-4 h-4 mr-2" />
+              <span>Ver Catálogo Online</span>
+            </a>
+          </Button>
+        )}
 
         {data.instagram && (
           <Button 
@@ -466,65 +487,51 @@ export function StandardProfessionalLayout({ data, isPro }: StandardProfessional
              })}
            </div>
         </motion.div>
-      )}
-
-      {/* 10. CUSTOM FIELDS (Profession Specific) */}
+        {/* 10. CUSTOM FIELDS & STORE FEATURES */}
       {config.customFields.length > 0 && (
-        <motion.div 
-          custom={5} initial="hidden" animate="visible" variants={fadeIn}
-          className="px-6"
-        >
-          <div className="grid grid-cols-2 gap-3">
-            {config.customFields.map((field) => {
-              const value = (data.custom_fields as any)?.[field.name];
-              if (!value && typeof value !== 'boolean') return null;
-              if (field.type === 'boolean' && value === false) return null;
-
-              const Icon = getFieldIcon(field.name);
-              const displayLabel = field.label.replace(/\s*\(.*?\)\s*/g, '');
-              const isArray = field.type === 'array' || Array.isArray(value);
-
-              return (
-                <div key={field.name} className={cn("p-4 rounded-[1.5rem] bg-primary/5 border border-primary/20 flex flex-col items-center text-center gap-2 group hover:bg-primary/10 transition-colors", isArray ? "col-span-2" : "")}>
-                   {field.type === 'boolean' ? (
-                     <>
-                        <Icon className="w-5 h-5 text-primary group-hover:scale-110 transition-transform" />
-                        <span className="text-[10px] font-black uppercase tracking-tight leading-tight">{displayLabel}</span>
-                        <Check className="w-3 h-3 text-primary/40" />
-                     </>
-                   ) : isArray ? (
-                     <>
-                        <div className="flex items-center gap-2 mb-1">
-                           <Icon className="w-4 h-4 text-primary/50" />
-                           <span className="text-[9px] font-black uppercase tracking-widest opacity-50">{displayLabel}</span>
-                        </div>
-                        <div className="flex flex-wrap items-center justify-center gap-1.5 w-full">
-                           {(Array.isArray(value) ? value : String(value).split(/[,;]/)).map((item: string, i: number) => {
-                             const trimmed = item.trim();
-                             if (!trimmed) return null;
-                             return (
-                               <span key={i} className="text-[10px] font-bold text-slate-800 dark:text-slate-100 bg-white dark:bg-slate-800 border border-primary/10 dark:border-primary/20 px-3 py-1.5 rounded-full shadow-sm">
-                                 {trimmed}
-                               </span>
-                             );
-                           })}
-                        </div>
-                     </>
-                   ) : (
-                     <>
-                        <Icon className="w-5 h-5 text-primary/40" />
-                        <div className="flex flex-col gap-0.5">
-                           <span className="text-[8px] font-black uppercase tracking-widest opacity-40">{displayLabel}</span>
-                           <span className="text-[11px] font-black text-slate-800 dark:text-white uppercase leading-tight italic tracking-tighter">
-                             {value}
-                           </span>
-                        </div>
-                     </>
-                   )}
-                </div>
-              );
-            })}
-          </div>
+        <motion.div custom={5} initial="hidden" animate="visible" variants={fadeIn} className="px-6">
+          {profession === 'loja_online' ? (
+            <div className="space-y-6">
+              {/* Organized Store Grid */}
+              <div className="grid grid-cols-2 gap-3">
+                {config.customFields
+                  .filter(f => (data.custom_fields as any)?.[f.name] && f.name !== 'link_catalogo')
+                  .map(field => {
+                    const value = (data.custom_fields as any)[field.name];
+                    const Icon = getFieldIcon(field.name);
+                    return (
+                      <div key={field.name} className="p-4 rounded-2xl bg-white/40 dark:bg-black/40 backdrop-blur-sm border border-slate-200 dark:border-white/5 flex flex-col items-center text-center gap-2 group hover:bg-white/60 transition-all">
+                        <Icon className="w-5 h-5 text-primary/70 group-hover:scale-110 transition-transform" />
+                        <span className="text-[9px] font-black uppercase tracking-tight text-slate-500">{field.label.replace('?', '')}</span>
+                        {field.type === 'boolean' ? <Check className="w-3 h-3 text-green-500" /> : <span className="text-xs font-bold">{value}</span>}
+                      </div>
+                    );
+                  })}
+              </div>
+            </div>
+          ) : (
+            /* Default generic rendering for other professions */
+            <div className="grid grid-cols-2 gap-3">
+              {config.customFields.map((field) => {
+                const value = (data.custom_fields as any)?.[field.name];
+                if (!value && typeof value !== 'boolean') return null;
+                if (field.type === 'boolean' && value === false) return null;
+                const Icon = getFieldIcon(field.name);
+                return (
+                  <div key={field.name} className="p-4 rounded-[1.5rem] bg-primary/5 border border-primary/20 flex flex-col items-center text-center gap-2 group">
+                     {field.type === 'boolean' ? (
+                       <>
+                          <Icon className="w-5 h-5 text-primary" />
+                          <span className="text-[10px] font-black uppercase tracking-tight">{field.label}</span>
+                       </>
+                     ) : (
+                       <span className="text-xs font-bold">{value}</span>
+                     )}
+                  </div>
+                );
+              })}
+            </div>
+          )}
         </motion.div>
       )}
 
