@@ -263,21 +263,28 @@ export function StandardProfessionalLayout({ data, isPro }: StandardProfessional
         >
           <a href={whatsappLink} target="_blank" rel="noopener noreferrer">
             <MessageCircle className={cn("w-5 h-5", (data.custom_fields as any)?.cor_botoes ? "" : "fill-white")} />
-            <span>Chamar no WhatsApp</span>
+            <span>{data.cta_text || config.defaultCta || 'Chamar no WhatsApp'}</span>
           </a>
         </Button>
 
         {data.instagram && (
           <Button 
             asChild
-            variant="outline"
-            className="w-full h-12 rounded-xl border border-slate-200 dark:border-white/10 bg-white dark:bg-slate-900 hover:bg-slate-50 dark:hover:bg-slate-800 transition-all group overflow-hidden"
+            variant={profession === 'area_lazer' ? "default" : "outline"}
+            className={cn(
+              "w-full h-12 rounded-xl transition-all group overflow-hidden",
+              profession === 'area_lazer' 
+                ? "bg-gradient-to-r from-[#833ab4] via-[#fd1d1d] to-[#fcb045] text-white border-none shadow-lg shadow-orange-500/20" 
+                : "border border-slate-200 dark:border-white/10 bg-white dark:bg-slate-900 hover:bg-slate-50 dark:hover:bg-slate-800"
+            )}
           >
             <a href={`https://instagram.com/${data.instagram}`} target="_blank" rel="noopener noreferrer" className="flex items-center justify-center gap-2">
-              <Instagram className="w-4 h-4 text-[#E1306C]" />
-              <span className="text-[10px] font-black uppercase tracking-widest text-slate-700 dark:text-white/80">Instagram</span>
-              <span className="text-[9px] text-slate-400 font-bold ml-auto opacity-60 group-hover:opacity-100">@{data.instagram}</span>
-              <ChevronRight className="w-3 h-3 text-slate-300 ml-1" />
+              <Instagram className={cn("w-4 h-4", profession === 'area_lazer' ? "text-white" : "text-[#E1306C]")} />
+              <span className={cn("text-[10px] font-black uppercase tracking-widest", profession === 'area_lazer' ? "text-white" : "text-slate-700 dark:text-white/80")}>
+                {profession === 'area_lazer' ? "Ver Fotos no Instagram" : "Instagram"}
+              </span>
+              {! (profession === 'area_lazer') && <span className="text-[9px] text-slate-400 font-bold ml-auto opacity-60 group-hover:opacity-100">@{data.instagram}</span>}
+              <ChevronRight className={cn("w-3 h-3 ml-1", profession === 'area_lazer' ? "text-white ml-auto" : "text-slate-300")} />
             </a>
           </Button>
         )}
