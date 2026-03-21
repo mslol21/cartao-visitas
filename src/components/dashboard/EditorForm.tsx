@@ -773,42 +773,102 @@ export function EditorForm({ initialData, onSubmit, onChange, isPro = false, can
                      <div className="p-2 bg-primary/10 rounded-lg">
                         <SparklesIcon className="w-4 h-4 text-primary" />
                      </div>
-                     <h3 className="text-sm font-black uppercase tracking-widest">Destaques {professionConfig.label}</h3>
-                  </div>
-
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    {professionConfig.customFields.map((field) => (
-                      <div key={field.name} className="flex flex-col gap-2">
-                        {field.type === 'boolean' ? (
-                          <div className="flex items-center justify-between p-3 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800">
-                            <Label className="text-sm font-bold opacity-80">{field.label}</Label>
-                            <Switch 
-                              checked={!!(formData.custom_fields as any)?.[field.name]}
-                              onCheckedChange={(checked) => handleCustomFieldChange(field.name as keyof CustomFields, checked)}
-                            />
-                          </div>
-                        ) : field.type === 'text' ? (
-                          <>
-                            <Label className="text-xs font-bold uppercase tracking-wider opacity-60">{field.label}</Label>
-                            <Input
-                              value={(formData.custom_fields as any)?.[field.name] || ''}
-                              onChange={(e) => handleCustomFieldChange(field.name as keyof CustomFields, e.target.value)}
-                              placeholder={field.placeholder}
-                              className="rounded-2xl h-11"
-                            />
-                          </>
-                        ) : field.type === 'array' ? (
-                          <>
-                            <Label className="text-xs font-bold uppercase tracking-wider opacity-60">{field.label} (Separado por vírgula)</Label>
-                            <Input
-                              value={((formData.custom_fields as any)?.[field.name] || []).join(', ')}
-                              onChange={(e) => handleCustomFieldChange(field.name as keyof CustomFields, e.target.value.split(',').map(s => s.trim()))}
-                              placeholder={field.placeholder}
-                              className="rounded-2xl h-11"
-                            />
-                          </>
-                        ) : null}
+                     <h3 className="text-sm font-black uppercase tracking-wide                   <div className="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-4">
+                    {professionConfig.id === 'loja_online' ? (
+                      <div className="md:col-span-2 space-y-8">
+                         <div className="space-y-4">
+                            <h4 className="text-[10px] font-black uppercase tracking-widest text-primary/50 border-b border-primary/10 pb-2">Logística e Envio</h4>
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                               {professionConfig.customFields.filter(f => ['envio_nacional', 'frete_gratis', 'aceita_encomendas', 'link_catalogo'].includes(f.name)).map((field) => (
+                                  <div key={field.name} className="flex flex-col gap-1.5 p-3 rounded-2xl bg-white dark:bg-slate-900/40 border border-slate-200 dark:border-slate-800">
+                                     {field.type === 'boolean' ? (
+                                        <div className="flex items-center justify-between">
+                                           <Label className="text-sm font-bold opacity-80 cursor-pointer">{field.label}</Label>
+                                           <Switch 
+                                             checked={!!(formData.custom_fields as any)?.[field.name]}
+                                             onCheckedChange={(checked) => handleCustomFieldChange(field.name as keyof CustomFields, checked)}
+                                           />
+                                        </div>
+                                     ) : (
+                                        <>
+                                           <Label className="text-xs font-black uppercase tracking-widest opacity-40 mb-1">{field.label}</Label>
+                                           <Input
+                                             value={(formData.custom_fields as any)?.[field.name] || ''}
+                                             onChange={(e) => handleCustomFieldChange(field.name as keyof CustomFields, e.target.value)}
+                                             placeholder={field.placeholder}
+                                             className="rounded-xl h-10 text-sm"
+                                           />
+                                        </>
+                                     )}
+                                  </div>
+                               ))}
+                            </div>
+                         </div>
+                         <div className="space-y-4">
+                            <h4 className="text-[10px] font-black uppercase tracking-widest text-primary/50 border-b border-primary/10 pb-2">Pagamento e Suporte</h4>
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                               {professionConfig.customFields.filter(f => ['parcelamento_sem_juros', 'desconto_pix', 'atendimento_humano', 'garantia_troca'].includes(f.name)).map((field) => (
+                                  <div key={field.name} className="flex flex-col gap-1.5 p-3 rounded-2xl bg-white dark:bg-slate-900/40 border border-slate-200 dark:border-slate-800">
+                                     {field.type === 'boolean' ? (
+                                        <div className="flex items-center justify-between">
+                                           <Label className="text-sm font-bold opacity-80 cursor-pointer">{field.label}</Label>
+                                           <Switch 
+                                             checked={!!(formData.custom_fields as any)?.[field.name]}
+                                             onCheckedChange={(checked) => handleCustomFieldChange(field.name as keyof CustomFields, checked)}
+                                           />
+                                        </div>
+                                     ) : (
+                                        <>
+                                           <Label className="text-xs font-black uppercase tracking-widest opacity-40 mb-1">{field.label}</Label>
+                                           <Input
+                                             value={(formData.custom_fields as any)?.[field.name] || ''}
+                                             onChange={(e) => handleCustomFieldChange(field.name as keyof CustomFields, e.target.value)}
+                                             placeholder={field.placeholder}
+                                             className="rounded-xl h-10 text-sm"
+                                           />
+                                        </>
+                                     )}
+                                  </div>
+                               ))}
+                            </div>
+                         </div>
                       </div>
+                    ) : (
+                      professionConfig.customFields.map((field) => (
+                        <div key={field.name} className="flex flex-col gap-2">
+                          {field.type === 'boolean' ? (
+                            <div className="flex items-center justify-between p-3 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800">
+                              <Label className="text-sm font-bold opacity-80">{field.label}</Label>
+                              <Switch 
+                                checked={!!(formData.custom_fields as any)?.[field.name]}
+                                onCheckedChange={(checked) => handleCustomFieldChange(field.name as keyof CustomFields, checked)}
+                              />
+                            </div>
+                          ) : field.type === 'text' ? (
+                            <>
+                              <Label className="text-xs font-bold uppercase tracking-wider opacity-60">{field.label}</Label>
+                              <Input
+                                value={(formData.custom_fields as any)?.[field.name] || ''}
+                                onChange={(e) => handleCustomFieldChange(field.name as keyof CustomFields, e.target.value)}
+                                placeholder={field.placeholder}
+                                className="rounded-2xl h-11"
+                              />
+                            </>
+                          ) : field.type === 'array' ? (
+                            <>
+                              <Label className="text-xs font-bold uppercase tracking-wider opacity-60">{field.label} (Separado por vírgula)</Label>
+                              <Input
+                                value={((formData.custom_fields as any)?.[field.name] || []).join(', ')}
+                                onChange={(e) => handleCustomFieldChange(field.name as keyof CustomFields, e.target.value.split(',').map(s => s.trim()))}
+                                placeholder={field.placeholder}
+                                className="rounded-2xl h-11"
+                              />
+                            </>
+                          ) : null}
+                        </div>
+                      ))
+                    )}
+                  </div>                 </div>
                     ))}
                   </div>
                 </div>

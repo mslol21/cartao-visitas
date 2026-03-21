@@ -487,7 +487,9 @@ export function StandardProfessionalLayout({ data, isPro }: StandardProfessional
              })}
            </div>
         </motion.div>
-        {/* 10. CUSTOM FIELDS & STORE FEATURES */}
+       )}
+
+       {/* 10. CUSTOM FIELDS & STORE FEATURES */}
       {config.customFields.length > 0 && (
         <motion.div custom={5} initial="hidden" animate="visible" variants={fadeIn} className="px-6">
           {profession === 'loja_online' ? (
