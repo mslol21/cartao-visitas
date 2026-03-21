@@ -257,8 +257,12 @@ export function StandardProfessionalLayout({ data, isPro }: StandardProfessional
         <Button 
           asChild
           className={cn(
-            "w-full h-14 rounded-[1.2rem] text-base font-black uppercase tracking-tighter shadow-lg border-none flex items-center justify-center gap-3 transition-transform hover:scale-[1.02]",
-            !(data.custom_fields as any)?.cor_botoes && "bg-[#25D366] hover:bg-[#20ba59] text-white shadow-[#25D366]/20"
+            "w-full h-14 rounded-[1.2rem] text-base font-black uppercase tracking-tighter shadow-xl border-none flex items-center justify-center gap-3 transition-transform hover:scale-[1.02] active:scale-[0.98]",
+            !(data.custom_fields as any)?.cor_botoes && (
+              profession === 'loja_online' 
+                ? "bg-gradient-to-r from-violet-600 to-indigo-600 text-white shadow-violet-500/30" 
+                : "bg-[#25D366] hover:bg-[#20ba59] text-white shadow-[#25D366]/20"
+            )
           )}
           style={(data.custom_fields as any)?.cor_botoes ? {
              backgroundColor: (data.custom_fields as any).cor_botoes,
@@ -267,7 +271,11 @@ export function StandardProfessionalLayout({ data, isPro }: StandardProfessional
           } : undefined}
         >
           <a href={whatsappLink} target="_blank" rel="noopener noreferrer">
-            <MessageCircle className={cn("w-5 h-5", (data.custom_fields as any)?.cor_botoes ? "" : "fill-white")} />
+            {profession === 'loja_online' ? (
+              <ShoppingBag className="w-5 h-5 fill-white/20" />
+            ) : (
+              <MessageCircle className={cn("w-5 h-5", (data.custom_fields as any)?.cor_botoes ? "" : "fill-white")} />
+            )}
             <span>{data.cta_text || config.defaultCta || 'Chamar no WhatsApp'}</span>
           </a>
         </Button>

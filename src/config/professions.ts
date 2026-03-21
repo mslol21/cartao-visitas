@@ -837,7 +837,7 @@ export const professionsMap: Record<ProfessionCategory, ProfessionConfig> = {
   loja_online: {
     id: 'loja_online',
     label: 'Loja Online / E-commerce',
-    theme: { color: 'blue', style: 'glass' },
+    theme: { color: 'violet', style: 'glass' },
     customFields: [
       { name: 'envio_nacional', label: 'Enviamos para todo o Brasil?', type: 'boolean' },
       { name: 'frete_gratis', label: 'Temos Frete Grátis?', type: 'boolean' },
@@ -849,17 +849,17 @@ export const professionsMap: Record<ProfessionCategory, ProfessionConfig> = {
       { name: 'desconto_pix', label: 'Desconto no PIX?', type: 'boolean' }
     ],
     suggestedBackgrounds: [
-      'https://images.unsplash.com/photo-1472851294608-062f824d29cc?auto=format&fit=crop&q=80&w=1080&h=1920',
+      'https://images.unsplash.com/photo-1573485120353-438420b7a7c1?auto=format&fit=crop&q=80&w=1080&h=1920',
       'https://images.unsplash.com/photo-1556742111-a301076d9d18?auto=format&fit=crop&q=80&w=1080&h=1920',
-      'https://images.unsplash.com/photo-1523275335684-37898b6baf30?auto=format&fit=crop&q=80&w=1080&h=1920',
-      'https://images.unsplash.com/photo-1441986300913-9af03067ee0a?auto=format&fit=crop&q=80&w=1080&h=1920'
+      'https://images.unsplash.com/photo-1472851294608-062f824d29cc?auto=format&fit=crop&q=80&w=1080&h=1920',
+      'https://images.unsplash.com/photo-1523275335684-37898b6baf30?auto=format&fit=crop&q=80&w=1080&h=1920'
     ],
-    defaultBio: 'Sua loja online favorita agora com envios para todo o Brasil! Qualidade, segurança e os melhores produtos entregues diretamente na sua casa. Trabalhamos com as melhores marcas e garantimos a melhor experiência de compra online.',
-    defaultCta: 'Comprar Agora 🛍️',
+    defaultBio: 'Sua loja online favorita agora com envios para todo o Brasil! Oferecemos produtos exclusivos com a máxima qualidade e segurança. Garantimos a melhor experiência de compra diretamente na sua porta.',
+    defaultCta: 'COMPRAR AGORA 🛒',
     defaultServices: [
-       { nome: 'Envio Nacional via Correios/SEDEX', descricao: 'Seu pedido seguro e rastreado em todo o trajeto até sua porta.', preco: 'Consulte o Frete' },
-       { nome: 'Gift Card / Vale Presente', descricao: 'Presenteie quem você ama com créditos exclusivos na nossa loja.', preco: 'A partir de R$ 50' },
-       { nome: 'Lançamentos da Semana', descricao: 'Acompanhe as tendências e garanta nossos produtos mais novos.', preco: 'A partir de R$ 89' }
+       { nome: 'Envio Nacional via SEDEX', descricao: 'Entrega rápida e segura em qualquer estado do Brasil.', preco: 'Consulte o Frete' },
+       { nome: 'Atendimento Personalizado', descricao: 'Tire suas dúvidas e faça seu pedido direto conosco.', preco: 'Free' },
+       { nome: 'Catálogo de Produtos', descricao: 'Conheça nossa linha completa de itens a pronta entrega.', preco: 'A partir de R$ 49' }
     ]
   },
   area_lazer: {
