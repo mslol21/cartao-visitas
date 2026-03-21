@@ -40,7 +40,11 @@ import {
   Umbrella,
   Users,
   Palmtree,
-  Music
+  Music,
+  CreditCard,
+  Wallet,
+  Receipt,
+  Ticket
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Profile, ProfessionCategory } from '@/types/profile';

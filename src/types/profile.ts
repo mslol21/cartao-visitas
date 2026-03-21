@@ -199,6 +199,10 @@ export interface CustomFields {
   frete_gratis?: boolean;
   link_catalogo?: string;
   aceita_encomendas?: boolean;
+  atendimento_humano?: boolean;
+  garantia_troca?: boolean;
+  parcelamento_sem_juros?: boolean;
+  desconto_pix?: boolean;
 }
 
 // Keeping old items for backwards compatibility during migration

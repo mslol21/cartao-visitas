@@ -238,8 +238,8 @@ export function EditorForm({ initialData, onSubmit, onChange, isPro = false, can
     const file = e.target.files?.[0];
     if (!file) return;
 
-    if (file.size > 2 * 1024 * 1024) {
-      toast.error('Imagem muito grande. Máximo 2MB.');
+    if (file.size > 4 * 1024 * 1024) {
+      toast.error('Imagem muito grande. Máximo 4MB.');
       return;
     }
 
