@@ -40,6 +40,8 @@ export type ProfessionCategory =
   | 'van_escolar'
   | 'guia_turistico'
   | 'mestre_de_obras'
+  | 'area_lazer'
+  | 'pizzaria'
   | 'default';
 
 export interface Service {
@@ -169,6 +171,21 @@ export interface CustomFields {
   aceita_encomendas?: boolean;
   prazo_medio_producao?: string;
   produtos_pronta_entrega?: boolean;
+  
+  // Área de Lazer / Eventos
+  capacidade_pessoas?: string;
+  possui_piscina?: boolean;
+  possui_churrasqueira?: boolean;
+  espaco_kids?: boolean;
+  permite_som?: boolean;
+  wifi_disponivel?: boolean;
+  estacionamento_proprio?: boolean;
+  
+  // Pizzaria
+  bordas_recheadas?: boolean;
+  rodizio_disponivel?: boolean;
+  especialista_calzones?: boolean;
+  massa_artesanal?: boolean;
 }
 
 // Keeping old items for backwards compatibility during migration

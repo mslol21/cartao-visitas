@@ -35,7 +35,12 @@ import {
   Brush,
   Flower2,
   Waves,
-  Heart
+  Heart,
+  Sun,
+  Umbrella,
+  Users,
+  Palmtree,
+  Music
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Profile, ProfessionCategory } from '@/types/profile';
@@ -129,6 +134,11 @@ export function StandardProfessionalLayout({ data, isPro }: StandardProfessional
      if (fieldName.includes('pele') || fieldName.includes('estetica') || fieldName.includes('facial')) return Sparkles;
      if (fieldName.includes('spa') || fieldName.includes('drenagem') || fieldName.includes('relaxante')) return Flower2;
      if (fieldName.includes('reforma') || fieldName.includes('ferramentas') || fieldName.includes('obra')) return HardHat;
+     if (fieldName.includes('piscina') || fieldName.includes('lazer')) return Waves;
+     if (fieldName.includes('churrasqueira') || fieldName.includes('festa')) return Sparkles;
+     if (fieldName.includes('capacidade')) return Users;
+     if (fieldName.includes('wifi')) return Globe;
+     if (fieldName.includes('som')) return Music;
      return Award;
   };
 
@@ -200,6 +210,7 @@ export function StandardProfessionalLayout({ data, isPro }: StandardProfessional
            {profession === 'manicure' && <Brush className="w-3.5 h-3.5 stroke-[2.5px]" />}
            {(profession === 'esteticista' || profession === 'beauty') && <Sparkles className="w-3.5 h-3.5 stroke-[2.5px]" />}
            {(profession === 'pedreiro' || profession === 'mestre_de_obras') && <HardHat className="w-3.5 h-3.5 stroke-[2.5px]" />}
+           {profession === 'area_lazer' && <Umbrella className="w-3.5 h-3.5 stroke-[2.5px]" />}
            <span className="text-[10px] font-black uppercase tracking-[0.2em]">{config.label}</span>
         </div>
 

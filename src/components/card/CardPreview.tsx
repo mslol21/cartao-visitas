@@ -76,7 +76,10 @@ import {
   Play,
   Headphones,
   Mic2,
-  Copy
+  Copy,
+  Umbrella,
+  Sun,
+  Palmtree
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Profile } from '@/types/profile';
@@ -127,13 +130,13 @@ export function CardPreview({
   const isBeauty = ['beauty', 'manicure', 'cabeleireiro', 'esteticista'].includes(data.profession as string) || data.category === 'beauty';
   const isHealth = ['health', 'personal_trainer', 'psicologo'].includes(data.profession as string) || data.category === 'health';
   const isSales = data.profession === 'sales' || data.category === 'sales';
-  const isFood = ['food', 'quentinhas'].includes(data.profession as string) || data.category === 'food';
+  const isFood = ['food', 'quentinhas', 'pizzaria'].includes(data.profession as string) || data.category === 'food';
   const isService = data.profession === 'service' || data.category === 'service';
   const isModernService = [
     'pedreiro', 'mecanico', 'eletricista', 'encanador', 'diarista', 
     'frete', 'ar_condicionado', 'montador_moveis', 'gesseiro', 
     'vidraceiro', 'pintor', 'serralheiro', 'marceneiro', 
-    'assistencia_celular', 'mestre_de_obras'
+    'assistencia_celular', 'mestre_de_obras', 'area_lazer'
   ].includes(data.profession as string);
   const isAdvogado = data.profession === 'advogado' || data.category === 'advogado';
   const isTech = ['tech', 'tecnico_informatica', 'designer', 'fotografo'].includes(data.profession as string) || data.category === 'tech';
@@ -269,6 +272,8 @@ END:VCARD`;
         isArtesao ? "Olá! Vi seu perfil na Konnexy e gostaria de falar sobre as suas peças artesanais / encomendas 🎨" :
         isMusico ? "Olá! Gostaria de conversar sobre seu trabalho como músico 🎸" : 
         data.profession === 'mestre_de_obras' ? "Olá! Vi seu perfil na Konnexy e gostaria de um orçamento para minha obra 🏗️" :
+        data.profession === 'area_lazer' ? "Olá! Vi seu perfil na Konnexy e gostaria de consultar a disponibilidade da sua área de lazer 📅" :
+        data.profession === 'pizzaria' ? "Olá! Vi seu perfil na Konnexy e gostaria de fazer um pedido de pizza 🍕" :
         isDriver ? "Olá! Gostaria de agendar uma corrida / entrega 🚗" : 
         `Olá! Vi seu perfil na Konnexy e gostaria de ${isPro ? 'solicitar um orçamento' : 'conversar'} sobre seus serviços.`
       )}`

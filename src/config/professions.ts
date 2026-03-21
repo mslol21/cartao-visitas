@@ -604,6 +604,31 @@ export const professionsMap: Record<ProfessionCategory, ProfessionConfig> = {
       { nome: 'Porções e Petiscos', descricao: 'Ideais para dividir com a galera e acompanhar uma bebida gelada.', preco: 'Sob consulta' }
     ]
   },
+  pizzaria: {
+    id: 'pizzaria',
+    label: 'Pizzaria Gourmet',
+    theme: { color: 'red', style: 'standard' },
+    customFields: [
+      { name: 'tem_delivery', label: 'Tem Delivery?', type: 'boolean' },
+      { name: 'rodizio_disponivel', label: 'Faz Rodízio?', type: 'boolean' },
+      { name: 'bordas_recheadas', label: 'Temos Bordas Recheadas?', type: 'boolean' },
+      { name: 'massa_artesanal', label: 'Massa de Longa Fermentação?', type: 'boolean' },
+      { name: 'especialista_calzones', label: 'Especialista em Calzones?', type: 'boolean' }
+    ],
+    suggestedBackgrounds: [
+      'https://images.unsplash.com/photo-1513104890138-7c749659a591?auto=format&fit=crop&w=1080&h=1920&q=80',
+      'https://images.unsplash.com/photo-1593560708920-61dd98c46a4e?auto=format&fit=crop&w=1080&h=1920&q=80',
+      'https://images.unsplash.com/photo-1594007654729-407eedc4be65?auto=format&fit=crop&w=1080&h=1920&q=80',
+      'https://images.unsplash.com/photo-1574071318508-1cdbad80ad50?auto=format&fit=crop&w=1080&h=1920&q=80'
+    ],
+    defaultBio: 'A verdadeira pizza artesanal com ingredientes selecionados e massa de longa fermentação. Sabores clássicos e autorais preparados no forno em alta temperatura para garantir aquela borda crocante e o queijo derretido perfeito.',
+    defaultCta: 'Ver Cardápio & Pedir 🍕',
+    defaultServices: [
+      { nome: 'Pizzas Grandes (8 Fatias)', descricao: 'Nossos maiores sucessos em massa tradicional ou fina.', preco: 'A partir de R$ 45' },
+      { nome: 'Combo Família', descricao: '2 Pizzas Grandes + Refrigerante 2L com desconto especial.', preco: 'R$ 95' },
+      { nome: 'Pizzas Doces', descricao: 'Finalize sua noite com nossas pizzas de Chocolate, Morango ou Nutella.', preco: 'A partir de R$ 35' }
+    ]
+  },
   tech: {
     id: 'tech',
     label: 'Tecnologia / Digital',
@@ -807,6 +832,33 @@ export const professionsMap: Record<ProfessionCategory, ProfessionConfig> = {
       { nome: 'Peças a Pronta Entrega', descricao: 'Itens exclusivos já produzidos e prontos para envio ou retirada.', preco: 'A partir de R$ 30' },
       { nome: 'Encomenda Personalizada', descricao: 'Seu projeto sob medida! Escolha as cores, tamanho e detalhes do seu produto.', preco: 'Sob consulta' },
       { nome: 'Kits / Lembrandoce', descricao: 'Lembrancinhas feitas a mão para casamentos, batizados e eventos infantis.', preco: 'Sob consulta' }
+    ]
+  },
+  area_lazer: {
+    id: 'area_lazer',
+    label: 'Área de Lazer & Eventos',
+    theme: { color: 'emerald', style: 'standard' },
+    customFields: [
+      { name: 'capacidade_pessoas', label: 'Capacidade (Nº Pessoas)', type: 'text', placeholder: 'Ex: Até 50 pessoas' },
+      { name: 'possui_piscina', label: 'Possui Piscina?', type: 'boolean' },
+      { name: 'possui_churrasqueira', label: 'Área de Churrasco?', type: 'boolean' },
+      { name: 'espaco_kids', label: 'Espaço Kids / Brinquedos?', type: 'boolean' },
+      { name: 'permite_som', label: 'Permite Som Automotivo / DJ?', type: 'boolean' },
+      { name: 'wifi_disponivel', label: 'Wi-Fi para Convidados?', type: 'boolean' },
+      { name: 'estacionamento_proprio', label: 'Estacionamento Próprio?', type: 'boolean' }
+    ],
+    suggestedBackgrounds: [
+      'https://images.unsplash.com/photo-1576013551627-0cc20b96c2a7?auto=format&fit=crop&q=80&w=1080&h=1920',
+      'https://images.unsplash.com/photo-1519167758481-83f550bb49b3?auto=format&fit=crop&q=80&w=1080&h=1920',
+      'https://images.unsplash.com/photo-1583037189155-739cd5ac612c?auto=format&fit=crop&q=80&w=1080&h=1920',
+      'https://images.unsplash.com/photo-1464366400600-7168b8af9bc3?auto=format&fit=crop&q=80&w=1080&h=1920'
+    ],
+    defaultBio: 'O espaço perfeito para o seu evento! Área de lazer completa com infraestrutura pensada para o conforto e diversão da sua família e amigos. Ampla, arejada e equipada com tudo o que você precisa para tornar seu momento inesquecível.',
+    defaultCta: 'Consultar Datas Disponíveis 📅',
+    defaultServices: [
+      { nome: 'Aluguel Período Diurno', descricao: 'Uso das 08h às 20h. Piscina, churrasqueira e playground inclusos.', preco: 'A partir de R$ 500' },
+      { nome: 'Combo Final de Semana', descricao: 'Entrada sexta 18h e saída domingo 18h. Com pernoite.', preco: 'Sob consulta' },
+      { nome: 'Locação para Festas', descricao: 'Espaço reservado para aniversários, batizados e confraternizações.', preco: 'A partir de R$ 700' }
     ]
   },
   default: {
