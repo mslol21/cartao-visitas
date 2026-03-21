@@ -17,6 +17,31 @@ export function ProfileClientWrapper({ profile, themeColor }: ProfileClientWrapp
 
   return (
     <>
+      {/* Global Background (Only for Pro) */}
+      {isPro && profile.background_video_url && (
+        <div className="fixed inset-0 z-[-2] pointer-events-none">
+          {profile.background_video_url.match(/\.(mp4|webm|ogg|mov)$/i) ? (
+            <video
+              src={profile.background_video_url}
+              autoPlay
+              muted
+              loop
+              playsInline
+              className="w-full h-full object-cover"
+            />
+          ) : (
+            <img
+              src={profile.background_video_url}
+              alt="Background"
+              className="w-full h-full object-cover"
+            />
+          )}
+          {/* Overlay for better readability */}
+          <div className="absolute inset-0 bg-slate-950/40 backdrop-blur-[2px]" />
+          <div className="absolute inset-0 bg-gradient-to-b from-transparent via-slate-950/20 to-slate-950" />
+        </div>
+      )}
+
       {/* Premium Background Noise (Only for Pro) */}
       {isPro ? (
         <div className="fixed inset-0 pointer-events-none bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-[0.03] contrast-150 brightness-100 z-0 mix-blend-overlay" />

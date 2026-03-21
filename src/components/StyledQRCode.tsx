@@ -21,9 +21,10 @@ interface StyledQRCodeProps {
   isPro?: boolean;
   username: string;
   photoUrl?: string;
+  customFields?: any;
 }
 
-export const StyledQRCode: React.FC<StyledQRCodeProps> = ({ url, isPro = false, username, photoUrl }) => {
+export const StyledQRCode: React.FC<StyledQRCodeProps> = ({ url, isPro = false, username, photoUrl, customFields }) => {
   const [qrCode, setQrCode] = useState<QRCodeStyling | null>(null);
   const ref = useRef<HTMLDivElement>(null);
   const [isDownloading, setIsDownloading] = useState<string | null>(null);
@@ -50,9 +51,9 @@ export const StyledQRCode: React.FC<StyledQRCodeProps> = ({ url, isPro = false, 
         crossOrigin: "anonymous",
       },
       dotsOptions: {
-        color: isPro ? "#2563eb" : "#000000",
+        color: isPro ? (customFields?.cor_qr_pontos || "#2563eb") : "#000000",
         type: isPro ? "rounded" as DotType : "square" as DotType,
-        gradient: isPro ? {
+        gradient: (isPro && !customFields?.cor_qr_pontos) ? {
           type: "linear",
           rotation: 45,
           colorStops: [
@@ -62,14 +63,14 @@ export const StyledQRCode: React.FC<StyledQRCodeProps> = ({ url, isPro = false, 
         } : undefined
       },
       backgroundOptions: {
-        color: "transparent",
+        color: customFields?.cor_qr_fundo || "transparent",
       },
       cornersSquareOptions: {
-        color: isPro ? "#2563eb" : "#000000",
+        color: isPro ? (customFields?.cor_qr_cantos_quadrado || "#2563eb") : "#000000",
         type: isPro ? "extra-rounded" as CornerSquareType : "square" as CornerSquareType,
       },
       cornersDotOptions: {
-        color: isPro ? "#10b981" : "#000000",
+        color: isPro ? (customFields?.cor_qr_cantos_ponto || "#10b981") : "#000000",
         type: isPro ? "dot" as CornerDotType : "square" as CornerDotType,
       }
     };
@@ -81,7 +82,7 @@ export const StyledQRCode: React.FC<StyledQRCodeProps> = ({ url, isPro = false, 
       ref.current.innerHTML = "";
       newQrCode.append(ref.current);
     }
-  }, [url, isPro, photoUrl]);
+  }, [url, isPro, photoUrl, customFields]);
 
   const onDownloadClick = async (extension: "png" | "svg") => {
     if (!qrCode) return;

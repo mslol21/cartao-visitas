@@ -27,6 +27,8 @@ interface AnimatedQRProps {
   size?: number;
   /** Está ativo (isPro) */
   active?: boolean;
+  /** Custom fields from profile */
+  customFields?: any;
 }
 
 export function AnimatedQR({
@@ -36,6 +38,7 @@ export function AnimatedQR({
   profGradient,
   size = 112,
   active = true,
+  customFields,
 }: AnimatedQRProps) {
   const [qrCode, setQrCode] = useState<QRCodeStyling | null>(null);
   const ref = useRef<HTMLDivElement>(null);
@@ -62,9 +65,9 @@ export function AnimatedQR({
         crossOrigin: "anonymous",
       },
       dotsOptions: {
-        color: active ? "#2563eb" : "#000000",
+        color: active ? (customFields?.cor_qr_pontos || "#2563eb") : "#000000",
         type: active ? "rounded" as DotType : "square" as DotType,
-        gradient: active ? {
+        gradient: (active && !customFields?.cor_qr_pontos) ? {
           type: "linear",
           rotation: 45,
           colorStops: [
@@ -74,14 +77,14 @@ export function AnimatedQR({
         } : undefined
       },
       backgroundOptions: {
-        color: "#ffffff", // Fundo branco igual ao da esquerda
+        color: customFields?.cor_qr_fundo || "#ffffff", // Fundo customizado ou branco
       },
       cornersSquareOptions: {
-        color: active ? "#2563eb" : "#000000",
+        color: active ? (customFields?.cor_qr_cantos_quadrado || "#2563eb") : "#000000",
         type: active ? "extra-rounded" as CornerSquareType : "square" as CornerSquareType,
       },
       cornersDotOptions: {
-        color: active ? "#10b981" : "#000000",
+        color: active ? (customFields?.cor_qr_cantos_ponto || "#10b981") : "#000000",
         type: active ? "dot" as CornerDotType : "square" as CornerDotType,
       }
     };
@@ -93,7 +96,7 @@ export function AnimatedQR({
       ref.current.innerHTML = "";
       newQrCode.append(ref.current);
     }
-  }, [url, active, photoUrl, size]);
+  }, [url, active, photoUrl, size, customFields]);
 
   if (!active) {
     return (

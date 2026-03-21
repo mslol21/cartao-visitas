@@ -1549,13 +1549,104 @@ export function EditorForm({ initialData, onSubmit, onChange, isPro = false, can
                 </Button>
               </div>
             ) : (
-              <div className="max-w-md mx-auto">
-                <StyledQRCode 
-                  url={`${typeof window !== 'undefined' ? window.location.origin : ''}/${formData.username}`} 
-                  isPro={isPro} 
-                  username={formData.username || 'user'} 
-                  photoUrl={formData.photo_url || undefined}
-                />
+              <div className="max-w-md mx-auto space-y-8">
+                <div className="p-6 rounded-3xl bg-slate-100 dark:bg-slate-900/50 border border-slate-200 dark:border-slate-800">
+                  <StyledQRCode 
+                    url={`${typeof window !== 'undefined' ? window.location.origin : ''}/${formData.username}`} 
+                    isPro={isPro} 
+                    username={formData.username || 'user'} 
+                    photoUrl={formData.photo_url || undefined}
+                    customFields={formData.custom_fields}
+                  />
+                </div>
+
+                <div className="p-6 rounded-3xl bg-primary/5 border border-primary/20 space-y-6">
+                  <div className="flex items-center gap-2 mb-2">
+                     <div className="p-2 bg-primary/10 rounded-lg">
+                        <Paintbrush className="w-4 h-4 text-primary" />
+                     </div>
+                     <h3 className="text-sm font-black uppercase tracking-widest text-primary">Cores do QR Code</h3>
+                  </div>
+
+                  <div className="grid grid-cols-1 gap-4">
+                    <div className="flex items-center justify-between p-3 rounded-2xl bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-800 transition-all hover:border-primary/30 group">
+                      <div className="flex flex-col">
+                        <Label className="text-[10px] font-black uppercase tracking-widest opacity-60">Cor dos Pontos</Label>
+                        <span className="text-[11px] font-bold">Padrão: Azul Konnexy</span>
+                      </div>
+                      <div className="flex items-center gap-3">
+                        <span className="text-[10px] font-bold opacity-40 uppercase">{(formData.custom_fields as any)?.cor_qr_pontos || '#2563eb'}</span>
+                        <input 
+                          type="color" 
+                          value={(formData.custom_fields as any)?.cor_qr_pontos || '#2563eb'}
+                          onChange={(e) => handleCustomFieldChange('cor_qr_pontos', e.target.value)}
+                          className="w-10 h-10 rounded-xl cursor-pointer border-none bg-transparent"
+                        />
+                      </div>
+                    </div>
+
+                    <div className="flex items-center justify-between p-3 rounded-2xl bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-800 transition-all hover:border-primary/30">
+                      <div className="flex flex-col">
+                        <Label className="text-[10px] font-black uppercase tracking-widest opacity-60">Cantos (Quadrado)</Label>
+                        <span className="text-[11px] font-bold">Padrão: Azul Konnexy</span>
+                      </div>
+                      <div className="flex items-center gap-3">
+                        <span className="text-[10px] font-bold opacity-40 uppercase">{(formData.custom_fields as any)?.cor_qr_cantos_quadrado || '#2563eb'}</span>
+                        <input 
+                          type="color" 
+                          value={(formData.custom_fields as any)?.cor_qr_cantos_quadrado || '#2563eb'}
+                          onChange={(e) => handleCustomFieldChange('cor_qr_cantos_quadrado', e.target.value)}
+                          className="w-10 h-10 rounded-xl cursor-pointer border-none bg-transparent"
+                        />
+                      </div>
+                    </div>
+
+                    <div className="flex items-center justify-between p-3 rounded-2xl bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-800 transition-all hover:border-primary/30">
+                      <div className="flex flex-col">
+                        <Label className="text-[10px] font-black uppercase tracking-widest opacity-60">Cantos (Ponto Interno)</Label>
+                        <span className="text-[11px] font-bold">Padrão: Verde Konnexy</span>
+                      </div>
+                      <div className="flex items-center gap-3">
+                        <span className="text-[10px] font-bold opacity-40 uppercase">{(formData.custom_fields as any)?.cor_qr_cantos_ponto || '#10b981'}</span>
+                        <input 
+                          type="color" 
+                          value={(formData.custom_fields as any)?.cor_qr_cantos_ponto || '#10b981'}
+                          onChange={(e) => handleCustomFieldChange('cor_qr_cantos_ponto', e.target.value)}
+                          className="w-10 h-10 rounded-xl cursor-pointer border-none bg-transparent"
+                        />
+                      </div>
+                    </div>
+
+                    <div className="flex items-center justify-between p-3 rounded-2xl bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-800 transition-all hover:border-primary/30">
+                      <div className="flex flex-col">
+                        <Label className="text-[10px] font-black uppercase tracking-widest opacity-60">Fundo do QR Code</Label>
+                        <span className="text-[11px] font-bold">Padrão: Transparente</span>
+                      </div>
+                      <div className="flex items-center gap-3">
+                        <span className="text-[10px] font-bold opacity-40 uppercase">{(formData.custom_fields as any)?.cor_qr_fundo || '#ffffff'}</span>
+                        <input 
+                          type="color" 
+                          value={(formData.custom_fields as any)?.cor_qr_fundo || '#ffffff'}
+                          onChange={(e) => handleCustomFieldChange('cor_qr_fundo', e.target.value)}
+                          className="w-10 h-10 rounded-xl cursor-pointer border-none bg-transparent"
+                        />
+                      </div>
+                    </div>
+                  </div>
+
+                  <Button 
+                    variant="link" 
+                    className="text-[10px] font-black uppercase tracking-widest p-0 text-slate-400 hover:text-red-500"
+                    onClick={() => {
+                      handleCustomFieldChange('cor_qr_pontos', '');
+                      handleCustomFieldChange('cor_qr_cantos_quadrado', '');
+                      handleCustomFieldChange('cor_qr_cantos_ponto', '');
+                      handleCustomFieldChange('cor_qr_fundo', '');
+                    }}
+                  >
+                    Resetar cores para o padrão
+                  </Button>
+                </div>
               </div>
             )}
           </TabsContent>

@@ -58,6 +58,12 @@ export interface CustomFields {
   cor_botoes?: string;
   cor_texto_botoes?: string;
   
+  // QR Code Customization
+  cor_qr_fundo?: string;
+  cor_qr_pontos?: string;
+  cor_qr_cantos_quadrado?: string;
+  cor_qr_cantos_ponto?: string;
+  
   // Pagamentos
   chave_pix?: string;
   tipo_chave_pix?: string;

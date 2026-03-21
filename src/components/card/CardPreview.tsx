@@ -893,16 +893,19 @@ END:VCARD`;
                </div>
 
               {data.background_video_url && (
-               <div className="absolute inset-0 overflow-hidden pointer-events-none transition-all z-0">
-                 <div 
-                   className={cn("w-full relative", (isMusico || isBarbearia) ? "h-full" : "h-[70%]")}
-                   style={isMusico ? {
-                     maskImage: 'linear-gradient(to bottom, black 0%, black 80%, transparent 100%)',
-                     WebkitMaskImage: 'linear-gradient(to bottom, black 0%, black 80%, transparent 100%)'
-                   } : {
-                     maskImage: 'linear-gradient(to bottom, black 0%, black 50%, transparent 100%)',
-                     WebkitMaskImage: 'linear-gradient(to bottom, black 0%, black 50%, transparent 100%)'
-                   }}
+                <div className="absolute inset-0 overflow-hidden pointer-events-none transition-all z-0">
+                  <div 
+                    className={cn("w-full relative", (isMusico || isBarbearia || isPro) ? "h-full" : "h-[70%]")}
+                    style={(isMusico || isBarbearia) ? {
+                      maskImage: 'linear-gradient(to bottom, black 0%, black 85%, transparent 100%)',
+                      WebkitMaskImage: 'linear-gradient(to bottom, black 0%, black 85%, transparent 100%)'
+                    } : isPro ? {
+                      maskImage: 'none',
+                      WebkitMaskImage: 'none'
+                    } : {
+                      maskImage: 'linear-gradient(to bottom, black 0%, black 50%, transparent 100%)',
+                      WebkitMaskImage: 'linear-gradient(to bottom, black 0%, black 50%, transparent 100%)'
+                    }}
                  >
                    {data.background_video_url.match(/\.(mp4|webm|ogg|mov)$/i) ? (
                      <video 
@@ -4010,6 +4013,7 @@ END:VCARD`;
                   profGradient={frameConfig?.gradient}
                   size={120}
                   active={isPro}
+                  customFields={data.custom_fields}
                 />
               </div>
             )}
