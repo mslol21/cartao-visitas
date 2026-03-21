@@ -113,6 +113,11 @@ export const imageDatabase: Record<string, string[]> = {
     'https://cdn.pixabay.com/photo/2016/01/09/18/27/journey-1130732_1280.jpg',
     'https://cdn.pixabay.com/photo/2017/01/20/00/30/maldives-1996256_1280.jpg',
     'https://cdn.pixabay.com/photo/2016/09/01/10/33/tour-guide-1635790_1280.jpg'
+  ],
+  'loja': [
+    'https://cdn.pixabay.com/photo/2016/11/19/20/55/packages-1840742_1280.jpg',
+    'https://cdn.pixabay.com/photo/2017/08/01/11/48/woman-2564660_1280.jpg',
+    'https://cdn.pixabay.com/photo/2015/07/17/10/30/coffee-shop-848821_1280.jpg'
   ]
 };
 
@@ -131,7 +136,8 @@ const synonyms: Record<string, string[]> = {
   'tecnologia': ['ti', 'programador', 'software', 'codigo', 'web', 'computador', 'celular', 'manutencao'],
   'barbearia': ['barba', 'corte', 'cabelo', 'navalha', 'disfarce', 'fade'],
   'van_escolar': ['van', 'transporte', 'escolar', 'universitario', 'onibus', 'perua', 'motorista'],
-  'guia_turistico': ['guia', 'turismo', 'viagem', 'passeio', 'ferias', 'excursao', 'trilha']
+  'guia_turistico': ['guia', 'turismo', 'viagem', 'passeio', 'ferias', 'excursao', 'trilha'],
+  'loja': ['online', 'ecommerce', 'vendas', 'produtos', 'entrega', 'frete', 'brasil', 'correios', 'pacote', 'caixa']
 };
 
 /**

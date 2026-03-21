@@ -40,6 +40,7 @@ export type ProfessionCategory =
   | 'van_escolar'
   | 'guia_turistico'
   | 'mestre_de_obras'
+  | 'loja_online'
   | 'area_lazer'
   | 'pizzaria'
   | 'default';
@@ -192,6 +193,12 @@ export interface CustomFields {
   rodizio_disponivel?: boolean;
   especialista_calzones?: boolean;
   massa_artesanal?: boolean;
+
+  // Loja Online
+  envio_nacional?: boolean;
+  frete_gratis?: boolean;
+  link_catalogo?: string;
+  aceita_encomendas?: boolean;
 }
 
 // Keeping old items for backwards compatibility during migration

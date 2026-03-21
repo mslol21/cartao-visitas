@@ -834,6 +834,30 @@ export const professionsMap: Record<ProfessionCategory, ProfessionConfig> = {
       { nome: 'Kits / Lembrandoce', descricao: 'Lembrancinhas feitas a mão para casamentos, batizados e eventos infantis.', preco: 'Sob consulta' }
     ]
   },
+  loja_online: {
+    id: 'loja_online',
+    label: 'Loja Online / E-commerce',
+    theme: { color: 'blue', style: 'glass' },
+    customFields: [
+      { name: 'envio_nacional', label: 'Enviamos para todo o Brasil?', type: 'boolean' },
+      { name: 'frete_gratis', label: 'Temos Frete Grátis?', type: 'boolean' },
+      { name: 'aceita_encomendas', label: 'Aceitamos Encomendas?', type: 'boolean' },
+      { name: 'link_catalogo', label: 'Link do Catálogo / Site', type: 'text', placeholder: 'https://minhaloja.com' }
+    ],
+    suggestedBackgrounds: [
+      'https://images.unsplash.com/photo-1472851294608-062f824d29cc?auto=format&fit=crop&q=80&w=1080&h=1920',
+      'https://images.unsplash.com/photo-1556742111-a301076d9d18?auto=format&fit=crop&q=80&w=1080&h=1920',
+      'https://images.unsplash.com/photo-1523275335684-37898b6baf30?auto=format&fit=crop&q=80&w=1080&h=1920',
+      'https://images.unsplash.com/photo-1441986300913-9af03067ee0a?auto=format&fit=crop&q=80&w=1080&h=1920'
+    ],
+    defaultBio: 'Sua loja online favorita agora com envios para todo o Brasil! Qualidade, segurança e os melhores produtos entregues diretamente na sua casa com todo o carinho que você merece.',
+    defaultCta: 'Ver Catálogo Completo 🛍️',
+    defaultServices: [
+       { nome: 'Envio para todo o País', descricao: 'Entregamos via Correios ou Transportadora em qualquer estado.', preco: 'Consulte o Frete' },
+       { nome: 'Atendimento Personalizado', descricao: 'Tire suas dúvidas e faça seu pedido via WhatsApp com nossa equipe.', preco: 'Grátis' },
+       { nome: 'Produtos a Pronta Entrega', descricao: 'Itens disponíveis em estoque para envio imediato após confirmação.', preco: 'A partir de R$ 49' }
+    ]
+  },
   area_lazer: {
     id: 'area_lazer',
     label: 'Área de Lazer & Eventos',
