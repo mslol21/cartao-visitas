@@ -773,7 +773,10 @@ export function EditorForm({ initialData, onSubmit, onChange, isPro = false, can
                      <div className="p-2 bg-primary/10 rounded-lg">
                         <SparklesIcon className="w-4 h-4 text-primary" />
                      </div>
-                     <h3 className="text-sm font-black uppercase tracking-wide                   <div className="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-4">
+                     <h3 className="text-sm font-black uppercase tracking-widest">Destaques {professionConfig.label}</h3>
+                  </div>
+
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-4">
                     {professionConfig.id === 'loja_online' ? (
                       <div className="md:col-span-2 space-y-8">
                          <div className="space-y-4">
@@ -868,8 +871,6 @@ export function EditorForm({ initialData, onSubmit, onChange, isPro = false, can
                         </div>
                       ))
                     )}
-                  </div>                 </div>
-                    ))}
                   </div>
                 </div>
               )}
