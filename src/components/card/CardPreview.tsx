@@ -3067,12 +3067,12 @@ END:VCARD`;
                   {/* Artesão Portfolio/Products Grid */}
                   <div className="w-full mb-12">
                     <div className="flex items-center justify-between mb-8 px-2">
-                       <h2 
-                         className="text-[11px] font-black uppercase tracking-[0.4em] text-slate-900/60 dark:text-amber-50/60"
-                         style={(data.custom_fields as any)?.cor_texto ? { color: (data.custom_fields as any).cor_texto, opacity: 0.6 } : undefined}
-                       >
-                         Mostruário Artesanal
-                       </h2>
+                        <h2 
+                          className="text-[11px] font-black uppercase tracking-[0.4em] text-slate-900/80 dark:text-amber-50/90"
+                          style={(data.custom_fields as any)?.cor_texto ? { color: (data.custom_fields as any).cor_texto, opacity: 0.8 } : undefined}
+                        >
+                          Mostruário Artesanal
+                        </h2>
                        <div className="h-px flex-1 bg-amber-500/10 ml-6" />
                     </div>
 
@@ -3084,7 +3084,7 @@ END:VCARD`;
                            target="_blank" 
                            rel="noopener noreferrer"
                            whileHover={{ y: -4 }}
-                           className="flex flex-col p-6 rounded-[2.2rem] bg-white dark:bg-amber-950/10 border-2 border-amber-50/50 dark:border-amber-900/20 group hover:border-amber-500 transition-all cursor-pointer relative shadow-sm"
+                            className="flex flex-col p-6 rounded-[2.5rem] bg-white/80 dark:bg-black/40 backdrop-blur-xl border border-amber-500/20 group hover:border-amber-500 transition-all cursor-pointer relative shadow-2xl hover:shadow-amber-500/20"
                            style={(data.custom_fields as any)?.cor_texto ? { borderColor: (data.custom_fields as any).cor_texto + '20' } : undefined}
                          >
                             {/* Paper Tag Hole Effect */}
@@ -3116,7 +3116,7 @@ END:VCARD`;
                                    {service.price}
                                  </div>
                                ) : <div></div>}
-                               <div className="flex items-center gap-2 text-amber-500 opacity-0 group-hover:opacity-100 transition-opacity">
+                               <div className="flex items-center gap-2 text-amber-500 opacity-60 group-hover:opacity-100 transition-opacity">
                                   <span className="text-[10px] font-black uppercase tracking-widest">Ver Detalhes</span>
                                   <ChevronRight className="w-4 h-4" />
                                </div>
