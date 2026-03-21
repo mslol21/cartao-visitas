@@ -19,26 +19,42 @@ export function ProfileClientWrapper({ profile, themeColor }: ProfileClientWrapp
     <>
       {/* Global Background (Only for Pro) */}
       {isPro && profile.background_video_url && (
-        <div className="fixed inset-0 z-[-2] pointer-events-none">
+        <div className="fixed inset-0 z-[-2] pointer-events-none bg-slate-950 overflow-hidden">
           {profile.background_video_url.match(/\.(mp4|webm|ogg|mov)$/i) ? (
-            <video
-              src={profile.background_video_url}
-              autoPlay
-              muted
-              loop
-              playsInline
-              className="w-full h-full object-cover"
-            />
+            <div className="relative w-full h-full">
+              <video
+                src={profile.background_video_url}
+                autoPlay
+                muted
+                loop
+                playsInline
+                className="absolute inset-0 w-full h-full object-cover blur-2xl opacity-40 scale-110"
+              />
+              <video
+                src={profile.background_video_url}
+                autoPlay
+                muted
+                loop
+                playsInline
+                className="relative w-full h-full object-contain z-10"
+              />
+            </div>
           ) : (
-            <img
-              src={profile.background_video_url}
-              alt="Background"
-              className="w-full h-full object-cover"
-            />
+            <div className="relative w-full h-full">
+              <img
+                src={profile.background_video_url}
+                alt="Background"
+                className="absolute inset-0 w-full h-full object-cover blur-xl opacity-30 scale-105"
+              />
+              <img
+                src={profile.background_video_url}
+                alt="Background"
+                className="relative w-full h-full object-contain z-10"
+              />
+            </div>
           )}
-          {/* Overlay for better readability */}
-          <div className="absolute inset-0 bg-slate-950/40 backdrop-blur-[2px]" />
-          <div className="absolute inset-0 bg-gradient-to-b from-transparent via-slate-950/20 to-slate-950" />
+          <div className="absolute inset-0 z-20 bg-slate-950/40 backdrop-blur-[1px]" />
+          <div className="absolute inset-0 z-20 bg-gradient-to-b from-transparent via-slate-950/30 to-slate-950" />
         </div>
       )}
 
