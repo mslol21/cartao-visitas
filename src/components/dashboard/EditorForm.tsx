@@ -1278,7 +1278,6 @@ export function EditorForm({ initialData, onSubmit, onChange, isPro = false, can
                 <p className="text-[10px] text-muted-foreground font-medium -mt-2">Personalize fundo e texto de cada bloco do cartão independentemente.</p>
 
                 {([
-                  { label: 'Header (Topo)', fundoKey: 'cor_header_fundo', textoKey: 'cor_header_texto', defaultFundo: '#ffffff', defaultTexto: '#0f172a' },
                   { label: 'Bio / Sobre Mim', fundoKey: 'cor_bio_fundo', textoKey: 'cor_bio_texto', defaultFundo: '#ffffff', defaultTexto: '#334155' },
                   { label: 'Serviços', fundoKey: 'cor_servicos_fundo', textoKey: 'cor_servicos_texto', defaultFundo: '#ffffff', defaultTexto: '#0f172a' },
                   { label: 'Diferenciais', fundoKey: 'cor_diferenciais_fundo', textoKey: 'cor_diferenciais_texto', defaultFundo: '#ffffff', defaultTexto: '#0f172a' },
@@ -1340,7 +1339,7 @@ export function EditorForm({ initialData, onSubmit, onChange, isPro = false, can
                 <button
                   type="button"
                   onClick={() => {
-                    const keys = ['cor_header_fundo','cor_header_texto','cor_bio_fundo','cor_bio_texto','cor_servicos_fundo','cor_servicos_texto','cor_diferenciais_fundo','cor_diferenciais_texto','cor_info_fundo','cor_info_texto'];
+                    const keys = ['cor_bio_fundo','cor_bio_texto','cor_servicos_fundo','cor_servicos_texto','cor_diferenciais_fundo','cor_diferenciais_texto','cor_info_fundo','cor_info_texto'];
                     keys.forEach(k => handleCustomFieldChange(k as any, ''));
                   }}
                   className="w-full text-[10px] font-bold uppercase tracking-widest text-muted-foreground hover:text-destructive transition-colors py-1"

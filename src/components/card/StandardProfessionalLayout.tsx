@@ -159,8 +159,7 @@ export function StandardProfessionalLayout({ data, isPro }: StandardProfessional
       {/* 1-5. HEADER SECTION (Identity) */}
       <motion.div 
         custom={0} initial="hidden" animate="visible" variants={fadeIn}
-        className="flex flex-col items-center text-center px-4 pt-4 rounded-b-[2rem] transition-colors"
-        style={cf.cor_header_fundo ? { backgroundColor: cf.cor_header_fundo, color: cf.cor_header_texto || undefined } : undefined}
+        className="flex flex-col items-center text-center px-4 pt-4"
       >
         <div className={cn("konnexy-aura mb-6", isPro && "scale-105")}>
           {isPro && !hasEffect && (
@@ -208,7 +207,7 @@ export function StandardProfessionalLayout({ data, isPro }: StandardProfessional
 
         <h1 
           className="text-3xl font-black tracking-tighter text-slate-900 dark:text-white mb-2 leading-none uppercase"
-          style={cf.cor_header_texto ? { color: cf.cor_header_texto } : cf.cor_texto ? { color: cf.cor_texto } : undefined}
+          style={cf.cor_texto ? { color: cf.cor_texto } : undefined}
         >
           {data.business_name || 'Seu Negócio'}
         </h1>
@@ -227,7 +226,7 @@ export function StandardProfessionalLayout({ data, isPro }: StandardProfessional
         {(data.subtitle || data.tagline) && (
           <p 
             className="text-sm font-medium text-slate-500 dark:text-slate-400 max-w-[280px] italic leading-relaxed"
-            style={cf.cor_header_texto ? { color: cf.cor_header_texto } : cf.cor_texto ? { color: cf.cor_texto } : undefined}
+            style={cf.cor_texto ? { color: cf.cor_texto } : undefined}
           >
             &quot;{data.subtitle || data.tagline}&quot;
           </p>

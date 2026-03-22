@@ -59,8 +59,6 @@ export interface CustomFields {
   cor_botoes?: string;
   cor_texto_botoes?: string;
   // Cores por seção
-  cor_header_fundo?: string;
-  cor_header_texto?: string;
   cor_bio_fundo?: string;
   cor_bio_texto?: string;
   cor_servicos_fundo?: string;
