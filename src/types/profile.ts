@@ -58,6 +58,17 @@ export interface CustomFields {
   cor_texto?: string;
   cor_botoes?: string;
   cor_texto_botoes?: string;
+  // Cores por seção
+  cor_header_fundo?: string;
+  cor_header_texto?: string;
+  cor_bio_fundo?: string;
+  cor_bio_texto?: string;
+  cor_servicos_fundo?: string;
+  cor_servicos_texto?: string;
+  cor_diferenciais_fundo?: string;
+  cor_diferenciais_texto?: string;
+  cor_info_fundo?: string;
+  cor_info_texto?: string;
   
   // QR Code Customization
   cor_qr_fundo?: string;

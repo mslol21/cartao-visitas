@@ -148,6 +148,8 @@ export function StandardProfessionalLayout({ data, isPro }: StandardProfessional
      return Award;
   };
 
+  const cf = (data.custom_fields as any) || {};
+
   return (
     <div 
       className="w-full flex flex-col gap-6 pb-12 animate-in fade-in duration-700"
@@ -157,7 +159,8 @@ export function StandardProfessionalLayout({ data, isPro }: StandardProfessional
       {/* 1-5. HEADER SECTION (Identity) */}
       <motion.div 
         custom={0} initial="hidden" animate="visible" variants={fadeIn}
-        className="flex flex-col items-center text-center px-4 pt-4"
+        className="flex flex-col items-center text-center px-4 pt-4 rounded-b-[2rem] transition-colors"
+        style={cf.cor_header_fundo ? { backgroundColor: cf.cor_header_fundo, color: cf.cor_header_texto || undefined } : undefined}
       >
         <div className={cn("konnexy-aura mb-6", isPro && "scale-105")}>
           {isPro && !hasEffect && (
@@ -205,7 +208,7 @@ export function StandardProfessionalLayout({ data, isPro }: StandardProfessional
 
         <h1 
           className="text-3xl font-black tracking-tighter text-slate-900 dark:text-white mb-2 leading-none uppercase"
-          style={(data.custom_fields as any)?.cor_texto ? { color: (data.custom_fields as any).cor_texto } : undefined}
+          style={cf.cor_header_texto ? { color: cf.cor_header_texto } : cf.cor_texto ? { color: cf.cor_texto } : undefined}
         >
           {data.business_name || 'Seu Negócio'}
         </h1>
@@ -224,7 +227,7 @@ export function StandardProfessionalLayout({ data, isPro }: StandardProfessional
         {(data.subtitle || data.tagline) && (
           <p 
             className="text-sm font-medium text-slate-500 dark:text-slate-400 max-w-[280px] italic leading-relaxed"
-            style={(data.custom_fields as any)?.cor_texto ? { color: (data.custom_fields as any).cor_texto } : undefined}
+            style={cf.cor_header_texto ? { color: cf.cor_header_texto } : cf.cor_texto ? { color: cf.cor_texto } : undefined}
           >
             &quot;{data.subtitle || data.tagline}&quot;
           </p>
@@ -376,19 +379,25 @@ export function StandardProfessionalLayout({ data, isPro }: StandardProfessional
           custom={2} initial="hidden" animate="visible" variants={fadeIn}
           className="px-6"
         >
-          <div className="p-6 rounded-[2rem] bg-white/90 dark:bg-black/60 backdrop-blur-md border border-slate-200 dark:border-white/10 relative overflow-hidden">
+          <div 
+            className="p-6 rounded-[2rem] backdrop-blur-md border border-slate-200 dark:border-white/10 relative overflow-hidden transition-colors"
+            style={cf.cor_bio_fundo
+              ? { backgroundColor: cf.cor_bio_fundo, borderColor: cf.cor_bio_fundo + '40' }
+              : { backgroundColor: 'rgb(255 255 255 / 0.9)' }
+            }
+          >
              <div className="absolute top-0 right-0 p-4 opacity-[0.03] pointer-events-none">
                 <Info className="w-24 h-24" />
              </div>
              <h4 
                className="text-[10px] font-black uppercase tracking-[0.3em] text-primary mb-3"
-               style={(data.custom_fields as any)?.cor_texto ? { color: (data.custom_fields as any).cor_texto } : undefined}
+               style={cf.cor_bio_texto ? { color: cf.cor_bio_texto } : cf.cor_texto ? { color: cf.cor_texto } : undefined}
              >
                {profession === 'loja_online' ? 'Sobre Nossa Loja' : 'Sobre Mim'}
              </h4>
              <p 
-               className={cn("text-sm font-medium leading-relaxed text-justify", !(data.custom_fields as any)?.cor_texto && "text-slate-700 dark:text-slate-300")}
-               style={(data.custom_fields as any)?.cor_texto ? { color: (data.custom_fields as any).cor_texto } : undefined}
+               className={cn("text-sm font-medium leading-relaxed text-justify", !cf.cor_bio_texto && !cf.cor_texto && "text-slate-700 dark:text-slate-300")}
+               style={cf.cor_bio_texto ? { color: cf.cor_bio_texto } : cf.cor_texto ? { color: cf.cor_texto } : undefined}
              >
                {data.bio_profissional}
              </p>
@@ -403,20 +412,27 @@ export function StandardProfessionalLayout({ data, isPro }: StandardProfessional
           className="px-6"
         >
           <h4 
-            className={cn("text-[11px] font-black uppercase tracking-[0.3em] text-center mb-6", !(data.custom_fields as any)?.cor_texto && "opacity-30")}
-            style={(data.custom_fields as any)?.cor_texto ? { color: (data.custom_fields as any).cor_texto } : undefined}
+            className={cn("text-[11px] font-black uppercase tracking-[0.3em] text-center mb-6", !cf.cor_diferenciais_texto && !cf.cor_texto && "opacity-30")}
+            style={cf.cor_diferenciais_texto ? { color: cf.cor_diferenciais_texto } : cf.cor_texto ? { color: cf.cor_texto } : undefined}
           >
             Por que me escolher?
           </h4>
           <div className="grid grid-cols-1 gap-3">
             {data.diferenciais.map((item, idx) => (
-              <div key={idx} className="flex items-center gap-4 p-4 rounded-2xl bg-white/90 dark:bg-black/60 backdrop-blur-md border border-slate-100 dark:border-white/10 shadow-sm">
+              <div 
+                key={idx} 
+                className="flex items-center gap-4 p-4 rounded-2xl backdrop-blur-md border shadow-sm transition-colors"
+                style={cf.cor_diferenciais_fundo
+                  ? { backgroundColor: cf.cor_diferenciais_fundo, borderColor: cf.cor_diferenciais_fundo + '50' }
+                  : { backgroundColor: 'rgb(255 255 255 / 0.9)', borderColor: 'rgb(241 245 249)' }
+                }
+              >
                  <div className="w-8 h-8 rounded-xl bg-green-500/10 flex items-center justify-center shrink-0">
                     <CheckCircle2 className="w-4 h-4 text-green-500" />
                  </div>
                  <span 
                    className="text-xs font-black uppercase tracking-tight text-slate-700 dark:text-slate-200"
-                   style={(data.custom_fields as any)?.cor_texto ? { color: (data.custom_fields as any).cor_texto } : undefined}
+                   style={cf.cor_diferenciais_texto ? { color: cf.cor_diferenciais_texto } : cf.cor_texto ? { color: cf.cor_texto } : undefined}
                  >
                    {item}
                  </span>
@@ -435,8 +451,8 @@ export function StandardProfessionalLayout({ data, isPro }: StandardProfessional
           <div className="flex items-center gap-3 mb-6">
              <div className="h-px flex-1 bg-slate-200 dark:bg-white/10" />
              <span 
-               className={cn("text-[10px] font-black uppercase tracking-[0.4em]", !(data.custom_fields as any)?.cor_texto && "opacity-40 text-slate-900 dark:text-white")}
-               style={(data.custom_fields as any)?.cor_texto ? { color: (data.custom_fields as any).cor_texto } : undefined}
+               className={cn("text-[10px] font-black uppercase tracking-[0.4em]", !cf.cor_servicos_texto && !cf.cor_texto && "opacity-40 text-slate-900 dark:text-white")}
+               style={cf.cor_servicos_texto ? { color: cf.cor_servicos_texto } : cf.cor_texto ? { color: cf.cor_texto } : undefined}
              >
                {profession === 'loja_online' ? 'Catálogo de Serviços' : 'Nossos Serviços'}
              </span>
@@ -466,9 +482,13 @@ export function StandardProfessionalLayout({ data, isPro }: StandardProfessional
                    className={cn(
                      "block group transition-all",
                      isStoreItem
-                       ? "p-4 rounded-2xl bg-white/90 dark:bg-black/60 backdrop-blur-md border border-slate-100 dark:border-white/10 hover:border-primary/40 shadow-sm hover:-translate-y-1 hover:shadow-lg"
-                       : "p-5 rounded-[1.8rem] bg-white/90 dark:bg-black/60 backdrop-blur-md border border-slate-100 dark:border-white/10 hover:border-primary/40 shadow-sm hover:-translate-y-1 hover:shadow-md"
+                       ? "p-4 rounded-2xl backdrop-blur-md border shadow-sm hover:border-primary/40 hover:-translate-y-1 hover:shadow-lg"
+                       : "p-5 rounded-[1.8rem] backdrop-blur-md border shadow-sm hover:border-primary/40 hover:-translate-y-1 hover:shadow-md"
                    )}
+                   style={cf.cor_servicos_fundo
+                     ? { backgroundColor: cf.cor_servicos_fundo, borderColor: cf.cor_servicos_fundo + '40' }
+                     : { backgroundColor: 'rgb(255 255 255 / 0.9)', borderColor: 'rgb(241 245 249)' }
+                   }
                  >
                     {isStoreItem ? (
                       /* E-commerce product card layout */
@@ -479,14 +499,14 @@ export function StandardProfessionalLayout({ data, isPro }: StandardProfessional
                         <div className="flex flex-col gap-0.5 flex-1 min-w-0">
                           <span 
                             className="text-sm font-black tracking-tight text-slate-800 dark:text-white group-hover:text-primary transition-colors line-clamp-1"
-                            style={(data.custom_fields as any)?.cor_texto ? { color: (data.custom_fields as any).cor_texto } : undefined}
+                            style={cf.cor_servicos_texto ? { color: cf.cor_servicos_texto } : cf.cor_texto ? { color: cf.cor_texto } : undefined}
                           >
                             {service.nome}
                           </span>
                           {service.descricao && (
                             <p 
-                              className={cn("text-[10px] leading-snug line-clamp-2", !(data.custom_fields as any)?.cor_texto && "text-slate-500")}
-                              style={(data.custom_fields as any)?.cor_texto ? { color: (data.custom_fields as any).cor_texto } : undefined}
+                              className={cn("text-[10px] leading-snug line-clamp-2", !cf.cor_servicos_texto && !cf.cor_texto && "text-slate-500")}
+                              style={cf.cor_servicos_texto ? { color: cf.cor_servicos_texto } : cf.cor_texto ? { color: cf.cor_texto } : undefined}
                             >
                               {service.descricao}
                             </p>
@@ -518,14 +538,14 @@ export function StandardProfessionalLayout({ data, isPro }: StandardProfessional
                          <div className="flex flex-col gap-1 flex-1 min-w-0">
                             <span 
                               className="text-sm font-black uppercase tracking-tighter text-slate-800 dark:text-white group-hover:text-primary transition-colors line-clamp-2"
-                              style={(data.custom_fields as any)?.cor_texto ? { color: (data.custom_fields as any).cor_texto } : undefined}
+                              style={cf.cor_servicos_texto ? { color: cf.cor_servicos_texto } : cf.cor_texto ? { color: cf.cor_texto } : undefined}
                             >
                               {service.nome}
                             </span>
                             {service.descricao && (
                               <p 
-                                className={cn("text-[10px] leading-tight italic line-clamp-3 sm:line-clamp-2", !(data.custom_fields as any)?.cor_texto && "text-slate-500 opacity-70")}
-                                style={(data.custom_fields as any)?.cor_texto ? { color: (data.custom_fields as any).cor_texto } : undefined}
+                                className={cn("text-[10px] leading-tight italic line-clamp-3 sm:line-clamp-2", !cf.cor_servicos_texto && !cf.cor_texto && "text-slate-500 opacity-70")}
+                                style={cf.cor_servicos_texto ? { color: cf.cor_servicos_texto } : cf.cor_texto ? { color: cf.cor_texto } : undefined}
                               >
                                 {service.descricao}
                               </p>
@@ -548,7 +568,9 @@ export function StandardProfessionalLayout({ data, isPro }: StandardProfessional
 
        {/* 10. CUSTOM FIELDS & STORE FEATURES */}
       {config.customFields.length > 0 && (
-        <motion.div custom={5} initial="hidden" animate="visible" variants={fadeIn} className="px-6">
+        <motion.div custom={5} initial="hidden" animate="visible" variants={fadeIn} className="px-6"
+          style={cf.cor_info_fundo ? { '--section-bg': cf.cor_info_fundo, '--section-text': cf.cor_info_texto || '#0f172a' } as React.CSSProperties : undefined}
+        >
           {profession === 'loja_online' ? (() => {
             const logisticFields = ['envio_nacional', 'frete_gratis', 'aceita_encomendas'];
             const paymentFields = ['parcelamento_sem_juros', 'desconto_pix'];

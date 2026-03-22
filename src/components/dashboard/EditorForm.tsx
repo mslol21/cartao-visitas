@@ -1267,6 +1267,89 @@ export function EditorForm({ initialData, onSubmit, onChange, isPro = false, can
               </div>
             )}
 
+            {isPro && (
+              <div className="mt-4 p-4 rounded-3xl bg-slate-50 dark:bg-slate-900/50 border border-slate-200 dark:border-slate-800 space-y-4">
+                <div className="flex items-center gap-2 mb-1">
+                  <div className="p-2 bg-primary/10 rounded-lg">
+                    <Palette className="w-4 h-4 text-primary" />
+                  </div>
+                  <h3 className="text-sm font-black uppercase tracking-widest">Cores por Seção</h3>
+                </div>
+                <p className="text-[10px] text-muted-foreground font-medium -mt-2">Personalize fundo e texto de cada bloco do cartão independentemente.</p>
+
+                {([
+                  { label: 'Header (Topo)', fundoKey: 'cor_header_fundo', textoKey: 'cor_header_texto', defaultFundo: '#ffffff', defaultTexto: '#0f172a' },
+                  { label: 'Bio / Sobre Mim', fundoKey: 'cor_bio_fundo', textoKey: 'cor_bio_texto', defaultFundo: '#ffffff', defaultTexto: '#334155' },
+                  { label: 'Serviços', fundoKey: 'cor_servicos_fundo', textoKey: 'cor_servicos_texto', defaultFundo: '#ffffff', defaultTexto: '#0f172a' },
+                  { label: 'Diferenciais', fundoKey: 'cor_diferenciais_fundo', textoKey: 'cor_diferenciais_texto', defaultFundo: '#ffffff', defaultTexto: '#0f172a' },
+                  { label: 'Info / Destaques', fundoKey: 'cor_info_fundo', textoKey: 'cor_info_texto', defaultFundo: '#ffffff', defaultTexto: '#0f172a' },
+                ] as const).map(({ label, fundoKey, textoKey, defaultFundo, defaultTexto }) => (
+                  <div key={fundoKey} className="p-3 rounded-2xl bg-white dark:bg-slate-950 border border-slate-100 dark:border-slate-800 space-y-2">
+                    <span className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">{label}</span>
+                    <div className="grid grid-cols-2 gap-3">
+                      <div className="space-y-1">
+                        <Label className="text-[10px] font-bold opacity-50 uppercase tracking-wider">Fundo</Label>
+                        <div className="flex gap-2 items-center">
+                          <div className="relative group w-9 h-9 shrink-0">
+                            <input
+                              type="color"
+                              value={(formData.custom_fields as any)?.[fundoKey] || defaultFundo}
+                              onChange={(e) => handleCustomFieldChange(fundoKey as any, e.target.value)}
+                              className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10"
+                            />
+                            <div
+                              className="w-full h-full rounded-xl border-2 border-slate-200 dark:border-slate-800 transition-all group-hover:border-primary"
+                              style={{ backgroundColor: (formData.custom_fields as any)?.[fundoKey] || defaultFundo }}
+                            />
+                          </div>
+                          <Input
+                            value={(formData.custom_fields as any)?.[fundoKey] || ''}
+                            onChange={(e) => handleCustomFieldChange(fundoKey as any, e.target.value)}
+                            placeholder={defaultFundo}
+                            className="rounded-xl h-9 flex-1 text-xs"
+                          />
+                        </div>
+                      </div>
+                      <div className="space-y-1">
+                        <Label className="text-[10px] font-bold opacity-50 uppercase tracking-wider">Texto</Label>
+                        <div className="flex gap-2 items-center">
+                          <div className="relative group w-9 h-9 shrink-0">
+                            <input
+                              type="color"
+                              value={(formData.custom_fields as any)?.[textoKey] || defaultTexto}
+                              onChange={(e) => handleCustomFieldChange(textoKey as any, e.target.value)}
+                              className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10"
+                            />
+                            <div
+                              className="w-full h-full rounded-xl border-2 border-slate-200 dark:border-slate-800 transition-all group-hover:border-primary"
+                              style={{ backgroundColor: (formData.custom_fields as any)?.[textoKey] || defaultTexto }}
+                            />
+                          </div>
+                          <Input
+                            value={(formData.custom_fields as any)?.[textoKey] || ''}
+                            onChange={(e) => handleCustomFieldChange(textoKey as any, e.target.value)}
+                            placeholder={defaultTexto}
+                            className="rounded-xl h-9 flex-1 text-xs"
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+
+                <button
+                  type="button"
+                  onClick={() => {
+                    const keys = ['cor_header_fundo','cor_header_texto','cor_bio_fundo','cor_bio_texto','cor_servicos_fundo','cor_servicos_texto','cor_diferenciais_fundo','cor_diferenciais_texto','cor_info_fundo','cor_info_texto'];
+                    keys.forEach(k => handleCustomFieldChange(k as any, ''));
+                  }}
+                  className="w-full text-[10px] font-bold uppercase tracking-widest text-muted-foreground hover:text-destructive transition-colors py-1"
+                >
+                  ↺ Resetar todas as cores de seção
+                </button>
+              </div>
+            )}
+
             <div className="space-y-2">
               <Label className="text-xs font-bold uppercase tracking-wider opacity-60">Chamada Principal (CTA)</Label>
               <Input
