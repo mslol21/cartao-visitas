@@ -306,21 +306,21 @@ export function StandardProfessionalLayout({ data, isPro }: StandardProfessional
         {data.instagram && (
           <Button 
             asChild
-            variant={profession === 'area_lazer' ? "default" : "outline"}
+            variant={(profession === 'area_lazer' || profession === 'guia_turistico') ? "default" : "outline"}
             className={cn(
               "w-full h-12 rounded-xl transition-all group overflow-hidden",
-              profession === 'area_lazer' 
+              (profession === 'area_lazer' || profession === 'guia_turistico')
                 ? "bg-gradient-to-r from-[#833ab4] via-[#fd1d1d] to-[#fcb045] text-white border-none shadow-lg shadow-orange-500/20" 
                 : "border border-slate-200 dark:border-white/10 bg-white dark:bg-slate-900 hover:bg-slate-50 dark:hover:bg-slate-800"
             )}
           >
             <a href={`https://instagram.com/${data.instagram}`} target="_blank" rel="noopener noreferrer" className="flex items-center justify-center gap-2">
-              <Instagram className={cn("w-4 h-4", profession === 'area_lazer' ? "text-white" : "text-[#E1306C]")} />
-              <span className={cn("text-[10px] font-black uppercase tracking-widest", profession === 'area_lazer' ? "text-white" : "text-slate-700 dark:text-white/80")}>
-                {profession === 'area_lazer' ? "Ver Fotos no Instagram" : "Instagram"}
+              <Instagram className={cn("w-4 h-4", (profession === 'area_lazer' || profession === 'guia_turistico') ? "text-white" : "text-[#E1306C]")} />
+              <span className={cn("text-[10px] font-black uppercase tracking-widest", (profession === 'area_lazer' || profession === 'guia_turistico') ? "text-white" : "text-slate-700 dark:text-white/80")}>
+                {(profession === 'area_lazer' || profession === 'guia_turistico') ? "Ver Fotos no Instagram" : "Instagram"}
               </span>
-              {! (profession === 'area_lazer') && <span className="text-[9px] text-slate-400 font-bold ml-auto opacity-60 group-hover:opacity-100">@{data.instagram}</span>}
-              <ChevronRight className={cn("w-3 h-3 ml-1", profession === 'area_lazer' ? "text-white ml-auto" : "text-slate-300")} />
+              {!(profession === 'area_lazer' || profession === 'guia_turistico') && <span className="text-[9px] text-slate-400 font-bold ml-auto opacity-60 group-hover:opacity-100">@{data.instagram}</span>}
+              <ChevronRight className={cn("w-3 h-3 ml-1", (profession === 'area_lazer' || profession === 'guia_turistico') ? "text-white ml-auto" : "text-slate-300")} />
             </a>
           </Button>
         )}

@@ -857,9 +857,9 @@ export const professionsMap: Record<ProfessionCategory, ProfessionConfig> = {
     defaultBio: 'Sua loja online favorita agora com envios para todo o Brasil! Oferecemos produtos exclusivos com a máxima qualidade e segurança. Garantimos a melhor experiência de compra diretamente na sua porta.',
     defaultCta: 'COMPRAR AGORA 🛒',
     defaultServices: [
-       { nome: 'Envio Nacional via SEDEX', descricao: 'Entrega rápida e segura em qualquer estado do Brasil.', preco: 'Consulte o Frete' },
-       { nome: 'Atendimento Personalizado', descricao: 'Tire suas dúvidas e faça seu pedido direto conosco.', preco: 'Free' },
-       { nome: 'Catálogo de Produtos', descricao: 'Conheça nossa linha completa de itens a pronta entrega.', preco: 'A partir de R$ 49' }
+       { nome: 'Envio para todo o País', descricao: 'Entrega rápida e segura via Correios ou Transportadora em qualquer estado.', preco: 'Consulte o Frete' },
+       { nome: 'Atendimento Personalizado', descricao: 'Tire suas dúvidas e faça seu pedido via WhatsApp com nossa equipe.', preco: 'GRÁTIS' },
+       { nome: 'Catálogo de Produtos', descricao: 'Conheça nossa linha completa de itens a pronta entrega e sob encomenda.', preco: 'A partir de R$ 49' }
     ]
   },
   area_lazer: {
