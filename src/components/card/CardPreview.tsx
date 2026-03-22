@@ -147,7 +147,7 @@ export function CardPreview({
   const isArtesao = data.profession === 'artesao' || data.category === 'artesao';
   const isMusico = data.profession === 'musico' || data.category === 'musico';
   
-  const isStandardized = isModernService || ['quentinhas', 'assistencia_celular', 'van_escolar', 'guia_turistico'].some(p => data.profession === p);
+  const isStandardized = isModernService || ['quentinhas', 'assistencia_celular', 'van_escolar', 'guia_turistico', 'loja_online'].some(p => data.profession === p);
 
   // Data helpers that prefer new fields but fall back to old ones for compatibility
   const previewName = data.business_name || data.name || 'Seu Nome';
@@ -930,7 +930,7 @@ END:VCARD`;
                </div>
               )}
           </div>
-          {isPro && isStandardized ? (
+          {isStandardized ? (
             <div className="relative flex flex-col w-full min-h-[600px] z-10 overflow-y-auto scroll-hide">
               <StandardProfessionalLayout data={data as Profile} isPro={isPro} />
             </div>

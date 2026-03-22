@@ -1,5 +1,7 @@
 "use client";
 
+import React from 'react';
+
 import { motion, Variants } from 'framer-motion';
 import { 
   MessageCircle, 
@@ -382,7 +384,7 @@ export function StandardProfessionalLayout({ data, isPro }: StandardProfessional
                className="text-[10px] font-black uppercase tracking-[0.3em] text-primary mb-3"
                style={(data.custom_fields as any)?.cor_texto ? { color: (data.custom_fields as any).cor_texto } : undefined}
              >
-               Sobre Mim
+               {profession === 'loja_online' ? 'Sobre Nossa Loja' : 'Sobre Mim'}
              </h4>
              <p 
                className={cn("text-sm font-medium leading-relaxed text-justify", !(data.custom_fields as any)?.cor_texto && "text-slate-700 dark:text-slate-300")}
@@ -436,7 +438,7 @@ export function StandardProfessionalLayout({ data, isPro }: StandardProfessional
                className={cn("text-[10px] font-black uppercase tracking-[0.4em]", !(data.custom_fields as any)?.cor_texto && "opacity-40 text-slate-900 dark:text-white")}
                style={(data.custom_fields as any)?.cor_texto ? { color: (data.custom_fields as any).cor_texto } : undefined}
              >
-               Nossos Serviços
+               {profession === 'loja_online' ? 'Catálogo de Serviços' : 'Nossos Serviços'}
              </span>
              <div className="h-px flex-1 bg-slate-200 dark:bg-white/10" />
           </div>
@@ -456,32 +458,87 @@ export function StandardProfessionalLayout({ data, isPro }: StandardProfessional
                  : `Olá! Vi seu perfil na Konnexy e gostaria de saber mais sobre o serviço: *${service.nome}*.`;
                const serviceWhatsappLink = formattedWhatsapp ? `https://wa.me/${formattedWhatsapp}?text=${encodeURIComponent(serviceMessage)}` : '#';
 
+               const isPriceFree = service.preco && (service.preco.toUpperCase() === 'GRÁTIS' || service.preco.toUpperCase() === 'GRATIS' || service.preco.toUpperCase() === 'FREE');
+               const isStoreItem = profession === 'loja_online';
+
                return (
-                 <a key={idx} href={serviceWhatsappLink} target={formattedWhatsapp ? "_blank" : "_self"} rel="noopener noreferrer" className="block group p-5 rounded-[1.8rem] bg-white/90 dark:bg-black/60 backdrop-blur-md border border-slate-100 dark:border-white/10 hover:border-primary/40 transition-all shadow-sm hover:-translate-y-1 hover:shadow-md">
-                    <div className="flex justify-between items-start sm:items-center w-full gap-3">
-                       <div className="flex flex-col gap-1 flex-1 min-w-0">
+                 <a key={idx} href={serviceWhatsappLink} target={formattedWhatsapp ? "_blank" : "_self"} rel="noopener noreferrer"
+                   className={cn(
+                     "block group transition-all",
+                     isStoreItem
+                       ? "p-4 rounded-2xl bg-white/90 dark:bg-black/60 backdrop-blur-md border border-slate-100 dark:border-white/10 hover:border-primary/40 shadow-sm hover:-translate-y-1 hover:shadow-lg"
+                       : "p-5 rounded-[1.8rem] bg-white/90 dark:bg-black/60 backdrop-blur-md border border-slate-100 dark:border-white/10 hover:border-primary/40 shadow-sm hover:-translate-y-1 hover:shadow-md"
+                   )}
+                 >
+                    {isStoreItem ? (
+                      /* E-commerce product card layout */
+                      <div className="flex items-center gap-3 w-full">
+                        <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center shrink-0 group-hover:bg-primary/20 transition-colors">
+                          <ShoppingBag className="w-5 h-5 text-primary" />
+                        </div>
+                        <div className="flex flex-col gap-0.5 flex-1 min-w-0">
                           <span 
-                            className="text-sm font-black uppercase tracking-tighter text-slate-800 dark:text-white group-hover:text-primary transition-colors line-clamp-2"
+                            className="text-sm font-black tracking-tight text-slate-800 dark:text-white group-hover:text-primary transition-colors line-clamp-1"
                             style={(data.custom_fields as any)?.cor_texto ? { color: (data.custom_fields as any).cor_texto } : undefined}
                           >
                             {service.nome}
                           </span>
                           {service.descricao && (
                             <p 
-                              className={cn("text-[10px] leading-tight italic line-clamp-3 sm:line-clamp-2", !(data.custom_fields as any)?.cor_texto && "text-slate-500 opacity-70")}
+                              className={cn("text-[10px] leading-snug line-clamp-2", !(data.custom_fields as any)?.cor_texto && "text-slate-500")}
                               style={(data.custom_fields as any)?.cor_texto ? { color: (data.custom_fields as any).cor_texto } : undefined}
                             >
                               {service.descricao}
                             </p>
                           )}
-                       </div>
-                       <div className="flex flex-col items-end gap-1 shrink-0 max-w-[40%] text-right pt-0.5 sm:pt-0">
-                          <span className="text-sm sm:text-base font-black text-primary leading-tight break-all sm:break-normal">{service.preco || 'Sob consulta'}</span>
-                          <span className="text-[8px] sm:text-[9px] font-bold text-slate-400 flex items-center gap-1 group-hover:text-primary transition-colors mt-1">
-                            Agendar <ChevronRight className="w-3 h-3 text-white bg-primary rounded-full p-0.5 group-hover:scale-110 transition-transform flex-shrink-0" />
+                        </div>
+                        <div className="flex flex-col items-end gap-1 shrink-0">
+                          {isPriceFree ? (
+                            <span className="px-2.5 py-1 rounded-full text-[10px] font-black uppercase bg-green-500 text-white shadow-sm shadow-green-500/30">
+                              GRÁTIS
+                            </span>
+                          ) : (
+                            <span className={cn(
+                              "text-sm font-black leading-tight",
+                              (service.preco || '').toLowerCase().startsWith('consulte') || (service.preco || '').toLowerCase() === 'sob consulta'
+                                ? "text-slate-400 text-[10px]"
+                                : "text-primary"
+                            )}>
+                              {service.preco || 'Sob consulta'}
+                            </span>
+                          )}
+                          <span className="text-[8px] font-bold text-slate-400 flex items-center gap-0.5 group-hover:text-primary transition-colors">
+                            Consultar <ChevronRight className="w-2.5 h-2.5 group-hover:translate-x-0.5 transition-transform" />
                           </span>
-                       </div>
-                    </div>
+                        </div>
+                      </div>
+                    ) : (
+                      /* Standard service card layout */
+                      <div className="flex justify-between items-start sm:items-center w-full gap-3">
+                         <div className="flex flex-col gap-1 flex-1 min-w-0">
+                            <span 
+                              className="text-sm font-black uppercase tracking-tighter text-slate-800 dark:text-white group-hover:text-primary transition-colors line-clamp-2"
+                              style={(data.custom_fields as any)?.cor_texto ? { color: (data.custom_fields as any).cor_texto } : undefined}
+                            >
+                              {service.nome}
+                            </span>
+                            {service.descricao && (
+                              <p 
+                                className={cn("text-[10px] leading-tight italic line-clamp-3 sm:line-clamp-2", !(data.custom_fields as any)?.cor_texto && "text-slate-500 opacity-70")}
+                                style={(data.custom_fields as any)?.cor_texto ? { color: (data.custom_fields as any).cor_texto } : undefined}
+                              >
+                                {service.descricao}
+                              </p>
+                            )}
+                         </div>
+                         <div className="flex flex-col items-end gap-1 shrink-0 max-w-[40%] text-right pt-0.5 sm:pt-0">
+                            <span className="text-sm sm:text-base font-black text-primary leading-tight break-all sm:break-normal">{service.preco || 'Sob consulta'}</span>
+                            <span className="text-[8px] sm:text-[9px] font-bold text-slate-400 flex items-center gap-1 group-hover:text-primary transition-colors mt-1">
+                              Agendar <ChevronRight className="w-3 h-3 text-white bg-primary rounded-full p-0.5 group-hover:scale-110 transition-transform flex-shrink-0" />
+                            </span>
+                         </div>
+                      </div>
+                    )}
                  </a>
                );
              })}
@@ -492,26 +549,96 @@ export function StandardProfessionalLayout({ data, isPro }: StandardProfessional
        {/* 10. CUSTOM FIELDS & STORE FEATURES */}
       {config.customFields.length > 0 && (
         <motion.div custom={5} initial="hidden" animate="visible" variants={fadeIn} className="px-6">
-          {profession === 'loja_online' ? (
-            <div className="space-y-6">
-              {/* Organized Store Grid */}
-              <div className="grid grid-cols-2 gap-3">
-                {config.customFields
-                  .filter(f => (data.custom_fields as any)?.[f.name] && f.name !== 'link_catalogo')
-                  .map(field => {
-                    const value = (data.custom_fields as any)[field.name];
-                    const Icon = getFieldIcon(field.name);
-                    return (
-                      <div key={field.name} className="p-4 rounded-2xl bg-white/40 dark:bg-black/40 backdrop-blur-sm border border-slate-200 dark:border-white/5 flex flex-col items-center text-center gap-2 group hover:bg-white/60 transition-all">
-                        <Icon className="w-5 h-5 text-primary/70 group-hover:scale-110 transition-transform" />
-                        <span className="text-[9px] font-black uppercase tracking-tight text-slate-500">{field.label.replace('?', '')}</span>
-                        {field.type === 'boolean' ? <Check className="w-3 h-3 text-green-500" /> : <span className="text-xs font-bold">{value}</span>}
+          {profession === 'loja_online' ? (() => {
+            const logisticFields = ['envio_nacional', 'frete_gratis', 'aceita_encomendas'];
+            const paymentFields = ['parcelamento_sem_juros', 'desconto_pix'];
+            const supportFields = ['atendimento_humano', 'garantia_troca'];
+
+            type GroupConfig = { label: string; shortLabel: string; icon: React.ReactNode; colorClass: string; bgClass: string; borderClass: string; };
+            const allGroupFields: { fields: string[]; config: GroupConfig }[] = [
+              {
+                fields: logisticFields,
+                config: {
+                  label: 'Logística & Envio',
+                  shortLabel: '',
+                  icon: <Truck className="w-4 h-4" />,
+                  colorClass: 'text-sky-600 dark:text-sky-400',
+                  bgClass: 'bg-sky-500/10 dark:bg-sky-500/10',
+                  borderClass: 'border-sky-200 dark:border-sky-500/25',
+                },
+              },
+              {
+                fields: paymentFields,
+                config: {
+                  label: 'Formas de Pagamento',
+                  shortLabel: '',
+                  icon: <CreditCard className="w-4 h-4" />,
+                  colorClass: 'text-emerald-600 dark:text-emerald-400',
+                  bgClass: 'bg-emerald-500/10 dark:bg-emerald-500/10',
+                  borderClass: 'border-emerald-200 dark:border-emerald-500/25',
+                },
+              },
+              {
+                fields: supportFields,
+                config: {
+                  label: 'Garantias & Suporte',
+                  shortLabel: '',
+                  icon: <ShieldCheck className="w-4 h-4" />,
+                  colorClass: 'text-violet-600 dark:text-violet-400',
+                  bgClass: 'bg-violet-500/10 dark:bg-violet-500/10',
+                  borderClass: 'border-violet-200 dark:border-violet-500/25',
+                },
+              },
+            ];
+
+            const labelMap: Record<string, string> = {
+              envio_nacional: 'Envio para Todo o Brasil',
+              frete_gratis: 'Frete Grátis Disponível',
+              aceita_encomendas: 'Aceita Encomendas',
+              parcelamento_sem_juros: 'Parcelamento Sem Juros',
+              desconto_pix: 'Desconto no PIX',
+              atendimento_humano: 'Atendimento via WhatsApp',
+              garantia_troca: 'Garantia de Troca',
+            };
+
+            const hasAnyStoreField = config.customFields.some(
+              f => f.name !== 'link_catalogo' && (data.custom_fields as any)?.[f.name] === true
+            );
+
+            if (!hasAnyStoreField) return null;
+
+            return (
+              <div className="space-y-3">
+                <div className="flex items-center gap-3 mb-2">
+                  <div className="h-px flex-1 bg-slate-200 dark:bg-white/10" />
+                  <span className="text-[10px] font-black uppercase tracking-[0.3em] opacity-40">Informações da Loja</span>
+                  <div className="h-px flex-1 bg-slate-200 dark:bg-white/10" />
+                </div>
+                {allGroupFields.map(({ fields, config: gc }) => {
+                  const activeFields = fields.filter(
+                    name => (data.custom_fields as any)?.[name] === true
+                  );
+                  if (activeFields.length === 0) return null;
+                  return (
+                    <div key={gc.label} className={`p-4 rounded-2xl border ${gc.borderClass} ${gc.bgClass} backdrop-blur-sm`}>
+                      <div className={`flex items-center gap-2 mb-3 ${gc.colorClass}`}>
+                        {gc.icon}
+                        <span className="text-[9px] font-black uppercase tracking-[0.2em]">{gc.label}</span>
                       </div>
-                    );
-                  })}
+                      <div className="flex flex-col gap-2">
+                        {activeFields.map(name => (
+                          <div key={name} className={`flex items-center gap-2.5 px-3 py-2 rounded-xl text-[10px] font-bold ${gc.colorClass} bg-white/50 dark:bg-black/30 border ${gc.borderClass}`}>
+                            <Check className="w-3 h-3 shrink-0" />
+                            <span>{labelMap[name] || name}</span>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  );
+                })}
               </div>
-            </div>
-          ) : (
+            );
+          })() : (
             /* Default generic rendering for other professions */
             <div className="grid grid-cols-2 gap-3">
               {config.customFields.map((field) => {
