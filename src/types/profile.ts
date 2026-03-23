@@ -207,7 +207,6 @@ export interface CustomFields {
   envio_nacional?: boolean;
   frete_gratis?: boolean;
   link_catalogo?: string;
-  aceita_encomendas?: boolean;
   atendimento_humano?: boolean;
   garantia_troca?: boolean;
   parcelamento_sem_juros?: boolean;
