@@ -127,7 +127,7 @@ export function CardPreview({
   const isPaid = isPaidUser(data as Profile) || forceProPreview;
   const isPro = isPaid;
   const isBarbearia = data.profession === 'barbearia' || data.category === 'barbearia';
-  const isBeauty = ['beauty', 'manicure', 'cabeleireiro', 'esteticista'].includes(data.profession as string) || data.category === 'beauty';
+  const isBeauty = ['beauty', 'manicure', 'cabeleireiro'].includes(data.profession as string) || data.category === 'beauty';
   const isHealth = ['health', 'personal_trainer', 'psicologo'].includes(data.profession as string) || data.category === 'health';
   const isSales = data.profession === 'sales' || data.category === 'sales';
   const isFood = ['food', 'quentinhas', 'pizzaria'].includes(data.profession as string) || data.category === 'food';
@@ -147,7 +147,7 @@ export function CardPreview({
   const isArtesao = data.profession === 'artesao' || data.category === 'artesao';
   const isMusico = data.profession === 'musico' || data.category === 'musico';
   
-  const isStandardized = isModernService || ['quentinhas', 'assistencia_celular', 'van_escolar', 'guia_turistico', 'loja_online'].some(p => data.profession === p);
+  const isStandardized = isModernService || ['quentinhas', 'assistencia_celular', 'van_escolar', 'guia_turistico', 'loja_online', 'esteticista'].some(p => data.profession === p);
 
   // Data helpers that prefer new fields but fall back to old ones for compatibility
   const previewName = data.business_name || data.name || 'Seu Nome';
@@ -731,7 +731,7 @@ END:VCARD`;
           )}
           style={{ 
             '--primary': isPro ? hexToHsl(data.theme_color || '#3b82f6') : undefined,
-            ...(isPro && (data.custom_fields as any)?.cor_fundo ? { backgroundColor: (data.custom_fields as any).cor_fundo } : {})
+            ...((isPro || data.profession === 'esteticista') && (data.custom_fields as any)?.cor_fundo ? { backgroundColor: (data.custom_fields as any).cor_fundo } : {})
           } as React.CSSProperties}
         >
           <div 
@@ -741,7 +741,7 @@ END:VCARD`;
                  className={cn(
                     "w-full h-full transition-colors duration-500 relative overflow-hidden",
                     (data.background_video_url) ? "hidden" : "",
-                    (isPro && (data.custom_fields as any)?.cor_fundo) ? "bg-transparent" :
+                    ((isPro || data.profession === 'esteticista') && (data.custom_fields as any)?.cor_fundo) ? "bg-transparent" :
                      isPro ? (
                        isBarbearia ? "bg-[#0f0f0f]" : 
                        isBeauty ? "bg-[#fdf2f8]" : 
@@ -892,7 +892,7 @@ END:VCARD`;
                   )}
                </div>
 
-              {data.background_video_url && (
+              {data.background_video_url && data.profession !== 'area_lazer' && (
                 <div className="absolute inset-0 overflow-hidden pointer-events-none transition-all z-0">
                   <div 
                     className={cn("w-full relative", (isMusico || isBarbearia || isPro) ? "h-full" : "h-[70%]")}
@@ -924,7 +924,7 @@ END:VCARD`;
                      />
                    )}
                  </div>
-                 {!isMusico && !(isPro && (data.custom_fields as any)?.cor_fundo) && (
+                 {!isMusico && !((isPro || data.profession === 'esteticista') && (data.custom_fields as any)?.cor_fundo) && (
                    <div className="absolute inset-0 bg-gradient-to-b from-slate-950/20 via-slate-950/60 to-slate-950" />
                  )}
                </div>

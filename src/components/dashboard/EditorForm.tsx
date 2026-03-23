@@ -1166,7 +1166,7 @@ export function EditorForm({ initialData, onSubmit, onChange, isPro = false, can
               </div>
             </div>
 
-            {isPro && (
+            {(isPro || formData.profession === 'esteticista') && (
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4 p-4 rounded-3xl bg-slate-50 dark:bg-slate-900/50 border border-slate-200 dark:border-slate-800">
                 <div className="space-y-2">
                   <Label className="text-xs font-bold uppercase tracking-wider opacity-60">Cor do Fundo</Label>
@@ -1267,7 +1267,7 @@ export function EditorForm({ initialData, onSubmit, onChange, isPro = false, can
               </div>
             )}
 
-            {isPro && (
+            {(isPro || formData.profession === 'esteticista') && (
               <div className="mt-4 p-4 rounded-3xl bg-slate-50 dark:bg-slate-900/50 border border-slate-200 dark:border-slate-800 space-y-4">
                 <div className="flex items-center gap-2 mb-1">
                   <div className="p-2 bg-primary/10 rounded-lg">

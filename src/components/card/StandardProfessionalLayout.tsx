@@ -260,9 +260,34 @@ export function StandardProfessionalLayout({ data, isPro }: StandardProfessional
         )}
       </motion.div>
 
-      {/* 6. MAIN CONTACT GROUP */}
+      {/* 6. VÍDEO PARA ÁREA DE LAZER (Se houver) */}
+      {profession === 'area_lazer' && data.background_video_url && (
+        <motion.div 
+          custom={1} initial="hidden" animate="visible" variants={fadeIn}
+          className="px-6 mb-2"
+        >
+          <div className="w-full rounded-3xl overflow-hidden shadow-2xl relative border border-slate-200 dark:border-slate-800 bg-black aspect-[4/5] sm:aspect-video">
+             {data.background_video_url.match(/\.(mp4|webm|ogg|mov)$/i) ? (
+               <video 
+                 src={data.background_video_url} 
+                 controls 
+                 playsInline 
+                 className="w-full h-full object-cover"
+               />
+             ) : (
+               <img 
+                 src={data.background_video_url} 
+                 alt={data.business_name || 'Área de Lazer'} 
+                 className="w-full h-full object-cover"
+               />
+             )}
+          </div>
+        </motion.div>
+      )}
+
+      {/* 7. MAIN CONTACT GROUP */}
       <motion.div 
-        custom={1} initial="hidden" animate="visible" variants={fadeIn}
+        custom={2} initial="hidden" animate="visible" variants={fadeIn}
         className="px-6 flex flex-col gap-3"
       >
         <Button 
