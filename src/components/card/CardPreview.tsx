@@ -534,7 +534,7 @@ END:VCARD`;
              <div className="h-px flex-1 bg-current opacity-10" />
              <span 
                className="text-[10px] font-black uppercase tracking-[0.4em] opacity-80 text-center"
-               style={(data.custom_fields as any)?.cor_texto ? { color: (data.custom_fields as any).cor_texto } : undefined}
+               style={(data.custom_fields as any)?.cor_info_texto ? { color: (data.custom_fields as any).cor_info_texto } : (data.custom_fields as any)?.cor_texto ? { color: (data.custom_fields as any).cor_texto } : undefined}
              >
                Especialidades & Atributos
              </span>
@@ -551,9 +551,14 @@ END:VCARD`;
                      key={field.name} 
                      whileHover={{ y: -4, scale: 1.02 }}
                      className={cn(
-                       "p-5 rounded-[2rem] bg-white/60 dark:bg-slate-900/40 backdrop-blur-md border border-slate-100 dark:border-white/10 flex flex-col items-center text-center gap-3 transition-all shadow-sm hover:shadow-md", 
-                       isArray ? "col-span-2" : ""
+                       "p-5 rounded-[2rem] backdrop-blur-md border flex flex-col items-center text-center gap-3 transition-all shadow-sm hover:shadow-md", 
+                       isArray ? "col-span-2" : "",
+                       !(data.custom_fields as any)?.cor_info_fundo && "bg-white/60 dark:bg-slate-900/40 border-slate-100 dark:border-white/10"
                      )}
+                     style={(data.custom_fields as any)?.cor_info_fundo ? {
+                       backgroundColor: (data.custom_fields as any).cor_info_fundo,
+                       borderColor: (data.custom_fields as any).cor_info_fundo + '40'
+                     } : undefined}
                    >
                       {field.type === 'boolean' ? (
                         <>
@@ -561,7 +566,10 @@ END:VCARD`;
                              <div className="absolute inset-0 opacity-10" style={{ backgroundColor: themeColor }} />
                              <Icon className="w-6 h-6 relative z-10" style={{ color: themeColor }} />
                            </div>
-                           <span className="text-xs font-black uppercase tracking-tight leading-tight text-slate-800 dark:text-white mt-1">{displayLabel}</span>
+                           <span 
+                             className={cn("text-xs font-black uppercase tracking-tight leading-tight mt-1", !(data.custom_fields as any)?.cor_info_texto && !(data.custom_fields as any)?.cor_texto && "text-slate-800 dark:text-white")}
+                             style={(data.custom_fields as any)?.cor_info_texto ? { color: (data.custom_fields as any).cor_info_texto } : (data.custom_fields as any)?.cor_texto ? { color: (data.custom_fields as any).cor_texto } : undefined}
+                           >{displayLabel}</span>
                            <div className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/20">
                              <Check className="w-3 h-3 text-emerald-500" />
                              <span className="text-[8px] font-black text-emerald-600 uppercase">Confirmado</span>
@@ -573,14 +581,26 @@ END:VCARD`;
                               <div className="w-8 h-8 rounded-xl bg-slate-100 dark:bg-white/5 flex items-center justify-center">
                                 <Icon className="w-4 h-4 opacity-70" style={{ color: themeColor }} />
                               </div>
-                              <span className="text-[10px] font-black uppercase tracking-widest opacity-60 text-slate-600 dark:text-slate-400">{displayLabel}</span>
+                              <span 
+                                className="text-[10px] font-black uppercase tracking-widest opacity-60"
+                                style={(data.custom_fields as any)?.cor_info_texto ? { color: (data.custom_fields as any).cor_info_texto } : (data.custom_fields as any)?.cor_texto ? { color: (data.custom_fields as any).cor_texto } : { color: '#64748b' }}
+                              >{displayLabel}</span>
                            </div>
                            <div className="flex flex-wrap items-center justify-center gap-2 w-full mt-2">
                               {(Array.isArray(value) ? value : String(value).split(/[,;]/)).map((item: string, i: number) => {
                                 const trimmed = item.trim();
                                 if (!trimmed) return null;
                                 return (
-                                  <span key={i} className="text-[11px] font-bold text-slate-800 dark:text-slate-100 bg-white dark:bg-white/10 border border-slate-100 dark:border-white/20 px-4 py-2 rounded-2xl shadow-sm hover:border-emerald-500/50 transition-colors">
+                                  <span key={i} 
+                                    className={cn("text-[11px] font-bold px-4 py-2 rounded-2xl shadow-sm transition-colors border",
+                                      !(data.custom_fields as any)?.cor_info_fundo && "bg-white dark:bg-white/10 border-slate-100 dark:border-white/20 text-slate-800 dark:text-slate-100 hover:border-emerald-500/50"
+                                    )}
+                                    style={(data.custom_fields as any)?.cor_info_fundo ? {
+                                      backgroundColor: 'rgba(255,255,255,0.1)',
+                                      borderColor: (data.custom_fields as any).cor_info_fundo + '80',
+                                      color: (data.custom_fields as any)?.cor_info_texto || (data.custom_fields as any)?.cor_texto || '#1e293b'
+                                    } : undefined}
+                                  >
                                     {trimmed}
                                   </span>
                                 );
@@ -593,10 +613,13 @@ END:VCARD`;
                              <Icon className="w-5 h-5 opacity-60" style={{ color: themeColor }} />
                            </div>
                            <div className="flex flex-col gap-1 w-full">
-                              <span className="text-[9px] font-black uppercase tracking-widest opacity-40 text-slate-500 dark:text-slate-400">{displayLabel}</span>
+                              <span 
+                                className="text-[9px] font-black uppercase tracking-widest opacity-40 text-slate-500 dark:text-slate-400"
+                                style={(data.custom_fields as any)?.cor_info_texto ? { color: (data.custom_fields as any).cor_info_texto } : (data.custom_fields as any)?.cor_texto ? { color: (data.custom_fields as any).cor_texto } : undefined}
+                              >{displayLabel}</span>
                               <span 
                                 className="text-sm font-black text-slate-900 dark:text-white leading-none tracking-tight break-words"
-                                style={(data.custom_fields as any)?.cor_texto ? { color: (data.custom_fields as any).cor_texto } : undefined}
+                                style={(data.custom_fields as any)?.cor_info_texto ? { color: (data.custom_fields as any).cor_info_texto } : (data.custom_fields as any)?.cor_texto ? { color: (data.custom_fields as any).cor_texto } : undefined}
                               >
                                 {value}
                               </span>
@@ -1365,13 +1388,7 @@ END:VCARD`;
                       )}
                     </div>
                     
-                    {/* Premium Badge */}
-                    <div className="absolute -bottom-1 -right-1 w-14 h-14 rounded-2xl bg-gradient-to-br from-[#10b981] to-[#059669] flex items-center justify-center text-white shadow-[0_8px_16px_rgba(16,185,129,0.4)] z-20 border-4 border-white dark:border-slate-900 transform rotate-3 hover:rotate-0 transition-transform duration-300">
-                      {data.profession === 'personal_trainer' ? <Zap className="w-6 h-6 fill-current" /> : 
-                       data.profession === 'psicologo' ? <HeartPulse className="w-6 h-6 fill-current" /> : 
-                       data.profession === 'veterinario' ? <PawPrint className="w-6 h-6 fill-current" /> : 
-                       <ShieldCheck className="w-6 h-6 fill-current" />}
-                    </div>
+                    {/* Premium Badge Removido conforme solicitado */}
                   </motion.div>
                   
                   <h1 
