@@ -211,6 +211,15 @@ export interface CustomFields {
   garantia_troca?: boolean;
   parcelamento_sem_juros?: boolean;
   desconto_pix?: boolean;
+  // Assistência Celular
+  atendimento_delivery?: boolean;
+  orcamento_gratis?: boolean;
+  garantia_90_dias?: boolean;
+  aceita_cartao?: boolean;
+  marcas_principais?: string[];
+  // Portfólio / Fotografia
+  portfolio_images?: string[];
+  portfolio_video_url?: string;
 }
 
 // Keeping old items for backwards compatibility during migration

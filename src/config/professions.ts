@@ -214,23 +214,29 @@ export const professionsMap: Record<ProfessionCategory, ProfessionConfig> = {
   },
   fotografo: {
     id: 'fotografo',
-    label: 'Fotógrafo',
+    label: 'Fotógrafo Profissional',
     theme: { color: 'zinc', style: 'oled' },
     customFields: [
-      { name: 'tipo_eventos', label: 'Tipos de Eventos', type: 'array', placeholder: 'Ex: Casamentos, Ensaios' },
-      { name: 'entrega_digital', label: 'Entrega Digital?', type: 'boolean' }
+      { name: 'tipo_eventos', label: 'Especialidades (Escreva separando por vírgula)', type: 'array', placeholder: 'Ex: Casamentos, Formaturas, Gestantes, Corporativo' },
+      { name: 'entrega_digital', label: 'Entrega de Galeria Digital?', type: 'boolean' },
+      { name: 'ensaio_externo', label: 'Atendimento com Ensaios Externos?', type: 'boolean' },
+      { name: 'equipamento_profissional', label: 'Equipamento Full-Frame de Alta Resolução?', type: 'boolean' },
+      { name: 'portfolio_images', label: 'URLs de Fotos para Portfólio (Mód. Carrossel - Separadas por vírgula)', type: 'array', placeholder: 'https://imagem1.jpg, https://imagem2.jpg' },
+      { name: 'portfolio_video_url', label: 'URL de Vídeo Portfólio (MP4/WebM)', type: 'text', placeholder: 'https://exemplo.com/portfolio-video.mp4' }
     ],
     suggestedBackgrounds: [
       'https://images.unsplash.com/photo-1493863641943-9b68992a8d07?auto=format&fit=crop&q=80&w=1080&h=1920',
       'https://images.unsplash.com/photo-1542038784456-1ea8e935640e?auto=format&fit=crop&q=80&w=1080&h=1920',
-      'https://images.unsplash.com/photo-1516033519934-84640108db88?auto=format&fit=crop&q=80&w=1080&h=1920'
+      'https://images.unsplash.com/photo-1516033519934-84640108db88?auto=format&fit=crop&q=80&w=1080&h=1920',
+      'https://images.unsplash.com/photo-1452587925148-ce544e77e70d?auto=format&fit=crop&q=80&w=1080&h=1920'
     ],
-    defaultBio: 'Capturando momentos inesquecíveis através da lente. Especializado em eternizar emoções com sensibilidade e técnica. Ensaios, retratos autênticos e coberturas de eventos com um olhar único.',
-    defaultCta: 'Solicitar Orçamento 📸',
+    defaultBio: 'Especialista em capturar a essência e o sentimento de cada momento. Com anos de experiência em ensaios externos, eventos sociais e retratos corporativos, meu objetivo é transformar sua história em memórias visuais inesquecíveis, com edição premium e máxima qualidade técnica.',
+    defaultCta: 'Agendar Ensaio / Orçamento 📸',
     defaultServices: [
-      { nome: 'Ensaio Fotográfico', descricao: 'Sessão fotográfica externa com curadoria e edição premium de fotos.', preco: 'A partir de R$ 350' },
-      { nome: 'Eventos & Casamentos', descricao: 'Fotografia incrível para eternizar o melhor do seu grande dia.', preco: 'Sob consulta' },
-      { nome: 'Retratos Corporativos', descricao: 'Fotos profissionais para fortalecer sua imagem de marca e LinkedIn.', preco: 'R$ 200' }
+      { nome: 'Ensaio Externo Premium', descricao: 'Sessão fotográfica de até 2h com 30 fotos editadas e entrega digital rápida.', preco: 'A partir de R$ 450' },
+      { nome: 'Cobertura de Casamento', descricao: 'O registro completo do seu grande dia, do making-of à festa. Álbum de luxo opcional.', preco: 'Sob consulta' },
+      { nome: 'Retrato Corporativo', descricao: 'Posicionamento de imagem pessoal e profissional para LinkedIn e marcas.', preco: 'R$ 250 / sessão' },
+      { nome: 'Pack Lifestyle / Mensal', descricao: 'Criação de conteúdo visual para o seu Instagram/Marca com ensaios regulares.', preco: 'R$ 800/mês' }
     ]
   },
   tecnico_informatica: {
@@ -495,16 +501,29 @@ export const professionsMap: Record<ProfessionCategory, ProfessionConfig> = {
   },
   assistencia_celular: {
     id: 'assistencia_celular',
-    label: 'Assistência Celular',
+    label: 'Assistência Técnica de Celular',
     theme: { color: 'blue', style: 'oled' },
     customFields: [
-      { name: 'troca_tela', label: 'Faz Troca de Tela?', type: 'boolean' },
-      { name: 'peças_originais', label: 'Peças Originais?', type: 'boolean' }
+      { name: 'atendimento_delivery', label: 'Atendimento Delivery / Leva e Traz?', type: 'boolean' },
+      { name: 'orcamento_gratis', label: 'Orçamento Gratuito?', type: 'boolean' },
+      { name: 'garantia_90_dias', label: 'Garantia de 90 Dias?', type: 'boolean' },
+      { name: 'pecas_originais', label: 'Trabalha com Peças Originais?', type: 'boolean' },
+      { name: 'aceita_cartao', label: 'Aceita Cartão e Parcelamento?', type: 'boolean' },
+      { name: 'marcas_principais', label: 'Principais Marcas atendidas (Separadas por vírgula)', type: 'array', placeholder: 'Ex: iPhone, Samsung, Xiaomi, Motorola' }
     ],
     suggestedBackgrounds: [
       'https://images.unsplash.com/photo-1597075095440-b617688536be?auto=format&fit=crop&q=80&w=1080&h=1920',
-      'https://images.unsplash.com/photo-1604754737202-31dd242ba98c?auto=format&fit=crop&q=80&w=1080&h=1920',
-      'https://images.unsplash.com/photo-1551817418-471249e02379?auto=format&fit=crop&q=80&w=1080&h=1920'
+      'https://images.unsplash.com/photo-1620283085439-399201193278?auto=format&fit=crop&q=80&w=1080&h=1920',
+      'https://images.unsplash.com/photo-1551817418-471249e02379?auto=format&fit=crop&q=80&w=1080&h=1920',
+      'https://images.unsplash.com/photo-1604754737202-31dd242ba98c?auto=format&fit=crop&q=80&w=1080&h=1920'
+    ],
+    defaultBio: 'Especialista em reparos avançados de smartphones e tablets. Realizamos desde trocas de tela e bateria até reparos complexos em placa-mãe. Atendimento rápido, peças de alta qualidade e garantia em todos os serviços para sua total tranquilidade.',
+    defaultCta: 'Solicitar Orçamento Grátis 📱',
+    defaultServices: [
+      { nome: 'Troca de Tela / Display', descricao: 'Substituição de tela quebrada por componentes de alta qualidade para todas as marcas.', preco: 'A partir de R$ 150' },
+      { nome: 'Troca de Bateria', descricao: 'Seu celular descarrega rápido? Resolvemos com baterias certificadas.', preco: 'A partir de R$ 90' },
+      { nome: 'Reparo em Placa-mãe', descricao: 'Diagnóstico e reparo de defeitos avançados de carga, sinal ou ligar.', preco: 'Sob consulta' },
+      { nome: 'Limpeza e Desoxidação', descricao: 'Recuperação de aparelhos que tiveram contato com água.', preco: 'A partir de R$ 120' }
     ]
   },
   quentinhas: {

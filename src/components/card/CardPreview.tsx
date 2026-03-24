@@ -500,13 +500,14 @@ END:VCARD`;
     const name = fieldName.toLowerCase();
     if (name.includes('atende_domicilio') || name.includes('residencial') || name.includes('home')) return Home;
     if (name.includes('agendamento') || name.includes('horario') || name.includes('schedule')) return Calendar;
-    if (name.includes('oab') || name.includes('creci') || name.includes('nr10') || name.includes('registro') || name.includes('crmv')) return ShieldCheck;
+    if (name.includes('oab') || name.includes('creci') || name.includes('nr10') || name.includes('registro') || name.includes('crmv') || name.includes('garantia')) return ShieldCheck;
     if (name.includes('delivery') || name.includes('entreg') || name.includes('frete') || name.includes('veiculo') || name.includes('truck') || name.includes('van')) return Truck;
     if (name.includes('online') || name.includes('remoto') || name.includes('digital') || name.includes('zoom')) return Monitor;
     if (name.includes('experiencia') || name.includes('anos')) return History;
     if (name.includes('socorro') || name.includes('emergencia') || name.includes('urgencia') || name.includes('plantao')) return Zap;
     if (name.includes('clinico') || name.includes('saude') || name.includes('medico') || name.includes('vital')) return HeartPulse;
     if (name.includes('celular') || name.includes('mobile') || name.includes('phone')) return Smartphone;
+    if (name.includes('cartao') || name.includes('pagamento') || name.includes('pix') || name.includes('credit')) return Calculator;
     if (['reforma', 'ferramentas', 'obra', 'construction', 'hard_hat'].some(k => name.includes(k))) return HardHat;
     if (name.includes('banho') || name.includes('tosa') || name.includes('grooming') || name.includes('animal') || name.includes('pet') || name.includes('vet')) return PawPrint;
     if (name.includes('monitor') || name.includes('ajudante')) return UserPlus;
@@ -715,10 +716,78 @@ END:VCARD`;
     );
   };
 
+  const renderVisualPortfolio = () => {
+    const portfolioImages = (data.custom_fields as any)?.portfolio_images;
+    const portfolioVideo = (data.custom_fields as any)?.portfolio_video_url;
+
+    if (!portfolioImages && !portfolioVideo) return null;
+
+    const images = Array.isArray(portfolioImages) 
+      ? portfolioImages 
+      : (typeof portfolioImages === 'string' ? portfolioImages.split(/[,;]/).map(s => s.trim()).filter(Boolean) : []);
+
+    const isDark = isBarbearia || isTech || isAdvogado || isDriver || (data.background_video_url);
+
+    return (
+      <div className="w-full space-y-4 mb-10 px-1">
+        <div className="flex items-center gap-3 mb-2">
+          <span className={cn("text-[10px] font-black uppercase tracking-[0.2em]", isDark ? "text-white/40" : "text-slate-400")}>Portfólio / Vitrine</span>
+          <div className={cn("h-[1px] flex-1", isDark ? "bg-white/10" : "bg-slate-200 dark:bg-slate-800")} />
+        </div>
+
+        {/* Video Portfolio */}
+        {portfolioVideo && (
+          <div className="w-full rounded-3xl overflow-hidden aspect-video bg-black/20 border border-white/10 shadow-xl relative group">
+            <video 
+              src={portfolioVideo} 
+              controls 
+              className="w-full h-full object-cover"
+              poster={images[0]}
+            />
+          </div>
+        )}
+
+        {/* Image Carousel (Scrollable) */}
+        {images.length > 0 && (
+          <div className="w-full relative">
+            <div className="flex gap-3 overflow-x-auto pb-4 scroll-hide snap-x snap-mandatory px-1">
+              {images.map((img, i) => (
+                <motion.div
+                  key={i}
+                  whileHover={{ scale: 1.02 }}
+                  className="relative flex-none w-[280px] aspect-[4/5] rounded-[2rem] overflow-hidden snap-center border border-white/10 shadow-lg bg-slate-100 dark:bg-slate-900"
+                >
+                  <Image 
+                    src={img} 
+                    alt={`Portfolio ${i + 1}`} 
+                    fill 
+                    className="object-cover"
+                    unoptimized
+                  />
+                  <div className="absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+                </motion.div>
+              ))}
+            </div>
+            
+            {/* Visual indicator for scrollability */}
+            {images.length > 1 && (
+              <div className="absolute -bottom-1 left-1/2 -translate-x-1/2 flex gap-1.5">
+                {images.slice(0, 5).map((_, i) => (
+                  <div key={i} className="w-1.5 h-1.5 rounded-full bg-primary/20" />
+                ))}
+              </div>
+            )}
+          </div>
+        )}
+      </div>
+    );
+  };
+
   const renderCustomPortfolio = () => {
     return (
       <>
         {renderPixArea()}
+        {renderVisualPortfolio()}
         {renderOriginalCustomPortfolio()}
       </>
     );
@@ -2882,6 +2951,7 @@ END:VCARD`;
 
                 {/* Highlights Service */}
                 {renderProfessionHighlights('#f59e0b')}
+                {renderCustomPortfolio()}
 
                 {/* Localização e Atendimento */}
                 {(data.address || data.service_area) && (

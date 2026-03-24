@@ -735,6 +735,50 @@ export function StandardProfessionalLayout({ data, isPro }: StandardProfessional
       )}
 
 
+      {/* 11.5 PORTFÓLIO VISUAL */}
+      {((data.custom_fields as any)?.portfolio_images || (data.custom_fields as any)?.portfolio_video_url) && (
+        <motion.div 
+          custom={6.5} initial="hidden" animate="visible" variants={fadeIn}
+          className="px-6 space-y-4"
+        >
+          <div className="flex items-center gap-3">
+            <span className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400">Portfólio / Vitrine</span>
+            <div className="h-px flex-1 bg-slate-200 dark:bg-white/10" />
+          </div>
+
+          {/* Video */}
+          {(data.custom_fields as any)?.portfolio_video_url && (
+            <div className="w-full rounded-[2rem] overflow-hidden aspect-video bg-black/20 border border-slate-200 dark:border-white/10 shadow-lg mb-4">
+              <video 
+                src={(data.custom_fields as any).portfolio_video_url} 
+                controls 
+                className="w-full h-full object-cover"
+              />
+            </div>
+          )}
+
+          {/* Carousel */}
+          {(data.custom_fields as any)?.portfolio_images && (
+            <div className="w-full relative overflow-x-auto pb-4 scroll-hide -mx-6 px-6">
+              <div className="flex gap-4">
+                {(Array.isArray((data.custom_fields as any).portfolio_images) 
+                  ? (data.custom_fields as any).portfolio_images 
+                  : ((data.custom_fields as any).portfolio_images as string).split(/[,;]/).map(s => s.trim()).filter(Boolean)
+                ).map((img: string, i: number) => (
+                  <div key={i} className="relative flex-none w-[260px] aspect-[4/5] rounded-[2rem] overflow-hidden border border-slate-200 dark:border-white/10 shadow-md">
+                    <img 
+                      src={img} 
+                      alt={`Portfolio ${i + 1}`} 
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+        </motion.div>
+      )}
+
       {/* 12. LINKS PERSONALIZADOS */}
       {data.custom_links && data.custom_links.length > 0 && (
         <motion.div 
