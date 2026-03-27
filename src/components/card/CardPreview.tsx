@@ -79,7 +79,16 @@ import {
   Copy,
   Umbrella,
   Sun,
-  Palmtree
+  Palmtree,
+  Receipt,
+  CreditCard,
+  Landmark,
+  Brush,
+  Flower2,
+  Eye,
+  Smile,
+  Baby,
+  Wind
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Profile } from '@/types/profile';
@@ -267,6 +276,7 @@ END:VCARD`;
         data.profession === 'tech' ? "Olá! Gostaria de falar sobre desenvolvimento de um projeto técnico 🚀" :
         isHealth ? "Olá! Gostaria de agendar um atendimento 🩺" :
         isAdvogado ? "Olá! Gostaria de agendar uma consulta jurídica ⚖️" :
+        isRealEstate ? "Olá! Vi seu perfil na Konnexy e gostaria de falar sobre imóveis 🏠" :
         isPetshop ? "Olá! Vi seu perfil na Konnexy e gostaria de agendar um serviço para meu pet 🐾" :
         isVeterinario ? "Olá! Vi seu perfil na Konnexy e gostaria de agendar uma consulta veterinária 🩺" :
         isArtesao ? "Olá! Vi seu perfil na Konnexy e gostaria de falar sobre as suas peças artesanais / encomendas 🎨" :
@@ -500,7 +510,7 @@ END:VCARD`;
     const name = fieldName.toLowerCase();
     if (name.includes('atende_domicilio') || name.includes('residencial') || name.includes('home')) return Home;
     if (name.includes('agendamento') || name.includes('horario') || name.includes('schedule')) return Calendar;
-    if (name.includes('oab') || name.includes('creci') || name.includes('nr10') || name.includes('registro') || name.includes('crmv') || name.includes('garantia')) return ShieldCheck;
+    if (name.includes('oab') || name.includes('creci') || name.includes('nr10') || name.includes('registro') || name.includes('crmv') || name.includes('garantia') || name.includes('seguro')) return ShieldCheck;
     if (name.includes('delivery') || name.includes('entreg') || name.includes('frete') || name.includes('veiculo') || name.includes('truck') || name.includes('van')) return Truck;
     if (name.includes('online') || name.includes('remoto') || name.includes('digital') || name.includes('zoom')) return Monitor;
     if (name.includes('experiencia') || name.includes('anos')) return History;
@@ -508,12 +518,24 @@ END:VCARD`;
     if (name.includes('clinico') || name.includes('saude') || name.includes('medico') || name.includes('vital')) return HeartPulse;
     if (name.includes('celular') || name.includes('mobile') || name.includes('phone')) return Smartphone;
     if (name.includes('cartao') || name.includes('pagamento') || name.includes('pix') || name.includes('credit')) return Calculator;
-    if (['reforma', 'ferramentas', 'obra', 'construction', 'hard_hat'].some(k => name.includes(k))) return HardHat;
+    if (name.includes('orcamento') || name.includes('recibo')) return Receipt;
+    if (['reforma', 'ferramentas', 'obra', 'construction', 'hard_hat', 'leva_produtos'].some(k => name.includes(k))) return HardHat;
     if (name.includes('banho') || name.includes('tosa') || name.includes('grooming') || name.includes('animal') || name.includes('pet') || name.includes('vet')) return PawPrint;
     if (name.includes('monitor') || name.includes('ajudante')) return UserPlus;
     if (name.includes('ar_condicionado') || name.includes('climatizacao')) return Zap;
     if (name.includes('escola') || name.includes('faculdade') || name.includes('universitario')) return GraduationCap;
     if (name.includes('materiais') || name.includes('producao') || name.includes('encomenda') || name.includes('pronta_entrega')) return Package;
+    if (name.includes('alto_padrao') || name.includes('premium')) return Gem;
+    if (name.includes('financiamento')) return Landmark;
+    if (name.includes('planta') || name.includes('imovel') || name.includes('venda_aluguel')) return Building2;
+    if (name.includes('avaliacao')) return Scale;
+    if (name.includes('pele') || name.includes('estetica') || name.includes('facial') || name.includes('injetaveis') || name.includes('microagulhamento')) return Sparkles;
+    if (name.includes('unha') || name.includes('manicure') || name.includes('pigmentacao') || name.includes('nail_art')) return Brush;
+    if (name.includes('crp') || name.includes('autoclave') || name.includes('biosseguranca')) return ShieldCheck;
+    if (name.includes('terapia_casal')) return Heart;
+    if (name.includes('depilacao') || name.includes('laser')) return Zap;
+    if (name.includes('spa') || name.includes('drenagem') || name.includes('relaxante')) return Flower2;
+    if (name.includes('convenio') || name.includes('plano')) return CheckCircle2;
     return Award;
   };
 

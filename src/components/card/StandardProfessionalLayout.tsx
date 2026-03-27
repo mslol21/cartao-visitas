@@ -46,7 +46,11 @@ import {
   CreditCard,
   Wallet,
   Receipt,
-  Ticket
+  Ticket,
+  Building2,
+  Landmark,
+  Scale,
+  Gem
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Profile, ProfessionCategory } from '@/types/profile';
@@ -128,6 +132,9 @@ export function StandardProfessionalLayout({ data, isPro }: StandardProfessional
      if (fieldName.includes('experiencia')) return History;
      if (fieldName.includes('socorro') || fieldName.includes('emergencia')) return Zap;
      if (fieldName.includes('clinico') || fieldName.includes('saude')) return HeartPulse;
+     if (fieldName.includes('garantia') || fieldName.includes('seguro')) return ShieldCheck;
+     if (fieldName.includes('cartao') || fieldName.includes('pix') || fieldName.includes('pagamento')) return CreditCard;
+     if (fieldName.includes('orcamento') || fieldName.includes('recibo')) return Receipt;
      if (fieldName.includes('celular')) return Smartphone;
      if (fieldName.includes('kids') || fieldName.includes('infantil')) return Baby;
      if (fieldName.includes('noiva') || fieldName.includes('festa')) return Sparkles;
@@ -136,15 +143,23 @@ export function StandardProfessionalLayout({ data, isPro }: StandardProfessional
      if (fieldName.includes('lavagem') || fieldName.includes('higienizacao')) return Wind;
      if (fieldName.includes('massagem') || fieldName.includes('facial') || fieldName.includes('smile')) return Smile;
      if (fieldName.includes('cilios') || fieldName.includes('sobrancelha') || fieldName.includes('olhar')) return Eye;
-     if (fieldName.includes('unha') || fieldName.includes('manicure') || fieldName.includes('pigmentacao')) return Brush;
-     if (fieldName.includes('pele') || fieldName.includes('estetica') || fieldName.includes('facial')) return Sparkles;
+     if (fieldName.includes('unha') || fieldName.includes('manicure') || fieldName.includes('pigmentacao') || fieldName.includes('nail_art')) return Brush;
+     if (fieldName.includes('pele') || fieldName.includes('estetica') || fieldName.includes('facial') || fieldName.includes('injetaveis') || fieldName.includes('microagulhamento')) return Sparkles;
      if (fieldName.includes('spa') || fieldName.includes('drenagem') || fieldName.includes('relaxante')) return Flower2;
-     if (fieldName.includes('reforma') || fieldName.includes('ferramentas') || fieldName.includes('obra')) return HardHat;
+     if (fieldName.includes('crp') || fieldName.includes('autoclave') || fieldName.includes('biosseguranca')) return ShieldCheck;
+     if (fieldName.includes('terapia_casal')) return Heart;
+     if (fieldName.includes('depilacao') || fieldName.includes('laser')) return Zap;
+     if (fieldName.includes('convenio') || fieldName.includes('plano')) return CheckCircle2;
+     if (fieldName.includes('reforma') || fieldName.includes('ferramentas') || fieldName.includes('obra') || fieldName.includes('leva_produtos')) return HardHat;
      if (fieldName.includes('piscina') || fieldName.includes('lazer')) return Waves;
      if (fieldName.includes('churrasqueira') || fieldName.includes('festa')) return Sparkles;
      if (fieldName.includes('capacidade')) return Users;
      if (fieldName.includes('wifi')) return Globe;
      if (fieldName.includes('som')) return Music;
+     if (fieldName.includes('alto_padrao') || fieldName.includes('premium')) return Gem;
+     if (fieldName.includes('financiamento')) return Landmark;
+     if (fieldName.includes('planta') || fieldName.includes('imovel') || fieldName.includes('venda_aluguel')) return Building2;
+     if (fieldName.includes('avaliacao')) return Scale;
      return Award;
   };
 

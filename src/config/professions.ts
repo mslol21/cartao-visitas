@@ -86,30 +86,32 @@ export const professionsMap: Record<ProfessionCategory, ProfessionConfig> = {
   },
   manicure: {
     id: 'manicure',
-    label: 'Manicure',
+    label: 'Manicure & Nail Designer',
     theme: { color: 'pink', style: 'glass' },
     customFields: [
-      { name: 'aceita_agendamento', label: 'Aceita Agendamento Online?', type: 'boolean' },
-      { name: 'atende_domicilio', label: 'Atende em Domicílio?', type: 'boolean' },
-      { name: 'unhas_fibra', label: 'Fibra de Vidro?', type: 'boolean' },
+      { name: 'aceita_agendamento', label: 'Agendamento Online?', type: 'boolean' },
+      { name: 'unhas_fibra', label: 'Especialista em Fibra?', type: 'boolean' },
       { name: 'unhas_gel', label: 'Unhas em Gel?', type: 'boolean' },
       { name: 'blindagem', label: 'Blindagem?', type: 'boolean' },
-      { name: 'spa_pes_maos', label: 'Possui Spa dos Pés/Mãos?', type: 'boolean' }
+      { name: 'nail_art', label: 'Faz Nail Art?', type: 'boolean' },
+      { name: 'esterilizacao_autoclave', label: 'Usa Autoclave (Biossegurança)?', type: 'boolean' },
+      { name: 'spa_pes_maos', label: 'Spa dos Pés/Mãos?', type: 'boolean' },
+      { name: 'portfolio_images', label: 'Fotos das Unhas (URLs separadas por vírgula)', type: 'array', placeholder: 'https://ex.com/unha1.jpg' }
     ],
     suggestedBackgrounds: [
-      'https://images.unsplash.com/photo-1621236304846-859dabc6a101?auto=format&fit=crop&q=80&w=1080&h=1920',
       'https://images.unsplash.com/photo-1519014816548-bf5fe059798b?auto=format&fit=crop&q=80&w=1080&h=1920',
-      'https://images.unsplash.com/photo-1632345680197-23517df40df2?auto=format&fit=crop&q=80&w=1080&h=1920'
+      'https://images.unsplash.com/photo-1632345680197-23517df40df2?auto=format&fit=crop&q=80&w=1080&h=1920',
+      'https://images.unsplash.com/photo-1604654894610-df63bc536371?auto=format&fit=crop&q=80&w=1080&h=1920'
     ],
-    defaultBio: 'Especialista em embelezamento de mãos e pés. Ofereço desde a cutilagem clássica até técnicas avançadas de alongamento em fibra, blindagem e esmaltação em gel de alta durabilidade. Foco total em biossegurança e acabamento impecável.',
-    defaultCta: 'Agendar Horário ✨',
+    defaultBio: 'Transformando sua auto-estima através da beleza! Sou Nail Designer premiada, especialista em alongamento em fibra e unhas artísticas. Biossegurança garantida (materiais descartáveis e esterilização em autoclave).',
+    defaultCta: 'Agendar Unhas 💅',
     defaultServices: [
-      { nome: 'Manicure & Pedicure', descricao: 'Limpeza, cuticulagem e esmaltação tradicional completa.', preco: 'R$ 60' },
-      { nome: 'Alongamento em Fibra', descricao: 'Unhas longas, naturais e resistentes, inclui primeira esmaltação.', preco: 'R$ 150' },
-      { nome: 'Esmaltação em Gel', descricao: 'Esmaltação de alta durabilidade (até 20 dias) sem descascar.', preco: 'R$ 50' },
-      { nome: 'Blindagem de Unhas', descricao: 'Fortalecimento da unha natural com camada de gel protetora.', preco: 'R$ 70' }
+      { nome: 'Alongamento Fibra de Vidro', descricao: 'Inclui preparação, cutilagem, alongamento, curvatura e esmaltação comum.', preco: 'R$ 160' },
+      { nome: 'Manutenção (até 20 dias)', descricao: 'Reposição do produto e restauração da estrutura.', preco: 'R$ 90' },
+      { nome: 'Blindagem + Esmaltação em Gel', descricao: 'Proteção para a unha natural crescer forte.', preco: 'R$ 85' }
     ]
   },
+
   cabeleireiro: {
     id: 'cabeleireiro',
     label: 'Cabeleireiro',
@@ -173,23 +175,26 @@ export const professionsMap: Record<ProfessionCategory, ProfessionConfig> = {
   },
   psicologo: {
     id: 'psicologo',
-    label: 'Psicólogo',
-    theme: { color: 'teal', style: 'glass' },
+    label: 'Psicólogo(a)',
+    theme: { color: 'indigo', style: 'glass' },
     customFields: [
-      { name: 'abordagem_terapeutica', label: 'Abordagem Terapêutica', type: 'text', placeholder: 'Ex: TCC, Psicanálise' },
-      { name: 'atendimento_online', label: 'Atendimento Online?', type: 'boolean' }
+      { name: 'crp', label: 'Número do CRP', type: 'text', placeholder: 'Ex: 06/123456' },
+      { name: 'abordagem_terapeutica', label: 'Abordagem Terapêutica', type: 'text', placeholder: 'TCC, Psicanálise...' },
+      { name: 'atendimento_online', label: 'Atende 100% Online?', type: 'boolean' },
+      { name: 'terapia_casal', label: 'Terapia de Casal?', type: 'boolean' },
+      { name: 'atende_convenio', label: 'Atende Planos de Saúde?', type: 'boolean' }
     ],
     suggestedBackgrounds: [
-      'https://images.unsplash.com/photo-1527689368864-3a821dbccc48?auto=format&fit=crop&q=80&w=1080&h=1920',
-      'https://images.unsplash.com/photo-1516302752625-fbb345ebb1e5?auto=format&fit=crop&q=80&w=1080&h=1920',
-      'https://images.unsplash.com/photo-1518101645466-7795880fb9f8?auto=format&fit=crop&q=80&w=1080&h=1920'
+      'https://images.unsplash.com/photo-1520694478166-daaaaaec74b4?auto=format&fit=crop&q=80&w=1080&h=1920',
+      'https://images.unsplash.com/photo-1573497620053-ea5300f94f21?auto=format&fit=crop&q=80&w=1080&h=1920',
+      'https://images.unsplash.com/photo-1499209974431-9dddcece7f88?auto=format&fit=crop&q=80&w=1080&h=1920'
     ],
-    defaultBio: 'Atendimento psicológico humanizado, focado na saúde mental, autoconhecimento e desenvolvimento pessoal. Um espaço seguro e acolhedor para que você expresse seus sentimentos e encontre novos caminhos.',
-    defaultCta: 'Agendar Consulta 🛋️',
+    defaultBio: 'Um ambiente seguro e sigiloso focado em seu autoconhecimento, regulação emocional e qualidade de vida. Atendo de forma online ou presencial através de Práticas Baseadas em Evidências para uma saúde mental plena.',
+    defaultCta: 'Agendar Sessão 🛋️',
     defaultServices: [
-      { nome: 'Psicoterapia Individual', descricao: 'Atendimento focado nas suas demandas emocionais e autoconhecimento.', preco: 'R$ 180 / sessão' },
-      { nome: 'Terapia Online', descricao: 'Sessões por vídeo chamada no conforto e segurança da sua casa.', preco: 'R$ 150 / sessão' },
-      { nome: 'Terapia de Casal', descricao: 'Mediação profissional para criar diálogos saudáveis no relacionamento.', preco: 'R$ 250 / sessão' }
+      { nome: 'Psicoterapia Individual', descricao: 'Sessão de 50 minutos para tratar ansiedade, estresse e regulação emocional.', preco: 'Consulte valores' },
+      { nome: 'Terapia de Casal', descricao: 'Trabalho focado na comunicação e harmonia conjugal.', preco: 'Consulte valores' },
+      { nome: 'Orientação de Carreira', descricao: 'Apoio especializado em transições profissionais e síndromes ocupacionais.', preco: 'Consulte valores' }
     ]
   },
   designer: {
@@ -262,27 +267,28 @@ export const professionsMap: Record<ProfessionCategory, ProfessionConfig> = {
   },
   esteticista: {
     id: 'esteticista',
-    label: 'Esteticista',
-    theme: { color: 'rose', style: 'glass' },
+    label: 'Estética Avançada',
+    theme: { color: 'rose', style: 'standard' },
     customFields: [
       { name: 'aceita_agendamento', label: 'Aceita Agendamento Online?', type: 'boolean' },
-      { name: 'limpeza_pele', label: 'Limpeza de Pele?', type: 'boolean' },
+      { name: 'limpeza_pele', label: 'Limpeza de Pele Profunda?', type: 'boolean' },
+      { name: 'procedimentos_injetaveis', label: 'Botox / Harmonização?', type: 'boolean' },
+      { name: 'microagulhamento', label: 'Microagulhamento?', type: 'boolean' },
+      { name: 'depilacao_laser', label: 'Depilação a Laser?', type: 'boolean' },
       { name: 'drenagem_linfatica', label: 'Drenagem Linfática?', type: 'boolean' },
-      { name: 'massagem_relaxante', label: 'Massagem Relaxante?', type: 'boolean' },
-      { name: 'micropigmentacao', label: 'Micropigmentação?', type: 'boolean' }
+      { name: 'portfolio_images', label: 'Resultados / Antes e Depois (URLs)', type: 'array', placeholder: 'https://ex.com/antes-depois.jpg' }
     ],
     suggestedBackgrounds: [
-      'https://images.unsplash.com/photo-1570172619664-2af9fbeca001?auto=format&fit=crop&q=80&w=1080&h=1920',
-      'https://images.unsplash.com/photo-1544161515-4365f1007221?auto=format&fit=crop&q=80&w=1080&h=1920',
-      'https://images.unsplash.com/photo-1616394584738-fc6e612e71b9?auto=format&fit=crop&q=80&w=1080&h=1920'
+      'https://images.unsplash.com/photo-1616394584738-fc6e612e71b9?auto=format&fit=crop&q=80&w=1080&h=1920',
+      'https://images.unsplash.com/photo-1570172619644-dfd03ed5d881?auto=format&fit=crop&q=80&w=1080&h=1920',
+      'https://images.unsplash.com/photo-1512290923902-8a9f81dc236c?auto=format&fit=crop&q=80&w=1080&h=1920'
     ],
-    defaultBio: 'Recupere o brilho da sua pele e o equilíbrio do seu corpo com protocolos personalizados de estética avançada. Especialista em tratamentos faciais e corporais focados em resultados reais e relaxamento profundo.',
-    defaultCta: 'Agendar Avaliação 💆‍♀️',
+    defaultBio: 'Cuidando da sua pele e auto-estima com ciência, alta tecnologia e protocolos personalizados. Foco em rejuvenescimento celular e embelezamento facial de forma segura, duradoura e com máximo respeito à essência natural de cada rosto.',
+    defaultCta: 'Agendar Avaliação ✨',
     defaultServices: [
-      { nome: 'Limpeza de Pele Profunda', descricao: 'Extração, peeling de diamante e hidratação calmante.', preco: 'R$ 150' },
-      { nome: 'Drenagem Linfática (Sessão)', descricao: 'Redução de medidas e toxinas com técnica exclusiva.', preco: 'R$ 120' },
-      { nome: 'Peeling Químico', descricao: 'Renovação celular para tratar manchas e linhas de expressão.', preco: 'R$ 200' },
-      { nome: 'Microagulhamento', descricao: 'Tratamento para cicatrizes e rejuvenescimento facial.', preco: 'Sob consulta' }
+      { nome: 'Limpeza de Pele Fotônica', descricao: 'Extração completa, peeling de diamante e máscara com LED terapia.', preco: 'R$ 150' },
+      { nome: 'Harmonização Preventiva', descricao: 'Tratamento com Toxina Botulínica (3 áreas) para prevenção inteligente de rugas.', preco: 'Sob Consulta' },
+      { nome: 'Microagulhamento / Pós-Acne', descricao: 'Estimulação de colágeno para cicatrizes, poros dilatados e firmeza.', preco: 'R$ 250' }
     ]
   },
   pedreiro: {
@@ -671,16 +677,31 @@ export const professionsMap: Record<ProfessionCategory, ProfessionConfig> = {
   },
   real_estate: {
     id: 'real_estate',
-    label: 'Imobiliários',
+    label: 'Corretor de Imóveis / Imobiliária',
     theme: { color: 'emerald', style: 'glass' },
     customFields: [
       { name: 'creci', label: 'Número do CRECI', type: 'text', placeholder: 'Ex: 123456-F' },
-      { name: 'venda_aluguel', label: 'Tipos de Imóveis', type: 'text', placeholder: 'Ex: Venda e Aluguel' }
+      { name: 'venda_aluguel', label: 'Tipos de Imóveis', type: 'text', placeholder: 'Ex: Venda e Locação' },
+      { name: 'alto_padrao', label: 'Especialista em Alto Padrão?', type: 'boolean' },
+      { name: 'imoveis_planta', label: 'Imóveis na Planta / Lançamentos?', type: 'boolean' },
+      { name: 'financiamento_bancario', label: 'Assessoria de Financiamento?', type: 'boolean' },
+      { name: 'avaliacao_imovel', label: 'Avaliação de Imóveis?', type: 'boolean' },
+      { name: 'portfolio_images', label: 'URLs de Imóveis (Fotos separadas por vírgula)', type: 'array', placeholder: 'https://img1.jpg, https://img2.jpg' },
+      { name: 'portfolio_video_url', label: 'URL de Vídeo (Tour Virtual - MP4/WebM)', type: 'text', placeholder: 'https://exemplo.com/tour.mp4' }
     ],
     suggestedBackgrounds: [
       'https://images.unsplash.com/photo-1560518883-ce09059eeffa?auto=format&fit=crop&q=80&w=1080&h=1920',
       'https://images.unsplash.com/photo-1582408921715-18e7806365bb?auto=format&fit=crop&q=80&w=1080&h=1920',
-      'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&q=80&w=1080&h=1920'
+      'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&q=80&w=1080&h=1920',
+      'https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&q=80&w=1080&h=1920',
+      'https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&q=80&w=1080&h=1920'
+    ],
+    defaultBio: 'Encontrando o imóvel ideal para cada cliente! Atendimento exclusivo e transparente focado em realizar o sonho da sua casa própria, ou encontrar o local perfeito para os negócios da sua empresa. Assessoria completa de ponta a ponta na transação comercial.',
+    defaultCta: 'Agendar Atendimento 🏢',
+    defaultServices: [
+      { nome: 'Compra e Venda', descricao: 'Seu imóvel com as melhores condições e toda segurança jurídica.', preco: 'Consulte-nos' },
+      { nome: 'Locação Residencial / Comercial', descricao: 'Imóveis revisados nas melhores localizações.', preco: 'Ver Opções' },
+      { nome: 'Lançamentos na Planta', descricao: 'Oportunidades exclusivas para moradia e investimento seguro.', preco: 'Sob consulta' }
     ]
   },
   driver: {
@@ -750,15 +771,28 @@ export const professionsMap: Record<ProfessionCategory, ProfessionConfig> = {
   },
   service: {
     id: 'service',
-    label: 'Manutenção / Serviços',
+    label: 'Manutenção / Serviços em Geral',
     theme: { color: 'amber', style: 'standard' },
     customFields: [
       { name: 'orcamento_gratis', label: 'Orçamento Gratuito?', type: 'boolean' },
-      { name: 'garantia_servico', label: 'Oferece Garantia?', type: 'boolean' }
+      { name: 'garantia_servico', label: 'Oferece Garantia?', type: 'boolean' },
+      { name: 'atendimento_emergencial', label: 'Atendimento Emergencial?', type: 'boolean' },
+      { name: 'aceita_cartao', label: 'Aceita Cartão/Pix?', type: 'boolean' },
+      { name: 'leva_produtos', label: 'Ferramentas/Material Próprio?', type: 'boolean' }
     ],
     suggestedBackgrounds: [
       'https://images.unsplash.com/photo-1581447100595-3a72cb9b60b3?auto=format&fit=crop&q=80&w=1080&h=1920',
-      'https://images.unsplash.com/photo-1504307651254-35680f43b1d4?auto=format&fit=crop&q=80&w=1080&h=1920'
+      'https://images.unsplash.com/photo-1504307651254-35680f43b1d4?auto=format&fit=crop&q=80&w=1080&h=1920',
+      'https://images.unsplash.com/photo-1581578731548-c64695cc6952?auto=format&fit=crop&q=80&w=1080&h=1920',
+      'https://images.unsplash.com/photo-1621905251189-08b45d6a269e?auto=format&fit=crop&q=80&w=1080&h=1920'
+    ],
+    defaultBio: 'Soluções rápidas, seguras e eficientes para o seu lar ou empresa. Atendimento especializado em manutenção e serviços em geral, priorizando a qualidade, pontualidade e a sua total satisfação. Resolva seus problemas com quem entende do assunto!',
+    defaultCta: 'Solicitar Orçamento 🛠️',
+    defaultServices: [
+      { nome: 'Visita Técnica / Avaliação', descricao: 'Diagnóstico do problema no local de forma transparente.', preco: 'A partir de R$ 50' },
+      { nome: 'Manutenção Preventiva', descricao: 'Revisão geral para evitar problemas futuros.', preco: 'Sob consulta' },
+      { nome: 'Reparos e Instalações', descricao: 'Solução rápida para pequenos e médios reparos no dia a dia.', preco: 'A partir de R$ 80' },
+      { nome: 'Diária de Serviços Rápidos', descricao: 'Um profissional à disposição para resolver várias pendências num só dia.', preco: 'A partir de R$ 200/dia' }
     ]
   },
   musico: {

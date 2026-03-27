@@ -115,7 +115,18 @@ export interface CustomFields {
   numero_oab?: string;
   // Psicólogo
   abordagem_terapeutica?: string;
+  crp?: string;
+  terapia_casal?: boolean;
+  atende_convenio?: boolean;
   atendimento_online?: boolean;
+  // Estética e Beleza
+  limpeza_pele?: boolean;
+  procedimentos_injetaveis?: boolean;
+  microagulhamento?: boolean;
+  depilacao_laser?: boolean;
+  drenagem_linfatica?: boolean;
+  nail_art?: boolean;
+  esterilizacao_autoclave?: boolean;
   // Fotógrafo / Designer / Tech
   tipo_eventos?: string[];
   entrega_digital?: boolean;
@@ -173,6 +184,10 @@ export interface CustomFields {
   // Imobiliário / Outros
   creci?: string;
   venda_aluguel?: string;
+  financiamento_bancario?: boolean;
+  avaliacao_imovel?: boolean;
+  imoveis_planta?: boolean;
+  alto_padrao?: boolean;
   banho_tosa?: boolean;
   atendimento_clinico?: boolean;
   pecas_originais?: boolean;
@@ -211,10 +226,11 @@ export interface CustomFields {
   garantia_troca?: boolean;
   parcelamento_sem_juros?: boolean;
   desconto_pix?: boolean;
-  // Assistência Celular
+  // Assistência Celular / Serviços
   atendimento_delivery?: boolean;
   orcamento_gratis?: boolean;
   garantia_90_dias?: boolean;
+  garantia_servico?: boolean;
   aceita_cartao?: boolean;
   marcas_principais?: string[];
   // Portfólio / Fotografia
