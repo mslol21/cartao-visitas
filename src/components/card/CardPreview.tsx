@@ -838,7 +838,7 @@ END:VCARD`;
           id="digital-card-content"
           className={cn(
             "relative overflow-hidden rounded-[2.5rem] transition-all duration-500 flex flex-col min-h-[600px]",
-            (isPro && data.background_video_url) ? "dark bg-slate-950" : "",
+            ((isPro || isMusico) && data.background_video_url) ? "dark bg-slate-950" : "",
             isPro 
               ? "border-2 border-primary/20 shadow-[0_40px_100px_-20px_hsl(var(--primary)/0.3)] shadow-[inset_0_0_60px_hsl(var(--primary)/0.1)]" 
               : "border border-slate-200 dark:border-slate-800 shadow-sm bg-white dark:bg-slate-950"
@@ -1006,7 +1006,7 @@ END:VCARD`;
                   )}
                </div>
 
-               {data.background_video_url && data.profession !== 'area_lazer' && (
+               {data.background_video_url && data.profession !== 'area_lazer' && (isPro || isMusico) && (
                 <div className="absolute inset-0 overflow-hidden pointer-events-none transition-all z-0 flex flex-col items-center justify-start">
                   {/* Background Image/Video (Cover, Top Aligned) */}
                   <div className="absolute inset-0 w-full h-full z-0">
@@ -2543,23 +2543,49 @@ END:VCARD`;
                     </a>
                   </Button>
 
-                  {/* Redes Sociais */}
-                  {validSocialLinks.length > 0 && (
-                    <div className="flex flex-wrap justify-center gap-3 mb-8 w-full">
-                      {validSocialLinks.map((link, i) => (
-                        <a 
-                          key={i} 
-                          href={link.url} 
-                          target="_blank" 
-                          rel="noopener noreferrer" 
-                          onClick={() => handleTrackClick(link.trackType)}
-                          className="flex items-center justify-center w-12 h-12 rounded-full bg-white/5 border border-white/10 text-white/70 hover:text-fuchsia-400 hover:bg-fuchsia-500/10 hover:border-fuchsia-500/30 transition-all hover:scale-110 shadow-lg"
-                        >
-                          <link.icon className="w-5 h-5" />
-                        </a>
-                      ))}
-                    </div>
-                  )}
+                  {/* Redes Sociais — Instagram em Destaque */}
+                  <div className="w-full mb-8 space-y-3">
+                    {/* Instagram Card Premium */}
+                    {data.instagram && (
+                      <motion.a
+                        href={`https://instagram.com/${data.instagram}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        onClick={() => handleTrackClick('click_instagram')}
+                        whileHover={{ scale: 1.02 }}
+                        whileTap={{ scale: 0.97 }}
+                        className="flex items-center gap-4 w-full p-4 rounded-2xl relative overflow-hidden group cursor-pointer"
+                        style={{ background: 'linear-gradient(135deg, #833ab4, #fd1d1d, #fcb045)' }}
+                      >
+                        <div className="absolute inset-0 bg-white/5 opacity-0 group-hover:opacity-100 transition-opacity" />
+                        <div className="w-12 h-12 rounded-xl bg-white/20 flex items-center justify-center shrink-0">
+                          <Instagram className="w-6 h-6 text-white" />
+                        </div>
+                        <div className="flex flex-col flex-1 min-w-0">
+                          <span className="text-[10px] font-black uppercase text-white/70 tracking-widest">Siga no Instagram</span>
+                          <span className="text-base font-black text-white truncate">@{data.instagram}</span>
+                        </div>
+                        <ChevronRight className="w-5 h-5 text-white/50 group-hover:translate-x-1 transition-transform shrink-0" />
+                      </motion.a>
+                    )}
+                    {/* Demais redes */}
+                    {validSocialLinks.filter(s => s.id !== 'instagram' && s.id !== 'digital_presence' && s.id !== 'portfolio_anchor').length > 0 && (
+                      <div className="flex flex-wrap justify-center gap-3">
+                        {validSocialLinks.filter(s => s.id !== 'instagram' && s.id !== 'digital_presence' && s.id !== 'portfolio_anchor').map((link, i) => (
+                          <a
+                            key={i}
+                            href={link.url}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            onClick={() => handleTrackClick(link.trackType)}
+                            className="flex items-center justify-center w-12 h-12 rounded-full bg-white/5 border border-white/10 text-white/70 hover:text-fuchsia-400 hover:bg-fuchsia-500/10 hover:border-fuchsia-500/30 transition-all hover:scale-110 shadow-lg"
+                          >
+                            <link.icon className="w-5 h-5" />
+                          </a>
+                        ))}
+                      </div>
+                    )}
+                  </div>
 
                   {/* Bio do Músico */}
                   {data.bio_profissional && (
