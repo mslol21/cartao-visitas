@@ -267,8 +267,8 @@ export const professionsMap: Record<ProfessionCategory, ProfessionConfig> = {
   },
   esteticista: {
     id: 'esteticista',
-    label: 'Estética Avançada',
-    theme: { color: 'rose', style: 'standard' },
+    label: 'Clínica de Estética Avançada',
+    theme: { color: '#C9A34E', style: 'oled' },
     customFields: [
       { name: 'aceita_agendamento', label: 'Aceita Agendamento Online?', type: 'boolean' },
       { name: 'limpeza_pele', label: 'Limpeza de Pele Profunda?', type: 'boolean' },

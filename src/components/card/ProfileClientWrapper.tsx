@@ -20,57 +20,32 @@ export function ProfileClientWrapper({ profile, themeColor }: ProfileClientWrapp
       {/* Global Background (Only for Pro) */}
       {isPro && profile.background_video_url && (
         <div className="fixed inset-0 z-[-2] pointer-events-none bg-slate-950 overflow-hidden">
+          {/* Background media: cover, anchored at top */}
           {profile.background_video_url.match(/\.(mp4|webm|ogg|mov)$/i) ? (
-            <div 
-              className="relative w-full h-full"
-              style={{
-                maskImage: 'linear-gradient(to bottom, black 0%, black 50%, transparent 100%)',
-                WebkitMaskImage: 'linear-gradient(to bottom, black 0%, black 50%, transparent 100%)'
-              }}
-            >
-              <video
-                src={profile.background_video_url}
-                autoPlay
-                muted
-                loop
-                playsInline
-                className="absolute inset-0 w-full h-full object-cover blur-2xl opacity-40 scale-110"
-              />
-              <video
-                src={profile.background_video_url}
-                autoPlay
-                muted
-                loop
-                playsInline
-                className="relative w-full h-full object-contain z-10"
-              />
-            </div>
+            <video
+              src={profile.background_video_url}
+              autoPlay
+              muted
+              loop
+              playsInline
+              className="absolute inset-0 w-full h-full object-cover"
+              style={{ objectPosition: 'center 20%' }}
+            />
           ) : (
-            <div className="relative w-full h-full flex flex-col items-center justify-start">
-              {/* Blur backdrop (fills screen) */}
-              <div 
-                className="absolute inset-0 w-full h-full blur-2xl opacity-40 scale-125 z-0" 
-                style={{ 
-                  backgroundImage: `url('${profile.background_video_url}')`, 
-                  backgroundSize: 'cover', 
-                  backgroundPosition: 'center' 
-                }} 
-              />
-              
-              {/* Foreground Image (maintains aspect ratio, top aligned) */}
-              <img
-                src={profile.background_video_url}
-                alt="Background"
-                className="relative z-10 w-full h-auto max-h-screen object-contain object-top"
-                style={{
-                  maskImage: 'linear-gradient(to bottom, black 0%, black 75%, transparent 100%)',
-                  WebkitMaskImage: 'linear-gradient(to bottom, black 0%, black 75%, transparent 100%)'
-                }}
-              />
-            </div>
+            <div 
+              className="absolute inset-0 w-full h-full"
+              style={{ 
+                backgroundImage: `url('${profile.background_video_url}')`,
+                backgroundSize: 'cover',
+                backgroundPosition: 'center 20%'
+              }}
+            />
           )}
-          <div className="absolute inset-0 z-20 bg-slate-950/50" />
-          <div className="absolute inset-0 z-20 bg-gradient-to-b from-transparent via-slate-950/40 to-slate-950" />
+          {/* Premium Dark Overlay — topo visível, fundo escuro para o conteúdo */}
+          <div 
+            className="absolute inset-0 z-10"
+            style={{ background: 'linear-gradient(to bottom, rgba(11,26,43,0.5), rgba(11,26,43,0.97))' }}
+          />
         </div>
       )}
 

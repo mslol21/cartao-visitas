@@ -1006,70 +1006,43 @@ END:VCARD`;
                   )}
                </div>
 
-              {data.background_video_url && data.profession !== 'area_lazer' && (
+               {data.background_video_url && data.profession !== 'area_lazer' && (
                 <div className="absolute inset-0 overflow-hidden pointer-events-none transition-all z-0 flex flex-col items-center justify-start">
-                  <div 
-                    className="w-full relative h-full absolute inset-0 z-0"
-                 >
-                   {/* Blur backdrop mask to fade out softly if it reaches the bottom */}
-                   <div 
-                     className="absolute inset-0 w-full h-full"
-                     style={{
-                       maskImage: 'linear-gradient(to bottom, black 0%, black 50%, transparent 100%)',
-                       WebkitMaskImage: 'linear-gradient(to bottom, black 0%, black 50%, transparent 100%)'
-                     }}
-                   >
-                     {data.background_video_url.match(/\.(mp4|webm|ogg|mov)$/i) ? (
-                       <video 
-                         src={data.background_video_url}
-                         autoPlay 
-                         muted 
-                         loop 
-                         playsInline 
-                         className="absolute inset-0 w-full h-full object-cover blur-2xl opacity-30 scale-125"
-                       />
-                     ) : (
-                       <div 
-                         className="absolute inset-0 w-full h-full blur-2xl opacity-30 scale-125" 
-                         style={{ 
-                           backgroundImage: `url('${data.background_video_url}')`, 
-                           backgroundSize: 'cover', 
-                           backgroundPosition: 'center' 
-                         }} 
-                       />
-                     )}
-                   </div>
+                  {/* Background Image/Video (Cover, Top Aligned) */}
+                  <div className="absolute inset-0 w-full h-full z-0">
+                    {data.background_video_url.match(/\.(mp4|webm|ogg|mov)$/i) ? (
+                      <video 
+                        src={data.background_video_url}
+                        autoPlay 
+                        muted 
+                        loop 
+                        playsInline 
+                        className="absolute inset-0 w-full h-full object-cover"
+                        style={{ objectPosition: 'center 20%' }}
+                      />
+                    ) : (
+                      <div 
+                        className="absolute inset-0 w-full h-full" 
+                        style={{ 
+                          backgroundImage: `url('${data.background_video_url}')`, 
+                          backgroundSize: 'cover', 
+                          backgroundPosition: 'center 20%' 
+                        }} 
+                      />
+                    )}
+                  </div>
 
-                   {/* Foreground media */}
-                   {data.background_video_url.match(/\.(mp4|webm|ogg|mov)$/i) ? (
-                     <video 
-                       src={data.background_video_url}
-                       autoPlay 
-                       muted 
-                       loop 
-                       playsInline 
-                       className={cn("relative z-10 w-full h-auto max-h-[85%] object-contain object-top", (isMusico || isBarbearia) ? "opacity-90" : "opacity-85")}
-                       style={{
-                         maskImage: 'linear-gradient(to bottom, black 0%, black 75%, transparent 100%)',
-                         WebkitMaskImage: 'linear-gradient(to bottom, black 0%, black 75%, transparent 100%)'
-                       }}
-                     />
-                   ) : (
-                     <img 
-                       src={data.background_video_url}
-                       alt="Background"
-                       className={cn("relative z-10 w-full h-auto max-h-[85%] object-contain object-top", (isMusico || isBarbearia) ? "opacity-90" : "opacity-85")}
-                       style={{
-                         maskImage: 'linear-gradient(to bottom, black 0%, black 75%, transparent 100%)',
-                         WebkitMaskImage: 'linear-gradient(to bottom, black 0%, black 75%, transparent 100%)'
-                       }}
-                     />
-                   )}
-                 </div>
-                 {!isMusico && !((isPro || data.profession === 'esteticista') && (data.custom_fields as any)?.cor_fundo) && (
-                   <div className="absolute inset-0 bg-gradient-to-b from-slate-950/20 via-slate-950/60 to-slate-950" />
-                 )}
-               </div>
+                  {/* Premium Dark Overlay */}
+                  <div 
+                    className="absolute inset-0 z-10"
+                    style={{
+                      background: 'linear-gradient(to bottom, rgba(11,26,43,0.5), rgba(11,26,43,0.95))'
+                    }}
+                  />
+                  {!isMusico && !((isPro || data.profession === 'esteticista') && (data.custom_fields as any)?.cor_fundo) && (
+                    <div className="absolute inset-0 bg-gradient-to-b from-slate-950/20 via-slate-950/60 to-slate-950" />
+                  )}
+                </div>
               )}
           </div>
           {isStandardized ? (
