@@ -107,6 +107,7 @@ export function EditorForm({ initialData, onSubmit, onChange, isPro = false, can
   const [usernameStatus, setUsernameStatus] = useState<'idle' | 'checking' | 'available' | 'taken'>('idle');
   const fileInputRef = useRef<HTMLInputElement>(null);
   const videoInputRef = useRef<HTMLInputElement>(null);
+  const fotoLocalInputRef = useRef<HTMLInputElement>(null);
   const supabase = createClient();
   const firstRender = useRef(true);
   const [isDirty, setIsDirty] = useState(false);
@@ -303,6 +304,49 @@ export function EditorForm({ initialData, onSubmit, onChange, isPro = false, can
       toast.error('Erro ao subir arquivo.');
     } finally {
       setUploading(false);
+    }
+  };
+
+  const handleFotoLocalUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    if (file.size > 50 * 1024 * 1024) {
+      toast.error('Arquivo muito grande. Máximo 50MB.');
+      return;
+    }
+
+    const isVideo = file.type.startsWith('video/');
+    const isImage = file.type.startsWith('image/');
+
+    if (!isVideo && !isImage) {
+      toast.error('Formato inválido. Use MP4, WebM, MOV, PNG, JPG ou WEBP.');
+      return;
+    }
+
+    setUploading(true);
+    try {
+      const fileExt = file.name.split('.').pop();
+      const fileName = `${Math.random().toString(36).substring(2)}.${fileExt}`;
+      const filePath = `locals/${fileName}`;
+
+      const { error: uploadError } = await supabase.storage
+        .from('avatars')
+        .upload(filePath, file);
+
+      if (uploadError) throw uploadError;
+
+      const { data: { publicUrl } } = supabase.storage
+        .from('avatars')
+        .getPublicUrl(filePath);
+
+      handleCustomFieldChange('foto_local' as keyof CustomFields, publicUrl);
+      toast.success('Mídia do local enviada!');
+    } catch (error: any) {
+      toast.error('Erro ao enviar arquivo: ' + error.message);
+    } finally {
+      setUploading(false);
+      if (fotoLocalInputRef.current) fotoLocalInputRef.current.value = '';
     }
   };
 
@@ -843,15 +887,81 @@ export function EditorForm({ initialData, onSubmit, onChange, isPro = false, can
                               />
                             </div>
                           ) : field.type === 'text' ? (
-                            <>
-                              <Label className="text-xs font-bold uppercase tracking-wider opacity-60">{field.label}</Label>
-                              <Input
-                                value={(formData.custom_fields as any)?.[field.name] || ''}
-                                onChange={(e) => handleCustomFieldChange(field.name as keyof CustomFields, e.target.value)}
-                                placeholder={field.placeholder}
-                                className="rounded-2xl h-11"
-                              />
-                            </>
+                            field.name === 'foto_local' ? (
+                              // Campo especial: upload de foto/vídeo do local
+                              <div className="space-y-3">
+                                <Label className="text-xs font-bold uppercase tracking-wider opacity-60">{field.label}</Label>
+                                {/* Preview da mídia atual */}
+                                {(formData.custom_fields as any)?.[field.name] && (
+                                  <div className="relative w-full aspect-video rounded-2xl overflow-hidden border border-slate-200 dark:border-slate-700 bg-black">
+                                    {String((formData.custom_fields as any)[field.name]).match(/\.(mp4|webm|ogg|mov)$/i) ? (
+                                      <video
+                                        src={(formData.custom_fields as any)[field.name]}
+                                        className="w-full h-full object-cover"
+                                        muted
+                                        playsInline
+                                        autoPlay
+                                        loop
+                                      />
+                                    ) : (
+                                      <img
+                                        src={(formData.custom_fields as any)[field.name]}
+                                        alt="Foto do local"
+                                        className="w-full h-full object-cover"
+                                      />
+                                    )}
+                                    <button
+                                      type="button"
+                                      onClick={() => handleCustomFieldChange('foto_local' as keyof CustomFields, '')}
+                                      className="absolute top-2 right-2 w-7 h-7 rounded-full bg-black/70 flex items-center justify-center text-white hover:bg-red-600 transition-colors"
+                                    >
+                                      <X className="w-4 h-4" />
+                                    </button>
+                                  </div>
+                                )}
+                                {/* Botão de upload */}
+                                <input
+                                  type="file"
+                                  ref={fotoLocalInputRef}
+                                  accept="image/*,video/mp4,video/webm,video/mov,video/quicktime"
+                                  className="hidden"
+                                  onChange={handleFotoLocalUpload}
+                                />
+                                <button
+                                  type="button"
+                                  onClick={() => fotoLocalInputRef.current?.click()}
+                                  disabled={uploading}
+                                  className="w-full flex items-center justify-center gap-3 p-4 rounded-2xl border-2 border-dashed border-primary/30 bg-primary/5 hover:bg-primary/10 hover:border-primary/60 transition-all cursor-pointer group"
+                                >
+                                  {uploading ? (
+                                    <Loader2 className="w-5 h-5 animate-spin text-primary" />
+                                  ) : (
+                                    <Upload className="w-5 h-5 text-primary group-hover:scale-110 transition-transform" />
+                                  )}
+                                  <div className="flex flex-col items-start">
+                                    <span className="text-sm font-black text-primary">{uploading ? 'Enviando...' : 'Enviar Foto ou Vídeo do Local'}</span>
+                                    <span className="text-[10px] text-muted-foreground">JPG, PNG, WEBP, MP4, MOV &bull; Máx. 50MB</span>
+                                  </div>
+                                </button>
+                                {/* Ou colar URL manualmente */}
+                                <Input
+                                  value={(formData.custom_fields as any)?.[field.name] || ''}
+                                  onChange={(e) => handleCustomFieldChange(field.name as keyof CustomFields, e.target.value)}
+                                  placeholder="Ou cole a URL da foto/vídeo aqui"
+                                  className="rounded-2xl h-10 text-xs text-muted-foreground"
+                                />
+                              </div>
+                            ) : (
+                              <>
+                                <Label className="text-xs font-bold uppercase tracking-wider opacity-60">{field.label}</Label>
+                                <Input
+                                  value={(formData.custom_fields as any)?.[field.name] || ''}
+                                  onChange={(e) => handleCustomFieldChange(field.name as keyof CustomFields, e.target.value)}
+                                  placeholder={field.placeholder}
+                                  className="rounded-2xl h-11"
+                                />
+                              </>
+                            )
                           ) : field.type === 'array' ? (
                             <>
                               <Label className="text-xs font-bold uppercase tracking-wider opacity-60">{field.label} (Separado por vírgula)</Label>
