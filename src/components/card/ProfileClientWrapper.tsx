@@ -21,7 +21,13 @@ export function ProfileClientWrapper({ profile, themeColor }: ProfileClientWrapp
       {isPro && profile.background_video_url && (
         <div className="fixed inset-0 z-[-2] pointer-events-none bg-slate-950 overflow-hidden">
           {profile.background_video_url.match(/\.(mp4|webm|ogg|mov)$/i) ? (
-            <div className="relative w-full h-full">
+            <div 
+              className="relative w-full h-full"
+              style={{
+                maskImage: 'linear-gradient(to bottom, black 0%, black 50%, transparent 100%)',
+                WebkitMaskImage: 'linear-gradient(to bottom, black 0%, black 50%, transparent 100%)'
+              }}
+            >
               <video
                 src={profile.background_video_url}
                 autoPlay
@@ -40,7 +46,8 @@ export function ProfileClientWrapper({ profile, themeColor }: ProfileClientWrapp
               />
             </div>
           ) : (
-            <div className="relative w-full h-full">
+            <div className="relative w-full h-full flex flex-col items-center justify-start">
+              {/* Blur backdrop (fills screen) */}
               <div 
                 className="absolute inset-0 w-full h-full blur-2xl opacity-40 scale-125 z-0" 
                 style={{ 
@@ -49,15 +56,21 @@ export function ProfileClientWrapper({ profile, themeColor }: ProfileClientWrapp
                   backgroundPosition: 'center' 
                 }} 
               />
+              
+              {/* Foreground Image (maintains aspect ratio, top aligned) */}
               <img
                 src={profile.background_video_url}
                 alt="Background"
-                className="relative z-10 w-full h-full object-contain"
+                className="relative z-10 w-full h-auto max-h-screen object-contain object-top"
+                style={{
+                  maskImage: 'linear-gradient(to bottom, black 0%, black 75%, transparent 100%)',
+                  WebkitMaskImage: 'linear-gradient(to bottom, black 0%, black 75%, transparent 100%)'
+                }}
               />
             </div>
           )}
           <div className="absolute inset-0 z-20 bg-slate-950/50" />
-          <div className="absolute inset-0 z-20 bg-gradient-to-b from-transparent via-slate-950/20 to-slate-950/80" />
+          <div className="absolute inset-0 z-20 bg-gradient-to-b from-transparent via-slate-950/40 to-slate-950" />
         </div>
       )}
 
