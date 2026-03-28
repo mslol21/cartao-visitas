@@ -613,20 +613,25 @@ export const professionsMap: Record<ProfessionCategory, ProfessionConfig> = {
     theme: { color: 'red', style: 'standard' },
     customFields: [
       { name: 'tem_delivery', label: 'Atende Delivery?', type: 'boolean' },
-      { name: 'retirada_local', label: 'Aceita Retirada no Local?', type: 'boolean' },
-      { name: 'aceita_vr', label: 'Aceita VR / Ticket?', type: 'boolean' }
+      { name: 'retirada_local', label: 'Aceita Retirada (Take-out)?', type: 'boolean' },
+      { name: 'ponto_fisico_lanchonete', label: 'Atendimento no Local?', type: 'boolean' },
+      { name: 'aceita_vr', label: 'Aceita VR / Ticket?', type: 'boolean' },
+      { name: 'pet_friendly', label: 'Ambiente Pet Friendly?', type: 'boolean' },
+      { name: 'espaco_kids', label: 'Espaço Kids?', type: 'boolean' },
+      { name: 'musica_ao_vivo', label: 'Música ao Vivo?', type: 'boolean' },
+      { name: 'portfolio_images', label: 'Fotos do Cardápio/Local (URLs separadas por vírgula)', type: 'array', placeholder: 'https://exemplo.com/prato1.jpg' }
     ],
     suggestedBackgrounds: [
       'https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=1080&h=1920&q=80',
       'https://images.unsplash.com/photo-1476224203421-9ac39bcb3327?auto=format&fit=crop&w=1080&h=1920&q=80',
       'https://images.unsplash.com/photo-1493770348161-369560ae357d?auto=format&fit=crop&w=1080&h=1920&q=80'
     ],
-    defaultBio: 'Sabor e qualidade em cada detalhe! Preparamos pratos deliciosos e sanduíches artesanais com os melhores ingredientes. Venha conhecer nosso espaço acolhedor ou peça no conforto da sua casa.',
+    defaultBio: 'Sabor que transforma o seu dia! Trabalhamos com ingredientes selecionados, receitas exclusivas e muito amor na preparação de cada pedido. Seja no nosso espaço físico aconchegante ou entregue quentinho na sua casa pelo nosso delivery.',
     defaultCta: 'Fazer Pedido / Cardápio 🍔',
     defaultServices: [
-      { nome: 'Pratos Feitos (PF)', descricao: 'Comida caseira, fresquinha e muito bem servida.', preco: 'A partir de R$ 25' },
-      { nome: 'Lanches Artesanais', descricao: 'Hambúrguer de blend especial com fritas.', preco: 'A partir de R$ 35' },
-      { nome: 'Porções e Petiscos', descricao: 'Ideais para dividir com a galera e acompanhar uma bebida gelada.', preco: 'Sob consulta' }
+      { nome: 'Cardápio Completo', descricao: 'Acesse nosso cardápio digital para ver todas as opções de lanches, porções, pratos e bebidas.', preco: 'Ver Valores' },
+      { nome: 'Combo Família', descricao: 'Opções perfeitas e econômicas para matar a fome da galera toda.', preco: 'A partir de R$ 65' },
+      { nome: 'Especial do Dia / Executivo', descricao: 'Pratos bem servidos, com tempero caseiro e aquele gostinho de comida feita na hora.', preco: 'A partir de R$ 25' }
     ]
   },
   pizzaria: {

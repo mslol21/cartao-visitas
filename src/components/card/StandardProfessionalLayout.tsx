@@ -155,7 +155,10 @@ export function StandardProfessionalLayout({ data, isPro }: StandardProfessional
      if (fieldName.includes('churrasqueira') || fieldName.includes('festa')) return Sparkles;
      if (fieldName.includes('capacidade')) return Users;
      if (fieldName.includes('wifi')) return Globe;
-     if (fieldName.includes('som')) return Music;
+     if (fieldName.includes('som') || fieldName.includes('musica')) return Music;
+     if (fieldName.includes('pet')) return Heart;
+     if (fieldName.includes('vr') || fieldName.includes('refeicao') || fieldName.includes('ticket')) return Ticket;
+     if (fieldName.includes('fisico') || fieldName.includes('local')) return MapPin;
      if (fieldName.includes('alto_padrao') || fieldName.includes('premium')) return Gem;
      if (fieldName.includes('financiamento')) return Landmark;
      if (fieldName.includes('planta') || fieldName.includes('imovel') || fieldName.includes('venda_aluguel')) return Building2;
@@ -703,6 +706,7 @@ export function StandardProfessionalLayout({ data, isPro }: StandardProfessional
             /* Default generic rendering for other professions */
             <div className="grid grid-cols-2 gap-3">
               {config.customFields.map((field) => {
+                if (field.name === 'portfolio_images' || field.name === 'portfolio_video_url') return null;
                 const value = (data.custom_fields as any)?.[field.name];
                 if (!value && typeof value !== 'boolean') return null;
                 if (field.type === 'boolean' && value === false) return null;

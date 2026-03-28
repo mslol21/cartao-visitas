@@ -120,11 +120,9 @@ export interface CustomFields {
   atende_convenio?: boolean;
   atendimento_online?: boolean;
   // Estética e Beleza
-  limpeza_pele?: boolean;
   procedimentos_injetaveis?: boolean;
   microagulhamento?: boolean;
   depilacao_laser?: boolean;
-  drenagem_linfatica?: boolean;
   nail_art?: boolean;
   esterilizacao_autoclave?: boolean;
   // Fotógrafo / Designer / Tech
@@ -175,6 +173,9 @@ export interface CustomFields {
   aceita_vr?: boolean;
   delivery_proprio?: boolean;
   retirada_local?: boolean;
+  ponto_fisico_lanchonete?: boolean;
+  pet_friendly?: boolean;
+  musica_ao_vivo?: boolean;
   // Veterinário
   crmv?: string;
   especialidades_vet?: string[];
