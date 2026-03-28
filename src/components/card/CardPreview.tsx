@@ -2472,7 +2472,7 @@ END:VCARD`;
             </div>
             ) : isMusico ? (
                <div className="relative flex flex-col items-center w-full min-h-[600px] z-10 px-6 py-12 overflow-y-auto scroll-hide">
-                  <div className={cn("absolute inset-0 -z-10", data.background_video_url ? "bg-black/40 backdrop-blur-sm" : "bg-gradient-to-b from-[#18181b] via-[#09090b] to-black opacity-90")} />
+                  <div className={cn("absolute inset-0 -z-10", data.background_video_url ? "bg-black/40 backdrop-blur-sm" : "bg-gradient-to-b from-[#18181b] via-[#09090b] to-black opacity-90")} style={!data.background_video_url && (data.custom_fields as any)?.cor_fundo ? { background: (data.custom_fields as any).cor_fundo, opacity: 1 } : undefined} />
                   
                   {/* Musician Header/Cover style */}
                   <div className="w-full flex flex-col items-center mb-10 pt-4">
@@ -2503,12 +2503,19 @@ END:VCARD`;
                         </a>
                      </motion.div>
                      
-                     <h1 className="text-3xl font-black text-white text-center tracking-tighter mb-2">
+                     <h1 
+                        className="text-3xl font-black text-white text-center tracking-tighter mb-2"
+                        style={(data.custom_fields as any)?.cor_texto ? { color: (data.custom_fields as any).cor_texto } : undefined}
+                     >
                         {previewName}
                      </h1>
-                     <div className="flex items-center justify-center gap-2 bg-white/5 border border-white/10 px-4 py-2 rounded-full backdrop-blur-md">
-                        <Music className="w-3.5 h-3.5 text-fuchsia-400" />
-                        <span className="text-[10px] font-black uppercase tracking-[0.2em] text-fuchsia-300">
+                     <div className="flex items-center justify-center gap-2 bg-white/5 border border-white/10 px-4 py-2 rounded-full backdrop-blur-md"
+                       style={(data.custom_fields as any)?.cor_botoes ? { borderColor: `${(data.custom_fields as any).cor_botoes}30` } : undefined}
+                     >
+                        <Music className="w-3.5 h-3.5" style={{ color: (data.custom_fields as any)?.cor_botoes || '#e879f9' }} />
+                        <span className="text-[10px] font-black uppercase tracking-[0.2em]"
+                          style={{ color: (data.custom_fields as any)?.cor_botoes || '#e879f9' }}
+                        >
                            {(data as any).expert_area || data.custom_fields?.estilo_musical || previewTagline}
                         </span>
                      </div>
@@ -2534,7 +2541,14 @@ END:VCARD`;
                   {/* Musician CTA */}
                   <Button 
                     asChild 
-                    className="w-full h-14 rounded-full bg-gradient-to-r from-fuchsia-500 to-purple-600 hover:from-fuchsia-400 hover:to-purple-500 text-white font-black text-sm tracking-widest uppercase mb-10 shadow-[0_10px_30px_-10px_rgba(217,70,239,0.5)] transition-all hover:scale-[1.02] border-none"
+                    className="w-full h-14 rounded-full text-white font-black text-sm tracking-widest uppercase mb-10 transition-all hover:scale-[1.02] border-none"
+                    style={{
+                      background: (data.custom_fields as any)?.cor_botoes 
+                        ? (data.custom_fields as any).cor_botoes
+                        : 'linear-gradient(to right, #d946ef, #9333ea)',
+                      color: (data.custom_fields as any)?.cor_texto_botoes || '#ffffff',
+                      boxShadow: `0 10px 30px -10px ${(data.custom_fields as any)?.cor_botoes || '#d946ef'}80`
+                    }}
                     onClick={() => handleTrackClick('click_whatsapp')}
                   >
                     <a href={whatsappLink} target="_blank" rel="noopener noreferrer">
@@ -2663,14 +2677,20 @@ END:VCARD`;
                   {/* Diferenciais */}
                   {data.diferenciais && data.diferenciais.length > 0 && (
                     <div className="w-full mb-10">
-                      <h4 className="text-[10px] font-black uppercase tracking-[0.3em] text-center mb-6 opacity-50 text-fuchsia-400">Diferenciais do Trabalho</h4>
+                      <h4 className="text-[10px] font-black uppercase tracking-[0.3em] text-center mb-6 opacity-50"
+                        style={{ color: (data.custom_fields as any)?.cor_botoes || '#e879f9' }}
+                      >Diferenciais do Trabalho</h4>
                       <div className="grid grid-cols-1 gap-3">
                         {data.diferenciais.map((item, idx) => (
                           <div key={idx} className="flex items-center gap-4 p-4 rounded-2xl bg-[#27272a]/40 border border-[#3f3f46]/40 shadow-sm">
-                             <div className="w-8 h-8 rounded-xl bg-fuchsia-500/10 flex items-center justify-center shrink-0">
-                                <CheckCircle2 className="w-4 h-4 text-fuchsia-500" />
+                             <div className="w-8 h-8 rounded-xl flex items-center justify-center shrink-0"
+                               style={{ backgroundColor: `${(data.custom_fields as any)?.cor_botoes || '#d946ef'}1A` }}
+                             >
+                                <CheckCircle2 className="w-4 h-4" style={{ color: (data.custom_fields as any)?.cor_botoes || '#d946ef' }} />
                              </div>
-                             <span className="text-[11px] font-black uppercase tracking-tight text-zinc-300">{item}</span>
+                             <span className="text-[11px] font-black uppercase tracking-tight text-zinc-300"
+                               style={(data.custom_fields as any)?.cor_texto ? { color: (data.custom_fields as any).cor_texto, opacity: 0.8 } : undefined}
+                             >{item}</span>
                           </div>
                         ))}
                       </div>
@@ -2680,16 +2700,23 @@ END:VCARD`;
                   {/* Endereço (Estúdio/Etc) */}
                   {data.has_physical_location && data.endereco_completo && (
                     <div className="w-full mb-10">
-                      <div className="p-6 rounded-[2rem] bg-gradient-to-br from-fuchsia-900/50 to-purple-900/50 border border-fuchsia-500/20 text-white shadow-xl relative overflow-hidden">
+                      <div className="p-6 rounded-[2rem] border text-white shadow-xl relative overflow-hidden"
+                        style={{
+                          background: `linear-gradient(to bottom right, ${(data.custom_fields as any)?.cor_botoes || '#7e22ce'}30, ${(data.custom_fields as any)?.cor_botoes || '#6b21a8'}30)`,
+                          borderColor: `${(data.custom_fields as any)?.cor_botoes || '#d946ef'}30`
+                        }}
+                      >
                          <div className="absolute top-0 right-0 p-4 opacity-10 pointer-events-none">
                             <MapPin className="w-16 h-16" />
                          </div>
                          <div className="flex items-center gap-2 mb-4">
-                            <MapPin className="w-4 h-4 text-fuchsia-400" />
-                            <span className="text-[10px] font-black uppercase tracking-widest text-fuchsia-300">Localização / Estúdio</span>
+                            <MapPin className="w-4 h-4" style={{ color: (data.custom_fields as any)?.cor_botoes || '#e879f9' }} />
+                            <span className="text-[10px] font-black uppercase tracking-widest" style={{ color: (data.custom_fields as any)?.cor_botoes || '#e879f9' }}>Localização / Estúdio</span>
                          </div>
                          <p className="text-xs font-bold leading-relaxed mb-6 block truncate">{data.endereco_completo}</p>
-                         <Button asChild className="w-full h-11 rounded-xl font-black uppercase text-[10px] tracking-widest bg-fuchsia-500 hover:bg-fuchsia-600 border-none">
+                         <Button asChild className="w-full h-11 rounded-xl font-black uppercase text-[10px] tracking-widest border-none"
+                           style={{ backgroundColor: (data.custom_fields as any)?.cor_botoes || '#d946ef', color: (data.custom_fields as any)?.cor_texto_botoes || '#ffffff' }}
+                         >
                             <a href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(data.endereco_completo)}`} target="_blank" rel="noopener noreferrer">
                                Ver no Mapa
                             </a>
