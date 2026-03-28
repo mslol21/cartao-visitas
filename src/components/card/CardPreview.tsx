@@ -838,7 +838,7 @@ END:VCARD`;
           id="digital-card-content"
           className={cn(
             "relative overflow-hidden rounded-[2.5rem] transition-all duration-500 flex flex-col min-h-[600px]",
-            ((isPro || isMusico) && data.background_video_url) ? "dark bg-slate-950" : "",
+            ((isPro || isMusico || data.profession === 'area_lazer') && data.background_video_url) ? "dark bg-slate-950" : "",
             isPro 
               ? "border-2 border-primary/20 shadow-[0_40px_100px_-20px_hsl(var(--primary)/0.3)] shadow-[inset_0_0_60px_hsl(var(--primary)/0.1)]" 
               : "border border-slate-200 dark:border-slate-800 shadow-sm bg-white dark:bg-slate-950"
@@ -1006,7 +1006,7 @@ END:VCARD`;
                   )}
                </div>
 
-               {data.background_video_url && data.profession !== 'area_lazer' && (isPro || isMusico) && (
+               {data.background_video_url && (isPro || isMusico || data.profession === 'area_lazer') && (
                 <div className="absolute inset-0 overflow-hidden pointer-events-none transition-all z-0 flex flex-col items-center justify-start">
                   {/* Background Image/Video (Cover, Top Aligned) */}
                   <div className="absolute inset-0 w-full h-full z-0">

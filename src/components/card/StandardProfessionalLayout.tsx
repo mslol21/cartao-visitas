@@ -278,47 +278,50 @@ export function StandardProfessionalLayout({ data, isPro }: StandardProfessional
         )}
       </motion.div>
 
-      {/* 6. VÍDEO PARA ÁREA DE LAZER (Se houver) */}
-      {profession === 'area_lazer' && data.background_video_url && (
+      {/* 6. FOTO/VÍDEO DO LOCAL PARA ÁREA DE LAZER */}
+      {profession === 'area_lazer' && ((data.custom_fields as any)?.foto_local || data.background_video_url) && (
         <motion.div 
           custom={1} initial="hidden" animate="visible" variants={fadeIn}
           className="px-6 mb-2"
         >
           <div className="w-full rounded-3xl overflow-hidden shadow-2xl relative border border-slate-200 dark:border-slate-800 bg-black aspect-[4/5] sm:aspect-video">
-             {data.background_video_url.match(/\.(mp4|webm|ogg|mov)$/i) ? (
-               <>
-                 <video 
-                   src={data.background_video_url}
-                   autoPlay 
-                   muted 
-                   loop 
-                   playsInline 
-                   className="absolute inset-0 w-full h-full object-cover blur-xl opacity-40 scale-125"
-                 />
-                 <video 
-                   src={data.background_video_url} 
-                   controls 
-                   playsInline 
-                   className="relative z-10 w-full h-full object-contain"
-                 />
-               </>
-             ) : (
-               <>
-                 <div 
-                   className="absolute inset-0 w-full h-full blur-xl opacity-40 scale-125 z-0" 
-                   style={{ 
-                     backgroundImage: `url('${data.background_video_url}')`, 
-                     backgroundSize: 'cover', 
-                     backgroundPosition: 'center' 
-                   }} 
-                 />
-                 <img 
-                   src={data.background_video_url} 
-                   alt={data.business_name || 'Área de Lazer'} 
-                   className="relative z-10 w-full h-full object-contain"
-                 />
-               </>
-             )}
+            {(() => {
+              const mediaUrl = (data.custom_fields as any)?.foto_local || data.background_video_url;
+              return mediaUrl.match(/\.(mp4|webm|ogg|mov)$/i) ? (
+                <>
+                  <video 
+                    src={mediaUrl}
+                    autoPlay 
+                    muted 
+                    loop 
+                    playsInline 
+                    className="absolute inset-0 w-full h-full object-cover blur-xl opacity-40 scale-125"
+                  />
+                  <video 
+                    src={mediaUrl} 
+                    controls 
+                    playsInline 
+                    className="relative z-10 w-full h-full object-contain"
+                  />
+                </>
+              ) : (
+                <>
+                  <div 
+                    className="absolute inset-0 w-full h-full blur-xl opacity-40 scale-125 z-0" 
+                    style={{ 
+                      backgroundImage: `url('${mediaUrl}')`, 
+                      backgroundSize: 'cover', 
+                      backgroundPosition: 'center' 
+                    }} 
+                  />
+                  <img 
+                    src={mediaUrl} 
+                    alt={data.business_name || 'Área de Lazer'} 
+                    className="relative z-10 w-full h-full object-cover"
+                  />
+                </>
+              );
+            })()}
           </div>
         </motion.div>
       )}

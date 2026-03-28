@@ -931,7 +931,8 @@ export const professionsMap: Record<ProfessionCategory, ProfessionConfig> = {
       { name: 'espaco_kids', label: 'Espaço Kids / Brinquedos?', type: 'boolean' },
       { name: 'permite_som', label: 'Permite Som Automotivo / DJ?', type: 'boolean' },
       { name: 'wifi_disponivel', label: 'Wi-Fi para Convidados?', type: 'boolean' },
-      { name: 'estacionamento_proprio', label: 'Estacionamento Próprio?', type: 'boolean' }
+      { name: 'estacionamento_proprio', label: 'Estacionamento Próprio?', type: 'boolean' },
+      { name: 'foto_local', label: 'Foto ou Vídeo do Local (URL mp4/jpg/png)', type: 'text', placeholder: 'https://seu-site.com/foto-do-espaco.jpg' }
     ],
     suggestedBackgrounds: [
       'https://images.unsplash.com/photo-1576013551627-0cc20b96c2a7?auto=format&fit=crop&q=80&w=1080&h=1920',
