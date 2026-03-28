@@ -1483,20 +1483,38 @@ export function EditorForm({ initialData, onSubmit, onChange, isPro = false, can
                 />
                 
                 {formData.background_video_url ?
-                  <div className="relative group/video rounded-2xl overflow-hidden border border-border">
+                  <div className="relative group/video rounded-2xl overflow-hidden border border-border bg-black/5">
                     {formData.background_video_url.match(/\.(mp4|webm|ogg|mov)$/i) ? (
-                      <video 
-                        src={formData.background_video_url} 
-                        className="w-full h-32 object-cover opacity-60"
-                        muted
-                        loop
-                      />
+                      <>
+                        <video 
+                          src={formData.background_video_url} 
+                          className="absolute inset-0 w-full h-full object-cover blur-md opacity-40 scale-110"
+                          muted
+                          loop
+                        />
+                        <video 
+                          src={formData.background_video_url} 
+                          className="relative z-10 w-full h-32 object-contain opacity-80"
+                          muted
+                          loop
+                        />
+                      </>
                     ) : (
-                      <img 
-                        src={formData.background_video_url} 
-                        className="w-full h-32 object-cover opacity-60"
-                        alt="Background Preview"
-                      />
+                      <>
+                        <div 
+                          className="absolute inset-0 w-full h-full blur-md opacity-40 scale-110 z-0" 
+                          style={{ 
+                            backgroundImage: `url('${formData.background_video_url}')`, 
+                            backgroundSize: 'cover', 
+                            backgroundPosition: 'center' 
+                          }} 
+                        />
+                        <img 
+                          src={formData.background_video_url} 
+                          className="relative z-10 w-full h-32 object-contain opacity-80"
+                          alt="Background Preview"
+                        />
+                      </>
                     )}
                     <div className="absolute inset-0 flex items-center justify-center bg-black/20 opacity-0 group-hover/video:opacity-100 transition-opacity">
                       <Button 

@@ -40,15 +40,21 @@ export function ProfileClientWrapper({ profile, themeColor }: ProfileClientWrapp
               />
             </div>
           ) : (
-            <div
-              className="absolute inset-0"
-              style={{
-                backgroundImage: `url('${profile.background_video_url}')`,
-                backgroundSize: 'contain',
-                backgroundPosition: 'center top',
-                backgroundRepeat: 'no-repeat',
-              }}
-            />
+            <div className="relative w-full h-full">
+              <div 
+                className="absolute inset-0 w-full h-full blur-2xl opacity-40 scale-125 z-0" 
+                style={{ 
+                  backgroundImage: `url('${profile.background_video_url}')`, 
+                  backgroundSize: 'cover', 
+                  backgroundPosition: 'center' 
+                }} 
+              />
+              <img
+                src={profile.background_video_url}
+                alt="Background"
+                className="relative z-10 w-full h-full object-contain"
+              />
+            </div>
           )}
           <div className="absolute inset-0 z-20 bg-slate-950/50" />
           <div className="absolute inset-0 z-20 bg-gradient-to-b from-transparent via-slate-950/20 to-slate-950/80" />

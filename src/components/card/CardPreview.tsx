@@ -1022,20 +1022,40 @@ END:VCARD`;
                     }}
                  >
                    {data.background_video_url.match(/\.(mp4|webm|ogg|mov)$/i) ? (
-                     <video 
-                       src={data.background_video_url}
-                       autoPlay 
-                       muted 
-                       loop 
-                       playsInline 
-                       className={cn("w-full h-full object-cover object-top", (isMusico || isBarbearia) ? "opacity-70" : "opacity-60")}
-                     />
+                     <>
+                       <video 
+                         src={data.background_video_url}
+                         autoPlay 
+                         muted 
+                         loop 
+                         playsInline 
+                         className="absolute inset-0 w-full h-full object-cover blur-2xl opacity-30 scale-125"
+                       />
+                       <video 
+                         src={data.background_video_url}
+                         autoPlay 
+                         muted 
+                         loop 
+                         playsInline 
+                         className={cn("relative z-10 w-full h-full object-contain object-top", (isMusico || isBarbearia) ? "opacity-90" : "opacity-85")}
+                       />
+                     </>
                    ) : (
-                     <img 
-                       src={data.background_video_url}
-                       alt="Background"
-                       className={cn("w-full h-full object-cover object-top", (isMusico || isBarbearia) ? "opacity-70" : "opacity-60")}
-                     />
+                     <>
+                       <div 
+                         className="absolute inset-0 w-full h-full blur-2xl opacity-30 scale-125 z-0" 
+                         style={{ 
+                           backgroundImage: `url('${data.background_video_url}')`, 
+                           backgroundSize: 'cover', 
+                           backgroundPosition: 'center' 
+                         }} 
+                       />
+                       <img 
+                         src={data.background_video_url}
+                         alt="Background"
+                         className={cn("relative z-10 w-full h-full object-contain object-top", (isMusico || isBarbearia) ? "opacity-90" : "opacity-85")}
+                       />
+                     </>
                    )}
                  </div>
                  {!isMusico && !((isPro || data.profession === 'esteticista') && (data.custom_fields as any)?.cor_fundo) && (

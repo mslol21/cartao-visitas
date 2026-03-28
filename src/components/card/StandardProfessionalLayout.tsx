@@ -286,18 +286,38 @@ export function StandardProfessionalLayout({ data, isPro }: StandardProfessional
         >
           <div className="w-full rounded-3xl overflow-hidden shadow-2xl relative border border-slate-200 dark:border-slate-800 bg-black aspect-[4/5] sm:aspect-video">
              {data.background_video_url.match(/\.(mp4|webm|ogg|mov)$/i) ? (
-               <video 
-                 src={data.background_video_url} 
-                 controls 
-                 playsInline 
-                 className="w-full h-full object-cover"
-               />
+               <>
+                 <video 
+                   src={data.background_video_url}
+                   autoPlay 
+                   muted 
+                   loop 
+                   playsInline 
+                   className="absolute inset-0 w-full h-full object-cover blur-xl opacity-40 scale-125"
+                 />
+                 <video 
+                   src={data.background_video_url} 
+                   controls 
+                   playsInline 
+                   className="relative z-10 w-full h-full object-contain"
+                 />
+               </>
              ) : (
-               <img 
-                 src={data.background_video_url} 
-                 alt={data.business_name || 'Área de Lazer'} 
-                 className="w-full h-full object-cover"
-               />
+               <>
+                 <div 
+                   className="absolute inset-0 w-full h-full blur-xl opacity-40 scale-125 z-0" 
+                   style={{ 
+                     backgroundImage: `url('${data.background_video_url}')`, 
+                     backgroundSize: 'cover', 
+                     backgroundPosition: 'center' 
+                   }} 
+                 />
+                 <img 
+                   src={data.background_video_url} 
+                   alt={data.business_name || 'Área de Lazer'} 
+                   className="relative z-10 w-full h-full object-contain"
+                 />
+               </>
              )}
           </div>
         </motion.div>
