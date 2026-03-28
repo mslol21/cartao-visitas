@@ -3266,20 +3266,50 @@ END:VCARD`;
                         </a>
                      )}
 
-                     <div className="flex justify-center gap-4 pt-4">
-                        {validSocialLinks.map((social) => (
-                          <motion.a 
-                            key={social.id} 
-                            href={social.url} 
-                            target="_blank" 
-                            rel="noopener noreferrer"
-                            whileHover={{ y: -6, rotate: 5 }}
-                            className="w-16 h-16 rounded-[1.8rem] bg-white dark:bg-slate-900 shadow-lg flex items-center justify-center text-amber-600 border border-amber-100 dark:border-white/5 transition-all"
-                          >
-                            <social.icon className="w-6 h-6" />
-                          </motion.a>
-                        ))}
-                     </div>
+                     {/* Instagram Destaque */}
+                     {data.instagram && (
+                       <motion.a
+                         href={`https://instagram.com/${data.instagram}`}
+                         target="_blank"
+                         rel="noopener noreferrer"
+                         onClick={() => handleTrackClick('click_instagram')}
+                         whileHover={{ scale: 1.02 }}
+                         whileTap={{ scale: 0.98 }}
+                         className="flex items-center gap-5 w-full p-5 rounded-[2.5rem] relative overflow-hidden group cursor-pointer border border-transparent"
+                         style={{ background: 'linear-gradient(135deg, #f9a825, #e91e8c, #9c27b0)' }}
+                       >
+                         {/* Shimmer */}
+                         <div className="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity" />
+                         <div className="w-14 h-14 rounded-[1.5rem] bg-white/20 backdrop-blur-sm flex items-center justify-center shrink-0 shadow-inner">
+                           <Instagram className="w-7 h-7 text-white" />
+                         </div>
+                         <div className="flex flex-col flex-1 min-w-0">
+                           <span className="text-[10px] font-black uppercase text-white/70 tracking-widest">Siga no Instagram</span>
+                           <span className="text-lg font-black text-white truncate leading-tight">@{data.instagram}</span>
+                           <span className="text-[10px] text-white/60 font-semibold mt-0.5">Portfólio • Peças • Novidades</span>
+                         </div>
+                         <ChevronRight className="w-5 h-5 text-white/60 group-hover:translate-x-1 transition-transform shrink-0" />
+                       </motion.a>
+                     )}
+
+                     {/* Demais redes (exceto Instagram) */}
+                     {validSocialLinks.filter(s => s.id !== 'instagram' && s.id !== 'digital_presence' && s.id !== 'portfolio_anchor').length > 0 && (
+                       <div className="flex justify-center gap-4 pt-2">
+                         {validSocialLinks.filter(s => s.id !== 'instagram' && s.id !== 'digital_presence' && s.id !== 'portfolio_anchor').map((social) => (
+                           <motion.a 
+                             key={social.id} 
+                             href={social.url} 
+                             target="_blank" 
+                             rel="noopener noreferrer"
+                             whileHover={{ y: -6, rotate: 5 }}
+                             onClick={() => handleTrackClick(social.trackType as any)}
+                             className="w-16 h-16 rounded-[1.8rem] bg-white dark:bg-slate-900 shadow-lg flex items-center justify-center text-amber-600 border border-amber-100 dark:border-white/5 transition-all"
+                           >
+                             <social.icon className="w-6 h-6" />
+                           </motion.a>
+                         ))}
+                       </div>
+                     )}
                   </div>
 
                   {/* Artisan Texture Footer */}
