@@ -659,6 +659,36 @@ export const professionsMap: Record<ProfessionCategory, ProfessionConfig> = {
       { nome: 'Pizzas Doces', descricao: 'Finalize sua noite com nossas pizzas de Chocolate, Morango ou Nutella.', preco: 'A partir de R$ 35' }
     ]
   },
+  cafeteria: {
+    id: 'cafeteria',
+    label: 'Cafeteria & Especialidades',
+    theme: { color: 'amber', style: 'glass' },
+    customFields: [
+      { name: 'cafes_especiais', label: 'Cafés Especiais (Grãos 80+)?', type: 'boolean' },
+      { name: 'metodos_preparo', label: 'Métodos (V60, Aeropress, etc - Separados por vírgula)', type: 'array', placeholder: 'Ex: V60, Chemex, French Press' },
+      { name: 'opcoes_veganas', label: 'Opções Veganas / Sem Lactose?', type: 'boolean' },
+      { name: 'espaco_coworking', label: 'Espaço Coworking / Tomadas?', type: 'boolean' },
+      { name: 'torra_propria', label: 'Torra Própria?', type: 'boolean' },
+      { name: 'wi_fi_gratis', label: 'Wi-Fi Gratuito?', type: 'boolean' },
+      { name: 'pet_friendly', label: 'Ambiente Pet Friendly?', type: 'boolean' },
+      { name: 'tem_delivery', label: 'Tem Delivery?', type: 'boolean' },
+      { name: 'portfolio_images', label: 'Fotos do Espaço e Doces (URLs separadas por vírgula)', type: 'array', placeholder: 'https://ex.com/cafe1.jpg' }
+    ],
+    suggestedBackgrounds: [
+      'https://images.unsplash.com/photo-1501339847302-ac426a4a7cbb?auto=format&fit=crop&q=80&w=1080&h=1920',
+      'https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?auto=format&fit=crop&q=80&w=1080&h=1920',
+      'https://images.unsplash.com/photo-1442111556602-d92fa62c8663?auto=format&fit=crop&q=80&w=1080&h=1920',
+      'https://images.unsplash.com/photo-1507133750040-4c8b54928657?auto=format&fit=crop&q=80&w=1080&h=1920'
+    ],
+    defaultBio: 'Sua pausa para o café merece ser especial! Especialistas em grãos selecionados, torra fresca e métodos de preparo que realçam cada nota sensorial. Ambiente acolhedor para relaxar, trabalhar ou encontrar amigos, com um cardápio completo de doces artesanais e salgados premium.',
+    defaultCta: 'Ver Cardápio & Localização ☕',
+    defaultServices: [
+      { nome: 'Experiência de Métodos', descricao: 'Degustação dirigida através de métodos como V60, Chemex ou Prensa Francesa.', preco: 'A partir de R$ 18' },
+      { nome: 'Menu de Cafés Gelados', descricao: 'Refreshers, Cold Brew e Iced Lattes refrescantes e energizantes.', preco: 'A partir de R$ 15' },
+      { nome: 'Combo Coffee Break', descricao: 'Cappuccino italiano original + uma fatia de nosso bolo artesanal do dia.', preco: 'R$ 28' },
+      { nome: 'Grãos para levar (250g)', descricao: 'Escolha seu grão favorito e moemos na hora para você levar o melhor sabor para casa.', preco: 'A partir de R$ 45' }
+    ]
+  },
   tech: {
     id: 'tech',
     label: 'Tecnologia / Digital',

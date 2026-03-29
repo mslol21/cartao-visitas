@@ -11,6 +11,13 @@ export const imageDatabase: Record<string, string[]> = {
     'https://cdn.pixabay.com/photo/2016/11/20/09/06/bowl-1842294_1280.jpg',
     'https://cdn.pixabay.com/photo/2015/07/12/14/06/cupcakes-842031_1280.jpg'
   ],
+  'cafeteria': [
+    'https://cdn.pixabay.com/photo/2016/02/19/11/40/coffee-shop-1209863_1280.jpg',
+    'https://cdn.pixabay.com/photo/2014/11/05/11/04/coffee-517658_1280.jpg',
+    'https://cdn.pixabay.com/photo/2015/07/17/10/30/coffee-shop-848821_1280.jpg',
+    'https://cdn.pixabay.com/photo/2016/11/18/14/05/brick-wall-1834784_1280.jpg',
+    'https://cdn.pixabay.com/photo/2017/08/07/19/43/coffee-2607143_1280.jpg'
+  ],
   'pastel': [
     'https://cdn.pixabay.com/photo/2014/10/19/20/59/brazilian-food-494632_1280.jpg',
     'https://cdn.pixabay.com/photo/2017/09/20/19/40/food-2769970_1280.jpg'
@@ -137,7 +144,8 @@ const synonyms: Record<string, string[]> = {
   'barbearia': ['barba', 'corte', 'cabelo', 'navalha', 'disfarce', 'fade'],
   'van_escolar': ['van', 'transporte', 'escolar', 'universitario', 'onibus', 'perua', 'motorista'],
   'guia_turistico': ['guia', 'turismo', 'viagem', 'passeio', 'ferias', 'excursao', 'trilha'],
-  'loja': ['online', 'ecommerce', 'vendas', 'produtos', 'entrega', 'frete', 'brasil', 'correios', 'pacote', 'caixa']
+  'loja': ['online', 'ecommerce', 'vendas', 'produtos', 'entrega', 'frete', 'brasil', 'correios', 'pacote', 'caixa'],
+  'cafeteria': ['café', 'cafe', 'coffee', 'espresso', 'capuccino', 'confeitaria', 'padaria', 'lanche', 'cafezinho']
 };
 
 /**

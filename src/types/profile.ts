@@ -43,6 +43,7 @@ export type ProfessionCategory =
   | 'loja_online'
   | 'area_lazer'
   | 'pizzaria'
+  | 'cafeteria'
   | 'default';
 
 export interface Service {
@@ -218,6 +219,14 @@ export interface CustomFields {
   rodizio_disponivel?: boolean;
   especialista_calzones?: boolean;
   massa_artesanal?: boolean;
+
+  // Cafeteria
+  cafes_especiais?: boolean;
+  opcoes_veganas?: boolean;
+  wi_fi_gratis?: boolean;
+  espaco_coworking?: boolean;
+  torra_propria?: boolean;
+  metodos_preparo?: string[];
 
   // Loja Online
   envio_nacional?: boolean;

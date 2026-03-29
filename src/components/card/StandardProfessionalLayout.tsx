@@ -50,7 +50,9 @@ import {
   Building2,
   Landmark,
   Scale,
-  Gem
+  Gem,
+  Coffee,
+  Wifi
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Profile, ProfessionCategory } from '@/types/profile';
@@ -70,9 +72,12 @@ export function StandardProfessionalLayout({ data, isPro }: StandardProfessional
   // Helpers
   const cleanWhatsapp = data.whatsapp?.replace(/\D/g, '') || '';
   const formattedWhatsapp = cleanWhatsapp.startsWith('55') ? cleanWhatsapp : `55${cleanWhatsapp}`;
-  const whatsappLink = `https://wa.me/${formattedWhatsapp}?text=${encodeURIComponent(
-    `Olá! Vi seu perfil na Konnexy e gostaria de saber mais sobre seu trabalho como ${config.label}.`
-  )}`;
+  const defaultMessage = 
+    profession === 'pizzaria' ? "Olá! Vi seu perfil na Konnexy e gostaria de fazer um pedido de pizza 🍕" :
+    profession === 'cafeteria' ? "Olá! Gostaria de fazer um pedido / reservar uma mesa na cafeteria ☕" :
+    `Olá! Vi seu perfil na Konnexy e gostaria de saber mais sobre seu trabalho como ${config.label}.`;
+
+  const whatsappLink = `https://wa.me/${formattedWhatsapp}?text=${encodeURIComponent(defaultMessage)}`;
 
   // Animation variants
   const fadeIn: Variants = {
@@ -163,6 +168,9 @@ export function StandardProfessionalLayout({ data, isPro }: StandardProfessional
      if (fieldName.includes('financiamento')) return Landmark;
      if (fieldName.includes('planta') || fieldName.includes('imovel') || fieldName.includes('venda_aluguel')) return Building2;
      if (fieldName.includes('avaliacao')) return Scale;
+     if (fieldName.includes('cafe') || fieldName.includes('coffee') || fieldName.includes('torra') || fieldName.includes('preparo')) return Coffee;
+     if (fieldName.includes('wifi') || fieldName.includes('wi_fi')) return Wifi;
+     if (fieldName.includes('coworking')) return Monitor;
      return Award;
   };
 
@@ -238,6 +246,7 @@ export function StandardProfessionalLayout({ data, isPro }: StandardProfessional
            {(profession === 'pedreiro' || profession === 'mestre_de_obras') && <HardHat className="w-3.5 h-3.5 stroke-[2.5px]" />}
            {profession === 'area_lazer' && <Umbrella className="w-3.5 h-3.5 stroke-[2.5px]" />}
            {profession === 'loja_online' && <ShoppingBag className="w-3.5 h-3.5 stroke-[2.5px]" />}
+           {profession === 'cafeteria' && <Coffee className="w-3.5 h-3.5 stroke-[2.5px]" />}
            <span className="text-[10px] font-black uppercase tracking-[0.2em]">{config.label}</span>
         </div>
 

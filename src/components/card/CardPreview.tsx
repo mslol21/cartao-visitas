@@ -88,7 +88,9 @@ import {
   Eye,
   Smile,
   Baby,
-  Wind
+  Wind,
+  Coffee,
+  Wifi
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Profile } from '@/types/profile';
@@ -139,7 +141,7 @@ export function CardPreview({
   const isBeauty = ['beauty', 'manicure', 'cabeleireiro'].includes(data.profession as string) || data.category === 'beauty';
   const isHealth = ['health', 'personal_trainer', 'psicologo'].includes(data.profession as string) || data.category === 'health';
   const isSales = data.profession === 'sales' || data.category === 'sales';
-  const isFood = ['food', 'quentinhas', 'pizzaria'].includes(data.profession as string) || data.category === 'food';
+  const isFood = ['food', 'quentinhas', 'pizzaria', 'cafeteria'].includes(data.profession as string) || data.category === 'food';
   const isService = data.profession === 'service' || data.category === 'service';
   const isModernService = [
     'pedreiro', 'mecanico', 'eletricista', 'encanador', 'diarista', 
@@ -156,7 +158,7 @@ export function CardPreview({
   const isArtesao = data.profession === 'artesao' || data.category === 'artesao';
   const isMusico = data.profession === 'musico' || data.category === 'musico';
   
-  const isStandardized = isModernService || ['quentinhas', 'assistencia_celular', 'van_escolar', 'guia_turistico', 'loja_online', 'esteticista'].some(p => data.profession === p);
+  const isStandardized = isModernService || ['quentinhas', 'assistencia_celular', 'van_escolar', 'guia_turistico', 'loja_online', 'esteticista', 'pizzaria', 'cafeteria'].some(p => data.profession === p);
 
   // Data helpers that prefer new fields but fall back to old ones for compatibility
   const previewName = data.business_name || data.name || 'Seu Nome';
@@ -284,6 +286,7 @@ END:VCARD`;
         data.profession === 'mestre_de_obras' ? "Olá! Vi seu perfil na Konnexy e gostaria de um orçamento para minha obra 🏗️" :
         data.profession === 'area_lazer' ? "Olá! Vi seu perfil na Konnexy e gostaria de consultar a disponibilidade da sua área de lazer 📅" :
         data.profession === 'pizzaria' ? "Olá! Vi seu perfil na Konnexy e gostaria de fazer um pedido de pizza 🍕" :
+        data.profession === 'cafeteria' ? "Olá! Gostaria de fazer um pedido / reservar uma mesa na cafeteria ☕" :
         isDriver ? "Olá! Gostaria de agendar uma corrida / entrega 🚗" : 
         `Olá! Vi seu perfil na Konnexy e gostaria de ${isPro ? 'solicitar um orçamento' : 'conversar'} sobre seus serviços.`
       )}`
@@ -485,6 +488,15 @@ END:VCARD`;
           cta: 'Fazer Pedido 🍔',
           shape: 'polygon(0% 0%, 100% 0%, 90% 100%, 10% 100%)'
         };
+      case 'cafeteria':
+        return { 
+          gradient: 'linear-gradient(135deg, #78350f 0%, #451a03 100%)', 
+          accent: '#78350f', 
+          label: 'Especialista em Café',
+          icon: Coffee,
+          cta: 'Ver Cardápio ☕',
+          shape: 'polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%)'
+        };
     }
     return null;
   };
@@ -536,6 +548,9 @@ END:VCARD`;
     if (name.includes('depilacao') || name.includes('laser')) return Zap;
     if (name.includes('spa') || name.includes('drenagem') || name.includes('relaxante')) return Flower2;
     if (name.includes('convenio') || name.includes('plano')) return CheckCircle2;
+    if (name.includes('cafe') || name.includes('coffee') || name.includes('torra') || name.includes('preparo')) return Coffee;
+    if (name.includes('wifi') || name.includes('wi_fi')) return Wifi;
+    if (name.includes('coworking')) return Monitor;
     return Award;
   };
 
