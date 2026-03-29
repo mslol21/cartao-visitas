@@ -147,7 +147,7 @@ export function CardPreview({
     'pedreiro', 'mecanico', 'eletricista', 'encanador', 'diarista', 
     'frete', 'ar_condicionado', 'montador_moveis', 'gesseiro', 
     'vidraceiro', 'pintor', 'serralheiro', 'marceneiro', 
-    'assistencia_celular', 'mestre_de_obras', 'area_lazer'
+    'assistencia_celular', 'mestre_de_obras', 'area_lazer', 'manutencao_automotiva'
   ].includes(data.profession as string);
   const isAdvogado = data.profession === 'advogado' || data.category === 'advogado';
   const isTech = ['tech', 'tecnico_informatica', 'designer', 'fotografo'].includes(data.profession as string) || data.category === 'tech';

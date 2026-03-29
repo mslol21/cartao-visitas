@@ -233,34 +233,44 @@ export function StandardProfessionalLayout({ data, isPro }: StandardProfessional
           )}
         </div>
 
-        <h1 
-          className="text-3xl font-black tracking-tighter text-slate-900 dark:text-white mb-2 leading-none uppercase"
-          style={cf.cor_texto ? { color: cf.cor_texto } : undefined}
+        <div className={cn(
+          "relative p-6 rounded-[2.5rem] w-full max-w-[320px] transition-all duration-700",
+          isPro ? "bg-white/5 backdrop-blur-xl border border-white/10 shadow-2xl" : "bg-white/50 dark:bg-slate-900/50"
+        )}
+        style={cf.cor_info_fundo ? { backgroundColor: cf.cor_info_fundo + '40', borderColor: cf.cor_info_fundo + '30' } : undefined}
         >
-          {data.business_name || 'Seu Negócio'}
-        </h1>
-        
-        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 text-primary border border-primary/20 mb-4">
-           {profession === 'barbearia' && <Scissors className="w-3.5 h-3.5 stroke-[2.5px]" />}
-           {profession === 'cabeleireiro' && <Scissors className="w-3.5 h-3.5 stroke-[2.5px]" />}
-           {profession === 'manicure' && <Brush className="w-3.5 h-3.5 stroke-[2.5px]" />}
-           {(profession === 'esteticista' || profession === 'beauty') && <Sparkles className="w-3.5 h-3.5 stroke-[2.5px]" />}
-           {(profession === 'pedreiro' || profession === 'mestre_de_obras') && <HardHat className="w-3.5 h-3.5 stroke-[2.5px]" />}
-           {profession === 'area_lazer' && <Umbrella className="w-3.5 h-3.5 stroke-[2.5px]" />}
-           {profession === 'loja_online' && <ShoppingBag className="w-3.5 h-3.5 stroke-[2.5px]" />}
-           {profession === 'cafeteria' && <Coffee className="w-3.5 h-3.5 stroke-[2.5px]" />}
-           {(profession === 'mecanico' || profession === 'manutencao_automotiva') && <Wrench className="w-3.5 h-3.5 stroke-[2.5px]" />}
-           <span className="text-[10px] font-black uppercase tracking-[0.2em]">{config.label}</span>
-        </div>
-
-        {(data.subtitle || data.tagline) && (
-          <p 
-            className="text-sm font-medium text-slate-500 dark:text-slate-400 max-w-[280px] italic leading-relaxed"
+          <h1 
+            className="text-3xl font-black tracking-tighter text-slate-900 dark:text-white mb-2 leading-tight uppercase font-sora"
             style={cf.cor_texto ? { color: cf.cor_texto } : undefined}
           >
-            &quot;{data.subtitle || data.tagline}&quot;
-          </p>
-        )}
+            {data.business_name || 'Seu Negócio'}
+          </h1>
+          
+          <div className="flex flex-col items-center gap-3">
+            <div 
+              className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-black uppercase tracking-widest transition-all"
+              style={cf.cor_botoes ? { backgroundColor: cf.cor_botoes + '20', color: cf.cor_botoes } : { backgroundColor: 'hsl(var(--primary)/0.1)', color: 'hsl(var(--primary))' }}
+            >
+               {profession === 'barbearia' && <Scissors className="w-3.5 h-3.5 stroke-[2.5px]" />}
+               {profession === 'cabeleireiro' && <Scissors className="w-3.5 h-3.5 stroke-[2.5px]" />}
+               {profession === 'manicure' && <Brush className="w-3.5 h-3.5 stroke-[2.5px]" />}
+               {(profession === 'esteticista' || profession === 'beauty') && <Sparkles className="w-3.5 h-3.5 stroke-[2.5px]" />}
+               {(profession === 'pedreiro' || profession === 'mestre_de_obras') && <HardHat className="w-3.5 h-3.5 stroke-[2.5px]" />}
+               {profession === 'area_lazer' && <Umbrella className="w-3.5 h-3.5 stroke-[2.5px]" />}
+               {profession === 'loja_online' && <ShoppingBag className="w-3.5 h-3.5 stroke-[2.5px]" />}
+               {profession === 'cafeteria' && <Coffee className="w-3.5 h-3.5 stroke-[2.5px]" />}
+               {(profession === 'mecanico' || profession === 'manutencao_automotiva') && <Wrench className="w-3.5 h-3.5 stroke-[2.5px]" />}
+               <span className="opacity-90">{config.label}</span>
+            </div>
+
+            <p 
+              className="text-xs font-bold leading-relaxed opacity-60 tracking-tight uppercase"
+              style={cf.cor_texto ? { color: cf.cor_texto } : undefined}
+            >
+              {data.subtitle || data.tagline || 'Sua Especialidade'}
+            </p>
+          </div>
+        </div>
 
         <div 
           className={cn("flex flex-wrap justify-center gap-x-6 gap-y-2 mt-6 w-full", !(data.custom_fields as any)?.cor_texto && "opacity-60")}
