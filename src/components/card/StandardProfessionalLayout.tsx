@@ -729,11 +729,15 @@ export function StandardProfessionalLayout({ data, isPro }: StandardProfessional
             /* Default generic rendering for other professions */
             <div className="grid grid-cols-2 gap-3">
               {config.customFields.map((field) => {
-                if (field.name === 'portfolio_images' || field.name === 'portfolio_video_url') return null;
+                if (field.name === 'portfolio_images' || field.name === 'portfolio_video_url' || field.name === 'foto_local') return null;
                 const value = (data.custom_fields as any)?.[field.name];
                 if (!value && typeof value !== 'boolean') return null;
                 if (field.type === 'boolean' && value === false) return null;
                 const Icon = getFieldIcon(field.name);
+                // Para campos de texto, formatar o valor com label
+                const displayValue = field.name === 'capacidade_pessoas'
+                  ? (/^\d+$/.test(String(value).trim()) ? `Até ${value} pessoas` : String(value))
+                  : String(value);
                 return (
                   <div key={field.name} className="p-4 rounded-[1.5rem] bg-primary/5 border border-primary/20 flex flex-col items-center text-center gap-2 group">
                      {field.type === 'boolean' ? (
@@ -742,7 +746,11 @@ export function StandardProfessionalLayout({ data, isPro }: StandardProfessional
                           <span className="text-[10px] font-black uppercase tracking-tight">{field.label}</span>
                        </>
                      ) : (
-                       <span className="text-xs font-bold">{value}</span>
+                       <>
+                          <Icon className="w-5 h-5 text-primary" />
+                          <span className="text-[10px] font-black uppercase tracking-tight opacity-60">{field.label}</span>
+                          <span className="text-xs font-bold leading-tight">{displayValue}</span>
+                       </>
                      )}
                   </div>
                 );
