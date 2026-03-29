@@ -52,7 +52,9 @@ import {
   Scale,
   Gem,
   Coffee,
-  Wifi
+  Wifi,
+  Wrench,
+  Car
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Profile, ProfessionCategory } from '@/types/profile';
@@ -168,9 +170,9 @@ export function StandardProfessionalLayout({ data, isPro }: StandardProfessional
      if (fieldName.includes('financiamento')) return Landmark;
      if (fieldName.includes('planta') || fieldName.includes('imovel') || fieldName.includes('venda_aluguel')) return Building2;
      if (fieldName.includes('avaliacao')) return Scale;
-     if (fieldName.includes('cafe') || fieldName.includes('coffee') || fieldName.includes('torra') || fieldName.includes('preparo')) return Coffee;
-     if (fieldName.includes('wifi') || fieldName.includes('wi_fi')) return Wifi;
      if (fieldName.includes('coworking')) return Monitor;
+     if (fieldName.includes('mecanica') || fieldName.includes('injecao') || fieldName.includes('freios') || fieldName.includes('suspensao') || fieldName.includes('alinhamento')) return Wrench;
+     if (fieldName.includes('estetica_automotiva') || fieldName.includes('martelinho')) return Sparkles;
      return Award;
   };
 
@@ -247,6 +249,7 @@ export function StandardProfessionalLayout({ data, isPro }: StandardProfessional
            {profession === 'area_lazer' && <Umbrella className="w-3.5 h-3.5 stroke-[2.5px]" />}
            {profession === 'loja_online' && <ShoppingBag className="w-3.5 h-3.5 stroke-[2.5px]" />}
            {profession === 'cafeteria' && <Coffee className="w-3.5 h-3.5 stroke-[2.5px]" />}
+           {(profession === 'mecanico' || profession === 'manutencao_automotiva') && <Wrench className="w-3.5 h-3.5 stroke-[2.5px]" />}
            <span className="text-[10px] font-black uppercase tracking-[0.2em]">{config.label}</span>
         </div>
 

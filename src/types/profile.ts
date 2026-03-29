@@ -44,6 +44,7 @@ export type ProfessionCategory =
   | 'area_lazer'
   | 'pizzaria'
   | 'cafeteria'
+  | 'manutencao_automotiva'
   | 'default';
 
 export interface Service {
@@ -166,6 +167,15 @@ export interface CustomFields {
   especialidade_carros?: string;
   tipo_veiculo?: string;
   atende_viagens?: boolean;
+  mecanica_geral?: boolean;
+  injecao_eletronica?: boolean;
+  freios_suspensao?: boolean;
+  troca_oleo?: boolean;
+  revisao_periodica?: boolean;
+  alinhamento_balanceamento?: boolean;
+  martelinho_de_ouro?: boolean;
+  estetica_automotiva?: boolean;
+  leva_e_traz?: boolean;
   possui_monitor?: boolean;
   bancos_reclinaveis?: boolean;
   atende_escolas?: string[];

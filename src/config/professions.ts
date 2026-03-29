@@ -349,6 +349,39 @@ export const professionsMap: Record<ProfessionCategory, ProfessionConfig> = {
       { nome: 'Escaneamento Avançado', descricao: 'Diagnóstico computadorizado de injeção e módulos eletrônicos.', preco: 'R$ 120' }
     ]
   },
+  manutencao_automotiva: {
+    id: 'manutencao_automotiva',
+    label: 'Manutenção Automotiva Premium',
+    theme: { color: 'red', style: 'oled' },
+    customFields: [
+      { name: 'mecanica_geral', label: 'Mecânica Geral?', type: 'boolean' },
+      { name: 'injecao_eletronica', label: 'Injeção Eletrônica?', type: 'boolean' },
+      { name: 'freios_suspensao', label: 'Freios e Suspensão?', type: 'boolean' },
+      { name: 'troca_oleo', label: 'Troca de Óleo e Filtros?', type: 'boolean' },
+      { name: 'revisao_periodica', label: 'Revisão Periódica / Preventiva?', type: 'boolean' },
+      { name: 'alinhamento_balanceamento', label: 'Alinhamento e Balanceamento?', type: 'boolean' },
+      { name: 'estetica_automotiva', label: 'Estética Automotiva / Detalhamento?', type: 'boolean' },
+      { name: 'martelinho_de_ouro', label: 'Martelinho de Ouro?', type: 'boolean' },
+      { name: 'socorro_24h', label: 'Socorro Mecânico 24h?', type: 'boolean' },
+      { name: 'leva_e_traz', label: 'Serviço Leva e Traz?', type: 'boolean' },
+      { name: 'portfolio_images', label: 'Fotos dos Serviços / Oficina (URLs)', type: 'array', placeholder: 'https://ex.com/carro1.jpg' }
+    ],
+    suggestedBackgrounds: [
+      'https://images.unsplash.com/photo-1486006396193-471068589dca?auto=format&fit=crop&q=80&w=1080&h=1920',
+      'https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&q=80&w=1080&h=1920',
+      'https://images.unsplash.com/photo-1619642751034-765dfdf7c58e?auto=format&fit=crop&q=80&w=1080&h=1920',
+      'https://images.unsplash.com/photo-1517524008436-bbdb53c54434?auto=format&fit=crop&q=80&w=1080&h=1920'
+    ],
+    defaultBio: 'Centro automotivo completo focado em alta performance e segurança. Unimos tecnologia de ponta, equipamentos de diagnóstico avançados e profissionais especializados para cuidar do seu veículo com o padrão que ele merece. Transparência total em cada orçamento e o compromisso de manter seu carro sempre novo.',
+    defaultCta: 'Agendar Manutenção 🚗🛠️',
+    defaultServices: [
+      { nome: 'Revisão Preventiva Master', descricao: 'Diagnóstico computadorizado total, check-up de 50 itens e verificação de segurança completa.', preco: 'A partir de R$ 180' },
+      { nome: 'Troca de Óleo Premium', descricao: 'Lubrificantes sintéticos de alta performance e troca de todos os filtros.', preco: 'A partir de R$ 190' },
+      { nome: 'Manutenção de Freios & Suspensão', descricao: 'Substituição de pastilhas, discos, amortecedores e revisão do sistema ABS.', preco: 'Sob consulta' },
+      { nome: 'Limpeza Técnica de Motor', descricao: 'Higienização detalhada sem riscos ao sistema elétrico, preservando componentes.', preco: 'R$ 150' },
+      { nome: 'Diagnóstico de Injeção Eletrônica', descricao: 'Leitura de falhas, limpeza de bicos e ajuste de parâmetros via scanner.', preco: 'R$ 120' }
+    ]
+  },
   eletricista: {
     id: 'eletricista',
     label: 'Eletricista',
