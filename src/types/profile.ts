@@ -284,6 +284,7 @@ export interface Profile {
   tipo_atendimento: string | null;
   horario_funcionamento: string | null;
   whatsapp: string | null;
+  whatsapp_message: string | null;
   instagram: string | null;
   has_physical_location: boolean;
   endereco_completo: string | null;

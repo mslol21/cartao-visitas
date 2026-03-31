@@ -733,6 +733,17 @@ export function EditorForm({ initialData, onSubmit, onChange, isPro = false, can
                     />
                   </div>
                   <div className="space-y-2">
+                    <Label className="text-[#25D366] font-bold flex items-center gap-2">
+                      <FileText className="w-4 h-4" /> Mensagem do WhatsApp
+                    </Label>
+                    <Input
+                      value={formData.whatsapp_message || ''}
+                      onChange={(e) => handleChange('whatsapp_message', e.target.value)}
+                      placeholder="Ex: Olá! Vi seu perfil na Konnexy..."
+                      className="rounded-2xl h-12 border-[#25D366]/30"
+                    />
+                  </div>
+                  <div className="space-y-2">
                     <Label className="text-[#E1306C] font-bold flex items-center gap-2">
                       <Instagram className="w-4 h-4" /> Instagram (Opcional)
                     </Label>

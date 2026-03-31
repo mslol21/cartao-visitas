@@ -266,30 +266,32 @@ END:VCARD`;
   const cleanWhatsapp = data.whatsapp?.replace(/\D/g, '') || '';
   const formattedWhatsapp = cleanWhatsapp.startsWith('55') ? cleanWhatsapp : `55${cleanWhatsapp}`;
   
+  const defaultMessage = data.whatsapp_message || (
+    isBarbearia ? "Olá! Gostaria de agendar um corte 💈" : 
+    data.profession === 'psicologo' ? "Olá! Gostaria de agendar uma consulta psicológica 🛋️" :
+    data.profession === 'personal_trainer' ? "Olá! Gostaria de informações sobre consultoria/aulas 💪" :
+    data.profession === 'esteticista' ? "Olá! Gostaria de marcar uma avaliação estética 💆‍♀️" :
+    data.profession === 'fotografo' ? "Olá! Gostaria de um orçamento para fotos 📸" :
+    data.profession === 'designer' ? "Olá! Gostaria de falar sobre um projeto de design 🎨" :
+    data.profession === 'tecnico_informatica' ? "Olá! Gostaria de solicitar um suporte técnico 💻" :
+    data.profession === 'tech' ? "Olá! Gostaria de falar sobre desenvolvimento de um projeto técnico 🚀" :
+    isHealth ? "Olá! Gostaria de agendar um atendimento 🩺" :
+    isAdvogado ? "Olá! Gostaria de agendar uma consulta jurídica ⚖️" :
+    isRealEstate ? "Olá! Vi seu perfil na Konnexy e gostaria de falar sobre imóveis 🏠" :
+    isPetshop ? "Olá! Vi seu perfil na Konnexy e gostaria de agendar um serviço para meu pet 🐾" :
+    isVeterinario ? "Olá! Vi seu perfil na Konnexy e gostaria de agendar uma consulta veterinária 🩺" :
+    isArtesao ? "Olá! Vi seu perfil na Konnexy e gostaria de falar sobre as suas peças artesanais / encomendas 🎨" :
+    isMusico ? "Olá! Gostaria de conversar sobre seu trabalho como músico 🎸" : 
+    data.profession === 'mestre_de_obras' ? "Olá! Vi seu perfil na Konnexy e gostaria de um orçamento para minha obra 🏗️" :
+    data.profession === 'area_lazer' ? "Olá! Vi seu perfil na Konnexy e gostaria de consultar a disponibilidade da sua área de lazer 📅" :
+    data.profession === 'pizzaria' ? "Olá! Vi seu perfil na Konnexy e gostaria de fazer um pedido de pizza 🍕" :
+    data.profession === 'cafeteria' ? "Olá! Gostaria de fazer um pedido / reservar uma mesa na cafeteria ☕" :
+    isDriver ? "Olá! Gostaria de agendar uma corrida / entrega 🚗" : 
+    `Olá! Vi seu perfil na Konnexy e gostaria de ${isPro ? 'solicitar um orçamento' : 'conversar'} sobre seus serviços.`
+  );
+  
   const whatsappLink = cleanWhatsapp
-    ? `https://wa.me/${formattedWhatsapp}?text=${encodeURIComponent(
-        isBarbearia ? "Olá! Gostaria de agendar um corte 💈" : 
-        data.profession === 'psicologo' ? "Olá! Gostaria de agendar uma consulta psicológica 🛋️" :
-        data.profession === 'personal_trainer' ? "Olá! Gostaria de informações sobre consultoria/aulas 💪" :
-        data.profession === 'esteticista' ? "Olá! Gostaria de marcar uma avaliação estética 💆‍♀️" :
-        data.profession === 'fotografo' ? "Olá! Gostaria de um orçamento para fotos 📸" :
-        data.profession === 'designer' ? "Olá! Gostaria de falar sobre um projeto de design 🎨" :
-        data.profession === 'tecnico_informatica' ? "Olá! Gostaria de solicitar um suporte técnico 💻" :
-        data.profession === 'tech' ? "Olá! Gostaria de falar sobre desenvolvimento de um projeto técnico 🚀" :
-        isHealth ? "Olá! Gostaria de agendar um atendimento 🩺" :
-        isAdvogado ? "Olá! Gostaria de agendar uma consulta jurídica ⚖️" :
-        isRealEstate ? "Olá! Vi seu perfil na Konnexy e gostaria de falar sobre imóveis 🏠" :
-        isPetshop ? "Olá! Vi seu perfil na Konnexy e gostaria de agendar um serviço para meu pet 🐾" :
-        isVeterinario ? "Olá! Vi seu perfil na Konnexy e gostaria de agendar uma consulta veterinária 🩺" :
-        isArtesao ? "Olá! Vi seu perfil na Konnexy e gostaria de falar sobre as suas peças artesanais / encomendas 🎨" :
-        isMusico ? "Olá! Gostaria de conversar sobre seu trabalho como músico 🎸" : 
-        data.profession === 'mestre_de_obras' ? "Olá! Vi seu perfil na Konnexy e gostaria de um orçamento para minha obra 🏗️" :
-        data.profession === 'area_lazer' ? "Olá! Vi seu perfil na Konnexy e gostaria de consultar a disponibilidade da sua área de lazer 📅" :
-        data.profession === 'pizzaria' ? "Olá! Vi seu perfil na Konnexy e gostaria de fazer um pedido de pizza 🍕" :
-        data.profession === 'cafeteria' ? "Olá! Gostaria de fazer um pedido / reservar uma mesa na cafeteria ☕" :
-        isDriver ? "Olá! Gostaria de agendar uma corrida / entrega 🚗" : 
-        `Olá! Vi seu perfil na Konnexy e gostaria de ${isPro ? 'solicitar um orçamento' : 'conversar'} sobre seus serviços.`
-      )}`
+    ? `https://wa.me/${formattedWhatsapp}?text=${encodeURIComponent(defaultMessage)}`
     : '#';
 
   const socialLinks = [

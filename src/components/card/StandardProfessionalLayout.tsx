@@ -75,9 +75,10 @@ export function StandardProfessionalLayout({ data, isPro }: StandardProfessional
   const cleanWhatsapp = data.whatsapp?.replace(/\D/g, '') || '';
   const formattedWhatsapp = cleanWhatsapp.startsWith('55') ? cleanWhatsapp : `55${cleanWhatsapp}`;
   const defaultMessage = 
+    data.whatsapp_message || (
     profession === 'pizzaria' ? "Olá! Vi seu perfil na Konnexy e gostaria de fazer um pedido de pizza 🍕" :
     profession === 'cafeteria' ? "Olá! Gostaria de fazer um pedido / reservar uma mesa na cafeteria ☕" :
-    `Olá! Vi seu perfil na Konnexy e gostaria de saber mais sobre seu trabalho como ${config.label}.`;
+    `Olá! Vi seu perfil na Konnexy e gostaria de saber mais sobre seu trabalho como ${config.label}.`);
 
   const whatsappLink = `https://wa.me/${formattedWhatsapp}?text=${encodeURIComponent(defaultMessage)}`;
 
