@@ -3168,50 +3168,81 @@ END:VCARD`;
               </div>
             ) : isArtesao ? (
               <div className="relative flex flex-col items-center w-full min-h-[600px] z-10 px-6 py-12 overflow-y-auto scroll-hide">
+                  {/* Background Accents for Elegance - Exclusive for PRO/Artesao with custom colors */}
+                  <div className="absolute inset-0 overflow-hidden pointer-events-none -z-10">
+                    <div 
+                      className="absolute top-0 -right-20 w-80 h-80 rounded-full blur-[120px] opacity-10 dark:opacity-20 transition-colors duration-1000" 
+                      style={{ background: data.theme_color || '#f59e0b' }} 
+                    />
+                    <div 
+                      className="absolute bottom-40 -left-20 w-60 h-60 rounded-full blur-[100px] opacity-10 transition-colors duration-1000" 
+                      style={{ background: (data.custom_fields as any)?.cor_botoes || '#fbbf24' }} 
+                    />
+                  </div>
+
                   {/* Artesão Header - Warm and Handmade Aesthetic */}
                   <div className="flex flex-col items-center mb-12 w-full relative">
                     <motion.div 
                       initial={{ scale: 0.9, rotate: -3 }}
                       animate={{ scale: 1, rotate: 0 }}
-                      className="relative w-44 h-44 mb-10"
+                      className="relative w-44 h-44 mb-10 group"
                     >
-                      {/* Stitched effect background */}
-                      <div className="absolute inset-0 bg-amber-100/50 dark:bg-amber-900/20 rounded-[2.8rem] rotate-3 blur-sm" />
-                      <div className="absolute -inset-2 border-2 border-dashed border-amber-400/30 rounded-[3rem] animate-[spin_20s_linear_infinite]" />
+                      {/* Stitched effect background dynamic */}
+                      <div 
+                        className="absolute inset-0 rounded-[2.8rem] rotate-3 blur-sm transition-colors duration-500" 
+                        style={{ backgroundColor: `${data.theme_color || '#fef3c7'}20` }}
+                      />
+                      <div 
+                        className="absolute -inset-2 border-2 border-dashed rounded-[3rem] animate-[spin_30s_linear_infinite] opacity-30" 
+                        style={{ borderColor: data.theme_color || '#f59e0b' }}
+                      />
                       
-                      <div className="relative w-full h-full rounded-[2.5rem] overflow-hidden border-4 border-white dark:border-slate-800 shadow-[0_20px_40px_rgba(217,119,6,0.2)] z-10 bg-white">
+                      <div className="relative w-full h-full rounded-[2.5rem] overflow-hidden border-4 border-white dark:border-slate-800 shadow-[0_20px_50px_rgba(0,0,0,0.1)] z-10 bg-white dark:bg-slate-900">
                          {data.photo_url ? (
                            <Image 
                              src={data.photo_url} 
                              alt={previewName} 
                              fill 
-                             className="object-cover" 
+                             className="object-cover transition-transform duration-700 group-hover:scale-110" 
                              unoptimized 
                              style={{ filter: getPhotoFilter() }}
                            />
                          ) : (
-                           <div className="w-full h-full bg-gradient-to-br from-amber-50 to-amber-100 flex items-center justify-center">
-                             <Paintbrush className="w-16 h-16 text-amber-500/30" />
+                           <div className="w-full h-full bg-gradient-to-br from-amber-50 to-amber-100 dark:from-slate-800 dark:to-slate-900 flex items-center justify-center">
+                             <Paintbrush className="w-16 h-16 opacity-20" style={{ color: data.theme_color || '#f59e0b' }} />
                            </div>
                          )}
                       </div>
                       
                       {/* Craftsmanship Badge */}
-                      <div className="absolute -bottom-3 -right-3 w-16 h-16 rounded-3xl bg-amber-600 flex items-center justify-center text-white shadow-lg border-4 border-white dark:border-slate-900 z-20 group-hover:rotate-12 transition-transform">
+                      <div 
+                        className="absolute -bottom-3 -right-3 w-16 h-16 rounded-3xl flex items-center justify-center text-white shadow-xl border-4 border-white dark:border-slate-900 z-20 group-hover:scale-110 group-hover:rotate-12 transition-all duration-300"
+                        style={{ backgroundColor: data.theme_color || '#d97706' }}
+                      >
                         <Scissors className="w-7 h-7 fill-white/20" />
                       </div>
                     </motion.div>
 
                     <h1 
-                      className="text-4xl font-black text-slate-900 dark:text-amber-50 text-center tracking-tight leading-none mb-3"
-                      style={(data.custom_fields as any)?.cor_texto ? { color: (data.custom_fields as any).cor_texto } : undefined}
+                      className="text-4xl font-black text-slate-800 dark:text-white text-center tracking-tight leading-none mb-4"
+                      style={(data.custom_fields as any)?.cor_texto ? { 
+                        color: (data.custom_fields as any).cor_texto,
+                        fontFamily: data.font_family || 'inherit'
+                      } : { fontFamily: data.font_family || 'inherit' }}
                     >
                       {previewName}
                     </h1>
-                    <div className="px-6 py-2 bg-amber-500/10 dark:bg-amber-900/40 rounded-2xl border border-amber-500/20 backdrop-blur-sm">
+
+                    <div 
+                      className="px-6 py-2 rounded-2xl border backdrop-blur-md shadow-sm transition-all"
+                      style={{ 
+                        backgroundColor: `${data.theme_color || '#f59e0b'}10`,
+                        borderColor: `${data.theme_color || '#f59e0b'}30`
+                      }}
+                    >
                       <p 
-                        className="text-[11px] font-black text-amber-900 dark:text-amber-400 uppercase tracking-[0.3em]"
-                        style={(data.custom_fields as any)?.cor_texto ? { color: (data.custom_fields as any).cor_texto } : undefined}
+                        className="text-[11px] font-black uppercase tracking-[0.3em] text-center"
+                        style={{ color: (data.custom_fields as any)?.cor_texto || data.theme_color || '#d97706' }}
                       >
                         {previewTagline}
                       </p>
@@ -3224,13 +3255,17 @@ END:VCARD`;
                       asChild 
                       className={cn(
                         "w-full h-18 rounded-[2rem] font-black text-lg uppercase tracking-widest shadow-2xl transition-all hover:scale-[1.03] active:scale-95 border-none group relative overflow-hidden",
-                        !(data.custom_fields as any)?.cor_botoes && "bg-gradient-to-r from-amber-600 via-amber-500 to-amber-600 bg-[length:200%_100%] animate-gradient text-white"
+                        !(data.custom_fields as any)?.cor_botoes && "bg-gradient-to-r from-amber-600 via-amber-500 to-amber-600 text-white"
                       )}
                       style={(data.custom_fields as any)?.cor_botoes ? {
                          backgroundColor: (data.custom_fields as any).cor_botoes,
                          color: (data.custom_fields as any)?.cor_texto_botoes || '#ffffff',
-                         boxShadow: `0 20px_40px_-10px ${(data.custom_fields as any).cor_botoes}60`
-                      } : undefined}
+                         boxShadow: `0 20px 40px -10px ${(data.custom_fields as any).cor_botoes}60`
+                      } : (data.theme_color ? {
+                         backgroundColor: data.theme_color,
+                         boxShadow: `0 20px 40px -10px ${data.theme_color}60`
+                      } : undefined)}
+                      onClick={() => handleTrackClick('click_whatsapp')}
                     >
                       <a href={whatsappLink} target="_blank" rel="noopener noreferrer" className="flex items-center justify-center gap-4">
                          <div className="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity" />
@@ -3242,18 +3277,21 @@ END:VCARD`;
                   </div>
 
                   {/* Artesão Highlights */}
-                  {renderProfessionHighlights((data.custom_fields as any)?.cor_botoes || '#d97706')}
+                  {renderProfessionHighlights((data.custom_fields as any)?.cor_botoes || data.theme_color || '#d97706')}
 
                   {/* Artesão Portfolio/Products Grid */}
                   <div className="w-full mb-12">
                     <div className="flex items-center justify-between mb-8 px-2">
                         <h2 
-                          className="text-[11px] font-black uppercase tracking-[0.4em] text-slate-900/80 dark:text-amber-50/90"
+                          className="text-[11px] font-black uppercase tracking-[0.4em] text-slate-800 dark:text-white/90"
                           style={(data.custom_fields as any)?.cor_texto ? { color: (data.custom_fields as any).cor_texto, opacity: 0.8 } : undefined}
                         >
                           Mostruário Artesanal
                         </h2>
-                       <div className="h-px flex-1 bg-amber-500/10 ml-6" />
+                       <div 
+                         className="h-px flex-1 ml-6 opacity-20" 
+                         style={{ backgroundColor: data.theme_color || '#d97706' }} 
+                       />
                     </div>
 
                     <div className="grid grid-cols-1 gap-4">
@@ -3263,49 +3301,64 @@ END:VCARD`;
                            href={service.whatsappUrl || whatsappLink} 
                            target="_blank" 
                            rel="noopener noreferrer"
-                           whileHover={{ y: -4 }}
-                            className="flex flex-col p-6 rounded-[2.5rem] bg-white/80 dark:bg-black/40 backdrop-blur-xl border border-amber-500/20 group hover:border-amber-500 transition-all cursor-pointer relative shadow-2xl hover:shadow-amber-500/20"
-                           style={(data.custom_fields as any)?.cor_texto ? { borderColor: (data.custom_fields as any).cor_texto + '20' } : undefined}
+                           whileHover={{ y: -6 }}
+                           transition={{ type: "spring", stiffness: 300 }}
+                           className="flex flex-col p-6 rounded-[2.5rem] bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 group hover:border-amber-500/50 transition-all cursor-pointer relative shadow-[0_10px_30px_rgba(0,0,0,0.05)] hover:shadow-xl"
+                           style={(data.custom_fields as any)?.cor_texto ? { 
+                             borderColor: `${(data.custom_fields as any).cor_texto}20`,
+                             background: (data.custom_fields as any)?.cor_servicos_fundo
+                           } : undefined}
                          >
-                            {/* Paper Tag Hole Effect */}
-                            <div className="absolute top-6 right-6 w-3 h-3 rounded-full bg-slate-100 dark:bg-amber-950 shadow-inner" />
+                            {/* Paper Tag Hole Effect dynamic */}
+                            <div 
+                              className="absolute top-6 right-6 w-3 h-3 rounded-full shadow-inner opacity-20" 
+                              style={{ backgroundColor: data.theme_color || '#d97706' }}
+                            />
                             
                             <div className="flex justify-between items-start mb-3">
-                               <div className="flex flex-col flex-1 pr-8">
+                               <div className="flex flex-col flex-1 pr-10">
                                   <span 
-                                    className="text-lg font-black text-slate-800 dark:text-amber-50 uppercase tracking-tight group-hover:text-amber-600 transition-colors"
-                                    style={(data.custom_fields as any)?.cor_texto ? { color: (data.custom_fields as any).cor_texto } : undefined}
+                                    className="text-lg font-black text-slate-800 dark:text-white uppercase tracking-tight group-hover:text-amber-600 transition-colors"
+                                    style={(data.custom_fields as any)?.cor_texto ? { 
+                                      color: (data.custom_fields as any).cor_texto 
+                                    } : { color: 'inherit' }}
                                   >
                                     {service.name}
                                   </span>
                                   <p 
-                                    className="text-xs text-slate-500 dark:text-amber-200/40 mt-1.5 italic"
-                                    style={(data.custom_fields as any)?.cor_texto ? { color: (data.custom_fields as any).cor_texto, opacity: 0.5 } : undefined}
+                                    className="text-xs text-slate-500 dark:text-slate-400 mt-1.5 italic leading-relaxed"
+                                    style={(data.custom_fields as any)?.cor_texto ? { color: (data.custom_fields as any).cor_texto, opacity: 0.6 } : undefined}
                                   >
-                                    {service.description || 'Produto exclusivo feito à mão'}
+                                    {service.description || 'Produto exclusivo feito à mão com dedicação.'}
                                   </p>
                                </div>
                             </div>
                             
-                            <div className="flex items-center justify-between mt-4">
+                            <div className="flex items-center justify-between mt-6">
                                {service.price ? (
                                  <div 
-                                   className="px-5 py-2 rounded-2xl bg-amber-100/50 dark:bg-amber-900/40 text-amber-700 dark:text-amber-300 font-black text-sm"
-                                   style={(data.custom_fields as any)?.cor_botoes ? { color: (data.custom_fields as any).cor_botoes, backgroundColor: (data.custom_fields as any).cor_botoes + '10' } : undefined}
+                                   className="px-5 py-2.5 rounded-2xl font-black text-sm transition-all group-hover:scale-105"
+                                   style={{ 
+                                     color: (data.custom_fields as any)?.cor_botoes || data.theme_color || '#d97706',
+                                     backgroundColor: `${(data.custom_fields as any)?.cor_botoes || data.theme_color || '#d97706'}10`
+                                   }}
                                  >
                                    {service.price}
                                  </div>
-                               ) : <div></div>}
-                               <div className="flex items-center gap-2 text-amber-500 opacity-60 group-hover:opacity-100 transition-opacity">
-                                  <span className="text-[10px] font-black uppercase tracking-widest">Ver Detalhes</span>
-                                  <ChevronRight className="w-4 h-4" />
+                               ) : <div />}
+                               <div 
+                                 className="flex items-center gap-2 opacity-60 group-hover:opacity-100 transition-all font-black text-[10px] uppercase tracking-widest"
+                                 style={{ color: data.theme_color || '#d97706' }}
+                               >
+                                  <span>Ver Detalhes</span>
+                                  <ChevronRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
                                </div>
                             </div>
                          </motion.a>
                        )) : (
-                         <div className="flex flex-col items-center py-12 opacity-30 text-center">
-                            <Sparkles className="w-10 h-10 mb-2" />
-                            <p className="text-xs font-bold uppercase tracking-widest italic">Prepare-se para se encantar...</p>
+                         <div className="flex flex-col items-center py-16 opacity-30 text-center bg-slate-50 dark:bg-slate-900/50 rounded-[2.5rem] border-2 border-dashed border-slate-200 dark:border-slate-800">
+                            <Sparkles className="w-12 h-12 mb-4" style={{ color: data.theme_color || '#f59e0b' }} />
+                            <p className="text-xs font-black uppercase tracking-[0.2em] italic">Novas criações em breve...</p>
                          </div>
                        )}
                     </div>
@@ -3319,15 +3372,22 @@ END:VCARD`;
                           target="_blank"
                           rel="noopener noreferrer"
                           onClick={() => handleTrackClick('click_address')}
-                          className="flex items-center gap-5 p-6 rounded-[2.5rem] bg-amber-500/5 dark:bg-amber-950/20 border-2 border-amber-100 dark:border-amber-900/30 group/map transition-all hover:bg-amber-500/10"
+                          className="flex items-center gap-5 p-6 rounded-[2.5rem] border-2 transition-all hover:scale-[1.02] active:scale-[0.98] group/map"
+                          style={{ 
+                            backgroundColor: `${data.theme_color || '#f59e0b'}05`,
+                            borderColor: `${data.theme_color || '#f59e0b'}20`
+                          }}
                         >
-                           <div className="w-12 h-12 rounded-full bg-white dark:bg-slate-900 flex items-center justify-center shadow-md group-hover/map:scale-110 transition-transform">
-                              <MapPin className="w-6 h-6 text-amber-600" />
+                           <div 
+                             className="w-14 h-14 rounded-full bg-white dark:bg-slate-800 flex items-center justify-center shadow-lg group-hover/map:rotate-12 transition-transform"
+                             style={{ color: data.theme_color || '#d97706' }}
+                           >
+                              <MapPin className="w-7 h-7" />
                            </div>
-                           <div className="flex flex-col">
-                              <span className="text-[10px] font-black uppercase text-amber-600/60 mb-1 tracking-widest">Oficina / Retirada</span>
+                           <div className="flex flex-col flex-1">
+                              <span className="text-[10px] font-black uppercase mb-1 tracking-widest opacity-50" style={{ color: data.theme_color || '#d97706' }}>Localização da Oficina</span>
                               <p 
-                                className="text-xs font-bold text-slate-800 dark:text-amber-100 leading-relaxed underline decoration-amber-500/30"
+                                className="text-xs font-bold text-slate-800 dark:text-white leading-relaxed"
                                 style={(data.custom_fields as any)?.cor_texto ? { color: (data.custom_fields as any).cor_texto } : undefined}
                               >
                                 {previewAddress}
@@ -3336,46 +3396,45 @@ END:VCARD`;
                         </a>
                      )}
 
-                     {/* Instagram Destaque */}
+                     {/* Instagram Premium Card */}
                      {data.instagram && (
                        <motion.a
                          href={`https://instagram.com/${data.instagram}`}
                          target="_blank"
                          rel="noopener noreferrer"
                          onClick={() => handleTrackClick('click_instagram')}
-                         whileHover={{ scale: 1.02 }}
+                         whileHover={{ scale: 1.02, y: -4 }}
                          whileTap={{ scale: 0.98 }}
-                         className="flex items-center gap-5 w-full p-5 rounded-[2.5rem] relative overflow-hidden group cursor-pointer border border-transparent"
-                         style={{ background: 'linear-gradient(135deg, #f9a825, #e91e8c, #9c27b0)' }}
+                         className="flex items-center gap-5 w-full p-6 rounded-[2.5rem] relative overflow-hidden group cursor-pointer shadow-xl border border-white/10"
+                         style={{ background: 'linear-gradient(135deg, #f9a825 0%, #e91e8c 50%, #9c27b0 100%)' }}
                        >
-                         {/* Shimmer */}
                          <div className="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity" />
-                         <div className="w-14 h-14 rounded-[1.5rem] bg-white/20 backdrop-blur-sm flex items-center justify-center shrink-0 shadow-inner">
-                           <Instagram className="w-7 h-7 text-white" />
+                         <div className="w-16 h-16 rounded-2xl bg-white/20 backdrop-blur-md flex items-center justify-center shrink-0 shadow-inner">
+                           <Instagram className="w-8 h-8 text-white" />
                          </div>
                          <div className="flex flex-col flex-1 min-w-0">
-                           <span className="text-[10px] font-black uppercase text-white/70 tracking-widest">Siga no Instagram</span>
-                           <span className="text-lg font-black text-white truncate leading-tight">@{data.instagram}</span>
-                           <span className="text-[10px] text-white/60 font-semibold mt-0.5">Portfólio • Peças • Novidades</span>
+                           <span className="text-[10px] font-black uppercase text-white/80 tracking-[0.2em] mb-1">Portfólio no Instagram</span>
+                           <span className="text-xl font-black text-white truncate leading-none">@{data.instagram}</span>
                          </div>
-                         <ChevronRight className="w-5 h-5 text-white/60 group-hover:translate-x-1 transition-transform shrink-0" />
+                         <ChevronRight className="w-6 h-6 text-white/50 group-hover:translate-x-1 transition-transform" />
                        </motion.a>
                      )}
 
-                     {/* Demais redes (exceto Instagram) */}
+                     {/* Demais redes */}
                      {validSocialLinks.filter(s => s.id !== 'instagram' && s.id !== 'digital_presence' && s.id !== 'portfolio_anchor').length > 0 && (
-                       <div className="flex justify-center gap-4 pt-2">
+                       <div className="flex flex-wrap justify-center gap-4 pt-4">
                          {validSocialLinks.filter(s => s.id !== 'instagram' && s.id !== 'digital_presence' && s.id !== 'portfolio_anchor').map((social) => (
                            <motion.a 
                              key={social.id} 
                              href={social.url} 
                              target="_blank" 
                              rel="noopener noreferrer"
-                             whileHover={{ y: -6, rotate: 5 }}
+                             whileHover={{ y: -8, scale: 1.1 }}
                              onClick={() => handleTrackClick(social.trackType as any)}
-                             className="w-16 h-16 rounded-[1.8rem] bg-white dark:bg-slate-900 shadow-lg flex items-center justify-center text-amber-600 border border-amber-100 dark:border-white/5 transition-all"
+                             className="w-16 h-16 rounded-[1.8rem] bg-white dark:bg-slate-900 shadow-lg flex items-center justify-center border border-slate-100 dark:border-white/5 transition-all"
+                             style={{ color: data.theme_color || '#d97706' }}
                            >
-                             <social.icon className="w-6 h-6" />
+                             <social.icon className="w-7 h-7" />
                            </motion.a>
                          ))}
                        </div>
@@ -3383,9 +3442,17 @@ END:VCARD`;
                   </div>
 
                   {/* Artisan Texture Footer */}
-                  <div className="mt-auto flex flex-col items-center gap-3 opacity-30">
-                    <div className="w-8 h-px bg-amber-900/50" />
-                    <span className="text-[9px] font-black uppercase tracking-[0.6em] text-amber-900 dark:text-amber-100">Handmade Experience</span>
+                  <div className="mt-auto flex flex-col items-center gap-4 py-8 opacity-40">
+                    <div 
+                      className="h-px w-12 transition-all duration-1000" 
+                      style={{ backgroundColor: data.theme_color || '#d97706' }} 
+                    />
+                    <span 
+                      className="text-[10px] font-black uppercase tracking-[0.6em] text-center"
+                      style={{ color: data.theme_color || 'inherit' }}
+                    >
+                      HANDMADE EXPERIENCE
+                    </span>
                   </div>
                {renderCustomPortfolio()}
             </div>
