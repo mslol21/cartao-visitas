@@ -358,31 +358,33 @@ export function StandardProfessionalLayout({ data, isPro }: StandardProfessional
         custom={2} initial="hidden" animate="visible" variants={fadeIn}
         className="px-6 flex flex-col gap-3"
       >
-        <Button 
-          asChild
-          className={cn(
-            "w-full h-14 rounded-[1.2rem] text-base font-black uppercase tracking-tighter shadow-xl border-none flex items-center justify-center gap-3 transition-transform hover:scale-[1.02] active:scale-[0.98]",
-            !(data.custom_fields as any)?.cor_botoes && (
-              profession === 'loja_online' 
-                ? "bg-gradient-to-r from-violet-600 to-indigo-600 text-white shadow-violet-500/30" 
-                : "bg-[#25D366] hover:bg-[#20ba59] text-white shadow-[#25D366]/20"
-            )
-          )}
-          style={(data.custom_fields as any)?.cor_botoes ? {
-             backgroundColor: (data.custom_fields as any).cor_botoes,
-             color: (data.custom_fields as any)?.cor_texto_botoes || '#ffffff',
-             boxShadow: `0 10px 15px -3px ${(data.custom_fields as any).cor_botoes}40`
-          } : undefined}
-        >
-          <a href={whatsappLink} target="_blank" rel="noopener noreferrer">
-            {profession === 'loja_online' ? (
-              <ShoppingBag className="w-5 h-5 fill-white/20" />
-            ) : (
-              <MessageCircle className={cn("w-5 h-5", (data.custom_fields as any)?.cor_botoes ? "" : "fill-white")} />
+        {data.whatsapp && (
+          <Button 
+            asChild
+            className={cn(
+              "w-full h-14 rounded-[1.2rem] text-base font-black uppercase tracking-tighter shadow-xl border-none flex items-center justify-center gap-3 transition-transform hover:scale-[1.02] active:scale-[0.98]",
+              !(data.custom_fields as any)?.cor_botoes && (
+                profession === 'loja_online' 
+                  ? "bg-gradient-to-r from-violet-600 to-indigo-600 text-white shadow-violet-500/30" 
+                  : "bg-[#25D366] hover:bg-[#20ba59] text-white shadow-[#25D366]/20"
+              )
             )}
-            <span>{data.cta_text || config.defaultCta || 'Chamar no WhatsApp'}</span>
-          </a>
-        </Button>
+            style={(data.custom_fields as any)?.cor_botoes ? {
+               backgroundColor: (data.custom_fields as any).cor_botoes,
+               color: (data.custom_fields as any)?.cor_texto_botoes || '#ffffff',
+               boxShadow: `0 10px 15px -3px ${(data.custom_fields as any).cor_botoes}40`
+            } : undefined}
+          >
+            <a href={whatsappLink} target="_blank" rel="noopener noreferrer">
+              {profession === 'loja_online' ? (
+                <ShoppingBag className="w-5 h-5 fill-white/20" />
+              ) : (
+                <MessageCircle className={cn("w-5 h-5", (data.custom_fields as any)?.cor_botoes ? "" : "fill-white")} />
+              )}
+              <span>{data.cta_text || config.defaultCta || 'Chamar no WhatsApp'}</span>
+            </a>
+          </Button>
+        )}
 
         {(data.custom_fields as any)?.link_catalogo && (
           <Button 

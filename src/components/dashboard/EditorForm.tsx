@@ -131,16 +131,8 @@ export function EditorForm({ initialData, onSubmit, onChange, isPro = false, can
        if (!silent) toast.error('Selecione uma profissão específica!');
        return;
     }
-    if (!formData.whatsapp?.trim()) {
-      if (!silent) toast.error('O WhatsApp é obrigatório!');
-      return;
-    }
-
-    const currentServices = formData.servicos || [];
-    if (currentServices.length === 0) {
-       if (!silent) toast.error('Adicione pelo menos 1 serviço!');
-       return;
-    }
+    // Removi a obrigatoriedade do WhatsApp e de pelo menos 1 serviço a pedido do usuário
+    // para permitir que o preenchimento seja totalmente opcional.
     
     if (usernameStatus === 'taken') {
       if (!silent) toast.error('Este Username já está em uso!');
