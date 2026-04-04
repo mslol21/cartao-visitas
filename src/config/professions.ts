@@ -351,17 +351,13 @@ export const professionsMap: Record<ProfessionCategory, ProfessionConfig> = {
   },
   manutencao_automotiva: {
     id: 'manutencao_automotiva',
-    label: 'Manutenção Automotiva Premium',
-    theme: { color: 'red', style: 'oled' },
+    label: 'Manutenção Automotiva',
+    theme: { color: 'blue', style: 'oled' },
     customFields: [
+      { name: 'atendimento_delivery', label: 'Leva e Traz / Delivery?', type: 'boolean' },
       { name: 'mecanica_geral', label: 'Mecânica Geral?', type: 'boolean' },
       { name: 'injecao_eletronica', label: 'Injeção Eletrônica?', type: 'boolean' },
       { name: 'freios_suspensao', label: 'Freios e Suspensão?', type: 'boolean' },
-      { name: 'troca_oleo', label: 'Troca de Óleo e Filtros?', type: 'boolean' },
-      { name: 'revisao_periodica', label: 'Revisão Periódica / Preventiva?', type: 'boolean' },
-      { name: 'alinhamento_balanceamento', label: 'Alinhamento e Balanceamento?', type: 'boolean' },
-      { name: 'estetica_automotiva', label: 'Estética Automotiva / Detalhamento?', type: 'boolean' },
-      { name: 'martelinho_de_ouro', label: 'Martelinho de Ouro?', type: 'boolean' },
       { name: 'socorro_24h', label: 'Socorro Mecânico 24h?', type: 'boolean' },
       { name: 'leva_e_traz', label: 'Serviço Leva e Traz?', type: 'boolean' },
       { name: 'portfolio_images', label: 'Fotos dos Serviços / Oficina (URLs)', type: 'array', placeholder: 'https://ex.com/carro1.jpg' }
@@ -380,6 +376,32 @@ export const professionsMap: Record<ProfessionCategory, ProfessionConfig> = {
       { nome: 'Manutenção de Freios & Suspensão', descricao: 'Substituição de pastilhas, discos, amortecedores e revisão do sistema ABS.', preco: 'Sob consulta' },
       { nome: 'Limpeza Técnica de Motor', descricao: 'Higienização detalhada sem riscos ao sistema elétrico, preservando componentes.', preco: 'R$ 150' },
       { nome: 'Diagnóstico de Injeção Eletrônica', descricao: 'Leitura de falhas, limpeza de bicos e ajuste de parâmetros via scanner.', preco: 'R$ 120' }
+    ]
+  },
+  vistoria_veicular: {
+    id: 'vistoria_veicular',
+    label: 'Vistoria Automotiva',
+    theme: { color: 'blue', style: 'oled' },
+    customFields: [
+      { name: 'empresa_credenciada', label: 'Empresa Credenciada Detran?', type: 'boolean' },
+      { name: 'vistoria_cautelar', label: 'Faz Vistoria Cautelar?', type: 'boolean' },
+      { name: 'vistoria_transferencia', label: 'Faz Vistoria Transferência?', type: 'boolean' },
+      { name: 'laudo_na_hora', label: 'Emite Laudo na Hora?', type: 'boolean' },
+      { name: 'check_historico_completo', label: 'Puxa Histórico de Leilão/Sinistro?', type: 'boolean' },
+      { name: 'atendimento_domicilio', label: 'Faz Vistoria em Domicílio?', type: 'boolean' },
+      { name: 'anos_atuacao', label: 'Anos de Atuação no Mercado', type: 'text', placeholder: 'Ex: 15 anos' }
+    ],
+    suggestedBackgrounds: [
+      'https://images.unsplash.com/photo-1574621100236-d25b64cfd647?auto=format&fit=crop&q=80&w=1080&h=1920',
+      'https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?auto=format&fit=crop&q=80&w=1080&h=1920',
+      'https://images.unsplash.com/photo-1563720223185-11003d516935?auto=format&fit=crop&q=80&w=1080&h=1920'
+    ],
+    defaultBio: 'Tranquilidade e segurança para seu investimento! Somos especialistas em vistorias veiculares, fornecendo laudos técnicos detalhados e análise completa de histórico. Se você está comprando ou vendendo um carro, nosso laudo cautelar é a sua maior garantia de bons negócios.',
+    defaultCta: 'Agendar Vistoria 🛡️🚘',
+    defaultServices: [
+      { nome: 'Vistoria Cautelar Completa', descricao: 'Análise técnica da estrutura, motor, chassi e histórico de sinistros/leilão.', preco: 'Consulte' },
+      { nome: 'Vistoria para Transferência', descricao: 'Laudo obrigatório para regularização da documentação do veículo.', preco: 'Consulte' },
+      { nome: 'Check de Histórico Placa', descricao: 'Consulta detalhada sobre multas, débitos e restrições administrativas.', preco: 'A partir de R$ 35' }
     ]
   },
   eletricista: {

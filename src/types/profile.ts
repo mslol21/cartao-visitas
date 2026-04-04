@@ -45,6 +45,7 @@ export type ProfessionCategory =
   | 'pizzaria'
   | 'cafeteria'
   | 'manutencao_automotiva'
+  | 'vistoria_veicular'
   | 'default';
 
 export interface Service {
@@ -266,6 +267,14 @@ export interface CustomFields {
   menu_item_3_preco?: string;
   menu_item_4_nome?: string;
   menu_item_4_preco?: string;
+
+  // Vistoria Veicular
+  empresa_credenciada?: boolean;
+  laudo_na_hora?: boolean;
+  check_historico_completo?: boolean;
+  vistoria_cautelar?: boolean;
+  vistoria_transferencia?: boolean;
+  anos_atuacao?: string;
 }
 
 // Keeping old items for backwards compatibility during migration

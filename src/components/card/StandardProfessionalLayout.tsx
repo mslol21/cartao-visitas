@@ -80,6 +80,7 @@ export function StandardProfessionalLayout({ data, isPro }: StandardProfessional
     data.whatsapp_message || (
     profession === 'pizzaria' ? "Olá! Vi seu perfil na Konnexy e gostaria de fazer um pedido de pizza 🍕" :
     profession === 'cafeteria' ? "Olá! Gostaria de fazer um pedido / reservar uma mesa na cafeteria ☕" :
+    profession === 'vistoria_veicular' ? "Olá! Gostaria de agendar uma vistoria no meu veículo 🛡️🚘" :
     `Olá! Vi seu perfil na Konnexy e gostaria de saber mais sobre seu trabalho como ${config.label}.`);
 
   const whatsappLink = `https://wa.me/${formattedWhatsapp}?text=${encodeURIComponent(defaultMessage)}`;
@@ -263,6 +264,7 @@ export function StandardProfessionalLayout({ data, isPro }: StandardProfessional
                {profession === 'loja_online' && <ShoppingBag className="w-3.5 h-3.5 stroke-[2.5px]" />}
                {profession === 'cafeteria' && <Coffee className="w-3.5 h-3.5 stroke-[2.5px]" />}
                {(profession === 'mecanico' || profession === 'manutencao_automotiva') && <Wrench className="w-3.5 h-3.5 stroke-[2.5px]" />}
+               {profession === 'vistoria_veicular' && <ShieldCheck className="w-3.5 h-3.5 stroke-[2.5px]" />}
                <span className="opacity-90">{config.label}</span>
             </div>
 
