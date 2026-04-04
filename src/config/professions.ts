@@ -643,28 +643,37 @@ export const professionsMap: Record<ProfessionCategory, ProfessionConfig> = {
   food: {
     id: 'food',
     label: 'Restaurante / Lanchonete',
-    theme: { color: 'red', style: 'standard' },
+    theme: { color: 'orange', style: 'oled' },
     customFields: [
-      { name: 'tem_delivery', label: 'Atende Delivery?', type: 'boolean' },
+      { name: 'tem_delivery', label: 'Atendimento Delivery?', type: 'boolean' },
       { name: 'retirada_local', label: 'Aceita Retirada (Take-out)?', type: 'boolean' },
-      { name: 'ponto_fisico_lanchonete', label: 'Atendimento no Local?', type: 'boolean' },
+      { name: 'ponto_fisico_lanchonete', label: 'Espaço Físico / Salão?', type: 'boolean' },
       { name: 'aceita_vr', label: 'Aceita VR / Ticket?', type: 'boolean' },
       { name: 'pet_friendly', label: 'Ambiente Pet Friendly?', type: 'boolean' },
       { name: 'espaco_kids', label: 'Espaço Kids?', type: 'boolean' },
       { name: 'musica_ao_vivo', label: 'Música ao Vivo?', type: 'boolean' },
-      { name: 'portfolio_images', label: 'Fotos do Cardápio/Local (URLs separadas por vírgula)', type: 'array', placeholder: 'https://exemplo.com/prato1.jpg' }
+      { name: 'menu_item_1_nome', label: 'Destaque 1 (Nome)', type: 'text', placeholder: 'Ex: Burger X-Picanha' },
+      { name: 'menu_item_1_preco', label: 'Destaque 1 (Preço)', type: 'text', placeholder: 'R$ 35,90' },
+      { name: 'menu_item_2_nome', label: 'Destaque 2 (Nome)', type: 'text', placeholder: 'Ex: Porção de Fritas G' },
+      { name: 'menu_item_2_preco', label: 'Destaque 2 (Preço)', type: 'text', placeholder: 'R$ 29,00' },
+      { name: 'menu_item_3_nome', label: 'Destaque 3 (Nome)', type: 'text', placeholder: 'Ex: Sucos Naturais 500ml' },
+      { name: 'menu_item_3_preco', label: 'Destaque 3 (Preço)', type: 'text', placeholder: 'R$ 12,00' },
+      { name: 'menu_item_4_nome', label: 'Destaque 4 (Nome)', type: 'text', placeholder: 'Ex: Sobremesa da Casa' },
+      { name: 'menu_item_4_preco', label: 'Destaque 4 (Preço)', type: 'text', placeholder: 'R$ 15,00' },
+      { name: 'portfolio_images', label: 'Fotos dos Pratos/Ambiente (URLs)', type: 'array', placeholder: 'https://exemplo.com/prato1.jpg' }
     ],
     suggestedBackgrounds: [
-      'https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=1080&h=1920&q=80',
-      'https://images.unsplash.com/photo-1476224203421-9ac39bcb3327?auto=format&fit=crop&w=1080&h=1920&q=80',
-      'https://images.unsplash.com/photo-1493770348161-369560ae357d?auto=format&fit=crop&w=1080&h=1920&q=80'
+      'https://images.unsplash.com/photo-1514355315815-2b64b0216b14?auto=format&fit=crop&w=1080&h=1920&q=80',
+      'https://images.unsplash.com/photo-1550547660-d9450f859349?auto=format&fit=crop&w=1080&h=1920&q=80',
+      'https://images.unsplash.com/photo-1543339308-43e59d6b73a6?auto=format&fit=crop&q=80&w=1080&h=1920&q=80',
+      'https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=1080&h=1920&q=80'
     ],
-    defaultBio: 'Sabor que transforma o seu dia! Trabalhamos com ingredientes selecionados, receitas exclusivas e muito amor na preparação de cada pedido. Seja no nosso espaço físico aconchegante ou entregue quentinho na sua casa pelo nosso delivery.',
-    defaultCta: 'Fazer Pedido / Cardápio 🍔',
+    defaultBio: 'Sabor irresistível e experiência gourmet em cada mordida! Preparamos nossos pratos com ingredientes selecionados e receitas exclusivas que vão conquistar seu paladar. No salão ou no delivery, levamos o melhor da gastronomia até você com rapidez e carinho.',
+    defaultCta: 'Ver Cardápio & Pedir 🍔🍴',
     defaultServices: [
-      { nome: 'Cardápio Completo', descricao: 'Acesse nosso cardápio digital para ver todas as opções de lanches, porções, pratos e bebidas.', preco: 'Ver Valores' },
-      { nome: 'Combo Família', descricao: 'Opções perfeitas e econômicas para matar a fome da galera toda.', preco: 'A partir de R$ 65' },
-      { nome: 'Especial do Dia / Executivo', descricao: 'Pratos bem servidos, com tempero caseiro e aquele gostinho de comida feita na hora.', preco: 'A partir de R$ 25' }
+      { nome: 'Cardápio Digital', descricao: 'Acesse nosso menu completo e atualizado com fotos e preços.', preco: 'Ver Grátis' },
+      { nome: 'Combo Burger + Fritas', descricao: 'O clássico mais pedido de nossa casa com desconto especial.', preco: 'R$ 49,90' },
+      { nome: 'Happy Hour / Porções', descricao: 'Opções perfeitas para compartilhar com amigos e família.', preco: 'A partir de R$ 35' }
     ]
   },
   pizzaria: {

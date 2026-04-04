@@ -886,6 +886,64 @@ export function EditorForm({ initialData, onSubmit, onChange, isPro = false, can
                             </div>
                          </div>
                       </div>
+                    ) : professionConfig.id === 'food' ? (
+                      <div className="md:col-span-2 space-y-8">
+                         <div className="space-y-4">
+                            <h4 className="text-[10px] font-black uppercase tracking-widest text-[#f97316]/50 border-b border-[#f97316]/10 pb-2">Configurações Gerais</h4>
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                               {professionConfig.customFields.filter(f => !f.name.startsWith('menu_item')).map((field) => (
+                                  <div key={field.name} className="flex flex-col gap-1.5 p-3 rounded-2xl bg-white dark:bg-slate-900/40 border border-slate-200 dark:border-slate-800">
+                                     {field.type === 'boolean' ? (
+                                        <div className="flex items-center justify-between">
+                                           <Label className="text-sm font-bold opacity-80 cursor-pointer">{field.label}</Label>
+                                           <Switch 
+                                             checked={!!(formData.custom_fields as any)?.[field.name]}
+                                             onCheckedChange={(checked) => handleCustomFieldChange(field.name as keyof CustomFields, checked)}
+                                           />
+                                        </div>
+                                     ) : (
+                                        <>
+                                           <Label className="text-xs font-black uppercase tracking-widest opacity-40 mb-1">{field.label}</Label>
+                                           <Input
+                                             value={(formData.custom_fields as any)?.[field.name] || ''}
+                                             onChange={(e) => handleCustomFieldChange(field.name as keyof CustomFields, e.target.value)}
+                                             placeholder={field.placeholder}
+                                             className="rounded-xl h-10 text-sm"
+                                           />
+                                        </>
+                                     )}
+                                  </div>
+                               ))}
+                            </div>
+                         </div>
+                         <div className="space-y-4">
+                            <h4 className="text-[10px] font-black uppercase tracking-widest text-[#f97316] border-b border-[#f97316]/20 pb-2 flex items-center gap-2">
+                               <Utensils className="w-3 h-3" /> 
+                               Mini Cardápio (Destaques)
+                            </h4>
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                               {[1, 2, 3, 4].map(num => (
+                                  <div key={num} className="p-4 rounded-2xl bg-orange-500/5 border border-orange-500/10 space-y-3">
+                                     <span className="text-[9px] font-black uppercase tracking-widest text-orange-600">Item Destaque {num}</span>
+                                     <div className="space-y-2">
+                                        <Input
+                                          value={(formData.custom_fields as any)?.[`menu_item_${num}_nome`] || ''}
+                                          onChange={(e) => handleCustomFieldChange(`menu_item_${num}_nome` as keyof CustomFields, e.target.value)}
+                                          placeholder="Nome do lanche/prato"
+                                          className="h-9 text-xs rounded-xl"
+                                        />
+                                        <Input
+                                          value={(formData.custom_fields as any)?.[`menu_item_${num}_preco`] || ''}
+                                          onChange={(e) => handleCustomFieldChange(`menu_item_${num}_preco` as keyof CustomFields, e.target.value)}
+                                          placeholder="Preço R$"
+                                          className="h-9 text-xs rounded-xl"
+                                        />
+                                     </div>
+                                  </div>
+                               ))}
+                            </div>
+                         </div>
+                      </div>
                     ) : (
                       professionConfig.customFields.map((field) => (
                         <div key={field.name} className="flex flex-col gap-2">

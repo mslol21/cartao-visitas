@@ -54,7 +54,9 @@ import {
   Coffee,
   Wifi,
   Wrench,
-  Car
+  Car,
+  Utensils,
+  Star
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Profile, ProfessionCategory } from '@/types/profile';
@@ -526,6 +528,50 @@ export function StandardProfessionalLayout({ data, isPro }: StandardProfessional
                  </span>
               </div>
             ))}
+          </div>
+        </motion.div>
+      )}
+
+      {/* 9. MINI CARDÁPIO / DESTAQUES (Específico para Food) */}
+      {profession === 'food' && (cf.menu_item_1_nome || cf.menu_item_2_nome || cf.menu_item_3_nome || cf.menu_item_4_nome) && (
+        <motion.div 
+          custom={4} initial="hidden" animate="visible" variants={fadeIn}
+          className="px-6"
+        >
+          <div className="flex items-center gap-3 mb-6">
+             <div className="h-px flex-1 bg-slate-200 dark:bg-white/10" />
+             <span 
+               className={cn("text-[10px] font-black uppercase tracking-[0.4em] text-orange-500")}
+             >
+               Mini Cardápio 🍔
+             </span>
+             <div className="h-px flex-1 bg-slate-200 dark:bg-white/10" />
+          </div>
+
+          <div className="grid grid-cols-2 gap-3">
+             {[1, 2, 3, 4].map(num => {
+               const name = cf[`menu_item_${num}_nome`];
+               const price = cf[`menu_item_${num}_preco`];
+               if (!name) return null;
+
+               return (
+                 <div 
+                   key={num}
+                   className="p-4 rounded-[2rem] bg-white/80 dark:bg-slate-900/80 backdrop-blur-md border border-slate-200 dark:border-white/10 shadow-sm flex flex-col items-center text-center gap-2 group hover:-translate-y-1 transition-all"
+                 >
+                    <div className="w-12 h-12 rounded-2xl bg-orange-500/10 flex items-center justify-center text-orange-500 group-hover:scale-110 transition-transform">
+                       {num === 1 && <Utensils className="w-6 h-6" />}
+                       {num === 2 && <ShoppingBag className="w-6 h-6" />}
+                       {num === 3 && <Coffee className="w-6 h-6" />}
+                       {num === 4 && <Star className="w-6 h-6" />}
+                    </div>
+                    <div className="flex flex-col gap-0.5">
+                       <span className="text-[11px] font-black uppercase tracking-tight line-clamp-2 leading-tight">{name}</span>
+                       <span className="text-sm font-black text-orange-500">{price || 'Consulte'}</span>
+                    </div>
+                 </div>
+               );
+             })}
           </div>
         </motion.div>
       )}

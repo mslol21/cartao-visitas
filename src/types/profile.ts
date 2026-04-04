@@ -256,6 +256,16 @@ export interface CustomFields {
   // Portfólio / Fotografia
   portfolio_images?: string[];
   portfolio_video_url?: string;
+
+  // Lanchonete / Mini Cardápio
+  menu_item_1_nome?: string;
+  menu_item_1_preco?: string;
+  menu_item_2_nome?: string;
+  menu_item_2_preco?: string;
+  menu_item_3_nome?: string;
+  menu_item_3_preco?: string;
+  menu_item_4_nome?: string;
+  menu_item_4_preco?: string;
 }
 
 // Keeping old items for backwards compatibility during migration
