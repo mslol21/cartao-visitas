@@ -748,6 +748,31 @@ export function EditorForm({ initialData, onSubmit, onChange, isPro = false, can
                   </div>
                 </div>
 
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-2">
+                  <div className="space-y-2">
+                    <Label className="text-[#25D366] opacity-60 font-bold flex items-center gap-2">
+                      <MessageCircle className="w-4 h-4" /> WhatsApp Secundário (Opcional)
+                    </Label>
+                    <Input
+                      value={formData.whatsapp_secondary || ''}
+                      onChange={(e) => handleChange('whatsapp_secondary', e.target.value.replace(/\D/g, ''))}
+                      placeholder="Outro número..."
+                      className="rounded-2xl h-12 border-[#25D366]/20"
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <Label className="text-[#25D366] opacity-60 font-bold flex items-center gap-2">
+                      <FileText className="w-4 h-4" /> Mensagem (WhatsApp 2)
+                    </Label>
+                    <Input
+                      value={formData.whatsapp_secondary_message || ''}
+                      onChange={(e) => handleChange('whatsapp_secondary_message', e.target.value)}
+                      placeholder="Mensagem para o segundo número"
+                      className="rounded-2xl h-12 border-[#25D366]/20"
+                    />
+                  </div>
+                </div>
+
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4 p-4 rounded-3xl bg-[#32bcad]/5 border border-[#32bcad]/20 mt-2">
                   <div className="space-y-2">
                     <Label className="text-[#32bcad] font-bold flex items-center gap-2">

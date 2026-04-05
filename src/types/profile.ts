@@ -304,6 +304,8 @@ export interface Profile {
   horario_funcionamento: string | null;
   whatsapp: string | null;
   whatsapp_message: string | null;
+  whatsapp_secondary: string | null;
+  whatsapp_secondary_message: string | null;
   instagram: string | null;
   has_physical_location: boolean;
   endereco_completo: string | null;

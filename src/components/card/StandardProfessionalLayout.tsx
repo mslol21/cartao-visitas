@@ -84,6 +84,10 @@ export function StandardProfessionalLayout({ data, isPro }: StandardProfessional
     `Olá! Vi seu perfil na Konnexy e gostaria de saber mais sobre seu trabalho como ${config.label}.`);
 
   const whatsappLink = `https://wa.me/${formattedWhatsapp}?text=${encodeURIComponent(defaultMessage)}`;
+  
+  const cleanWhatsappSecondary = data.whatsapp_secondary?.replace(/\D/g, '') || '';
+  const formattedWhatsappSecondary = cleanWhatsappSecondary.startsWith('55') ? cleanWhatsappSecondary : `55${cleanWhatsappSecondary}`;
+  const whatsappSecondaryLink = `https://wa.me/${formattedWhatsappSecondary}?text=${encodeURIComponent(data.whatsapp_secondary_message || defaultMessage)}`;
 
   // Animation variants
   const fadeIn: Variants = {
@@ -382,6 +386,26 @@ export function StandardProfessionalLayout({ data, isPro }: StandardProfessional
                 <MessageCircle className={cn("w-5 h-5", (data.custom_fields as any)?.cor_botoes ? "" : "fill-white")} />
               )}
               <span>{data.cta_text || config.defaultCta || 'Chamar no WhatsApp'}</span>
+            </a>
+          </Button>
+        )}
+
+        {data.whatsapp_secondary && (
+          <Button 
+            asChild
+            variant="outline"
+            className={cn(
+              "w-full h-12 rounded-xl text-base font-black uppercase tracking-tighter border-2 flex items-center justify-center gap-3 transition-transform hover:scale-[1.02] active:scale-[0.98]",
+              !(data.custom_fields as any)?.cor_botoes && "border-[#25D366] text-[#25D366] hover:bg-[#25D366]/5"
+            )}
+            style={(data.custom_fields as any)?.cor_botoes ? {
+               borderColor: (data.custom_fields as any).cor_botoes,
+               color: (data.custom_fields as any).cor_botoes,
+            } : undefined}
+          >
+            <a href={whatsappSecondaryLink} target="_blank" rel="noopener noreferrer" className="flex items-center justify-center gap-2">
+              <MessageCircle className="w-5 h-5 stroke-[2.5px]" />
+              <span className="text-[10px] tracking-widest font-black">Segundo WhatsApp</span>
             </a>
           </Button>
         )}

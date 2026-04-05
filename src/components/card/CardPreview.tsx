@@ -295,6 +295,12 @@ END:VCARD`;
     ? `https://wa.me/${formattedWhatsapp}?text=${encodeURIComponent(defaultMessage)}`
     : '#';
 
+  const cleanWhatsappSecondary = data.whatsapp_secondary?.replace(/\D/g, '') || '';
+  const formattedWhatsappSecondary = cleanWhatsappSecondary.startsWith('55') ? cleanWhatsappSecondary : `55${cleanWhatsappSecondary}`;
+  const whatsappSecondaryLink = cleanWhatsappSecondary
+    ? `https://wa.me/${formattedWhatsappSecondary}?text=${encodeURIComponent(data.whatsapp_secondary_message || defaultMessage)}`
+    : '#';
+
   const socialLinks = [
     { id: 'instagram', icon: Instagram, value: data.instagram, url: `https://instagram.com/${data.instagram}`, label: 'Instagram', trackType: 'click_instagram' as const },
     { id: 'linkedin', icon: Linkedin, value: data.linkedin, url: `https://linkedin.com/in/${data.linkedin}`, label: 'LinkedIn', trackType: 'click_linkedin' as const },
@@ -4050,6 +4056,32 @@ END:VCARD`;
                   </a>
                 </Button>
               </motion.div>
+
+              {data.whatsapp_secondary && (
+                <motion.div 
+                  whileHover={isPro ? { scale: 1.02, y: -2 } : {}} 
+                  whileTap={isPro ? { scale: 0.98 } : {}}
+                  className="w-full"
+                >
+                  <Button
+                    variant="outline"
+                    size="lg"
+                    className={cn(
+                      "w-full h-14 rounded-[1.2rem] font-black text-base transition-all flex items-center justify-center gap-3 border-2 transition-transform hover:scale-[1.02] active:scale-[0.98]",
+                      isPro 
+                        ? "bg-white/5 border-[#25D366]/40 text-[#25D366] hover:bg-[#25D366]/10"
+                        : "bg-white border-slate-200 text-slate-600 hover:bg-slate-50"
+                    )}
+                    asChild
+                    onClick={() => handleTrackClick('click_whatsapp_secondary' as any)}
+                  >
+                    <a href={whatsappSecondaryLink} target="_blank" rel="noopener noreferrer">
+                      <MessageCircle className="w-5 h-5 flex-shrink-0 stroke-[2.5px]" />
+                      <span className="font-black uppercase tracking-widest text-[11px]">Segundo WhatsApp</span>
+                    </a>
+                  </Button>
+                </motion.div>
+              )}
 
               {/* Social Navbar */}
               <div className="flex items-center justify-center gap-2 pt-1">
