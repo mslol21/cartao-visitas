@@ -715,7 +715,7 @@ export function EditorForm({ initialData, onSubmit, onChange, isPro = false, can
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div className="space-y-2">
                     <Label className="text-[#25D366] font-bold flex items-center gap-2">
-                      <MessageCircle className="w-4 h-4" /> WhatsApp (Obrigatório)
+                      <MessageCircle className="w-4 h-4" /> WhatsApp (Opcional)
                     </Label>
                     <Input
                       value={formData.whatsapp || ''}
@@ -934,6 +934,53 @@ export function EditorForm({ initialData, onSubmit, onChange, isPro = false, can
                                   </div>
                                ))}
                             </div>
+                         </div>
+                      </div>
+                    ) : professionConfig.id === 'vistoria_veicular' ? (
+                      <div className="md:col-span-2 space-y-8">
+                         <div className="space-y-4">
+                            <h4 className="text-[10px] font-black uppercase tracking-widest text-[#3b82f6]/50 border-b border-[#3b82f6]/10 pb-2 flex items-center gap-2">
+                               <ShieldCheck className="w-3 h-3" /> Configurações de Vistoria
+                            </h4>
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                               {professionConfig.customFields.filter(f => !['anos_atuacao'].includes(f.name)).map((field) => (
+                                  <div key={field.name} className="flex flex-col gap-1.5 p-3 rounded-2xl bg-white dark:bg-slate-900/40 border border-slate-200 dark:border-slate-800">
+                                     {field.type === 'boolean' ? (
+                                        <div className="flex items-center justify-between">
+                                           <Label className="text-sm font-bold opacity-80 cursor-pointer">{field.label}</Label>
+                                           <Switch 
+                                             checked={!!(formData.custom_fields as any)?.[field.name]}
+                                             onCheckedChange={(checked) => handleCustomFieldChange(field.name as keyof CustomFields, checked)}
+                                           />
+                                        </div>
+                                     ) : (
+                                        <>
+                                           <Label className="text-xs font-black uppercase tracking-widest opacity-40 mb-1">{field.label}</Label>
+                                           <Input
+                                             value={(formData.custom_fields as any)?.[field.name] || ''}
+                                             onChange={(e) => handleCustomFieldChange(field.name as keyof CustomFields, e.target.value)}
+                                             placeholder={field.placeholder}
+                                             className="rounded-xl h-10 text-sm"
+                                           />
+                                        </>
+                                     )}
+                                  </div>
+                               ))}
+                            </div>
+                         </div>
+                         <div className="space-y-4">
+                            <h4 className="text-[10px] font-black uppercase tracking-widest text-[#3b82f6]/50 border-b border-[#3b82f6]/10 pb-2">Experiência Profissional</h4>
+                            {professionConfig.customFields.filter(f => f.name === 'anos_atuacao').map((field) => (
+                               <div key={field.name} className="flex flex-col gap-1.5 p-3 rounded-2xl bg-white dark:bg-slate-900/40 border border-slate-200 dark:border-slate-800">
+                                  <Label className="text-xs font-black uppercase tracking-widest opacity-40 mb-1">{field.label}</Label>
+                                  <Input
+                                    value={(formData.custom_fields as any)?.[field.name] || ''}
+                                    onChange={(e) => handleCustomFieldChange(field.name as keyof CustomFields, e.target.value)}
+                                    placeholder={field.placeholder}
+                                    className="rounded-xl h-10 text-sm"
+                                  />
+                               </div>
+                            ))}
                          </div>
                       </div>
                     ) : (
