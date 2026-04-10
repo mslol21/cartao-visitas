@@ -138,6 +138,7 @@ export function CardPreview({
   const isPaid = isPaidUser(data as Profile) || forceProPreview;
   const isPro = isPaid;
   const isBarbearia = data.profession === 'barbearia' || data.category === 'barbearia';
+  const isEsteticaAutomotiva = data.profession === 'estetica_automotiva' || data.category === 'estetica_automotiva';
   const isBeauty = ['beauty', 'manicure', 'cabeleireiro'].includes(data.profession as string) || data.category === 'beauty';
   const isHealth = ['health', 'personal_trainer', 'psicologo'].includes(data.profession as string) || data.category === 'health';
   const isSales = data.profession === 'sales' || data.category === 'sales';
@@ -368,6 +369,11 @@ END:VCARD`;
       return "bg-[#0a0a0a] text-white border-yellow-700/30 shadow-[inset_0_0_150px_rgba(212,175,55,0.05),0_50px_100px_-20px_rgba(0,0,0,0.5)]";
     }
 
+    // ESTÉTICA AUTOMOTIVA - PREMIUM THEME
+    if (isEsteticaAutomotiva) {
+      return "bg-[#050508] text-white border-amber-500/20 shadow-[inset_0_0_150px_rgba(245,158,11,0.06),0_50px_100px_-20px_rgba(0,0,0,0.8)]";
+    }
+
     if (isAdvogado) {
       return "bg-[#0f172a] text-white border-slate-700/50 shadow-[inset_0_0_100px_rgba(30,41,59,0.5)]";
     }
@@ -506,6 +512,15 @@ END:VCARD`;
           cta: 'Ver Cardápio ☕',
           shape: 'polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%)'
         };
+      case 'estetica_automotiva':
+        return { 
+          gradient: 'linear-gradient(135deg, #111111 0%, #f59e0b 100%)', 
+          accent: '#f59e0b', 
+          label: 'Estética Automotiva Premium',
+          icon: Car,
+          cta: 'Solicitar Orçamento 🚘',
+          shape: 'polygon(0% 10%, 100% 0%, 100% 90%, 0% 100%)'
+        };
     }
     return null;
   };
@@ -525,7 +540,7 @@ END:VCARD`;
   };
 
   const frameConfig = getFrameConfig();
-  const premiumGradient = frameConfig?.gradient || (isPro ? `linear-gradient(135deg, ${data.theme_color || '#3b82f6'} 0%, #8b5cf6 100%)` : undefined);
+  const premiumGradient = frameConfig?.gradient || (isPro ? (isEsteticaAutomotiva ? 'linear-gradient(135deg, #f59e0b 0%, #b45309 100%)' : `linear-gradient(135deg, ${data.theme_color || '#3b82f6'} 0%, #8b5cf6 100%)`) : undefined);
 
   const getFieldIcon = (fieldName: string) => {
     const name = fieldName.toLowerCase();
@@ -687,7 +702,7 @@ END:VCARD`;
     if (!pixKey || !pixType) return null;
     
     // We reuse the dark mode logic
-    const isDark = isBarbearia || isTech || isAdvogado || isDriver || isMusico || (data.background_video_url);
+    const isDark = isBarbearia || isTech || isAdvogado || isDriver || isMusico || isEsteticaAutomotiva || (data.background_video_url);
 
     return (
       <div className="w-full space-y-4 mb-10 px-1">
@@ -728,7 +743,7 @@ END:VCARD`;
 
   const renderOriginalCustomPortfolio = () => {
     if (!isPro || customLinks.length === 0) return null;
-    const isDark = isBarbearia || isTech || isAdvogado || isDriver || (data.background_video_url);
+    const isDark = isBarbearia || isTech || isAdvogado || isDriver || isEsteticaAutomotiva || (data.background_video_url);
     return (
       <div id="custom-links-section" className="w-full space-y-4 mb-10 scroll-mt-24 px-1">
         <div className="flex items-center gap-3 mb-2">
@@ -772,7 +787,7 @@ END:VCARD`;
       ? portfolioImages 
       : (typeof portfolioImages === 'string' ? portfolioImages.split(/[,;]/).map(s => s.trim()).filter(Boolean) : []);
 
-    const isDark = isBarbearia || isTech || isAdvogado || isDriver || (data.background_video_url);
+    const isDark = isBarbearia || isTech || isAdvogado || isDriver || isEsteticaAutomotiva || (data.background_video_url);
 
     return (
       <div className="w-full space-y-4 mb-10 px-1">
@@ -882,6 +897,7 @@ END:VCARD`;
                     ((isPro || data.profession === 'esteticista') && (data.custom_fields as any)?.cor_fundo) ? "bg-transparent" :
                      isPro ? (
                        isBarbearia ? "bg-[#0f0f0f]" : 
+                       isEsteticaAutomotiva ? "bg-[#050505]" : 
                        isBeauty ? "bg-[#fdf2f8]" : 
                        isHealth ? "bg-[#f0fdf4]" : 
                        isSales ? "bg-[#f5f3ff]" : 
@@ -910,6 +926,15 @@ END:VCARD`;
                       <div className="absolute inset-0 opacity-30 shadow-[inset_0_0_100px_rgba(0,0,0,0.8)]" />
                       {/* Barber Pole Stripes (Animated) */}
                       <div className="absolute -left-20 top-0 bottom-0 w-40 opacity-5 pointer-events-none rotate-12 bg-gradient-to-r from-red-600 via-white to-blue-600 bg-[length:100%_40px] animate-[slide-down_5s_linear_infinite]" />
+                    </>
+                  ) : isEsteticaAutomotiva ? (
+                    <>
+                      <div className="absolute inset-0 bg-gradient-to-br from-[#121212] via-[#050505] to-[#000000]" />
+                      <div className="absolute inset-0 opacity-[0.03]" style={{
+                        backgroundImage: `linear-gradient(45deg, #444 25%, transparent 25%, transparent 75%, #444 75%, #444), linear-gradient(45deg, #444 25%, transparent 25%, transparent 75%, #444 75%, #444)`,
+                        backgroundSize: '16px 16px',
+                        backgroundPosition: '0 0, 8px 8px'
+                      }} />
                     </>
                   ) : isBeauty ? (
                     <>
