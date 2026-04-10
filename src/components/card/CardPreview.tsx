@@ -138,7 +138,7 @@ export function CardPreview({
   const isPaid = isPaidUser(data as Profile) || forceProPreview;
   const isPro = isPaid;
   const isBarbearia = data.profession === 'barbearia' || data.category === 'barbearia';
-  const isEsteticaAutomotiva = data.profession === 'estetica_automotiva' || data.category === 'estetica_automotiva';
+  const isEsteticaAutomotiva = ['estetica_automotiva', 'manutencao_automotiva', 'vistoria_veicular'].includes(data.profession as string) || ['estetica_automotiva', 'manutencao_automotiva', 'vistoria_veicular'].includes(data.category as string) || (data.subtitle || '').toLowerCase().includes('película') || (data.business_name || '').toLowerCase().includes('films');
   const isBeauty = ['beauty', 'manicure', 'cabeleireiro'].includes(data.profession as string) || data.category === 'beauty';
   const isHealth = ['health', 'personal_trainer', 'psicologo'].includes(data.profession as string) || data.category === 'health';
   const isSales = data.profession === 'sales' || data.category === 'sales';
@@ -4063,7 +4063,9 @@ END:VCARD`;
                     background: isPro 
                       ? (isBarbearia 
                           ? 'linear-gradient(135deg, #d4af37 0%, #a8872d 50%, #7c621d 100%)' 
-                          : 'linear-gradient(135deg, #00D4FF 0%, #2563EB 50%, #6D28D9 100%)')
+                          : isEsteticaAutomotiva 
+                            ? 'linear-gradient(135deg, #f59e0b 0%, #b45309 50%, #92400e 100%)'
+                            : 'linear-gradient(135deg, #00D4FF 0%, #2563EB 50%, #6D28D9 100%)')
                       : undefined,
                   }}
                   asChild
@@ -4249,7 +4251,7 @@ END:VCARD`;
                           <div className={cn(
                             "w-12 h-12 rounded-xl flex items-center justify-center shrink-0 transition-transform group-hover:rotate-6",
                             isPro 
-                              ? (isBarbearia ? "bg-yellow-500/10 text-yellow-500" : "bg-white/10 text-konnexy-cian") 
+                              ? (isBarbearia ? "bg-yellow-500/10 text-yellow-500" : isEsteticaAutomotiva ? "bg-amber-500/10 text-amber-500" : "bg-white/10 text-konnexy-cian") 
                               : "bg-slate-100 dark:bg-slate-800 text-primary"
                           )}>
                              <Icon className="w-6 h-6" />
@@ -4260,7 +4262,7 @@ END:VCARD`;
                                  {service.name}
                                </span>
                                {service.price && (
-                                 <span className={cn("text-[10px] font-black uppercase tracking-widest px-2 py-1 rounded-lg shrink-0 ml-2", isPro ? "bg-white/10 text-konnexy-cian" : "bg-slate-100 text-primary")}>
+                                 <span className={cn("text-[10px] font-black uppercase tracking-widest px-2 py-1 rounded-lg shrink-0 ml-2", isPro ? (isEsteticaAutomotiva ? "bg-amber-500/10 text-amber-500" : isBarbearia ? "bg-yellow-500/10 text-yellow-500" : "bg-white/10 text-konnexy-cian") : "bg-slate-100 text-primary")}>
                                    {service.price}
                                  </span>
                                )}
