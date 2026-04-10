@@ -4076,8 +4076,8 @@ END:VCARD`;
                     {/* Shine effect */}
                     <div className="absolute top-0 -inset-full h-full w-1/2 z-5 block transform -skew-x-12 bg-gradient-to-r from-transparent to-white/20 opacity-40 group-hover/btn:animate-shine" />
                     
-                    <MessageCircle className={cn("w-6 h-6 flex-shrink-0 z-10", isPro ? "fill-white" : "fill-white/80")} />
-                    <span className="font-black uppercase tracking-[0.05em] z-10">
+                    <MessageCircle className={cn("w-5 h-5 flex-shrink-0 z-10", isPro ? "fill-white" : "fill-white/80")} />
+                    <span className="font-black uppercase tracking-[0.05em] z-10 text-[13px] sm:text-base leading-tight truncate px-1 text-center w-full">
                        {isPro ? (data.cta_text || (isBarbearia ? 'Agendar Corte 💈' : (frameConfig?.cta || 'Falar no WhatsApp'))) : 'WhatsApp'}
                     </span>
                   </a>
@@ -4257,12 +4257,12 @@ END:VCARD`;
                              <Icon className="w-6 h-6" />
                           </div>
                           <div className="flex flex-col flex-1 gap-1">
-                            <div className="flex justify-between items-center w-full">
-                               <span className={cn("text-sm font-bold tracking-tight", isPro ? "text-white" : "text-slate-900 dark:text-white")}>
+                            <div className="flex items-start justify-between w-full gap-2 relative">
+                               <span className={cn("text-[13px] md:text-sm font-bold tracking-tight leading-tight w-full pr-2", isPro ? "text-white" : "text-slate-900 dark:text-white")}>
                                  {service.name}
                                </span>
                                {service.price && (
-                                 <span className={cn("text-[10px] font-black uppercase tracking-widest px-2 py-1 rounded-lg shrink-0 ml-2", isPro ? (isEsteticaAutomotiva ? "bg-amber-500/10 text-amber-500" : isBarbearia ? "bg-yellow-500/10 text-yellow-500" : "bg-white/10 text-konnexy-cian") : "bg-slate-100 text-primary")}>
+                                 <span className={cn("text-[9px] md:text-[10px] font-black uppercase tracking-widest px-2 py-1 rounded-lg shrink-0 whitespace-nowrap overflow-hidden text-ellipsis max-w-[130px] text-right", isPro ? (isEsteticaAutomotiva ? "bg-amber-500/10 text-amber-500" : isBarbearia ? "bg-yellow-500/10 text-yellow-500" : "bg-white/10 text-konnexy-cian") : "bg-slate-100 text-primary")}>
                                    {service.price}
                                  </span>
                                )}
