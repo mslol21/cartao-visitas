@@ -46,6 +46,7 @@ export type ProfessionCategory =
   | 'cafeteria'
   | 'manutencao_automotiva'
   | 'vistoria_veicular'
+  | 'estetica_automotiva'
   | 'default';
 
 export interface Service {

@@ -1042,6 +1042,30 @@ export const professionsMap: Record<ProfessionCategory, ProfessionConfig> = {
       { nome: 'Locação para Festas', descricao: 'Espaço reservado para aniversários, batizados e confraternizações.', preco: 'A partir de R$ 700' }
     ]
   },
+  estetica_automotiva: {
+    id: 'estetica_automotiva',
+    label: 'Películas & Estética Automotiva',
+    theme: { color: 'amber', style: 'glass' },
+    customFields: [
+      { name: 'leva_e_traz', label: 'Leva e Traz / Delivery?', type: 'boolean' },
+      { name: 'aceita_cartao', label: 'Aceita Cartão e Parcelamento?', type: 'boolean' },
+      { name: 'orcamento_gratis', label: 'Orçamento Gratuito?', type: 'boolean' },
+      { name: 'portfolio_images', label: 'Fotos dos Serviços / Portfólio (URLs)', type: 'array', placeholder: 'https://ex.com/carro1.jpg' }
+    ],
+    suggestedBackgrounds: [
+      'https://images.unsplash.com/photo-1600703136783-bea5bfc40028?auto=format&fit=crop&q=80&w=1080&h=1920',
+      'https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?auto=format&fit=crop&q=80&w=1080&h=1920',
+      'https://images.unsplash.com/photo-1619642751034-765dfdf7c58e?auto=format&fit=crop&q=80&w=1080&h=1920'
+    ],
+    defaultBio: 'Especialistas em elevar a exclusividade e a segurança do seu veículo. Trabalhamos exclusivamente com as melhores marcas mundiais de películas de controle solar e PPF (Paint Protection Film) com tecnologia Nano Cerâmica. O compromisso de entregar uma experiência de alto padrão com durabilidade extrema, conforto térmico e proteção.',
+    defaultCta: 'Solicitar Orçamento Premium ✨',
+    defaultServices: [
+      { nome: 'Instalação de PPF', descricao: 'Película transparente de auto-regeneração térmica. A melhor proteção contra riscos e pedras.', preco: 'Sob Avaliação' },
+      { nome: 'Película Nano Cerâmica', descricao: 'Alta rejeição de calor sem interferir na visibilidade e proteção UV.', preco: 'A partir de R$ 450' },
+      { nome: 'Película Anti-Vandalismo', descricao: 'Aumenta drasticamente a resistência do vidro contra impactos.', preco: 'A partir de R$ 600' },
+      { nome: 'Envelopamento Premium', descricao: 'Mudança de cor com vinil automotivo de alta performance.', preco: 'Sob consulta' }
+    ]
+  },
   default: {
     id: 'default',
     label: 'Outros Profissionais',
