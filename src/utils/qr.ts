@@ -9,7 +9,7 @@ export const getQRCodeConfig = (url: string, isPro: boolean = false, photoUrl?: 
     height: 1000,
     type: "svg" as DrawType,
     data: url,
-    image: isPro ? (photoUrl || "/logo-icon.svg") : undefined,
+    image: isPro ? (photoUrl || "/logo.png") : undefined,
     margin: 20,
     qrOptions: {
       typeNumber: 0 as TypeNumber,

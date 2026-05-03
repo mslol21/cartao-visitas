@@ -83,7 +83,7 @@ export default {
       },
       fontFamily: {
         sans: ["Inter", "sans-serif"],
-        display: ["Plus Jakarta Sans", "sans-serif"],
+        display: ["var(--font-poppins)", "sans-serif"],
         sora: ["Sora", "sans-serif"],
       },
       keyframes: {

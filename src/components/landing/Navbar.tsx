@@ -70,7 +70,7 @@ export function Navbar() {
                 <Button asChild variant="ghost" className="rounded-xl font-bold text-xs h-11">
                   <Link href="/login">Entrar</Link>
                 </Button>
-                <Button asChild variant="hero" className="rounded-2xl h-11 px-6 shadow-xl shadow-primary/10 transition-all">
+                <Button asChild className="rounded-2xl h-11 px-6 bg-gradient-to-r from-amber-500 to-orange-600 hover:from-amber-600 hover:to-orange-700 text-white font-bold shadow-xl shadow-amber-500/20 transition-all border-0">
                   <a href="https://wa.me/5516991551200?text=Ol%C3%A1%2C%20gostaria%20de%20me%20cadastrar" target="_blank" rel="noopener noreferrer">
                     Começar Grátis
                     <ArrowRight className="w-4 h-4 ml-2" />

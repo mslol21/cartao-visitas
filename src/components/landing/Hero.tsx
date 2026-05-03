@@ -7,13 +7,15 @@ import { motion } from 'framer-motion';
 
 export function Hero() {
   return (
-    <section className="relative min-h-screen flex items-center justify-center overflow-hidden pt-20 bg-[#020617]">
-      {/* Immersive Animated Background */}
-      <div className="absolute inset-0 overflow-hidden">
-        <div className="absolute top-0 right-0 w-[800px] h-[800px] bg-primary/20 rounded-full blur-[120px] mix-blend-screen animate-pulse" />
-        <div className="absolute bottom-0 left-0 w-[600px] h-[600px] bg-purple-600/20 rounded-full blur-[150px] mix-blend-screen" />
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[1000px] h-[1000px] bg-[radial-gradient(circle_at_center,rgba(59,130,246,0.15)_0,transparent_50%)]" />
-        <div className="absolute inset-0 bg-[url('/noise.png')] opacity-[0.03] mix-blend-overlay" />
+    <section className="relative min-h-screen flex items-center justify-center overflow-hidden pt-20 bg-[#0F172A]">
+      {/* Immersive Fixed Background */}
+      <div className="fixed inset-0 z-0">
+        <img 
+          src="/hero-bg.png" 
+          alt="Background" 
+          className="w-full h-full object-cover opacity-30 mix-blend-luminosity"
+        />
+        <div className="absolute inset-0 bg-[#0F172A]/80" />
       </div>
 
       <div className="container relative z-10 px-6 py-20">
@@ -23,11 +25,11 @@ export function Hero() {
           <motion.div
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
-            className="inline-flex items-center gap-2 px-6 py-2 rounded-full border border-white/10 bg-white/5 backdrop-blur-xl mb-6 shadow-2xl"
+            className="inline-flex items-center gap-2 px-6 py-2 rounded-full border border-amber-500/20 bg-amber-500/5 backdrop-blur-xl mb-6 shadow-2xl"
           >
-            <Sparkles className="w-4 h-4 text-yellow-500 animate-pulse" />
+            <Sparkles className="w-4 h-4 text-amber-500 animate-pulse" />
             <span className="text-sm font-bold text-white uppercase tracking-widest">O Futuro do Networking</span>
-            <span className="px-2 py-0.5 rounded-full bg-primary/20 text-primary text-[10px] font-black uppercase">2026</span>
+            <span className="px-2 py-0.5 rounded-full bg-amber-500/20 text-amber-400 text-[10px] font-black uppercase">2026</span>
           </motion.div>
 
           {/* Main Heading */}
@@ -39,7 +41,7 @@ export function Hero() {
               className="text-5xl sm:text-6xl md:text-8xl font-black tracking-tighter leading-[1.05] text-white"
             >
               Seu cartão digital <br className="hidden sm:block" />
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-primary to-purple-400">
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-400 via-orange-500 to-amber-600">
                 que fecha negócios
               </span>
             </motion.h1>
@@ -68,7 +70,7 @@ export function Hero() {
               { icon: ShieldCheck, label: "Não precisa baixar app" }
             ].map((benefit, i) => (
               <div key={i} className="flex items-center gap-3 px-5 py-3 rounded-2xl bg-white/5 border border-white/10 backdrop-blur-md">
-                 <div className="w-8 h-8 rounded-full bg-primary/20 flex items-center justify-center text-primary">
+                 <div className="w-8 h-8 rounded-full bg-amber-500/20 flex items-center justify-center text-amber-500">
                     <benefit.icon className="w-4 h-4" />
                  </div>
                  <span className="text-sm font-bold text-slate-200">{benefit.label}</span>
@@ -84,7 +86,7 @@ export function Hero() {
             className="flex flex-col items-center gap-6 mt-8"
           >
             <div className="relative group w-full sm:w-auto">
-              <div className="absolute -inset-1 bg-gradient-to-r from-primary to-purple-600 rounded-[2.5rem] blur opacity-60 group-hover:opacity-100 transition duration-500" />
+              <div className="absolute -inset-1 bg-gradient-to-r from-amber-500 to-orange-600 rounded-[2.5rem] blur opacity-60 group-hover:opacity-100 transition duration-500" />
               <Button asChild className="relative w-full sm:w-auto h-20 px-12 rounded-[2rem] bg-slate-950 hover:bg-slate-900 border border-white/10 text-white text-lg md:text-xl font-black uppercase tracking-widest transition-all">
                 <a href="https://wa.me/5516991551200?text=Ol%C3%A1%2C%20gostaria%20de%20me%20cadastrar" target="_blank" rel="noopener noreferrer" className="flex items-center justify-center gap-3">
                   Gerar Meu Link Grátis
@@ -101,7 +103,7 @@ export function Hero() {
       </div>
 
       {/* Fade out to next section */}
-      <div className="absolute bottom-0 left-0 w-full h-40 bg-gradient-to-t from-slate-950 to-transparent pointer-events-none" />
+      <div className="absolute bottom-0 left-0 w-full h-40 bg-gradient-to-t from-[#0F172A] to-transparent pointer-events-none" />
     </section>
   );
 }

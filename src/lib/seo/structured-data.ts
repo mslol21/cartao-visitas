@@ -4,7 +4,7 @@ export function generateOrganizationSchema() {
     '@type': 'Organization',
     name: 'Konnexy',
     url: 'https://konnexy.com.br',
-    logo: 'https://konnexy.com.br/logo-icon.svg',
+    logo: 'https://konnexy.com.br/logo.png',
     description: 'Plataforma de cartões de visitas digitais para autônomos e profissionais liberais',
     contactPoint: {
       '@type': 'ContactPoint',
@@ -65,7 +65,7 @@ export function generateWebPageSchema(pageData: {
       name: 'Konnexy',
       logo: {
         '@type': 'ImageObject',
-        url: 'https://konnexy.com.br/logo-icon.svg',
+        url: 'https://konnexy.com.br/logo.png',
       },
     },
   }

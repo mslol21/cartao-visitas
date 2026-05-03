@@ -51,7 +51,7 @@ export function AnimatedQR({
       height: size * 4,
       type: "svg" as DrawType,
       data: url,
-      image: active ? (photoUrl || "/logo-icon.svg") : undefined,
+      image: active ? (photoUrl || "/logo.png") : undefined,
       margin: 10,
       qrOptions: {
         typeNumber: 0 as TypeNumber,

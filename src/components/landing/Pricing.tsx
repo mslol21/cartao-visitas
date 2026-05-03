@@ -29,8 +29,8 @@ const plans = [
   {
     id: "founding",
     name: "Membro Fundador",
-    price: "R$50",
-    period: "pagamento único",
+    price: "Consultar",
+    period: "preço",
     description: "Acesso vitalício completo. Pague uma vez, use para sempre.",
     accent: "#ef4444",
     border: "#ef444440",
@@ -51,13 +51,13 @@ const plans = [
       "Todas as novidades futuras",
       "Suporte prioritário via WhatsApp",
     ],
-    href: "/login?upgrade=true",
+    href: "https://wa.me/5516991551200?text=Ol%C3%A1%2C%20tenho%20interesse%20no%20plano%20Membro%20Fundador",
   },
   {
     id: "pro",
     name: "PRO",
-    price: "R$29",
-    period: "por mês",
+    price: "Consultar",
+    period: "preço",
     description: "Para profissionais que querem se destacar e converter mais.",
     icon: <CrownIcon />,
     accent: "#f59e0b",
@@ -77,13 +77,13 @@ const plans = [
       "Banco de imagens Pixabay",
       "Suporte via WhatsApp",
     ],
-    href: "/login?upgrade=true",
+    href: "https://wa.me/5516991551200?text=Ol%C3%A1%2C%20tenho%20interesse%20no%20plano%20PRO",
   },
   {
     id: "business",
     name: "Business",
-    price: "R$49",
-    period: "por mês",
+    price: "Consultar",
+    period: "preço",
     description: "Para empresas e agências que precisam do máximo controle.",
     icon: <StarIcon />,
     accent: "#a78bfa",
@@ -97,7 +97,7 @@ const plans = [
       "Analytics avançado",
       "Suporte prioritário",
     ],
-    href: "/login?upgrade=true",
+    href: "https://wa.me/5516991551200?text=Ol%C3%A1%2C%20tenho%20interesse%20no%20plano%20Business",
   },
 ];
 
@@ -135,7 +135,7 @@ export function Pricing() {
           <div style={{ textAlign: "left" }}>
             <div style={{ fontSize: "12px", fontWeight: 700, color: "#ef4444", letterSpacing: "0.5px" }}>OFERTA DE LANÇAMENTO — VAGAS LIMITADAS</div>
             <div style={{ fontSize: "12px", color: "#ffffff55", marginTop: "2px" }}>
-              Apenas <strong style={{ color: "#fff" }}>{spotsLeft} vagas restantes</strong> de {FOUNDING_SPOTS} para acesso vitalício por R$50
+              Apenas <strong style={{ color: "#fff" }}>{spotsLeft} vagas restantes</strong> de {FOUNDING_SPOTS} para acesso vitalício exclusivo
             </div>
           </div>
         </div>
@@ -189,7 +189,7 @@ export function Pricing() {
                 </div>
 
                 <div style={{ display: "flex", alignItems: "baseline", gap: "6px", marginBottom: "6px" }}>
-                  <span style={{ fontSize: "40px", fontWeight: 800, letterSpacing: "-1.5px", color: "#fff" }}>{plan.price}</span>
+                  <span style={{ fontSize: "32px", fontWeight: 800, letterSpacing: "-1.5px", color: "#fff" }}>{plan.price}</span>
                   <span style={{ fontSize: "12px", color: "#ffffff30" }}>{plan.period}</span>
                 </div>
 
@@ -231,7 +231,7 @@ export function Pricing() {
 
               {plan.id === "founding" && (
                 <div style={{ marginTop: "18px", padding: "11px", background: "#ef44440a", borderRadius: "10px", border: "1px solid #ef444418", fontSize: "12px", color: "#ffffff45", textAlign: "center", lineHeight: 1.5 }}>
-                  ⚡ Após as 20 vagas, valor muda para <strong style={{ color: "#fff" }}>R$29/mês</strong>
+                  ⚡ Oferta exclusiva para os primeiros <strong style={{ color: "#fff" }}>20 membros</strong>
                 </div>
               )}
             </div>

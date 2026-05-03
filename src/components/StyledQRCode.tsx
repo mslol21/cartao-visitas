@@ -37,7 +37,7 @@ export const StyledQRCode: React.FC<StyledQRCodeProps> = ({ url, isPro = false, 
       height: 1000,
       type: "svg" as DrawType,
       data: url,
-      image: isPro ? (photoUrl || "/logo-icon.svg") : undefined,
+      image: isPro ? (photoUrl || "/logo.png") : undefined,
       margin: 20,
       qrOptions: {
         typeNumber: 0 as TypeNumber,
