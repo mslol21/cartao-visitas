@@ -106,8 +106,8 @@ export function KonnexyLanding() {
                 <div className="absolute inset-0 bg-gradient-to-b from-amber-600/10 to-slate-900 p-4 pt-10 flex flex-col gap-3">
                   {/* Mockup UI */}
                   <div className="bg-slate-800/80 rounded-xl p-3 flex items-center gap-3 border border-white/5">
-                    <div className="w-12 h-12 bg-amber-500 rounded-full flex items-center justify-center shrink-0">
-                      <Store className="text-white w-6 h-6" />
+                    <div className="w-12 h-12 bg-amber-500 rounded-full flex items-center justify-center shrink-0 overflow-hidden border-2 border-amber-400/50 shadow-lg shadow-amber-500/20">
+                      <img src="/logo.png" alt="Logo" className="w-full h-full object-contain p-1.5" />
                     </div>
                     <div>
                       <div className="font-bold text-white text-sm">KONNEXY</div>
@@ -178,7 +178,7 @@ export function KonnexyLanding() {
       </section>
 
       {/* 3. SOLUTION SECTION */}
-      <section className="py-24 relative z-10 bg-slate-900/40 backdrop-blur-sm">
+      <section className="py-24 relative z-10 bg-slate-950/90 backdrop-blur-md border-y border-white/5">
         <div className="container px-4 mx-auto max-w-6xl">
           <motion.div 
             className="text-center mb-16"
@@ -370,7 +370,7 @@ export function KonnexyLanding() {
       </section>
 
       {/* 7. DEMO SECTION */}
-      <section className="py-24 text-center">
+      <section className="py-24 text-center relative z-10 bg-slate-950/80 backdrop-blur-md border-y border-white/5">
         <div className="container px-4 mx-auto max-w-3xl">
           <h2 className="font-display text-3xl lg:text-4xl font-bold mb-8">
             Veja funcionando na prática
