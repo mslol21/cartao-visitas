@@ -71,9 +71,9 @@ export function Navbar() {
                   <Link href="/login">Entrar</Link>
                 </Button>
                 <Button asChild className="rounded-2xl h-11 px-6 bg-gradient-to-r from-amber-500 to-orange-600 hover:from-amber-600 hover:to-orange-700 text-white font-bold shadow-xl shadow-amber-500/20 transition-all border-0">
-                  <a href="https://wa.me/5516991551200?text=Ol%C3%A1%2C%20gostaria%20de%20me%20cadastrar" target="_blank" rel="noopener noreferrer">
-                    Começar Grátis
-                    <ArrowRight className="w-4 h-4 ml-2" />
+                  <a href="https://wa.me/5516991551200?text=Ol%C3%A1%2C%20quero%20vender%20mais%20com%20a%20Konnexy" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2">
+                    <Sparkles className="w-4 h-4 text-amber-300 animate-pulse" />
+                    Quero Vender Mais
                   </a>
                 </Button>
               </>
@@ -121,7 +121,7 @@ export function Navbar() {
                       <Link href="/login" onClick={() => setIsOpen(false)}>Entrar</Link>
                     </Button>
                     <Button asChild variant="hero" size="lg" className="rounded-2xl w-full">
-                      <a href="https://wa.me/5516991551200?text=Ol%C3%A1%2C%20gostaria%20de%20me%20cadastrar" target="_blank" rel="noopener noreferrer" onClick={() => setIsOpen(false)}>Começar Grátis</a>
+                      <a href="https://wa.me/5516991551200?text=Ol%C3%A1%2C%20quero%20vender%20mais%20com%20a%20Konnexy" target="_blank" rel="noopener noreferrer" onClick={() => setIsOpen(false)}>Quero Vender Mais</a>
                     </Button>
                   </>
                 )}
