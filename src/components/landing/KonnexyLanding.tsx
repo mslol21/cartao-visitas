@@ -19,6 +19,8 @@ import {
   Smartphone
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Navbar } from "./Navbar";
+import { Logo } from "../brand/Logo";
 
 const fadeIn = {
   hidden: { opacity: 0, y: 20 },
@@ -38,6 +40,7 @@ const staggerContainer = {
 export function KonnexyLanding() {
   return (
     <div className="min-h-screen bg-[#0F172A] text-slate-100 font-sans selection:bg-amber-500/30 overflow-x-hidden">
+      <Navbar />
       {/* Global Fixed Background */}
       <div className="fixed inset-0 z-0 pointer-events-none">
         <img 
@@ -100,10 +103,10 @@ export function KonnexyLanding() {
             >
               <div className="relative mx-auto w-[280px] h-[580px] bg-slate-900 rounded-[2.5rem] border-[8px] border-slate-800 shadow-2xl overflow-hidden ring-1 ring-white/10">
                 <div className="absolute top-0 inset-x-0 h-6 bg-slate-800 rounded-b-3xl w-40 mx-auto z-20"></div>
-                <div className="absolute inset-0 bg-gradient-to-b from-blue-600/10 to-slate-900 p-4 pt-10 flex flex-col gap-3">
+                <div className="absolute inset-0 bg-gradient-to-b from-amber-600/10 to-slate-900 p-4 pt-10 flex flex-col gap-3">
                   {/* Mockup UI */}
                   <div className="bg-slate-800/80 rounded-xl p-3 flex items-center gap-3 border border-white/5">
-                    <div className="w-12 h-12 bg-blue-500 rounded-full flex items-center justify-center shrink-0">
+                    <div className="w-12 h-12 bg-amber-500 rounded-full flex items-center justify-center shrink-0">
                       <Store className="text-white w-6 h-6" />
                     </div>
                     <div>
@@ -117,7 +120,7 @@ export function KonnexyLanding() {
                         <div className="w-16 h-16 bg-slate-700 rounded-md shrink-0"></div>
                         <div className="flex-1">
                           <div className="h-3 w-3/4 bg-slate-700 rounded mb-2"></div>
-                          <div className="h-3 w-1/2 bg-blue-500/50 rounded"></div>
+                          <div className="h-3 w-1/2 bg-amber-500/50 rounded"></div>
                         </div>
                       </div>
                     ))}
@@ -130,14 +133,14 @@ export function KonnexyLanding() {
                 </div>
               </div>
               {/* Decorative elements behind phone */}
-              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[120%] h-[120%] bg-blue-500/20 blur-[100px] -z-10 rounded-full"></div>
+              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[120%] h-[120%] bg-amber-500/10 blur-[100px] -z-10 rounded-full"></div>
             </motion.div>
           </div>
         </div>
       </section>
 
       {/* 2. PROBLEM SECTION */}
-      <section className="py-24 bg-slate-900/50 border-y border-white/5">
+      <section className="py-24 bg-slate-950/80 backdrop-blur-md border-y border-white/5 relative z-10">
         <div className="container px-4 mx-auto max-w-5xl text-center">
           <motion.div
             initial="hidden"
@@ -175,7 +178,7 @@ export function KonnexyLanding() {
       </section>
 
       {/* 3. SOLUTION SECTION */}
-      <section className="py-24 relative">
+      <section className="py-24 relative z-10 bg-slate-900/40 backdrop-blur-sm">
         <div className="container px-4 mx-auto max-w-6xl">
           <motion.div 
             className="text-center mb-16"
@@ -222,7 +225,7 @@ export function KonnexyLanding() {
       </section>
 
       {/* 4. PLATFORM SECTION */}
-      <section className="py-24 bg-slate-900/50 border-y border-white/5">
+      <section className="py-24 bg-slate-950/90 backdrop-blur-md border-y border-white/5 relative z-10">
         <div className="container px-4 mx-auto max-w-6xl">
           <div className="text-center mb-16">
             <h2 className="font-display text-3xl lg:text-4xl font-bold mb-6">
@@ -347,7 +350,7 @@ export function KonnexyLanding() {
       </section>
 
       {/* 6. BENEFITS */}
-      <section className="py-20 bg-blue-900/20 border-y border-blue-500/20">
+      <section className="py-20 bg-amber-950/30 backdrop-blur-sm border-y border-amber-500/20 relative z-10">
         <div className="container px-4 mx-auto max-w-6xl">
           <div className="flex flex-wrap justify-center gap-4 lg:gap-8">
             {[
@@ -384,7 +387,7 @@ export function KonnexyLanding() {
       </section>
 
       {/* 8. SOCIAL PROOF */}
-      <section className="py-24 bg-slate-900/50 border-y border-white/5">
+      <section className="py-24 bg-slate-950/80 backdrop-blur-md border-y border-white/5 relative z-10">
         <div className="container px-4 mx-auto max-w-5xl">
           <div className="grid md:grid-cols-2 gap-8">
             <motion.div 
@@ -485,7 +488,7 @@ export function KonnexyLanding() {
       </section>
 
       {/* 10. FINAL CTA */}
-      <section className="py-24 bg-gradient-to-b from-slate-900 to-blue-900/40 relative overflow-hidden">
+      <section className="py-24 bg-gradient-to-b from-slate-950 to-amber-950/50 relative overflow-hidden z-10">
         {/* Floating WhatsApp button extra style context */}
         <div className="absolute inset-0 bg-[url('/noise.png')] opacity-20 mix-blend-overlay"></div>
         <div className="container px-4 mx-auto max-w-4xl text-center relative z-10">
