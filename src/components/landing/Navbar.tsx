@@ -35,7 +35,7 @@ export function Navbar() {
     >
       <div className={cn(
         "max-w-7xl mx-auto rounded-[2rem] transition-all duration-500",
-        scrolled ? "glass shadow-2xl px-6 h-16" : "px-0 h-20"
+        scrolled ? "bg-slate-950/95 backdrop-blur-xl shadow-2xl px-6 h-16 border-b border-white/5" : "px-0 h-20"
       )}>
         <div className="flex items-center justify-between h-full">
           {/* Brand */}

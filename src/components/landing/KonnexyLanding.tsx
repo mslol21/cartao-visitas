@@ -207,7 +207,7 @@ export function KonnexyLanding() {
             ].map((item, i) => (
               <motion.div 
                 key={i}
-                className="relative z-10 bg-slate-800 p-6 rounded-2xl border border-white/10 text-center shadow-xl"
+                className="relative z-10 bg-slate-900 p-6 rounded-2xl border border-white/10 text-center shadow-xl backdrop-blur-md"
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
@@ -238,7 +238,7 @@ export function KonnexyLanding() {
 
           <div className="grid md:grid-cols-3 gap-8">
             <motion.div 
-              className="bg-gradient-to-b from-slate-800 to-slate-800/50 p-8 rounded-3xl border border-white/10 hover:border-blue-500/50 transition-colors"
+              className="bg-slate-900 p-8 rounded-3xl border border-white/10 hover:border-blue-500/50 transition-colors shadow-2xl"
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
@@ -264,7 +264,7 @@ export function KonnexyLanding() {
             </motion.div>
 
             <motion.div 
-              className="bg-gradient-to-b from-slate-800 to-slate-800/50 p-8 rounded-3xl border border-white/10 hover:border-green-500/50 transition-colors"
+              className="bg-slate-900 p-8 rounded-3xl border border-white/10 hover:border-green-500/50 transition-colors shadow-2xl"
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
@@ -291,7 +291,7 @@ export function KonnexyLanding() {
             </motion.div>
 
             <motion.div 
-              className="bg-gradient-to-b from-slate-800 to-slate-800/50 p-8 rounded-3xl border border-white/10 hover:border-purple-500/50 transition-colors"
+              className="bg-slate-900 p-8 rounded-3xl border border-white/10 hover:border-purple-500/50 transition-colors shadow-2xl"
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
@@ -321,7 +321,7 @@ export function KonnexyLanding() {
       </section>
 
       {/* 5. USE CASE SECTION */}
-      <section className="py-24">
+      <section className="py-24 bg-slate-950/90 backdrop-blur-md relative z-10 border-y border-white/5">
         <div className="container px-4 mx-auto max-w-5xl">
           <h2 className="font-display text-3xl lg:text-4xl font-bold text-center mb-12">
             Funciona para diferentes tipos de negócio
@@ -431,14 +431,14 @@ export function KonnexyLanding() {
       </section>
 
       {/* 9. PRICING / OFFER */}
-      <section className="py-24">
+      <section className="py-24 bg-slate-950/80 backdrop-blur-md relative z-10 border-y border-white/5">
         <div className="container px-4 mx-auto max-w-4xl text-center">
           <h2 className="font-display text-3xl lg:text-4xl font-bold mb-4">
             Simples, rápido e acessível
           </h2>
           <p className="text-xl text-slate-400 mb-12">Planos que cabem no bolso do pequeno negócio.</p>
           
-          <div className="max-w-md mx-auto bg-slate-800 rounded-3xl border-2 border-amber-500 overflow-hidden shadow-2xl shadow-amber-500/20">
+          <div className="max-w-md mx-auto bg-slate-900 rounded-3xl border-2 border-amber-500 overflow-hidden shadow-2xl shadow-amber-500/20 relative z-10 backdrop-blur-md">
             <div className="bg-gradient-to-r from-amber-500 to-orange-600 py-4">
               <h3 className="text-xl font-bold text-white">Plano Essencial</h3>
             </div>
@@ -475,7 +475,7 @@ export function KonnexyLanding() {
             </div>
           </div>
           
-          <div className="mt-12 p-6 bg-slate-800/50 rounded-2xl border border-white/5 inline-block text-left max-w-lg">
+          <div className="mt-12 p-6 bg-slate-900 rounded-2xl border border-white/10 inline-block text-left max-w-lg relative z-10 shadow-xl">
             <h4 className="font-bold text-lg mb-2 flex items-center gap-2">
               <span className="text-blue-400">💡</span> Quer tudo integrado?
             </h4>
