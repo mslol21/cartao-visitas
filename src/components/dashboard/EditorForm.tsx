@@ -1714,9 +1714,8 @@ export function EditorForm({ initialData, onSubmit, onChange, isPro = false, can
             <div className="space-y-4">
               <div className="flex items-center justify-between">
                 <Label className="flex items-center gap-2 font-black uppercase tracking-widest text-[10px]"><ImageIcon className="w-4 h-4 text-primary" /> Fundo Personalizado</Label>
-                {!isPro && <span className="text-[10px] bg-primary/10 text-primary px-2 py-1 rounded-full font-black">PRO</span>}
               </div>
-              <div className={cn("space-y-3", (!isPro && formData.profession !== 'barbearia' && formData.profession !== 'area_lazer' && formData.profession !== 'streetup') && "opacity-40 pointer-events-none")}>
+              <div className="space-y-3">
                 <input
                   type="file"
                   ref={videoInputRef}
@@ -1792,7 +1791,7 @@ export function EditorForm({ initialData, onSubmit, onChange, isPro = false, can
                 </p>
 
                 {/* --- SEARCH & SUGGESTED GALLERY --- */}
-                {(isPro || formData.profession === 'barbearia') && (
+                {true && (
                   <div className="mt-8 space-y-6 animate-in fade-in slide-in-from-bottom-4">
                     {/* Pixabay Search Bar */}
                     <div className="space-y-3">
