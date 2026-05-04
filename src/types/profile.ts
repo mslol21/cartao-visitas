@@ -47,6 +47,7 @@ export type ProfessionCategory =
   | 'manutencao_automotiva'
   | 'vistoria_veicular'
   | 'estetica_automotiva'
+  | 'streetup'
   | 'default';
 
 export interface Service {

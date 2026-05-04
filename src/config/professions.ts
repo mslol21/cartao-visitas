@@ -1066,6 +1066,27 @@ export const professionsMap: Record<ProfessionCategory, ProfessionConfig> = {
       { nome: 'Envelopamento Premium', descricao: 'Mudança de cor com vinil automotivo de alta performance.', preco: 'Sob consulta' }
     ]
   },
+  streetup: {
+    id: 'streetup',
+    label: 'Motorista / App de Mobilidade',
+    theme: { color: 'amber', style: 'glass' },
+    customFields: [
+      { name: 'aceita_cartao', label: 'Aceita Cartão?', type: 'boolean' },
+      { name: 'carro_executivo', label: 'Carro Executivo?', type: 'boolean' },
+      { name: 'atende_viagens', label: 'Atende Viagens Longas?', type: 'boolean' }
+    ],
+    suggestedBackgrounds: [
+      'https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?auto=format&fit=crop&q=80&w=1080&h=1920',
+      'https://images.unsplash.com/photo-1449965408869-eaa3f722e40d?auto=format&fit=crop&q=80&w=1080&h=1920'
+    ],
+    defaultBio: 'Motorista particular oferecendo conforto, segurança e pontualidade em todas as suas corridas. Veículo higienizado, ar condicionado e direção cautelosa para garantir a melhor experiência de transporte.',
+    defaultCta: 'Solicitar Corrida 🚗',
+    defaultServices: [
+      { nome: 'Corrida Local', descricao: 'Transporte seguro e rápido pela cidade.', preco: 'A partir de R$ 15' },
+      { nome: 'Viagens Intermunicipais', descricao: 'Viagens com conforto e segurança para outras cidades.', preco: 'Sob consulta' },
+      { nome: 'Motorista Particular Diária', descricao: 'Diária completa para viagens a negócios ou lazer.', preco: 'Sob consulta' }
+    ]
+  },
   default: {
     id: 'default',
     label: 'Outros Profissionais',
