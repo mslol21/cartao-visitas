@@ -4060,13 +4060,14 @@ END:VCARD`;
                       : "bg-slate-900 hover:bg-slate-800 text-white shadow-none"
                   )}
                   style={{ 
-                    background: isPro 
+                    background: (data.custom_fields as any)?.cor_botoes || (isPro 
                       ? (isBarbearia 
                           ? 'linear-gradient(135deg, #d4af37 0%, #a8872d 50%, #7c621d 100%)' 
                           : isEsteticaAutomotiva 
                             ? 'linear-gradient(135deg, #f59e0b 0%, #b45309 50%, #92400e 100%)'
                             : 'linear-gradient(135deg, #00D4FF 0%, #2563EB 50%, #6D28D9 100%)')
-                      : undefined,
+                      : undefined),
+                    color: (data.custom_fields as any)?.cor_texto_botoes || undefined,
                   }}
                   asChild
                   aria-label={isPro ? 'Falar Agora via WhatsApp' : 'Conversar via WhatsApp'}
@@ -4244,10 +4245,17 @@ END:VCARD`;
                          whileHover={isPro ? { x: 8, scale: 1.01 } : {}}
                          className={cn(
                            "group flex items-center gap-5 p-4 rounded-[1.2rem] transition-all cursor-pointer",
-                           isPro 
-                             ? "glass-premium hover:bg-white/20" 
-                             : "bg-white dark:bg-slate-900 border border-slate-100 dark:border-white/5"
-                         )}>
+                           !((data.custom_fields as any)?.cor_servicos_fundo) && (
+                             isPro 
+                               ? "glass-premium hover:bg-white/20" 
+                               : "bg-white dark:bg-slate-900 border border-slate-100 dark:border-white/5"
+                           )
+                         )}
+                         style={((data.custom_fields as any)?.cor_servicos_fundo) ? {
+                            backgroundColor: (data.custom_fields as any).cor_servicos_fundo,
+                            borderColor: (data.custom_fields as any).cor_servicos_fundo + '40'
+                         } : undefined}
+                       >
                           <div className={cn(
                             "w-12 h-12 rounded-xl flex items-center justify-center shrink-0 transition-transform group-hover:rotate-6",
                             isPro 
@@ -4258,7 +4266,10 @@ END:VCARD`;
                           </div>
                           <div className="flex flex-col flex-1 gap-1">
                             <div className="flex items-start justify-between w-full gap-2 relative">
-                               <span className={cn("text-[13px] md:text-sm font-bold tracking-tight leading-tight w-full pr-2", isPro ? "text-white" : "text-slate-900 dark:text-white")}>
+                               <span 
+                                 className={cn("text-[13px] md:text-sm font-bold tracking-tight leading-tight w-full pr-2", !((data.custom_fields as any)?.cor_servicos_texto) && (isPro ? "text-white" : "text-slate-900 dark:text-white"))}
+                                 style={(data.custom_fields as any)?.cor_servicos_texto ? { color: (data.custom_fields as any).cor_servicos_texto } : undefined}
+                               >
                                  {service.name}
                                </span>
                                {service.price && (
@@ -4268,7 +4279,10 @@ END:VCARD`;
                                )}
                             </div>
                             {service.description && (
-                              <p className={cn("text-[11px] leading-tight opacity-60 line-clamp-2", isPro ? "text-white/80" : "text-slate-500")}>
+                              <p 
+                                className={cn("text-[11px] leading-tight opacity-60 line-clamp-2", !((data.custom_fields as any)?.cor_servicos_texto) && (isPro ? "text-white/80" : "text-slate-500"))}
+                                style={(data.custom_fields as any)?.cor_servicos_texto ? { color: (data.custom_fields as any).cor_servicos_texto } : undefined}
+                              >
                                 {service.description}
                               </p>
                             )}
