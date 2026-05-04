@@ -1068,23 +1068,30 @@ export const professionsMap: Record<ProfessionCategory, ProfessionConfig> = {
   },
   streetup: {
     id: 'streetup',
-    label: 'Brindes Personalizados',
-    theme: { color: 'violet', style: 'glass' },
+    label: 'Brindes & Presentes Corporativos',
+    theme: { color: 'zinc', style: 'minimalist' },
     customFields: [
-      { name: 'aceita_encomendas', label: 'Aceita Encomendas?', type: 'boolean' },
       { name: 'venda_atacado', label: 'Vende no Atacado?', type: 'boolean' },
-      { name: 'personalizacao_empresa', label: 'Personalização para Empresas?', type: 'boolean' }
+      { name: 'personalizacao_empresa', label: 'Personalização para Empresas?', type: 'boolean' },
+      { name: 'gravacao_laser', label: 'Gravação a Laser?', type: 'boolean' },
+      { name: 'brindes_ecologicos', label: 'Linha Ecológica / Sustentável?', type: 'boolean' },
+      { name: 'kit_onboarding', label: 'Kits de Boas-Vindas (Onboarding)?', type: 'boolean' },
+      { name: 'catalogo_pdf', label: 'Link do Catálogo (PDF/Drive)', type: 'text', placeholder: 'https://link-do-catalogo.com' },
+      { name: 'portfolio_images', label: 'Fotos dos Produtos (URLs separadas por vírgula)', type: 'array', placeholder: 'https://ex.com/brinde1.jpg' }
     ],
     suggestedBackgrounds: [
-      'https://images.unsplash.com/photo-1513519245088-0e12902e5a38?auto=format&fit=crop&q=80&w=1080&h=1920',
-      'https://images.unsplash.com/photo-1549465220-1a8b9238cd48?auto=format&fit=crop&q=80&w=1080&h=1920'
+      'https://images.unsplash.com/photo-1607344645866-009c320b63e0?auto=format&fit=crop&q=80&w=1080&h=1920',
+      'https://images.unsplash.com/photo-1513201099705-a9746e1e201f?auto=format&fit=crop&q=80&w=1080&h=1920',
+      'https://images.unsplash.com/photo-1549465220-1a8b9238cd48?auto=format&fit=crop&q=80&w=1080&h=1920',
+      'https://images.unsplash.com/photo-1511068797325-6083f0f872b1?auto=format&fit=crop&q=80&w=1080&h=1920'
     ],
-    defaultBio: 'Especialistas em brindes personalizados para empresas, eventos e presentes inesquecíveis. Produtos de alta qualidade com personalização exclusiva para destacar a sua marca ou eternizar momentos especiais.',
-    defaultCta: 'Fazer Orçamento 🎁',
+    defaultBio: 'Soluções completas em brindes corporativos e presentes personalizados de alto padrão. Fortaleça a identidade da sua marca, encante seus clientes e valorize sua equipe com produtos exclusivos, design sofisticado e acabamento impecável.',
+    defaultCta: 'Solicitar Orçamento 🎁',
     defaultServices: [
-      { nome: 'Kits Corporativos', descricao: 'Brindes personalizados com a logo da sua empresa para clientes e colaboradores.', preco: 'Sob Consulta' },
-      { nome: 'Presentes Exclusivos', descricao: 'Itens únicos e personalizados para datas comemorativas e eventos.', preco: 'A partir de R$ 35' },
-      { nome: 'Copos e Canecas', descricao: 'Copos térmicos, taças e canecas personalizadas a laser ou sublimação.', preco: 'A partir de R$ 25' }
+      { nome: 'Kits Corporativos / Onboarding', descricao: 'Caixas personalizadas de boas-vindas para novos colaboradores com a identidade da empresa.', preco: 'Sob Consulta' },
+      { nome: 'Presentes Executivos', descricao: 'Itens de luxo como canetas crown, cadernos moleskine e kits vinho gravados a laser.', preco: 'A partir de R$ 85' },
+      { nome: 'Copos e Garrafas Térmicas', descricao: 'Personalização a laser em copos Stanley, garrafas inox e squeezes para o dia a dia.', preco: 'A partir de R$ 45' },
+      { nome: 'Brindes Promocionais', descricao: 'Chaveiros, ecobags, canetas e pendrives em grandes quantidades para eventos e feiras.', preco: 'Consulte Atacado' }
     ]
   },
   default: {

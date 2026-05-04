@@ -277,6 +277,14 @@ export interface CustomFields {
   vistoria_cautelar?: boolean;
   vistoria_transferencia?: boolean;
   anos_atuacao?: string;
+
+  // Brindes / Presentes
+  venda_atacado?: boolean;
+  personalizacao_empresa?: boolean;
+  gravacao_laser?: boolean;
+  brindes_ecologicos?: boolean;
+  kit_onboarding?: boolean;
+  catalogo_pdf?: string;
 }
 
 // Keeping old items for backwards compatibility during migration
