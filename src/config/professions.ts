@@ -1068,23 +1068,23 @@ export const professionsMap: Record<ProfessionCategory, ProfessionConfig> = {
   },
   streetup: {
     id: 'streetup',
-    label: 'Motorista / App de Mobilidade',
-    theme: { color: 'amber', style: 'glass' },
+    label: 'Brindes Personalizados',
+    theme: { color: 'violet', style: 'glass' },
     customFields: [
-      { name: 'aceita_cartao', label: 'Aceita Cartão?', type: 'boolean' },
-      { name: 'carro_executivo', label: 'Carro Executivo?', type: 'boolean' },
-      { name: 'atende_viagens', label: 'Atende Viagens Longas?', type: 'boolean' }
+      { name: 'aceita_encomendas', label: 'Aceita Encomendas?', type: 'boolean' },
+      { name: 'venda_atacado', label: 'Vende no Atacado?', type: 'boolean' },
+      { name: 'personalizacao_empresa', label: 'Personalização para Empresas?', type: 'boolean' }
     ],
     suggestedBackgrounds: [
-      'https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?auto=format&fit=crop&q=80&w=1080&h=1920',
-      'https://images.unsplash.com/photo-1449965408869-eaa3f722e40d?auto=format&fit=crop&q=80&w=1080&h=1920'
+      'https://images.unsplash.com/photo-1513519245088-0e12902e5a38?auto=format&fit=crop&q=80&w=1080&h=1920',
+      'https://images.unsplash.com/photo-1549465220-1a8b9238cd48?auto=format&fit=crop&q=80&w=1080&h=1920'
     ],
-    defaultBio: 'Motorista particular oferecendo conforto, segurança e pontualidade em todas as suas corridas. Veículo higienizado, ar condicionado e direção cautelosa para garantir a melhor experiência de transporte.',
-    defaultCta: 'Solicitar Corrida 🚗',
+    defaultBio: 'Especialistas em brindes personalizados para empresas, eventos e presentes inesquecíveis. Produtos de alta qualidade com personalização exclusiva para destacar a sua marca ou eternizar momentos especiais.',
+    defaultCta: 'Fazer Orçamento 🎁',
     defaultServices: [
-      { nome: 'Corrida Local', descricao: 'Transporte seguro e rápido pela cidade.', preco: 'A partir de R$ 15' },
-      { nome: 'Viagens Intermunicipais', descricao: 'Viagens com conforto e segurança para outras cidades.', preco: 'Sob consulta' },
-      { nome: 'Motorista Particular Diária', descricao: 'Diária completa para viagens a negócios ou lazer.', preco: 'Sob consulta' }
+      { nome: 'Kits Corporativos', descricao: 'Brindes personalizados com a logo da sua empresa para clientes e colaboradores.', preco: 'Sob Consulta' },
+      { nome: 'Presentes Exclusivos', descricao: 'Itens únicos e personalizados para datas comemorativas e eventos.', preco: 'A partir de R$ 35' },
+      { nome: 'Copos e Canecas', descricao: 'Copos térmicos, taças e canecas personalizadas a laser ou sublimação.', preco: 'A partir de R$ 25' }
     ]
   },
   default: {
