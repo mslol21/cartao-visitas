@@ -1409,7 +1409,7 @@ export function EditorForm({ initialData, onSubmit, onChange, isPro = false, can
               </div>
             </div>
 
-            {(isPro || formData.profession === 'esteticista' || formData.profession === 'artesao') && (
+            {(isPro || formData.profession === 'esteticista' || formData.profession === 'artesao' || formData.profession === 'streetup') && (
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4 p-4 rounded-3xl bg-slate-50 dark:bg-slate-900/50 border border-slate-200 dark:border-slate-800">
                 <div className="space-y-2">
                   <Label className="text-xs font-bold uppercase tracking-wider opacity-60">Cor do Fundo</Label>
@@ -1510,7 +1510,7 @@ export function EditorForm({ initialData, onSubmit, onChange, isPro = false, can
               </div>
             )}
 
-            {(isPro || formData.profession === 'esteticista' || formData.profession === 'artesao') && (
+            {(isPro || formData.profession === 'esteticista' || formData.profession === 'artesao' || formData.profession === 'streetup') && (
               <div className="mt-4 p-4 rounded-3xl bg-slate-50 dark:bg-slate-900/50 border border-slate-200 dark:border-slate-800 space-y-4">
                 <div className="flex items-center gap-2 mb-1">
                   <div className="p-2 bg-primary/10 rounded-lg">
@@ -1694,7 +1694,7 @@ export function EditorForm({ initialData, onSubmit, onChange, isPro = false, can
                 {!isPro && <span className="text-[10px] bg-primary/10 text-primary px-2 py-1 rounded-full font-black">PRO</span>}
               </div>
               
-              <div className={cn("grid grid-cols-2 gap-3", (!isPro && formData.profession !== 'barbearia' && (formData.category === 'barbearia' && !canCustomizeTheme)) && "opacity-40 pointer-events-none")}>
+              <div className={cn("grid grid-cols-2 gap-3", (!isPro && formData.profession !== 'barbearia' && formData.profession !== 'streetup' && (formData.category === 'barbearia' && !canCustomizeTheme)) && "opacity-40 pointer-events-none")}>
                 {['Inter', 'Outfit', 'Playfair Display', 'Sora', 'Plus Jakarta Sans', 'Bento'].map((font) => (
                   <button
                     key={font}
@@ -1716,7 +1716,7 @@ export function EditorForm({ initialData, onSubmit, onChange, isPro = false, can
                 <Label className="flex items-center gap-2 font-black uppercase tracking-widest text-[10px]"><ImageIcon className="w-4 h-4 text-primary" /> Fundo Personalizado</Label>
                 {!isPro && <span className="text-[10px] bg-primary/10 text-primary px-2 py-1 rounded-full font-black">PRO</span>}
               </div>
-              <div className={cn("space-y-3", (!isPro && formData.profession !== 'barbearia' && formData.profession !== 'area_lazer') && "opacity-40 pointer-events-none")}>
+              <div className={cn("space-y-3", (!isPro && formData.profession !== 'barbearia' && formData.profession !== 'area_lazer' && formData.profession !== 'streetup') && "opacity-40 pointer-events-none")}>
                 <input
                   type="file"
                   ref={videoInputRef}

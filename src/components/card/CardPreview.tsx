@@ -884,7 +884,7 @@ END:VCARD`;
           )}
           style={{ 
             '--primary': isPro ? hexToHsl(data.theme_color || '#3b82f6') : undefined,
-            ...((isPro || data.profession === 'esteticista') && (data.custom_fields as any)?.cor_fundo ? { backgroundColor: (data.custom_fields as any).cor_fundo } : {})
+            ...((isPro || data.profession === 'esteticista' || data.profession === 'artesao' || data.profession === 'streetup') && (data.custom_fields as any)?.cor_fundo ? { backgroundColor: (data.custom_fields as any).cor_fundo } : {})
           } as React.CSSProperties}
         >
           <div 
@@ -894,7 +894,7 @@ END:VCARD`;
                  className={cn(
                     "w-full h-full transition-colors duration-500 relative overflow-hidden",
                     (data.background_video_url) ? "hidden" : "",
-                    ((isPro || data.profession === 'esteticista') && (data.custom_fields as any)?.cor_fundo) ? "bg-transparent" :
+                    ((isPro || data.profession === 'esteticista' || data.profession === 'artesao' || data.profession === 'streetup') && (data.custom_fields as any)?.cor_fundo) ? "bg-transparent" :
                      isPro ? (
                        isBarbearia ? "bg-[#0f0f0f]" : 
                        isEsteticaAutomotiva ? "bg-[#050505]" : 
@@ -1088,7 +1088,7 @@ END:VCARD`;
                       background: 'linear-gradient(to bottom, rgba(11,26,43,0.5), rgba(11,26,43,0.95))'
                     }}
                   />
-                  {!isMusico && !((isPro || data.profession === 'esteticista') && (data.custom_fields as any)?.cor_fundo) && (
+                  {!isMusico && !((isPro || data.profession === 'esteticista' || data.profession === 'artesao' || data.profession === 'streetup') && (data.custom_fields as any)?.cor_fundo) && (
                     <div className="absolute inset-0 bg-gradient-to-b from-slate-950/20 via-slate-950/60 to-slate-950" />
                   )}
                 </div>
