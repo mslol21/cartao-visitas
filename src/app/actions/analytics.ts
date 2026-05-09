@@ -54,7 +54,30 @@ export async function getProfileAnalytics(profileId: string): Promise<AnalyticsD
   }
 
   try {
+    const supabase = await createClient();
+    const { data: { user: authUser } } = await supabase.auth.getUser();
+
+    if (!authUser) {
+      console.error('❌ getProfileAnalytics: Unauthorized access');
+      return emptyResult;
+    }
+
     const admin = createAdminClient();
+
+    // 1. Verificar se o usuário é dono do perfil ou admin
+    const { data: requesterProfile } = await admin
+      .from('profiles')
+      .select('id, role')
+      .eq('user_id', authUser.id)
+      .single();
+
+    const isOwner = requesterProfile?.id === profileId;
+    const isAdmin = requesterProfile?.role === 'admin';
+
+    if (!isOwner && !isAdmin) {
+      console.warn(`⚠️ Unauthorized analytics request from ${authUser.id} for profile ${profileId}`);
+      return emptyResult;
+    }
 
     // 1. Fetch ALL events for this profile to ensure we don't miss anything
     // We fetch everything and process in JS for better debugging/flexibility
