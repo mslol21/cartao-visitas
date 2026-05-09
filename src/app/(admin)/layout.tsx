@@ -32,12 +32,10 @@ export default async function AdminLayout({
 
   // 2. Validar o token de forma explícita com o servidor Supabase
   let currentUser = null;
-  let getUserError = null;
 
   if (accessToken) {
-    const { data: { user }, error } = await supabase.auth.getUser(accessToken);
+    const { data: { user } } = await supabase.auth.getUser(accessToken);
     currentUser = user;
-    getUserError = error;
   }
 
   // Fallback se nãop houver token manual
