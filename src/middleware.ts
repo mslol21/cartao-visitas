@@ -41,12 +41,23 @@ export async function middleware(request: NextRequest) {
   const { data: { user } } = await supabase.auth.getUser()
   const pathname = request.nextUrl.pathname
 
-  // Redirecionamento de usuários logados para o dashboard se tentarem acessar login/signup
+  // 1. Redirecionamento de usuários logados para o dashboard se tentarem acessar login/signup
   if (user && (pathname === '/login' || pathname === '/signup')) {
     return NextResponse.redirect(new URL('/dashboard', request.url))
   }
+
+  // 2. Proteção de Rotas Privadas (Dashboard)
+  if (!user && pathname.startsWith('/dashboard')) {
+    return NextResponse.redirect(new URL('/login', request.url))
+  }
+
+  // 3. Proteção de Rotas Administrativas (Base)
+  if (!user && pathname.startsWith('/admin')) {
+    return NextResponse.redirect(new URL('/login', request.url))
+  }
   
   return supabaseResponse
+
 }
 
 export const config = {

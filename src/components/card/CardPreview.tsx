@@ -866,10 +866,10 @@ END:VCARD`;
         className={cn("w-full max-w-[380px] mx-auto group/card", isDownloadMode && "m-0")}
         style={{ fontFamily: isPro ? data.font_family : 'inherit' }}
       >
-        {/* Font Loader for Pro */}
+        {/* Font Loader for Pro - Sanitizado para evitar XSS */}
         {isPro && data.font_family && (
           <style dangerouslySetInnerHTML={{ __html: `
-            @import url('https://fonts.googleapis.com/css2?family=${data.font_family.replace(/ /g, '+')}:wght@400;700;900&display=swap');
+            @import url('https://fonts.googleapis.com/css2?family=${data.font_family.replace(/[^a-zA-Z0-9 ]/g, '').replace(/ /g, '+')}:wght@400;700;900&display=swap');
           `}} />
         )}
 
