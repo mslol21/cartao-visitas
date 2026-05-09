@@ -1096,7 +1096,12 @@ END:VCARD`;
           </div>
           {isStandardized ? (
             <div className="relative flex flex-col w-full min-h-[600px] z-10 overflow-y-auto scroll-hide">
-              <StandardProfessionalLayout data={data as Profile} isPro={isPro} />
+              <StandardProfessionalLayout 
+                data={data as Profile} 
+                isPro={isPro} 
+                config={getGlobalConfig(data.profession)}
+                profession={data.profession || 'default'}
+              />
             </div>
           ) : isBarbearia ? (
             <div className="relative flex flex-col items-center w-full min-h-[600px] z-10 px-6 py-10 overflow-y-auto scroll-hide">
@@ -2969,7 +2974,7 @@ END:VCARD`;
                          </div>
                        </div>
                      )}
-                  </div>
+                   </div>
 
                    {/* Petshop Social */}
                    <div className="flex justify-center gap-4 w-full mb-10">
@@ -3632,10 +3637,18 @@ END:VCARD`;
                  <div className="mt-auto opacity-20 text-center">
                     <p className="text-[8px] font-black uppercase tracking-[0.5em]">Advocacia de Excelência</p>
                  </div>
+                   config={getGlobalConfig(data.profession)}
+                   profession={data.profession || 'default'}
+                 />
               </div>
             ) : isStandardized ? (
               <div className="relative flex flex-col w-full min-h-[600px] z-10 overflow-y-auto scroll-hide">
-                 <StandardProfessionalLayout data={data} isPro={isPro} />
+                 <StandardProfessionalLayout 
+                   data={data as Profile} 
+                   isPro={isPro} 
+                   config={getGlobalConfig(data.profession)}
+                   profession={data.profession || 'default'}
+                 />
               </div>
             ) : (
               <div className="w-full flex flex-col items-center">

@@ -141,7 +141,7 @@ export const professionsMap: Record<ProfessionCategory, ProfessionConfig> = {
   personal_trainer: {
     id: 'personal_trainer',
     label: 'Personal Trainer',
-    theme: { color: 'green', style: 'standard' },
+    theme: { color: 'green', style: 'oled' },
     customFields: [
       { name: 'online', label: 'Consultoria Online?', type: 'boolean' },
       { name: 'atende_em_academia', label: 'Atende em Academias Parceiras?', type: 'boolean' }
@@ -247,7 +247,7 @@ export const professionsMap: Record<ProfessionCategory, ProfessionConfig> = {
   tecnico_informatica: {
     id: 'tecnico_informatica',
     label: 'Técnico de Informática',
-    theme: { color: 'blue', style: 'standard' },
+    theme: { color: 'blue', style: 'oled' },
     customFields: [
       { name: 'suporte_remoto', label: 'Suporte Remoto?', type: 'boolean' },
       { name: 'atende_empresas', label: 'Atende Empresas?', type: 'boolean' }
@@ -294,7 +294,7 @@ export const professionsMap: Record<ProfessionCategory, ProfessionConfig> = {
   pedreiro: {
     id: 'pedreiro',
     label: 'Pedreiro & Obras',
-    theme: { color: 'orange', style: 'standard' },
+    theme: { color: 'orange', style: 'oled' },
     customFields: [
       { name: 'trabalha_com_reforma', label: 'Faz Reformas?', type: 'boolean' },
       { name: 'anos_experiencia', label: 'Anos de Experiência', type: 'text', placeholder: 'Ex: 10 anos' }
@@ -308,7 +308,7 @@ export const professionsMap: Record<ProfessionCategory, ProfessionConfig> = {
   mestre_de_obras: {
     id: 'mestre_de_obras',
     label: 'Mestre de Obras',
-    theme: { color: 'orange', style: 'standard' },
+    theme: { color: 'orange', style: 'oled' },
     customFields: [
       { name: 'anos_experiencia', label: 'Anos de Experiência', type: 'text', placeholder: 'Ex: 15 anos' },
       { name: 'gerencia_equipe', label: 'Gerenciamento de Equipes?', type: 'boolean' },
@@ -407,7 +407,7 @@ export const professionsMap: Record<ProfessionCategory, ProfessionConfig> = {
   eletricista: {
     id: 'eletricista',
     label: 'Eletricista',
-    theme: { color: 'amber', style: 'standard' },
+    theme: { color: 'amber', style: 'oled' },
     customFields: [
       { name: 'nr10_ativo', label: 'NR10 Ativo?', type: 'boolean' },
       { name: 'atendimento_emergencial', label: 'Atendimento Emergencial?', type: 'boolean' }
@@ -428,7 +428,7 @@ export const professionsMap: Record<ProfessionCategory, ProfessionConfig> = {
   encanador: {
     id: 'encanador',
     label: 'Encanador / Hidráulica',
-    theme: { color: 'blue', style: 'standard' },
+    theme: { color: 'blue', style: 'oled' },
     customFields: [
       { name: 'caca_vazamento', label: 'Caça Vazamento?', type: 'boolean' }
     ],
@@ -523,7 +523,7 @@ export const professionsMap: Record<ProfessionCategory, ProfessionConfig> = {
   pintor: {
     id: 'pintor',
     label: 'Pintor',
-    theme: { color: 'indigo', style: 'standard' },
+    theme: { color: 'indigo', style: 'glass' },
     customFields: [
       { name: 'pintura_residencial', label: 'Pintura Residencial?', type: 'boolean' },
       { name: 'pintura_comercial', label: 'Pintura Comercial?', type: 'boolean' }
@@ -590,7 +590,7 @@ export const professionsMap: Record<ProfessionCategory, ProfessionConfig> = {
   quentinhas: {
     id: 'quentinhas',
     label: 'Gastronomia / Marmitas',
-    theme: { color: 'red', style: 'standard' },
+    theme: { color: 'red', style: 'oled' },
     customFields: [
       { name: 'tem_delivery', label: 'Tem Delivery?', type: 'boolean' },
       { name: 'aceita_vr', label: 'Aceita VR / Ticket?', type: 'boolean' }
@@ -629,7 +629,7 @@ export const professionsMap: Record<ProfessionCategory, ProfessionConfig> = {
   health: {
     id: 'health',
     label: 'Saúde & Bem-Estar',
-    theme: { color: 'emerald', style: 'standard' },
+    theme: { color: 'emerald', style: 'glass' },
     customFields: [
       { name: 'atendimento_online', label: 'Faz Atendimento Online?', type: 'boolean' },
       { name: 'convenios', label: 'Aceita Convênios?', type: 'boolean' }
@@ -1017,7 +1017,7 @@ export const professionsMap: Record<ProfessionCategory, ProfessionConfig> = {
   area_lazer: {
     id: 'area_lazer',
     label: 'Área de Lazer & Eventos',
-    theme: { color: 'emerald', style: 'standard' },
+    theme: { color: 'emerald', style: 'glass' },
     customFields: [
       { name: 'capacidade_pessoas', label: 'Capacidade (Nº Pessoas)', type: 'text', placeholder: 'Ex: Até 50 pessoas' },
       { name: 'possui_piscina', label: 'Possui Piscina?', type: 'boolean' },
