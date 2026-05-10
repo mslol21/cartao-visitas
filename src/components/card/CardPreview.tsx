@@ -362,20 +362,35 @@ END:VCARD`;
   };
 
   const getThemeClasses = () => {
-    const hasVideo = !!data.background_video_url && isPro;
+    const cf = (data.custom_fields as any) || {};
     
-    // BARBEARIA - PREMIUM THEME
+    // Se tiver cor customizada (paleta), o fundo deve ser transparente para mostrar a cor do style
+    if (cf.cor_fundo) return "bg-transparent";
+
+    if (!isPro) return "bg-white dark:bg-slate-950";
+    
     if (isBarbearia) {
-      return "bg-[#0a0a0a] text-white border-yellow-700/30 shadow-[inset_0_0_150px_rgba(212,175,55,0.05),0_50px_100px_-20px_rgba(0,0,0,0.5)]";
+      return "bg-slate-950 text-white border-white/5 shadow-[inset_0_0_120px_rgba(255,255,255,0.02)]";
     }
 
-    // ESTÉTICA AUTOMOTIVA - PREMIUM THEME
     if (isEsteticaAutomotiva) {
-      return "bg-[#050508] text-white border-amber-500/20 shadow-[inset_0_0_150px_rgba(245,158,11,0.06),0_50px_100px_-20px_rgba(0,0,0,0.8)]";
+      return "bg-[#0a0a0a] text-white border-white/5 shadow-[inset_0_0_100px_rgba(245,158,11,0.05)]";
     }
 
-    if (isAdvogado) {
-      return "bg-[#0f172a] text-white border-slate-700/50 shadow-[inset_0_0_100px_rgba(30,41,59,0.5)]";
+    if (isBeauty) {
+      return "bg-[#fffafb] text-slate-900 border-rose-100 shadow-[0_20px_50px_rgba(244,63,94,0.03)]";
+    }
+
+    if (isHealth) {
+      return "bg-white dark:bg-slate-950 text-slate-900 dark:text-white border-emerald-100 dark:border-emerald-900/20";
+    }
+
+    if (isFood) {
+      return "bg-[#fffcf5] text-slate-900 border-orange-100 shadow-[0_20px_50px_rgba(251,191,36,0.05)]";
+    }
+
+    if (isModernService) {
+      return "bg-[#fafafa] text-slate-900 border-slate-100 shadow-[0_20px_50px_rgba(0,0,0,0.02)]";
     }
 
     if (isTech) {
@@ -402,8 +417,6 @@ END:VCARD`;
       return "bg-[#fffbeb] text-slate-900 border-amber-100 shadow-[0_20px_50px_rgba(245,158,11,0.05)]";
     }
     
-    if (!isPro) return "bg-white dark:bg-slate-950";
-    
     switch (data.theme_style) {
       case 'oled': 
         return "bg-black text-white border-white/10 shadow-[inset_0_0_120px_rgba(59,130,246,0.15)]";
@@ -412,9 +425,7 @@ END:VCARD`;
       case 'minimalist': 
         return "bg-white text-slate-900 border-slate-100 shadow-none";
       default: 
-        if (hasVideo) return "bg-black/20 backdrop-blur-2xl text-white border-white/10";
-        // OFFICIAL KONNEXY DIGITAL FIELD STYLE
-        return "konnexy-digital-field text-white border-white/10 shadow-[inset_0_0_60px_rgba(59,130,246,0.1)]";
+        return "bg-slate-950 text-white border-white/5";
     }
   };
 
