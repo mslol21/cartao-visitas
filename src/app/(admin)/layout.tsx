@@ -11,6 +11,8 @@ export default async function AdminLayout({
   const supabase = await createClient();
   
   let currentUser = null;
+  const allCookies = (await cookies()).getAll();
+  const cookieNames = allCookies.map(c => c.name).join(', ');
 
   try {
     // Tenta obter o usuário de forma segura
@@ -19,7 +21,7 @@ export default async function AdminLayout({
     if (!authError && user) {
       currentUser = user;
     } else {
-      // Fallback para getSession se getUser falhar (mais tolerante com cookies)
+      // Fallback para getSession
       const { data: { session } } = await supabase.auth.getSession();
       if (session?.user) {
         currentUser = session.user;
@@ -28,6 +30,7 @@ export default async function AdminLayout({
   } catch (err) {
     console.error('SERVER ADMIN: Session validation failed', err);
   }
+
 
 
   
@@ -39,7 +42,8 @@ export default async function AdminLayout({
          
          <div className="space-y-4">
            <div className="bg-black/50 p-4 rounded-xl font-mono text-[10px]">
-             <p className="text-amber-400">Dica: Tente fazer logout e login novamente para atualizar suas credenciais.</p>
+             <p className="text-amber-400 mb-2">Dica: Tente fazer logout e login novamente para atualizar suas credenciais.</p>
+             <p className="text-slate-500 break-all">Debug Cookies: {cookieNames || 'Nenhum cookie detectado'}</p>
            </div>
            <div className="flex gap-4">
              <a href="/login" className="px-6 py-2 bg-white text-black rounded-xl font-bold text-xs uppercase">Ir para Login</a>
