@@ -141,23 +141,36 @@ export function AutomotiveDetailingLayout({ data, isPro }: AutomotiveDetailingLa
             <h2 className="text-[11px] font-black uppercase tracking-[0.3em] opacity-40">Catálogo de Serviços</h2>
           </div>
           <div className="flex flex-col gap-3">
-            {services.map((s, i) => (
-              <div key={i} className="p-6 rounded-[2.5rem] bg-[#121212] border border-white/5 flex flex-col gap-3 shadow-2xl hover:border-amber-500/30 transition-all group">
-                <div className="flex justify-between items-start gap-4">
-                  <h3 className="text-sm font-black uppercase text-amber-500 group-hover:text-amber-400 transition-colors">{s.nome}</h3>
-                  {s.preco && (
-                    <span className="shrink-0 text-[10px] font-black bg-amber-500/10 text-amber-500 px-3 py-1 rounded-full border border-amber-500/20">
-                      {s.preco}
-                    </span>
+            {services.map((s, i) => {
+              const serviceWhatsappLink = `https://wa.me/${formattedWhatsapp}?text=${encodeURIComponent(`Olá! Gostaria de saber mais sobre o serviço: ${s.nome}`)}`;
+              return (
+                <a 
+                  key={i} 
+                  href={serviceWhatsappLink}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="p-6 rounded-[2.5rem] bg-[#121212] border border-white/5 flex flex-col gap-3 shadow-2xl hover:border-amber-500/30 transition-all group active:scale-[0.98]"
+                >
+                  <div className="flex justify-between items-start gap-4">
+                    <h3 className="text-sm font-black uppercase text-amber-500 group-hover:text-amber-400 transition-colors">{s.nome}</h3>
+                    {s.preco && (
+                      <span className="shrink-0 text-[10px] font-black bg-amber-500/10 text-amber-500 px-3 py-1 rounded-full border border-amber-500/20">
+                        {s.preco}
+                      </span>
+                    )}
+                  </div>
+                  {s.descricao && (
+                    <p className="text-[11px] font-medium text-white/30 leading-relaxed group-hover:text-white/50 transition-colors italic">
+                      {s.descricao}
+                    </p>
                   )}
-                </div>
-                {s.descricao && (
-                  <p className="text-[11px] font-medium text-white/30 leading-relaxed group-hover:text-white/50 transition-colors italic">
-                    {s.descricao}
-                  </p>
-                )}
-              </div>
-            ))}
+                  <div className="flex items-center gap-2 text-[8px] font-black uppercase tracking-widest text-amber-500/40 group-hover:text-amber-500 transition-colors mt-2">
+                    <MessageCircle className="w-3 h-3" />
+                    <span>Consultar agora</span>
+                  </div>
+                </a>
+              );
+            })}
           </div>
         </div>
       )}
