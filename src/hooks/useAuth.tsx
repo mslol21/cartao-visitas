@@ -70,8 +70,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   };
 
   const signIn = async (email: string, password: string) => {
-    console.log('🚀 Iniciando processo de login no Supabase...');
-    console.log('📍 Endpoint:', process.env.NEXT_PUBLIC_SUPABASE_URL);
+    console.log('🚀 [Auth] Iniciando processo de login no Supabase...');
+    console.log('📍 Endpoint (VERSÃO NOVA):', process.env.NEXT_PUBLIC_SUPABASE_URL);
     
     try {
       const { data, error } = await supabase.auth.signInWithPassword({
