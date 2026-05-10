@@ -6,8 +6,13 @@ export async function middleware(request: NextRequest) {
     request,
   })
 
-  const supabaseUrl = (process.env.NEXT_PUBLIC_SUPABASE_URL || '').trim()
-  const supabaseKey = (process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || '').trim()
+  let supabaseUrl = (process.env.NEXT_PUBLIC_SUPABASE_URL || '').trim()
+  let supabaseKey = (process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || '').trim()
+
+  // Forçar URL correta se o ambiente estiver instável ou com valor antigo
+  if (!supabaseUrl || supabaseUrl.includes('fyexdrjmshpwstfvrt')) {
+    supabaseUrl = 'https://fyexdnjvxphhgestfvrt.supabase.co';
+  }
 
   if (!supabaseUrl || !supabaseKey) {
     return supabaseResponse;
