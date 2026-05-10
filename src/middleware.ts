@@ -1,57 +1,8 @@
-import { createServerClient } from '@supabase/ssr'
 import { NextResponse, type NextRequest } from 'next/server'
 
-export async function middleware(request: NextRequest) {
-  let supabaseResponse = NextResponse.next({
-    request,
-  })
-
-  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || 'https://fyexdnjvxphhgestfvrt.supabase.co'
-  const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || ''
-
-  if (!supabaseUrl || !supabaseKey) {
-    return supabaseResponse
-  }
-
-  const supabase = createServerClient(
-    supabaseUrl,
-    supabaseKey,
-    {
-      cookies: {
-        getAll() {
-          return request.cookies.getAll()
-        },
-        setAll(cookiesToSet) {
-          cookiesToSet.forEach(({ name, value, options }) => request.cookies.set(name, value))
-          supabaseResponse = NextResponse.next({
-            request,
-          })
-          cookiesToSet.forEach(({ name, value, options }) =>
-            supabaseResponse.cookies.set(name, value, options)
-          )
-        },
-      },
-    }
-  )
-
-  try {
-    const { data: { user } } = await supabase.auth.getUser()
-    const pathname = request.nextUrl.pathname
-
-    if (user && (pathname === '/login' || pathname === '/signup')) {
-      return NextResponse.redirect(new URL('/dashboard', request.url))
-    }
-
-    if (!user && (pathname.startsWith('/dashboard') || pathname.startsWith('/admin'))) {
-      if (pathname !== '/login') {
-        return NextResponse.redirect(new URL('/login', request.url))
-      }
-    }
-  } catch (e) {
-    console.error('Middleware error:', e)
-  }
-
-  return supabaseResponse
+export function middleware(request: NextRequest) {
+  // Retorna apenas a resposta padrão sem nenhuma lógica de Supabase por enquanto
+  return NextResponse.next()
 }
 
 export const config = {
