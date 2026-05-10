@@ -57,7 +57,7 @@ export function AutomotiveDetailingLayout({ data, isPro }: AutomotiveDetailingLa
     <div className="relative w-full min-h-screen bg-[#080808] text-white flex flex-col pb-20 overflow-x-hidden">
       
       {/* HERO / BACKGROUND SECTION */}
-      <div className="relative w-full h-[65vh] shrink-0 overflow-hidden flex flex-col items-center justify-center pt-20">
+      <div className="relative w-full h-[65vh] shrink-0 overflow-hidden flex flex-col items-center justify-center pt-10 pb-16">
         {/* Background Image/Video */}
         <div className="absolute inset-0 z-0">
           {data.background_video_url?.match(/\.(mp4|webm|ogg|mov)$/i) ? (
@@ -91,7 +91,7 @@ export function AutomotiveDetailingLayout({ data, isPro }: AutomotiveDetailingLa
       </div>
 
       {/* PRIMARY CTA & QUICK INFO */}
-      <div className="px-6 -mt-12 relative z-20 flex flex-col gap-4">
+      <div className="px-6 -mt-1 relative z-20 flex flex-col gap-4">
         <Button asChild className="w-full h-20 rounded-[2rem] bg-amber-500 text-black font-black uppercase tracking-tighter text-xl shadow-[0_20px_50px_rgba(245,158,11,0.35)] hover:scale-[1.02] active:scale-[0.98] transition-all">
           <a href={whatsappLink} target="_blank" rel="noopener noreferrer" className="flex items-center gap-3">
             <MessageCircle className="w-7 h-7 fill-black" />
