@@ -24,15 +24,12 @@ interface AuthFormProps {
 export function AuthForm({ mode }: AuthFormProps) {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const { signIn, signUp } = useAuth();
+  const { user, loading: authLoading, signIn, signUp } = useAuth();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
 
   const isSignUp = mode === 'signup';
-
-  // Redirecionamento automático se já estiver logado
-  const { user, loading: authLoading } = useAuth();
   
   useEffect(() => {
     const message = searchParams.get('message');
@@ -43,10 +40,10 @@ export function AuthForm({ mode }: AuthFormProps) {
 
   useEffect(() => {
     if (user && !authLoading) {
-      console.log('🔄 Usuário detectado, redirecionando para /dashboard...');
-      window.location.href = '/dashboard';
+      console.log('🔄 Usuário detectado no AuthForm, redirecionando...');
+      router.push('/dashboard');
     }
-  }, [user, authLoading]);
+  }, [user, authLoading, router]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
