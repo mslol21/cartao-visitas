@@ -3637,9 +3637,6 @@ END:VCARD`;
                  <div className="mt-auto opacity-20 text-center">
                     <p className="text-[8px] font-black uppercase tracking-[0.5em]">Advocacia de Excelência</p>
                  </div>
-                   config={getGlobalConfig(data.profession)}
-                   profession={data.profession || 'default'}
-                 />
               </div>
             ) : isStandardized ? (
               <div className="relative flex flex-col w-full min-h-[600px] z-10 overflow-y-auto scroll-hide">
