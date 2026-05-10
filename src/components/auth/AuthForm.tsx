@@ -40,8 +40,8 @@ export function AuthForm({ mode }: AuthFormProps) {
 
   useEffect(() => {
     if (user && !authLoading) {
-      console.log('🔄 Usuário detectado no AuthForm, redirecionando...');
-      router.push('/dashboard');
+      console.log('🔄 Usuário detectado no AuthForm, redirecionando para dashboard...');
+      router.replace('/dashboard');
     }
   }, [user, authLoading, router]);
 
@@ -89,7 +89,7 @@ export function AuthForm({ mode }: AuthFormProps) {
           router.refresh();
           
           console.log('🚀 Redirecionando agora para /dashboard...');
-          router.push('/dashboard');
+          router.replace('/dashboard');
         }
       }
     } catch (err: unknown) {
