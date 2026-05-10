@@ -316,10 +316,10 @@ export default function ManagementPage() {
                   <select 
                     value={selectedUser.plan || 'free'}
                     onChange={(e) => setSelectedUser({ ...selectedUser, plan: e.target.value })}
-                    className="w-full h-12 px-4 rounded-2xl border border-white/10 bg-white/5 text-sm appearance-none focus:outline-none focus:ring-2 focus:ring-primary/20"
+                    className="w-full h-12 px-4 rounded-2xl border border-white/10 bg-slate-800 text-white text-sm focus:outline-none focus:ring-2 focus:ring-primary/20"
                   >
-                    <option value="free">Free</option>
-                    <option value="pro">Pro</option>
+                    <option value="free" className="bg-slate-800 text-white">Free</option>
+                    <option value="pro" className="bg-slate-800 text-white">Pro</option>
                   </select>
                 </div>
 
@@ -328,14 +328,15 @@ export default function ManagementPage() {
                   <select 
                     value={selectedUser.status || 'free'}
                     onChange={(e) => setSelectedUser({ ...selectedUser, status: e.target.value })}
-                    className="w-full h-12 px-4 rounded-2xl border border-white/10 bg-white/5 text-sm appearance-none focus:outline-none focus:ring-2 focus:ring-primary/20"
+                    className="w-full h-12 px-4 rounded-2xl border border-white/10 bg-slate-800 text-white text-sm focus:outline-none focus:ring-2 focus:ring-primary/20"
                   >
-                    <option value="active">Active (Manual + 10 anos)</option>
-                    <option value="stripe_active">Stripe Active</option>
-                    <option value="canceled">Expirado / Cancelado</option>
-                    <option value="free">Voltar para Free</option>
+                    <option value="active" className="bg-slate-800 text-white">Active (Manual + 10 anos)</option>
+                    <option value="stripe_active" className="bg-slate-800 text-white">Stripe Active</option>
+                    <option value="canceled" className="bg-slate-800 text-white">Expirado / Cancelado</option>
+                    <option value="free" className="bg-slate-800 text-white">Voltar para Free</option>
                   </select>
                 </div>
+
               </div>
 
               <div className="flex gap-3 pt-6">
