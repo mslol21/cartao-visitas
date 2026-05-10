@@ -13,13 +13,22 @@ export default async function AdminLayout({
   let currentUser = null;
 
   try {
+    // Tenta obter o usuário de forma segura
     const { data: { user }, error: authError } = await supabase.auth.getUser();
+    
     if (!authError && user) {
       currentUser = user;
+    } else {
+      // Fallback para getSession se getUser falhar (mais tolerante com cookies)
+      const { data: { session } } = await supabase.auth.getSession();
+      if (session?.user) {
+        currentUser = session.user;
+      }
     }
   } catch (err) {
     console.error('SERVER ADMIN: Session validation failed', err);
   }
+
 
   
   if (!currentUser) {

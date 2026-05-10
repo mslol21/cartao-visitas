@@ -1,7 +1,8 @@
 import { NextResponse, type NextRequest } from 'next/server'
 
 export function middleware(request: NextRequest) {
-  const session = request.cookies.get('sb-fyexdnjvxphhgestfvrt-auth-token')
+  const allCookies = request.cookies.getAll()
+  const session = allCookies.find(c => c.name.includes('auth-token'))
   const pathname = request.nextUrl.pathname
 
   // Proteção básica: se tentar acessar dashboard sem cookie de sessão, vai para login
