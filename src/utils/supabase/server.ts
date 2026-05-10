@@ -4,28 +4,11 @@ import { cookies } from 'next/headers'
 export async function createClient() {
   const cookieStore = await cookies()
 
-  let supabaseUrl = (process.env.NEXT_PUBLIC_SUPABASE_URL || '').trim();
-  let supabaseKey = (process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || '').trim();
-
-  // Forçar URL correta se o ambiente estiver com valor antigo
-  if (supabaseUrl.includes('fyexdrjmshpwstfvrt')) {
-    supabaseUrl = 'https://fyexdnjvxphhgestfvrt.supabase.co';
-  }
-
-  const finalUrl = (supabaseUrl && supabaseUrl.startsWith('http')) 
-    ? supabaseUrl 
-    : 'https://fyexdnjvxphhgestfvrt.supabase.co';
-
-  if (!supabaseUrl || !supabaseKey) {
-    return createServerClient(
-      finalUrl,
-      supabaseKey || 'placeholder',
-      { cookies: { getAll: () => [], setAll: () => {} } }
-    )
-  }
+  const supabaseUrl = 'https://fyexdnjvxphhgestfvrt.supabase.co';
+  const supabaseKey = (process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || '').trim();
 
   return createServerClient(
-    finalUrl,
+    supabaseUrl,
     supabaseKey,
     {
       cookies: {
