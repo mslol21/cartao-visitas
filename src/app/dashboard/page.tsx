@@ -235,12 +235,20 @@ function DashboardContent() {
             </AnimatePresence>
             
             {profile?.role === 'admin' && (
-              <Button asChild variant="ghost" size="sm" className="hidden sm:flex rounded-2xl bg-red-500/10 text-red-600 hover:bg-red-500/20">
-                <Link href="/admin" className="flex items-center gap-2">
-                  <ShieldCheck className="w-4 h-4" />
-                  Admin
-                </Link>
-              </Button>
+              <div className="hidden sm:flex items-center gap-2">
+                <Button asChild variant="ghost" size="sm" className="rounded-2xl bg-red-500/10 text-red-600 hover:bg-red-500/20">
+                  <Link href="/admin" className="flex items-center gap-2">
+                    <ShieldCheck className="w-4 h-4" />
+                    Admin
+                  </Link>
+                </Button>
+                <Button asChild variant="ghost" size="sm" className="rounded-2xl bg-amber-500/10 text-amber-600 hover:bg-amber-500/20 border border-amber-500/20">
+                  <Link href="/management" className="flex items-center gap-2">
+                    <Zap className="w-4 h-4" />
+                    Gerenciar
+                  </Link>
+                </Button>
+              </div>
             )}
             
             <div className="h-4 w-[1px] bg-border mx-2" />

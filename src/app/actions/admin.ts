@@ -214,3 +214,38 @@ export async function createNewUser(email: string, pass: string, username: strin
     return { success: false, error: err.message };
   }
 }
+
+export async function deleteUser(userId: string) {
+  try {
+    const supabaseAdmin = await createAdminClient();
+    if (!supabaseAdmin) throw new Error("Serviço administrativo não configurado.");
+    const supabase = await createSupabaseServerClient();
+
+    // 1. Verificar sessão admin
+    const authUser = await getRigidServerSession(supabase);
+    if (!authUser) throw new Error("Sessão não identificada.");
+
+    const { data: profile } = await supabaseAdmin
+      .from('profiles')
+      .select('role')
+      .eq('user_id', authUser.id)
+      .single();
+
+    if (profile?.role !== 'admin') throw new Error("Acesso negado.");
+
+    // 2. Deletar do Auth (O cascade deletará o profile se estiver configurado, ou deletamos manual)
+    const { error: authError } = await supabaseAdmin.auth.admin.deleteUser(userId);
+    if (authError) throw authError;
+
+    // 3. Garantir que o profile foi removido (caso não haja cascade)
+    await supabaseAdmin.from('profiles').delete().eq('user_id', userId);
+
+    revalidatePath('/admin');
+    revalidatePath('/management');
+    return { success: true };
+  } catch (err: any) {
+    console.error('DELETE USER ERROR:', err);
+    return { success: false, error: err.message };
+  }
+}
+
