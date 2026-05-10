@@ -1783,11 +1783,22 @@ export function EditorForm({ initialData, onSubmit, onChange, isPro = false, can
               </div>
             </div>
 
-            <div className="space-y-4">
+            <div className="space-y-6">
               <div className="flex items-center justify-between">
-                <Label className="flex items-center gap-2 font-black uppercase tracking-widest text-[10px]"><ImageIcon className="w-4 h-4 text-primary" /> Fundo Personalizado</Label>
+                <Label className="flex items-center gap-2 font-black uppercase tracking-widest text-[10px]"><ImageIcon className="w-4 h-4 text-primary" /> Plano de Fundo (Foto/Vídeo)</Label>
+                {formData.background_video_url && (
+                  <Button 
+                    variant="ghost" 
+                    size="sm" 
+                    className="h-6 text-[9px] font-black uppercase text-red-500 hover:bg-red-50"
+                    onClick={() => handleChange('background_video_url', undefined)}
+                  >
+                    <X className="w-3 h-3 mr-1" /> Remover Fundo
+                  </Button>
+                )}
               </div>
-              <div className="space-y-3">
+
+              <div className="space-y-4">
                 <input
                   type="file"
                   ref={videoInputRef}
@@ -1796,181 +1807,134 @@ export function EditorForm({ initialData, onSubmit, onChange, isPro = false, can
                   className="hidden"
                 />
                 
-                {formData.background_video_url ?
-                  <div className="relative group/video rounded-2xl overflow-hidden border border-border bg-black/5">
-                    {formData.background_video_url.match(/\.(mp4|webm|ogg|mov)$/i) ? (
-                      <>
+                {/* Active Preview / Main Upload Card */}
+                <div 
+                  className={cn(
+                    "relative group/video rounded-[2.5rem] overflow-hidden border-2 transition-all bg-slate-100 dark:bg-slate-900",
+                    formData.background_video_url ? "border-primary/20 aspect-video" : "border-dashed border-slate-300 dark:border-slate-700 aspect-[21/9] hover:border-primary/50"
+                  )}
+                  onClick={() => !formData.background_video_url && videoInputRef.current?.click()}
+                >
+                  {formData.background_video_url ? (
+                    <>
+                      {formData.background_video_url.match(/\.(mp4|webm|ogg|mov)$/i) ? (
                         <video 
                           src={formData.background_video_url} 
-                          className="absolute inset-0 w-full h-full object-cover blur-md opacity-40 scale-110"
+                          className="w-full h-full object-cover"
                           muted
                           loop
+                          autoPlay
+                          playsInline
                         />
-                        <video 
-                          src={formData.background_video_url} 
-                          className="relative z-10 w-full h-32 object-contain opacity-80"
-                          muted
-                          loop
-                        />
-                      </>
-                    ) : (
-                      <>
-                        <div 
-                          className="absolute inset-0 w-full h-full blur-md opacity-40 scale-110 z-0" 
-                          style={{ 
-                            backgroundImage: `url('${formData.background_video_url}')`, 
-                            backgroundSize: 'cover', 
-                            backgroundPosition: 'center' 
-                          }} 
-                        />
+                      ) : (
                         <img 
                           src={formData.background_video_url} 
-                          className="relative z-10 w-full h-32 object-contain opacity-80"
-                          alt="Background Preview"
+                          className="w-full h-full object-cover"
+                          alt="Background"
                         />
-                      </>
-                    )}
-                    <div className="absolute inset-0 flex items-center justify-center bg-black/20 opacity-0 group-hover/video:opacity-100 transition-opacity">
-                      <Button 
-                        variant="destructive" 
-                        size="sm" 
-                        className="rounded-xl h-9"
-                        onClick={() => handleChange('background_video_url', undefined)}
-                      >
-                        <X className="w-4 h-4 mr-2" /> Remover
-                      </Button>
-                    </div>
-                  </div>
-                 : 
-                  <Button 
-                    variant="outline" 
-                    className="w-full h-24 border-2 border-dashed rounded-[2rem] flex flex-col gap-2 hover:border-primary/50 hover:bg-primary/5 p-0"
-                    disabled={uploading}
-                    onClick={() => videoInputRef.current?.click()}
-                  >
-                    {uploading ? (
-                      <Loader2 className="w-6 h-6 animate-spin text-primary" />
-                    ) : (
-                      <>
-                        <Upload className="w-6 h-6 text-muted-foreground" />
-                        <span className="text-[10px] font-black uppercase tracking-widest">Enviar Foto ou Vídeo</span>
-                      </>
-                    )}
-                  </Button>
-                }
-                <p className="text-[10px] text-muted-foreground ml-1">
-                  Máximo 10MB. Suporta vídeos (MP4) e imagens (JPG, PNG).
-                </p>
-
-                {/* --- SEARCH & SUGGESTED GALLERY --- */}
-                {true && (
-                  <div className="mt-8 space-y-6 animate-in fade-in slide-in-from-bottom-4">
-                    {/* Pixabay Search Bar */}
-                    <div className="space-y-3">
-                      <div className="flex items-center gap-2">
-                        <Search className="w-3 h-3 text-primary" />
-                        <span className="text-[10px] font-black uppercase tracking-widest text-slate-500">Pesquisar Banco Pixabay (Premium)</span>
-                      </div>
-                      <form onSubmit={handlePixabaySearch} className="flex gap-2">
-                        <Input 
-                          placeholder="Ex: dentista, barbearia, advocacia..."
-                          value={pixabaySearch}
-                          onChange={(e) => setPixabaySearch(e.target.value)}
-                          className="h-10 rounded-xl text-xs bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800"
-                        />
+                      )}
+                      <div className="absolute inset-0 bg-black/40 opacity-0 group-hover/video:opacity-100 transition-all flex items-center justify-center gap-3 backdrop-blur-sm">
                         <Button 
-                          type="submit" 
-                          disabled={isSearching}
-                          className="h-10 px-4 rounded-xl bg-primary hover:bg-primary/90"
+                          size="sm" 
+                          className="rounded-full font-black uppercase text-[10px] bg-white text-black hover:bg-white/90"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            videoInputRef.current?.click();
+                          }}
                         >
-                          {isSearching ? <Loader2 className="w-4 h-4 animate-spin" /> : <Search className="w-4 h-4" />}
+                          <Upload className="w-3 h-3 mr-2" /> Trocar Arquivo
                         </Button>
-                      </form>
-                      <p className="text-[8px] text-muted-foreground italic px-1">
-                        * Busca inteligente em Português e Inglês para profissionais.
-                      </p>
+                      </div>
+                    </>
+                  ) : (
+                    <div className="absolute inset-0 flex flex-col items-center justify-center gap-2 cursor-pointer group-hover:scale-105 transition-transform">
+                      {uploading ? (
+                        <Loader2 className="w-6 h-6 animate-spin text-primary" />
+                      ) : (
+                        <>
+                          <div className="w-12 h-12 rounded-2xl bg-primary/10 flex items-center justify-center">
+                            <Plus className="w-6 h-6 text-primary" />
+                          </div>
+                          <span className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400">Subir sua Mídia</span>
+                        </>
+                      )}
                     </div>
+                  )}
+                </div>
+                
+                <div className="flex items-center justify-between px-1">
+                  <p className="text-[9px] text-muted-foreground uppercase font-bold tracking-wider">
+                    {formData.background_video_url ? "Fundo Ativo" : "Nenhum fundo selecionado"}
+                  </p>
+                  <p className="text-[8px] text-muted-foreground opacity-60">Max 10MB • MP4, JPG, PNG</p>
+                </div>
 
-                    {/* Search Results */}
-                    {searchResults.length > 0 && (
-                      <div className="space-y-3">
-                        <div className="flex items-center gap-2">
-                          <Check className="w-3 h-3 text-green-500" />
-                          <span className="text-[10px] font-black uppercase tracking-widest text-slate-500">Resultados da Pesquisa</span>
-                          <Button 
-                            variant="ghost" 
-                            size="sm" 
-                            className="h-4 p-0 ml-auto text-[8px] font-black text-slate-400 uppercase hover:text-red-500"
-                            onClick={() => setSearchResults([])}
-                          >
-                            Limpar
-                          </Button>
-                        </div>
-                        <div className="grid grid-cols-2 xs:grid-cols-3 sm:grid-cols-4 md:grid-cols-6 gap-3">
-                          {searchResults.map((url, i) => (
-                            <button
-                              key={i}
-                              onClick={() => handleChange('background_video_url', url)}
-                              className={cn(
-                                "relative aspect-[3/4] rounded-2xl overflow-hidden border-2 transition-all hover:scale-110 active:scale-95 group/search-item shadow-sm",
-                                formData.background_video_url === url ? "border-primary ring-4 ring-primary/20 shadow-xl" : "border-slate-200 dark:border-slate-800 opacity-90 hover:opacity-100"
-                              )}
-                            >
-                              <img 
-                                src={url} 
-                                className="w-full h-full object-cover transition-opacity duration-500" 
-                                alt="Search result" 
-                                loading="lazy"
-                                onLoad={(e) => {
-                                  (e.target as HTMLImageElement).classList.add('opacity-100');
-                                }}
-                                onError={(e) => {
-                                  // Se falhar o link dinâmico, coloca um fallback de luz/negócios
-                                  (e.target as HTMLImageElement).src = 'https://cdn.pixabay.com/photo/2016/03/26/13/09/workspace-1280538_1280.jpg';
-                                }}
-                              />
-                              <div className="absolute inset-x-0 bottom-0 h-10 bg-gradient-to-t from-black/80 to-transparent opacity-0 group-hover/search-item:opacity-100 transition-opacity flex items-center justify-center">
-                                <span className="text-[7px] font-black text-white uppercase tracking-tighter">Selecionar</span>
-                              </div>
-                            </button>
-                          ))}
-                        </div>
-                      </div>
-                    )}
-
-                    {/* Recommendations */}
-                    <div className="space-y-4 pt-2">
-                      <div className="flex items-center gap-2">
-                        <SparklesIcon className="w-3 h-3 text-amber-500" />
-                        <span className="text-[10px] font-black uppercase tracking-widest text-slate-500">Sugestões para sua Profissão</span>
-                      </div>
-                      <div className="grid grid-cols-2 xs:grid-cols-3 sm:grid-cols-4 gap-3">
-                        {(professionConfig.suggestedBackgrounds || []).map((bgUrl, idx) => (
-                          <button
-                            key={idx}
-                            onClick={() => handleChange('background_video_url', bgUrl)}
-                            className={cn(
-                              "relative aspect-[3/4] rounded-2xl overflow-hidden border-2 transition-all hover:scale-[1.05] active:scale-95 group/suggest",
-                              formData.background_video_url === bgUrl ? "border-primary ring-4 ring-primary/20" : "border-slate-200 dark:border-slate-800 opacity-80 hover:opacity-100"
-                            )}
-                          >
-                            <img 
-                              src={bgUrl} 
-                              alt={`Suggested background ${idx + 1}`} 
-                              className="w-full h-full object-cover"
-                              onError={(e) => {
-                                (e.target as HTMLImageElement).src = 'https://cdn.pixabay.com/photo/2016/03/26/13/09/workspace-1280538_1280.jpg';
-                              }}
-                            />
-                            <div className="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover/suggest:opacity-100 transition-opacity">
-                              <span className="text-[8px] font-black text-white uppercase tracking-widest bg-primary px-2 py-1 rounded-full shadow-lg">Usar</span>
-                            </div>
-                          </button>
-                        ))}
-                      </div>
+                {/* Quick Selection Gallery */}
+                <div className="space-y-4 pt-4">
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-2">
+                      <SparklesIcon className="w-3 h-3 text-amber-500" />
+                      <span className="text-[10px] font-black uppercase tracking-widest text-slate-500">Galeria de Sugestões</span>
                     </div>
+                    
+                    <form onSubmit={handlePixabaySearch} className="flex gap-1">
+                      <Input 
+                        placeholder="Buscar no Pixabay..."
+                        value={pixabaySearch}
+                        onChange={(e) => setPixabaySearch(e.target.value)}
+                        className="h-7 w-32 rounded-lg text-[9px] bg-slate-100 border-none"
+                      />
+                      <Button type="submit" size="sm" className="h-7 w-7 rounded-lg p-0" disabled={isSearching}>
+                        {isSearching ? <Loader2 className="w-3 h-3 animate-spin" /> : <Search className="w-3 h-3" />}
+                      </Button>
+                    </form>
                   </div>
-                )}
+
+                  <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 gap-2">
+                    {/* Upload Item in Gallery */}
+                    <button
+                      type="button"
+                      onClick={() => videoInputRef.current?.click()}
+                      className="aspect-square rounded-2xl border-2 border-dashed border-slate-200 dark:border-slate-800 flex flex-col items-center justify-center gap-1 hover:border-primary/50 hover:bg-primary/5 transition-all group"
+                    >
+                      <Plus className="w-4 h-4 text-slate-400 group-hover:text-primary transition-colors" />
+                      <span className="text-[8px] font-black uppercase text-slate-400">Upload</span>
+                    </button>
+
+                    {/* Search Results if any */}
+                    {searchResults.map((url, i) => (
+                      <button
+                        key={`search-${i}`}
+                        onClick={() => handleChange('background_video_url', url)}
+                        className={cn(
+                          "relative aspect-square rounded-2xl overflow-hidden border-2 transition-all hover:scale-105 active:scale-95 group/search-item",
+                          formData.background_video_url === url ? "border-primary ring-2 ring-primary/20" : "border-slate-200 dark:border-slate-800 opacity-90 hover:opacity-100"
+                        )}
+                      >
+                        <img src={url} className="w-full h-full object-cover" alt="Search" />
+                        <div className="absolute inset-0 bg-black/20 opacity-0 group-hover/search-item:opacity-100 transition-opacity" />
+                      </button>
+                    ))}
+                    {/* Default Suggested Backgrounds */}
+                    {(professionConfig.suggestedBackgrounds || []).map((bgUrl, idx) => (
+                      <button
+                        key={`suggested-${idx}`}
+                        onClick={() => handleChange('background_video_url', bgUrl)}
+                        className={cn(
+                          "relative aspect-square rounded-2xl overflow-hidden border-2 transition-all hover:scale-105 active:scale-95 group/suggest",
+                          formData.background_video_url === bgUrl ? "border-primary ring-2 ring-primary/20" : "border-slate-200 dark:border-slate-800 opacity-90 hover:opacity-100"
+                        )}
+                      >
+                        <img 
+                          src={bgUrl} 
+                          alt={`Suggested ${idx + 1}`} 
+                          className="w-full h-full object-cover"
+                        />
+                        <div className="absolute inset-0 bg-black/20 opacity-0 group-hover/suggest:opacity-100 transition-opacity" />
+                      </button>
+                    ))}
+                  </div>
+                </div>
               </div>
             </div>
           </TabsContent>
