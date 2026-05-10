@@ -2,7 +2,7 @@ import { createServerClient } from '@supabase/ssr'
 import { cookies } from 'next/headers'
 import { createClient as createSupabaseJS } from '@supabase/supabase-js'
 
-const SUPABASE_URL = process.env.NEXT_PUBLIC_SUPABASE_URL || 'https://fyexdnjvxphhgestfvrt.supabase.co';
+const SUPABASE_URL = (process.env.NEXT_PUBLIC_SUPABASE_URL || 'https://fyexdnjvxphhgestfvrt.supabase.co').trim().replace(/\/$/, '');
 
 export async function createClient() {
   const cookieStore = await cookies()
