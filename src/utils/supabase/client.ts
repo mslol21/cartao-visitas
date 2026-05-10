@@ -9,14 +9,18 @@ export function createClient() {
     supabaseUrl = 'https://fyexdnjvxphhgestfvrt.supabase.co';
   }
 
+  // Fallback robusto para evitar erro de URL inválida no build
+  const finalUrl = (supabaseUrl && supabaseUrl.startsWith('http')) 
+    ? supabaseUrl 
+    : 'https://fyexdnjvxphhgestfvrt.supabase.co';
+    
+  const finalKey = supabaseKey || 'placeholder';
+
   if (!supabaseUrl || !supabaseKey) {
     if (typeof window !== 'undefined') {
-      console.error('MISSING SUPABASE ENV VARS: NEXT_PUBLIC_SUPABASE_URL or NEXT_PUBLIC_SUPABASE_ANON_KEY');
+      console.warn('⚠️ Supabase env vars missing, using fallback URL.');
     }
   }
 
-  return createBrowserClient(
-    supabaseUrl || 'https://placeholder.supabase.co',
-    supabaseKey || 'placeholder'
-  )
+  return createBrowserClient(finalUrl, finalKey)
 }

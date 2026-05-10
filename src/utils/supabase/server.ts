@@ -12,16 +12,20 @@ export async function createClient() {
     supabaseUrl = 'https://fyexdnjvxphhgestfvrt.supabase.co';
   }
 
+  const finalUrl = (supabaseUrl && supabaseUrl.startsWith('http')) 
+    ? supabaseUrl 
+    : 'https://fyexdnjvxphhgestfvrt.supabase.co';
+
   if (!supabaseUrl || !supabaseKey) {
     return createServerClient(
-      'https://placeholder.supabase.co',
-      'placeholder',
+      finalUrl,
+      supabaseKey || 'placeholder',
       { cookies: { getAll: () => [], setAll: () => {} } }
     )
   }
 
   return createServerClient(
-    supabaseUrl,
+    finalUrl,
     supabaseKey,
     {
       cookies: {
