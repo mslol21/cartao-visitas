@@ -117,6 +117,7 @@ import { DigitalField } from '@/components/pro/DigitalField';
 import { AnimatedQR } from '@/components/pro/AnimatedQR';
 import { isPaidUser } from '@/utils/planUtils';
 import { StandardProfessionalLayout } from './StandardProfessionalLayout';
+import { AutomotiveDetailingLayout } from './AutomotiveDetailingLayout';
 import { getProfessionConfig as getGlobalConfig } from '@/config/professions';
 
 interface CardPreviewProps {
@@ -1105,8 +1106,31 @@ END:VCARD`;
                 </div>
               )}
           </div>
-          {isStandardized ? (
-            <div className="relative flex flex-col w-full min-h-[600px] z-10 overflow-y-auto scroll-hide">
+          <AnimatePresence mode="wait">
+      <motion.div
+        key={data.username || data.id || 'preview'}
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+        transition={{ duration: 0.5 }}
+        id="digital-card-content"
+        className={cn(
+          "w-full flex flex-col relative",
+          getThemeClasses(),
+          data.font_family === 'Inter' ? 'font-inter' : 
+          data.font_family === 'Outfit' ? 'font-outfit' :
+          data.font_family === 'Sora' ? 'font-sora' :
+          data.font_family === 'Playfair Display' ? 'font-playfair' :
+          data.font_family === 'Plus Jakarta Sans' ? 'font-jakarta' : 'font-inter'
+        )}
+      >
+        {isEsteticaAutomotiva ? (
+          <AutomotiveDetailingLayout 
+            data={data} 
+            isPro={isPro}
+          />
+        ) : isStandardized ? (
+          <div className="relative flex flex-col w-full min-h-[600px] z-10 overflow-y-auto scroll-hide">
               <StandardProfessionalLayout 
                 data={data as Profile} 
                 isPro={isPro} 
