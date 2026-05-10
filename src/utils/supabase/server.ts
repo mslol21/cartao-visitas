@@ -1,14 +1,15 @@
 import { createServerClient } from '@supabase/ssr'
 import { cookies } from 'next/headers'
+import { createClient as createSupabaseJS } from '@supabase/supabase-js'
+
+const SUPABASE_URL = process.env.NEXT_PUBLIC_SUPABASE_URL || 'https://fyexdnjvxphhgestfvrt.supabase.co';
 
 export async function createClient() {
   const cookieStore = await cookies()
-
-  const supabaseUrl = 'https://fyexdnjvxphhgestfvrt.supabase.co';
   const supabaseKey = (process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || 'placeholder').trim();
 
   return createServerClient(
-    supabaseUrl,
+    SUPABASE_URL,
     supabaseKey,
     {
       cookies: {
@@ -20,7 +21,6 @@ export async function createClient() {
             cookiesToSet.forEach(({ name, value, options }) =>
               cookieStore.set(name, value, {
                 ...options,
-                // Remove restrições estritas de path e domain para garantir leitura no Vercel
                 path: '/',
                 domain: undefined,
               } as any)
@@ -34,22 +34,18 @@ export async function createClient() {
   )
 }
 
-import { createClient as createSupabaseJS } from '@supabase/supabase-js'
-
 export async function createAdminClient() {
-  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
   const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
 
-  if (!supabaseUrl || !supabaseServiceKey) {
-    console.error('CONFIG_ERROR: SUPABASE_SERVICE_ROLE_KEY não configurada no Vercel.');
+  if (!supabaseServiceKey) {
+    console.error('CONFIG_ERROR: SUPABASE_SERVICE_ROLE_KEY não configurada.');
     return null;
   }
 
-  return createSupabaseJS(supabaseUrl, supabaseServiceKey, {
+  return createSupabaseJS(SUPABASE_URL, supabaseServiceKey, {
     auth: {
       autoRefreshToken: false,
       persistSession: false
     }
   });
 }
-

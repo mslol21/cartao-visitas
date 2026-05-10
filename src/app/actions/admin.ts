@@ -8,7 +8,7 @@ export async function getRigidServerSession(supabase: any) {
   try {
     const { cookies } = await import('next/headers');
     const allCookies = (await cookies()).getAll();
-    const authCookie = allCookies.find(c => c.name.includes('-auth-token'));
+    const authCookie = allCookies.find(c => c.name.includes('auth-token'));
     
     let accessToken: string | undefined = undefined;
     if (authCookie?.value) {
@@ -55,6 +55,7 @@ export async function getAllUsersOverview() {
   try {
     const supabase = await createSupabaseServerClient();
     const supabaseAdmin = await createAdminClient(); 
+    if (!supabaseAdmin) throw new Error("Serviço administrativo não configurado.");
     
     // 1. Validar se o usuário atual é admin (Bypass)
     const authUser = await getRigidServerSession(supabase);
@@ -94,6 +95,7 @@ export async function updateUserPlan(userId: string, updates: any) {
   try {
     const supabase = await createSupabaseServerClient();
     const supabaseAdmin = await createAdminClient();
+    if (!supabaseAdmin) throw new Error("Serviço administrativo não disponível.");
     
     if (!supabase || !supabase.auth) throw new Error("Recurso não disponível");
     
@@ -150,6 +152,7 @@ export async function updateUserPlan(userId: string, updates: any) {
 export async function createNewUser(email: string, pass: string, username: string) {
   try {
     const supabaseAdmin = await createAdminClient();
+    if (!supabaseAdmin) throw new Error("Serviço administrativo não configurado.");
     const supabase = await createSupabaseServerClient();
 
     // 1. Verificar sessão de forma ultra-robusta (com extração manual CSR bypass)

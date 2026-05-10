@@ -95,16 +95,41 @@ export default async function AdminLayout({
     );
   }
 
-  const { data: profile, error } = await supabaseAdmin
-    .from('profiles')
-    .select('role')
-    .eq('user_id', currentUser.id)
-    .single();
+  try {
+    const userId = currentUser.id || (currentUser as any).sub;
+    
+    if (!userId) {
+      console.error('SERVER ADMIN: User ID missing in currentUser', currentUser);
+      redirect("/login?error=user-id-missing");
+    }
 
-  if (error || !profile || profile.role !== 'admin') {
-    console.warn('SERVER ADMIN: Access denied for user', currentUser.id);
-    redirect("/dashboard?error=permissao-negada-admin");
+    const { data: profile, error } = await supabaseAdmin
+      .from('profiles')
+      .select('role')
+      .eq('user_id', userId)
+      .maybeSingle(); // Usar maybeSingle para evitar erro se não existir
+
+    if (error || !profile || profile.role !== 'admin') {
+      console.warn('SERVER ADMIN: Access denied or profile error', { error, profile, userId });
+      redirect("/dashboard?error=permissao-negada-admin");
+    }
+  } catch (err) {
+    // Se o erro for o próprio redirect do Next.js, temos que rethrow
+    if ((err as any)?.digest?.includes('NEXT_REDIRECT')) {
+      throw err;
+    }
+    console.error('SERVER ADMIN: Critical error during role check', err);
+    return (
+      <div className="p-8 max-w-3xl mx-auto mt-20 bg-slate-900 text-white rounded-3xl shadow-2xl border border-red-500/30">
+        <h1 className="text-2xl font-black text-red-400 mb-4">Erro Crítico de Validação</h1>
+        <p className="text-sm text-slate-400 mb-6">Ocorreu um erro ao verificar suas permissões de administrador no servidor.</p>
+        <div className="bg-black/50 p-4 rounded-xl font-mono text-[10px] text-slate-500 italic">
+          {err instanceof Error ? err.message : 'Erro desconhecido'}
+        </div>
+      </div>
+    );
   }
+
 
 
 
