@@ -42,7 +42,8 @@ import {
   Coffee,
   Wifi,
   Heart,
-  User
+  User,
+  QrCode
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Profile } from '@/types/profile';
@@ -50,6 +51,7 @@ import { cn } from '@/lib/utils';
 import { motion } from 'framer-motion';
 import { getProfessionConfig } from '@/config/professions';
 import { toast } from 'sonner';
+import { AnimatedQR } from '@/components/pro/AnimatedQR';
 
 interface AutomotiveDetailingLayoutProps {
   data: Partial<Profile>;
@@ -117,6 +119,8 @@ export function AutomotiveDetailingLayout({ data, isPro }: AutomotiveDetailingLa
     if (field.type === 'boolean') return value === true;
     return (value !== undefined && value !== null && value !== '' && (Array.isArray(value) ? value.length > 0 : true));
   }) || [];
+
+  const customLinks = data.custom_links || [];
 
   return (
     <div className="w-full min-h-full bg-[#080808] text-white flex flex-col pb-20 font-sans selection:bg-amber-500 selection:text-black">
@@ -313,7 +317,32 @@ export function AutomotiveDetailingLayout({ data, isPro }: AutomotiveDetailingLa
         </div>
       )}
 
-      {/* 7. SERVICES SHOWCASE */}
+      {/* 7. CUSTOM LINKS (Visible if filled) */}
+      {customLinks.length > 0 && (
+        <div className="px-6 mt-12">
+          <div className="flex items-center gap-3 mb-6">
+            <div className="h-6 w-1 bg-white/20 rounded-full" />
+            <h2 className="text-xs font-black uppercase tracking-[0.3em] opacity-60">Links Úteis</h2>
+          </div>
+          <div className="flex flex-col gap-3">
+            {customLinks.map((link, i) => (
+              <Button
+                key={i}
+                asChild
+                variant="outline"
+                className="w-full h-14 rounded-2xl bg-white/5 border-white/10 hover:bg-white/10 text-white font-bold"
+              >
+                <a href={link.url.startsWith('http') ? link.url : `https://${link.url}`} target="_blank" rel="noopener noreferrer" className="flex items-center justify-between px-6">
+                  <span>{link.title}</span>
+                  <ChevronRight className="w-4 h-4 opacity-40" />
+                </a>
+              </Button>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* 8. SERVICES SHOWCASE */}
       <div className="px-6 mt-12">
         <div className="flex items-center gap-3 mb-8">
           <div className="h-6 w-1 bg-amber-500 rounded-full shadow-[0_0_15px_rgba(245,158,11,0.5)]" />
@@ -345,8 +374,8 @@ export function AutomotiveDetailingLayout({ data, isPro }: AutomotiveDetailingLa
         </div>
       </div>
 
-      {/* 8. BIO / ABOUT */}
-      {data.bio_professional && (
+      {/* 9. BIO / ABOUT */}
+      {data.bio_profissional && (
         <div className="px-6 mt-16 pb-10">
           <div className="p-8 rounded-[3rem] bg-amber-500 text-black shadow-[0_30px_60px_-15px_rgba(245,158,11,0.3)]">
             <div className="flex items-center gap-3 mb-6">
@@ -355,7 +384,7 @@ export function AutomotiveDetailingLayout({ data, isPro }: AutomotiveDetailingLa
             </div>
             
             <p className="text-sm font-bold leading-relaxed italic opacity-80">
-              "{data.bio_professional}"
+              "{data.bio_profissional}"
             </p>
 
             <div className="mt-8 pt-8 border-t border-black/10">
@@ -372,12 +401,45 @@ export function AutomotiveDetailingLayout({ data, isPro }: AutomotiveDetailingLa
         </div>
       )}
 
-      {/* 9. SOCIAL & BRANDING */}
-      <div className="px-6 mt-8 flex flex-col items-center gap-10">
+      {/* 10. INTERACTIVE QR CODE (Pro Only) */}
+      {isPro && (data.username || data.id) && (
+        <div className="px-6 mt-16 flex flex-col items-center gap-6">
+          <div className="flex flex-col items-center text-center gap-2 mb-4">
+            <QrCode className="w-8 h-8 text-amber-500 opacity-60" />
+            <h3 className="text-[10px] font-black uppercase tracking-[0.3em] text-white/40">QR Code Interativo</h3>
+          </div>
+          
+          <div className="p-6 rounded-[2.5rem] bg-white/5 border border-white/10 backdrop-blur-md shadow-2xl">
+            <AnimatedQR
+              url={`${process.env.NEXT_PUBLIC_APP_URL || 'https://konnexy.com.br'}/${data.username || data.id}`}
+              photoUrl={data.photo_url || undefined}
+              accentColor="#f59e0b"
+              size={180}
+              active={isPro}
+              customFields={data.custom_fields}
+            />
+          </div>
+          
+          <p className="text-[10px] font-bold text-white/30 uppercase tracking-widest">Escaneie para compartilhar</p>
+        </div>
+      )}
+
+      {/* 11. SOCIAL & BRANDING */}
+      <div className="px-6 mt-16 flex flex-col items-center gap-10">
         <div className="flex gap-6">
           {data.instagram && (
             <a href={`https://instagram.com/${data.instagram}`} target="_blank" rel="noopener noreferrer" className="p-4 rounded-2xl bg-white/5 border border-white/10 hover:bg-amber-500 hover:text-black transition-all">
               <Instagram className="w-5 h-5" />
+            </a>
+          )}
+          {data.facebook && (
+            <a href={`https://facebook.com/${data.facebook}`} target="_blank" rel="noopener noreferrer" className="p-4 rounded-2xl bg-white/5 border border-white/10 hover:bg-amber-500 hover:text-black transition-all">
+              <Facebook className="w-5 h-5" />
+            </a>
+          )}
+          {data.youtube && (
+            <a href={`https://youtube.com/${data.youtube}`} target="_blank" rel="noopener noreferrer" className="p-4 rounded-2xl bg-white/5 border border-white/10 hover:bg-amber-500 hover:text-black transition-all">
+              <Youtube className="w-5 h-5" />
             </a>
           )}
           <a href="#" className="p-4 rounded-2xl bg-white/5 border border-white/10 hover:bg-amber-500 hover:text-black transition-all">
