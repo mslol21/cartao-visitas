@@ -4,8 +4,13 @@ import { cookies } from 'next/headers'
 export async function createClient() {
   const cookieStore = await cookies()
 
-  const supabaseUrl = (process.env.NEXT_PUBLIC_SUPABASE_URL || '').trim();
-  const supabaseKey = (process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || '').trim();
+  let supabaseUrl = (process.env.NEXT_PUBLIC_SUPABASE_URL || '').trim();
+  let supabaseKey = (process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || '').trim();
+
+  // Forçar URL correta se o ambiente estiver com valor antigo
+  if (supabaseUrl.includes('fyexdrjmshpwstfvrt')) {
+    supabaseUrl = 'https://fyexdnjvxphhgestfvrt.supabase.co';
+  }
 
   if (!supabaseUrl || !supabaseKey) {
     return createServerClient(
