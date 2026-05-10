@@ -438,10 +438,21 @@ export function StandardProfessionalLayout({
         </motion.div>
       )}
 
+      {/* 7. ADDRESS / LOCATION */}
+      {data.endereco_completo && (
+        <motion.div 
+          custom={6} initial="hidden" animate="visible" variants={fadeIn}
+          className="px-6"
+        >
           <Button 
             asChild
             variant="outline"
             className="w-full h-auto py-6 rounded-[2.5rem] border-2 bg-white/50 dark:bg-slate-900/50 backdrop-blur-md border-slate-200 dark:border-white/10 hover:border-primary/40 group overflow-hidden"
+            style={{ 
+              backgroundColor: bgColor ? bgColor + '80' : undefined,
+              borderColor: textColor ? textColor + '20' : undefined,
+              color: textColor || 'inherit'
+            }}
           >
             <a 
               href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(data.endereco_completo)}`}
@@ -453,8 +464,8 @@ export function StandardProfessionalLayout({
                 <MapPin className="w-5 h-5 text-red-500" />
               </div>
               <div className="flex flex-col items-center gap-1 px-4">
-                <span className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400">Localização</span>
-                <span className="text-[11px] font-bold text-slate-700 dark:text-white/90 text-center leading-tight">
+                <span className="text-[10px] font-black uppercase tracking-[0.2em] opacity-40">Localização</span>
+                <span className="text-[11px] font-bold text-center leading-tight opacity-90">
                   {data.endereco_completo}
                 </span>
               </div>
@@ -468,12 +479,12 @@ export function StandardProfessionalLayout({
         custom={7} initial="hidden" animate="visible" variants={fadeIn}
         className="mt-12 flex flex-col items-center gap-4 opacity-40 hover:opacity-100 transition-opacity"
       >
-        <p className="text-[9px] font-black uppercase tracking-[0.3em] text-slate-500">Tecnologia por</p>
+        <p className="text-[9px] font-black uppercase tracking-[0.3em]" style={{ color: textColor || 'inherit' }}>Tecnologia por</p>
         <div className="flex items-center gap-2 grayscale brightness-50">
-           <div className="w-6 h-6 bg-primary rounded-lg rotate-12 flex items-center justify-center">
+           <div className="w-6 h-6 bg-primary rounded-lg rotate-12 flex items-center justify-center" style={{ backgroundColor: themeHex }}>
               <span className="text-white text-[10px] font-black">K</span>
            </div>
-           <span className="text-xs font-black tracking-tighter uppercase">Konnexy Digital</span>
+           <span className="text-xs font-black tracking-tighter uppercase" style={{ color: textColor || 'inherit' }}>Konnexy Digital</span>
         </div>
       </motion.div>
 
