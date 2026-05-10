@@ -1369,10 +1369,85 @@ export function EditorForm({ initialData, onSubmit, onChange, isPro = false, can
             </div>
           </TabsContent>
 
-          <TabsContent value="visual" className="space-y-6 mt-0">
+          <TabsContent value="visual" className="space-y-8 mt-0 pb-10">
+            {/* Color Palettes Section */}
+            <div className="space-y-4">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  <div className="p-2 bg-primary/10 rounded-lg">
+                    <Palette className="w-4 h-4 text-primary" />
+                  </div>
+                  <h3 className="text-sm font-black uppercase tracking-widest">Paletas de Cores</h3>
+                </div>
+                {!isPro && <SparklesIcon className="w-4 h-4 text-yellow-500 animate-pulse" />}
+              </div>
+              <p className="text-[10px] text-muted-foreground font-medium">Escolha um estilo completo ou personalize cada detalhe abaixo.</p>
+              
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                {([
+                  { id: 'classic', label: 'Classic Blue', bg: '#ffffff', primary: '#3b82f6', text: '#0f172a' },
+                  { id: 'dark_gold', label: 'Ouro Negro', bg: '#09090b', primary: '#eab308', text: '#fafafa' },
+                  { id: 'rose_gold', label: 'Rose Soft', bg: '#fff1f2', primary: '#fb7185', text: '#4c0519' },
+                  { id: 'cyber', label: 'Cyberpunk', bg: '#020617', primary: '#c026d3', text: '#f0abfc' },
+                  { id: 'forest', label: 'Eco Forest', bg: '#f0fdf4', primary: '#16a34a', text: '#14532d' },
+                  { id: 'minimal', label: 'Minimalist', bg: '#ffffff', primary: '#18181b', text: '#27272a' },
+                  { id: 'ocean', label: 'Deep Ocean', bg: '#f0f9ff', primary: '#0284c7', text: '#0c4a6e' },
+                  { id: 'sunset', label: 'Sunset', bg: '#fff7ed', primary: '#f97316', text: '#7c2d12' },
+                ] as const).map((p) => (
+                  <button
+                    key={p.id}
+                    type="button"
+                    onClick={() => {
+                      if (!isPro && !['classic'].includes(p.id)) {
+                        toast.error('Esta paleta é exclusiva para usuários PRO!');
+                        return;
+                      }
+                      
+                      const updates: Partial<CustomFields> = {
+                        cor_fundo: p.bg,
+                        cor_texto: p.text,
+                        cor_botoes: p.primary,
+                        cor_texto_botoes: p.bg === '#ffffff' || p.bg === '#fff1f2' || p.bg === '#f0fdf4' || p.bg === '#f0f9ff' || p.bg === '#fff7ed' ? '#ffffff' : p.bg,
+                        cor_bio_fundo: p.bg,
+                        cor_bio_texto: p.text,
+                        cor_servicos_fundo: p.bg,
+                        cor_servicos_texto: p.text,
+                        cor_diferenciais_fundo: p.bg,
+                        cor_diferenciais_texto: p.text,
+                        cor_info_fundo: p.bg,
+                        cor_info_texto: p.text,
+                      };
+
+                      // Apply all updates
+                      Object.entries(updates).forEach(([key, val]) => {
+                        handleCustomFieldChange(key as keyof CustomFields, val);
+                      });
+                      
+                      handleChange('theme_color', p.primary);
+                      toast.success(`Paleta ${p.label} aplicada!`);
+                    }}
+                    className={cn(
+                      "group relative p-3 rounded-2xl border-2 transition-all hover:scale-105 active:scale-95 text-left overflow-hidden",
+                      "border-slate-200 dark:border-slate-800 hover:border-primary/50"
+                    )}
+                    style={{ backgroundColor: p.bg }}
+                  >
+                    <div className="flex flex-col gap-2">
+                       <div className="flex gap-1">
+                          <div className="w-3 h-3 rounded-full" style={{ backgroundColor: p.primary }} />
+                          <div className="w-3 h-3 rounded-full opacity-50" style={{ backgroundColor: p.text }} />
+                       </div>
+                       <span className="text-[9px] font-black uppercase tracking-tighter" style={{ color: p.text }}>{p.label}</span>
+                    </div>
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            <div className="h-px bg-border/50" />
             <div className="space-y-2">
               <Label className="flex items-center gap-2 opacity-60"><Palette className="w-4 h-4" /> Cor de Destaque</Label>
-              <div className={cn("flex flex-wrap items-center gap-2", (formData.profession === 'barbearia' && !canCustomizeTheme && !isPro) && "opacity-40 pointer-events-none")}>
+              <div className={cn("flex flex-wrap items-center gap-2", (!canCustomizeTheme && !isPro) && "opacity-40 pointer-events-none")}>
                 {['#3b82f6', '#25D366', '#000000', '#f43f5e', '#8b5cf6', '#f59e0b', '#ef4444', '#10b981'].map((color) => (
                   <button
                     key={color}
@@ -1409,8 +1484,8 @@ export function EditorForm({ initialData, onSubmit, onChange, isPro = false, can
               </div>
             </div>
 
-            {(isPro || formData.profession === 'esteticista' || formData.profession === 'artesao' || formData.profession === 'streetup') && (
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4 p-4 rounded-3xl bg-slate-50 dark:bg-slate-900/50 border border-slate-200 dark:border-slate-800">
+            {/* Granular Section Colors */}
+            <div className="mt-4 p-4 rounded-3xl bg-slate-50 dark:bg-slate-900/50 border border-slate-200 dark:border-slate-800 space-y-4">
                 <div className="space-y-2">
                   <Label className="text-xs font-bold uppercase tracking-wider opacity-60">Cor do Fundo</Label>
                   <div className="flex gap-2 items-center">
@@ -1508,9 +1583,7 @@ export function EditorForm({ initialData, onSubmit, onChange, isPro = false, can
                   </div>
                 </div>
               </div>
-            )}
-
-            {(isPro || formData.profession === 'esteticista' || formData.profession === 'artesao' || formData.profession === 'streetup') && (
+              <div className="h-px bg-border/50 my-6" />
               <div className="mt-4 p-4 rounded-3xl bg-slate-50 dark:bg-slate-900/50 border border-slate-200 dark:border-slate-800 space-y-4">
                 <div className="flex items-center gap-2 mb-1">
                   <div className="p-2 bg-primary/10 rounded-lg">
@@ -1590,7 +1663,6 @@ export function EditorForm({ initialData, onSubmit, onChange, isPro = false, can
                   ↺ Resetar todas as cores de seção
                 </button>
               </div>
-            )}
 
             <div className="space-y-2">
               <Label className="text-xs font-bold uppercase tracking-wider opacity-60">Chamada Principal (CTA)</Label>
@@ -1694,7 +1766,7 @@ export function EditorForm({ initialData, onSubmit, onChange, isPro = false, can
                 {!isPro && <span className="text-[10px] bg-primary/10 text-primary px-2 py-1 rounded-full font-black">PRO</span>}
               </div>
               
-              <div className={cn("grid grid-cols-2 gap-3", (!isPro && formData.profession !== 'barbearia' && formData.profession !== 'streetup' && (formData.category === 'barbearia' && !canCustomizeTheme)) && "opacity-40 pointer-events-none")}>
+              <div className={cn("grid grid-cols-2 gap-3", (!isPro && !canCustomizeTheme) && "opacity-40 pointer-events-none")}>
                 {['Inter', 'Outfit', 'Playfair Display', 'Sora', 'Plus Jakarta Sans', 'Bento'].map((font) => (
                   <button
                     key={font}

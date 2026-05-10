@@ -249,8 +249,12 @@ export function StandardProfessionalLayout({
 
   return (
     <div 
-      className={cn("w-full min-h-full flex flex-col gap-8 pb-20 transition-colors duration-1000 overflow-x-hidden", getProfessionBg())}
-      style={{ '--primary': isPro ? hexToHsl(data.theme_color || '#3b82f6') : undefined } as React.CSSProperties}
+      className={cn("w-full min-h-full flex flex-col gap-8 pb-20 transition-colors duration-1000 overflow-x-hidden", !cf.cor_fundo && getProfessionBg())}
+      style={{ 
+        '--primary': isPro ? hexToHsl(data.theme_color || '#3b82f6') : undefined,
+        backgroundColor: cf.cor_fundo || undefined,
+        color: cf.cor_texto || undefined
+      } as React.CSSProperties}
     >
       
       {/* 1. HEADER SECTION (Identity) */}
@@ -315,14 +319,18 @@ export function StandardProfessionalLayout({
             ? "bg-white/10 backdrop-blur-2xl border border-white/20 shadow-[0_25px_60px_-15px_rgba(0,0,0,0.2)]" 
             : "bg-white/80 dark:bg-slate-900/80 border border-slate-100 dark:border-slate-800 shadow-xl"
         )}
-        style={cf.cor_info_fundo ? { backgroundColor: cf.cor_info_fundo + '40', borderColor: cf.cor_info_fundo + '30' } : undefined}
+        style={{ 
+          backgroundColor: cf.cor_info_fundo || (isPro ? 'rgba(255,255,255,0.1)' : 'rgba(255,255,255,0.8)'), 
+          borderColor: cf.cor_info_fundo ? cf.cor_info_fundo + '30' : undefined,
+          color: cf.cor_info_texto || undefined
+        }}
         >
           {/* Subtle Inner Glow for Pro */}
           {isPro && <div className="absolute -top-10 -right-10 w-32 h-32 bg-primary/20 blur-3xl pointer-events-none" />}
 
           <h1 
-            className="text-4xl font-black tracking-tighter text-slate-900 dark:text-white mb-3 leading-[0.9] uppercase font-sora"
-            style={cf.cor_texto ? { color: cf.cor_texto } : undefined}
+            className="text-4xl font-black tracking-tighter mb-3 leading-[0.9] uppercase font-sora"
+            style={{ color: cf.cor_info_texto || cf.cor_texto || undefined }}
           >
             {data.business_name || 'Seu Negócio'}
           </h1>
@@ -346,11 +354,11 @@ export function StandardProfessionalLayout({
             </div>
 
             <p 
-              className="text-[11px] font-bold leading-tight opacity-70 tracking-tight uppercase max-w-[200px]"
-              style={cf.cor_texto ? { color: cf.cor_texto } : undefined}
-            >
-              {data.subtitle || data.tagline || 'Sua Especialidade Profissional'}
-            </p>
+            className="text-[11px] font-bold leading-tight opacity-70 tracking-tight uppercase max-w-[200px]"
+            style={{ color: cf.cor_info_texto || cf.cor_texto || undefined }}
+          >
+            {data.subtitle || data.tagline || 'Sua Especialidade Profissional'}
+          </p>
           </div>
         </div>
 
@@ -361,17 +369,17 @@ export function StandardProfessionalLayout({
            {(data.area_atendimento || data.tipo_atendimento) && (
              <div className="flex items-center gap-2 bg-black/5 dark:bg-white/5 px-3 py-1.5 rounded-full">
                 <Globe className="w-4 h-4 text-primary/70" />
-                <span className="text-[10px] font-black uppercase tracking-wider">
-                  {data.area_atendimento} • {data.tipo_atendimento}
-                </span>
-             </div>
-           )}
-           {data.horario_funcionamento && (
-             <div className="flex items-center gap-2 bg-black/5 dark:bg-white/5 px-3 py-1.5 rounded-full">
-                <Clock className="w-4 h-4 text-primary/70" />
-                <span className="text-[10px] font-black uppercase tracking-wider">{data.horario_funcionamento}</span>
-             </div>
-           )}
+                 <span className="text-[10px] font-black uppercase tracking-wider" style={{ color: cf.cor_texto || undefined }}>
+                   {data.area_atendimento} • {data.tipo_atendimento}
+                 </span>
+              </div>
+            )}
+            {data.horario_funcionamento && (
+              <div className="flex items-center gap-2 bg-black/5 dark:bg-white/5 px-3 py-1.5 rounded-full">
+                 <Clock className="w-4 h-4 text-primary/70" />
+                 <span className="text-[10px] font-black uppercase tracking-wider" style={{ color: cf.cor_texto || undefined }}>{data.horario_funcionamento}</span>
+              </div>
+            )}
         </div>
 
         {profession === 'loja_online' && (data.custom_fields as any)?.envio_nacional && (
@@ -571,11 +579,14 @@ export function StandardProfessionalLayout({
               <div 
                 key={idx} 
                 className={cn(
-                  "flex flex-col gap-3 p-5 rounded-[2rem] border-2 transition-all group",
-                  isPro 
-                    ? "bg-white/5 backdrop-blur-md border-white/10 hover:border-primary/30 hover:bg-white/10" 
-                    : "bg-white dark:bg-slate-900 border-slate-100 dark:border-slate-800"
+                  "p-5 rounded-2xl border flex flex-col gap-3 transition-all hover:scale-[1.02]",
+                  isPro ? "bg-white/5 backdrop-blur-xl border-white/5" : "bg-white dark:bg-slate-900 border-slate-100 dark:border-slate-800"
                 )}
+                style={{ 
+                  backgroundColor: cf.cor_diferenciais_fundo || undefined, 
+                  color: cf.cor_diferenciais_texto || cf.cor_texto || undefined,
+                  borderColor: cf.cor_diferenciais_fundo ? cf.cor_diferenciais_fundo + '30' : undefined 
+                }}
               >
                 <div className="w-10 h-10 rounded-2xl bg-primary/10 flex items-center justify-center transition-transform group-hover:scale-110 group-hover:rotate-6">
                   {idx % 4 === 0 ? <Award className="w-5 h-5 text-primary" /> : 
@@ -583,7 +594,7 @@ export function StandardProfessionalLayout({
                    idx % 4 === 2 ? <Zap className="w-5 h-5 text-primary" /> : 
                    <Clock className="w-5 h-5 text-primary" />}
                 </div>
-                <span className="text-[11px] font-black leading-tight tracking-tight uppercase text-slate-700 dark:text-white/90">
+                <span className="text-[11px] font-black leading-tight tracking-tight uppercase opacity-90">
                   {dif}
                 </span>
               </div>
@@ -610,11 +621,14 @@ export function StandardProfessionalLayout({
               <div 
                 key={idx} 
                 className={cn(
-                  "p-6 rounded-[2.5rem] border-2 transition-all relative overflow-hidden group",
-                  isPro 
-                    ? "bg-white/5 backdrop-blur-xl border-white/10 hover:border-primary/30 shadow-lg" 
-                    : "bg-white dark:bg-slate-900 border-slate-100 dark:border-slate-800"
+                  "relative p-6 rounded-3xl border transition-all hover:scale-[1.01] group overflow-hidden",
+                  isPro ? "bg-white/5 backdrop-blur-xl border-white/5" : "bg-white dark:bg-slate-900 border-slate-100 dark:border-slate-800"
                 )}
+                style={{ 
+                  backgroundColor: cf.cor_servicos_fundo || undefined, 
+                  color: cf.cor_servicos_texto || cf.cor_texto || undefined,
+                  borderColor: cf.cor_servicos_fundo ? cf.cor_servicos_fundo + '30' : undefined 
+                }}
               >
                 {/* Subtle Background Icon for Pro */}
                 {isPro && (
@@ -625,11 +639,11 @@ export function StandardProfessionalLayout({
 
                 <div className="flex justify-between items-start gap-4 relative z-10">
                   <div className="flex-1">
-                    <h3 className="text-sm font-black uppercase tracking-tight text-slate-900 dark:text-white mb-2 group-hover:text-primary transition-colors">
+                    <h3 className="text-sm font-black uppercase tracking-tight mb-2 group-hover:text-primary transition-colors" style={{ color: 'inherit' }}>
                       {servico.nome}
                     </h3>
                     {servico.descricao && (
-                      <p className="text-[11px] font-medium text-slate-500 dark:text-slate-400 leading-relaxed max-w-[240px]">
+                      <p className="text-[11px] font-medium leading-relaxed max-w-[240px] opacity-70">
                         {servico.descricao}
                       </p>
                     )}
@@ -670,14 +684,19 @@ export function StandardProfessionalLayout({
                ? "bg-white/5 backdrop-blur-xl border-white/10 text-slate-300 shadow-2xl" 
                : "bg-white/80 dark:bg-slate-900/80 border-slate-100 dark:border-slate-800"
            )}
+           style={{ 
+             backgroundColor: cf.cor_bio_fundo || undefined, 
+             color: cf.cor_bio_texto || cf.cor_texto || undefined,
+             borderColor: cf.cor_bio_fundo ? cf.cor_bio_fundo + '30' : undefined 
+           }}
            >
               <div className="flex items-center gap-3 mb-6">
                 <div className="w-10 h-10 rounded-2xl bg-primary/10 flex items-center justify-center">
                    <User className="w-5 h-5 text-primary" />
                 </div>
-                <h2 className="text-[10px] font-black uppercase tracking-[0.25em] text-slate-500 dark:text-slate-400">Sobre o Profissional</h2>
+                <h2 className="text-[10px] font-black uppercase tracking-[0.25em] opacity-60">Sobre o Profissional</h2>
               </div>
-              <p className="text-[13px] font-medium leading-relaxed tracking-tight text-slate-600 dark:text-slate-300 italic">
+              <p className="text-[13px] font-medium leading-relaxed tracking-tight italic opacity-90">
                 "{data.bio_professional}"
               </p>
            </div>
