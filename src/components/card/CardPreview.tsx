@@ -1107,7 +1107,10 @@ END:VCARD`;
               )}
           </div>
         {isEsteticaAutomotiva ? (
-          <AutomotiveDetailingLayout data={data} isPro={isPro} />
+          <>
+            <div className="absolute top-0 left-0 bg-red-500 text-white z-[9999] text-[8px] p-1">DEBUG: ESTETICA ACTIVE</div>
+            <AutomotiveDetailingLayout data={data} isPro={isPro} />
+          </>
         ) : isStandardized ? (
             <div className="relative flex flex-col w-full min-h-[600px] z-10 overflow-y-auto scroll-hide">
               <StandardProfessionalLayout 
