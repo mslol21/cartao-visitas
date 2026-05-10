@@ -1,12 +1,27 @@
 import { NextResponse, type NextRequest } from 'next/server'
 
 export function middleware(request: NextRequest) {
-  // Retorna apenas a resposta padrão sem nenhuma lógica de Supabase por enquanto
+  const session = request.cookies.get('sb-fyexdnjvxphhgestfvrt-auth-token')
+  const pathname = request.nextUrl.pathname
+
+  // Proteção básica: se tentar acessar dashboard sem cookie de sessão, vai para login
+  if (!session && (pathname.startsWith('/dashboard') || pathname.startsWith('/admin'))) {
+    return NextResponse.redirect(new URL('/login', request.url))
+  }
+
+  // Se já tem sessão e está no login, vai para dashboard
+  if (session && (pathname === '/login' || pathname === '/signup')) {
+    return NextResponse.redirect(new URL('/dashboard', request.url))
+  }
+
   return NextResponse.next()
 }
 
 export const config = {
   matcher: [
-    '/((?!_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)',
+    '/dashboard/:path*',
+    '/admin/:path*',
+    '/login',
+    '/signup'
   ],
 }

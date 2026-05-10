@@ -45,6 +45,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   };
 }
 
+export const revalidate = 0;
+
 export default async function PublicPage({ params }: Props) {
   const { username } = await params;
   const supabase = await createClient();
@@ -60,9 +62,14 @@ export default async function PublicPage({ params }: Props) {
   trackEvent(profile.id, 'page_view').catch(console.error);
 
   const themeColor = profile.theme_color || '#3b82f6';
+  const customFields = (profile.custom_fields as any) || {};
+  const bgColor = customFields.cor_fundo || '#fafafa';
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center bg-[#fafafa] dark:bg-slate-950 p-6 relative overflow-hidden">
+    <div 
+      className="min-h-screen flex flex-col items-center justify-center p-6 relative overflow-hidden transition-colors duration-500"
+      style={{ backgroundColor: bgColor }}
+    >
       <ProfileClientWrapper profile={profile} themeColor={themeColor} />
     </div>
   );
