@@ -70,6 +70,19 @@ export default async function AdminLayout({
 
   // 2. Verificar Cargo (Ignora RLS)
   const supabaseAdmin = await createAdminClient();
+  
+  if (!supabaseAdmin) {
+    return (
+      <div className="p-8 max-w-3xl mx-auto mt-20 bg-slate-900 text-white rounded-3xl shadow-2xl border border-amber-500/30">
+        <h1 className="text-2xl font-black text-amber-400 mb-4">Configuração Incompleta</h1>
+        <p className="text-sm text-slate-400 mb-6">A chave administrativa (SERVICE_ROLE_KEY) não foi detectada. O acesso ao painel admin exige esta configuração no Vercel.</p>
+        <div className="bg-black/50 p-4 rounded-xl font-mono text-[10px] text-slate-500">
+          <p>Dica: Adicione SUPABASE_SERVICE_ROLE_KEY nas Environment Variables do seu projeto.</p>
+        </div>
+      </div>
+    );
+  }
+
   const { data: profile, error } = await supabaseAdmin
     .from('profiles')
     .select('role')
@@ -77,6 +90,7 @@ export default async function AdminLayout({
     .single();
 
   if (error || !profile || profile.role !== 'admin') {
+    console.warn('SERVER ADMIN: Access denied for user', currentUser.id);
     redirect("/dashboard?error=permissao-negada-admin");
   }
 

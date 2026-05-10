@@ -58,7 +58,8 @@ export async function createAdminClient() {
   const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
 
   if (!supabaseUrl || !supabaseServiceKey) {
-    throw new Error('CONFIG_MISSING: SUPABASE_SERVICE_ROLE_KEY não configurada no Vercel.');
+    console.error('CONFIG_ERROR: SUPABASE_SERVICE_ROLE_KEY não configurada no Vercel.');
+    return null;
   }
 
   return createSupabaseJS(supabaseUrl, supabaseServiceKey, {
