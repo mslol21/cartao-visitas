@@ -1418,12 +1418,12 @@ export function EditorForm({ initialData, onSubmit, onChange, isPro = false, can
                         cor_info_texto: p.text,
                       };
 
-                      // Apply all updates
-                      Object.entries(updates).forEach(([key, val]) => {
-                        handleCustomFieldChange(key as keyof CustomFields, val);
-                      });
+                      const updatedCustomFields = { ...(formData.custom_fields || {}), ...updates };
+                      const updatedFormData = { ...formData, custom_fields: updatedCustomFields, theme_color: p.primary };
                       
-                      handleChange('theme_color', p.primary);
+                      setFormData(updatedFormData);
+                      onChange(updatedFormData);
+                      setIsDirty(true);
                       toast.success(`Paleta ${p.label} aplicada!`);
                     }}
                     className={cn(
