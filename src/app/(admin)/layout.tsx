@@ -43,7 +43,7 @@ export default async function AdminLayout({
            </div>
            <div className="flex gap-4">
              <a href="/login" className="px-6 py-2 bg-white text-black rounded-xl font-bold text-xs uppercase">Ir para Login</a>
-             <button onClick={() => window.location.reload()} className="px-6 py-2 bg-slate-800 text-white rounded-xl font-bold text-xs uppercase">Recarregar</button>
+             <a href="/admin" className="px-6 py-2 bg-slate-800 text-white rounded-xl font-bold text-xs uppercase">Tentar Novamente</a>
            </div>
          </div>
        </div>
