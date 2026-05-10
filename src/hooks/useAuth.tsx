@@ -24,6 +24,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const router = useRouter();
 
   useEffect(() => {
+    const isPlaceholder = process.env.NEXT_PUBLIC_SUPABASE_URL?.includes('placeholder') || !process.env.NEXT_PUBLIC_SUPABASE_URL;
+    if (isPlaceholder && typeof window !== 'undefined') {
+      console.error('⚠️ ATENÇÃO: Variáveis de ambiente do Supabase não encontradas ou são placeholders!');
+    }
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
       (event, session) => {
         setSession(session);

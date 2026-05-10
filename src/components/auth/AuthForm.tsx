@@ -89,7 +89,7 @@ export function AuthForm({ mode }: AuthFormProps) {
           router.refresh();
           
           console.log('🚀 Redirecionando agora para /dashboard...');
-          window.location.href = '/dashboard';
+          router.push('/dashboard');
         }
       }
     } catch (err: unknown) {
