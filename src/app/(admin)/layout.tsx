@@ -15,14 +15,45 @@ export default async function AdminLayout({
   const cookieNames = allCookies.map(c => c.name).join(', ');
 
   try {
-    // Usa getSession() como primário - lê o JWT do cookie localmente sem chamada de rede
+    // Método 1: getSession() - lê JWT do cookie localmente sem chamada de rede
     const { data: { session }, error: sessionError } = await supabase.auth.getSession();
     if (!sessionError && session?.user) {
       currentUser = session.user;
     }
+    
+    // Método 2: Decodificação manual do JWT do cookie como fallback
+    if (!currentUser) {
+      const authCookie = allCookies.find(c => c.name.includes('auth-token'));
+      if (authCookie?.value) {
+        try {
+          // Tenta decodificar o JWT diretamente (formato: header.payload.signature)
+          let payload = authCookie.value;
+          // Supabase SSR às vezes armazena em base64
+          if (!payload.includes('.')) {
+            payload = Buffer.from(payload, 'base64').toString('utf-8');
+          }
+          if (payload.startsWith('{')) {
+            const parsed = JSON.parse(payload);
+            if (parsed?.user?.id) {
+              currentUser = parsed.user;
+            } else if (parsed?.access_token) {
+              // Decode JWT payload
+              const jwtPayload = parsed.access_token.split('.')[1];
+              const decoded = JSON.parse(Buffer.from(jwtPayload, 'base64').toString('utf-8'));
+              if (decoded?.sub) {
+                currentUser = { id: decoded.sub, email: decoded.email } as any;
+              }
+            }
+          }
+        } catch (parseErr) {
+          console.warn('SERVER ADMIN: Manual cookie parse failed', parseErr);
+        }
+      }
+    }
   } catch (err) {
     console.error('SERVER ADMIN: Session validation failed', err);
   }
+
 
 
 
