@@ -38,7 +38,13 @@ export async function middleware(request: NextRequest) {
   )
 
   // IMPORTANTE: getUser() precisa ser chamado para o refresh do token funcionar via middleware
-  const { data: { user } } = await supabase.auth.getUser()
+  let user = null;
+  try {
+    const { data: { user: authUser } } = await supabase.auth.getUser()
+    user = authUser;
+  } catch (err) {
+    console.error('MIDDLEWARE: Auth check failed', err);
+  }
   const pathname = request.nextUrl.pathname
 
   // 1. Redirecionamento de usuários logados para o dashboard se tentarem acessar login/signup

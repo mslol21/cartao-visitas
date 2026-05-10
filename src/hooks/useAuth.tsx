@@ -36,12 +36,20 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       }
     );
 
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      console.log('🔍 [AuthContext] Sessão recuperada no mount:', !!session);
-      setSession(session);
-      setUser(session?.user ?? null);
-      setLoading(false);
-    });
+    supabase.auth.getSession()
+      .then(({ data: { session } }) => {
+        console.log('🔍 [AuthContext] Sessão recuperada no mount:', !!session);
+        setSession(session);
+        setUser(session?.user ?? null);
+      })
+      .catch(err => {
+        console.error('❌ [AuthContext] Erro ao recuperar sessão:', err);
+        setUser(null);
+        setSession(null);
+      })
+      .finally(() => {
+        setLoading(false);
+      });
 
     return () => subscription.unsubscribe();
   }, [supabase, router]);

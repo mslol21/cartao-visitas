@@ -12,25 +12,41 @@ export async function getRigidServerSession(supabase: any) {
     
     let accessToken: string | undefined = undefined;
     if (authCookie?.value) {
-      if (authCookie.value.startsWith('{')) {
-        accessToken = JSON.parse(authCookie.value)?.access_token;
-      } else {
-        const possibleJson = atob(authCookie.value);
-        accessToken = JSON.parse(possibleJson)?.access_token;
+      try {
+        if (authCookie.value.startsWith('{')) {
+          accessToken = JSON.parse(authCookie.value)?.access_token;
+        } else {
+          const possibleJson = atob(authCookie.value);
+          accessToken = JSON.parse(possibleJson)?.access_token;
+        }
+      } catch (e) {
+        console.warn('SERVER: Failed to parse auth cookie manually', e);
       }
     }
 
     if (accessToken) {
-      const { data: { user } } = await supabase.auth.getUser(accessToken);
-      authUser = user;
+      try {
+        const { data, error } = await supabase.auth.getUser(accessToken);
+        if (!error && data?.user) {
+          authUser = data.user;
+        }
+      } catch (e) {
+        console.warn('SERVER: getUser(token) fetch error', e);
+      }
     }
 
     if (!authUser) {
-      const { data: { user } } = await supabase.auth.getUser();
-      authUser = user;
+      try {
+        const { data, error } = await supabase.auth.getUser();
+        if (!error && data?.user) {
+          authUser = data.user;
+        }
+      } catch (e) {
+        console.error('SERVER: getUser() default fetch error', e);
+      }
     }
   } catch (e) {
-    console.error('SERVER: Auto-Fallback auth check error', e);
+    console.error('SERVER: Global auth check error', e);
   }
   return authUser;
 }

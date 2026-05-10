@@ -43,10 +43,10 @@ export function AuthForm({ mode }: AuthFormProps) {
 
   useEffect(() => {
     if (user && !authLoading) {
-      console.log('🔄 Usuário detectado, redirecionando automaticamente...');
-      router.push('/dashboard');
+      console.log('🔄 Usuário detectado, redirecionando para /dashboard...');
+      window.location.href = '/dashboard';
     }
-  }, [user, authLoading, router]);
+  }, [user, authLoading]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();

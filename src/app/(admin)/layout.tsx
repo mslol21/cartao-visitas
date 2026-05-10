@@ -33,15 +33,23 @@ export default async function AdminLayout({
   // 2. Validar o token de forma explícita com o servidor Supabase
   let currentUser = null;
 
-  if (accessToken) {
-    const { data: { user } } = await supabase.auth.getUser(accessToken);
-    currentUser = user;
-  }
+  try {
+    if (accessToken) {
+      const { data, error } = await supabase.auth.getUser(accessToken);
+      if (!error && data?.user) {
+        currentUser = data.user;
+      }
+    }
 
-  // Fallback se nãop houver token manual
-  if (!currentUser) {
-    const { data } = await supabase.auth.getSession();
-    currentUser = data.session?.user || null;
+    // Fallback se não houver token manual ou getUser falhou
+    if (!currentUser) {
+      const { data, error } = await supabase.auth.getSession();
+      if (!error && data?.session?.user) {
+        currentUser = data.session.user;
+      }
+    }
+  } catch (err) {
+    console.error('SERVER ADMIN: Session validation failed', err);
   }
   
   if (!currentUser) {
