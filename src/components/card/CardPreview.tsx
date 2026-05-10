@@ -921,7 +921,11 @@ END:VCARD`;
                         isPetshop ? "bg-[#fffaf5]" :
                         isVeterinario ? "bg-[#ecfdf5]" :
                         isArtesao ? "bg-[#fffbeb]" :
-                           {isBarbearia && !cf.cor_fundo ? (
+                        "konnexy-digital-field"
+                     ) : "bg-white dark:bg-slate-950"
+                   )}
+                >
+                  {isBarbearia && !cf.cor_fundo ? (
                     <>
                       {/* Premium Wood/Leather Texture Simulation */}
                       <div className="absolute inset-0 opacity-20" style={{
