@@ -31,7 +31,6 @@ interface AutomotiveDetailingLayoutProps {
 export function AutomotiveDetailingLayout({ data, isPro }: AutomotiveDetailingLayoutProps) {
   const cf = (data.custom_fields as any) || {};
   const themeColor = data.theme_color || '#f59e0b';
-  const textColor = cf.cor_texto || '#ffffff';
   
   const cleanWhatsapp = data.whatsapp?.replace(/\D/g, '') || '';
   const formattedWhatsapp = cleanWhatsapp.startsWith('55') ? cleanWhatsapp : `55${cleanWhatsapp}`;
@@ -44,118 +43,144 @@ export function AutomotiveDetailingLayout({ data, isPro }: AutomotiveDetailingLa
     image: s.image_url
   }));
 
+  // Background logic: If background_video_url exists, use it. 
+  // Otherwise, use a high-quality detailing photo instead of stretching the logo.
+  const bgMedia = data.background_video_url || 'https://images.unsplash.com/photo-1601362840469-51e4d8d59085?q=80&w=2070&auto=format&fit=crop';
+  const isVideo = bgMedia.match(/\.(mp4|webm|ogg|mov)$/i);
+
   return (
-    <div className="w-full min-h-full bg-[#050505] text-white flex flex-col pb-20 font-sans selection:bg-amber-500 selection:text-black">
+    <div className="w-full min-h-full bg-[#080808] text-white flex flex-col pb-20 font-sans selection:bg-amber-500 selection:text-black">
       
-      {/* 1. HERO SECTION (Banner + Profile) */}
+      {/* 1. HERO SECTION (Banner + Identity) */}
       <div className="relative w-full aspect-[4/5] overflow-hidden">
-        {/* Background Image / Video */}
+        {/* Background Media */}
         <div className="absolute inset-0 z-0">
-          {data.photo_url ? (
-            <img 
-              src={data.photo_url} 
-              alt={data.business_name || ''} 
-              className="w-full h-full object-cover brightness-75 contrast-125"
+          {isVideo ? (
+            <video 
+              src={bgMedia} 
+              autoPlay muted loop playsInline 
+              className="w-full h-full object-cover brightness-[0.4] contrast-125"
             />
           ) : (
-            <div className="w-full h-full bg-slate-900 flex items-center justify-center">
-              <Car className="w-20 h-20 opacity-10" />
-            </div>
+            <img 
+              src={bgMedia} 
+              alt="Detailing Background" 
+              className="w-full h-full object-cover brightness-[0.4] contrast-125"
+            />
           )}
-          {/* Gradient Overlay */}
-          <div className="absolute inset-0 bg-gradient-to-t from-[#050505] via-transparent to-black/40" />
-          <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-[#050505]" />
+          {/* Gradient Overlays for Readability */}
+          <div className="absolute inset-0 bg-gradient-to-t from-[#080808] via-transparent to-black/60" />
         </div>
 
-        {/* Content over Hero */}
-        <div className="absolute bottom-10 left-0 w-full px-6 z-10">
+        {/* Brand Logo (Centered and clean) */}
+        <div className="absolute inset-0 flex flex-col items-center justify-center p-6 z-10 text-center">
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
+            initial={{ opacity: 0, scale: 0.8 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.8, ease: "easeOut" }}
+            className="flex flex-col items-center gap-6"
           >
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-500/10 border border-amber-500/20 mb-4">
-              <Sparkles className="w-3 h-3 text-amber-500" />
-              <span className="text-[10px] font-black uppercase tracking-widest text-amber-500">Premium Detailing</span>
-            </div>
+            {data.photo_url && (
+              <div className="w-32 h-32 rounded-full border-4 border-amber-500/30 p-1 bg-black/40 backdrop-blur-sm shadow-[0_0_40px_rgba(245,158,11,0.2)]">
+                <img 
+                  src={data.photo_url} 
+                  alt={data.business_name || 'Logo'} 
+                  className="w-full h-full object-contain rounded-full"
+                />
+              </div>
+            )}
             
-            <h1 className="text-5xl font-black tracking-tighter leading-[0.85] uppercase mb-2 drop-shadow-2xl">
-              {data.business_name || 'Seu Estúdio'}
-            </h1>
-            <p className="text-sm font-bold opacity-60 uppercase tracking-widest max-w-[280px]">
-              {data.subtitle || 'Excelência em Estética Automotiva'}
-            </p>
+            <div className="space-y-2">
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-500 text-black mb-2">
+                <Sparkles className="w-3 h-3" />
+                <span className="text-[10px] font-black uppercase tracking-widest">Premium Detailing</span>
+              </div>
+              
+              <h1 className="text-4xl font-black tracking-tighter leading-none uppercase drop-shadow-lg">
+                {data.business_name || 'Seu Estúdio'}
+              </h1>
+              <p className="text-xs font-bold text-amber-500/80 uppercase tracking-[0.2em] max-w-[280px] mx-auto">
+                {data.subtitle || 'Excelência Automotiva'}
+              </p>
+            </div>
           </motion.div>
         </div>
       </div>
 
       {/* 2. PRIMARY ACTIONS (Floating WhatsApp) */}
-      <div className="px-6 -mt-8 relative z-20">
+      <div className="px-6 -mt-10 relative z-20">
         <Button 
           asChild
-          className="w-full h-18 rounded-2xl bg-amber-500 text-black hover:bg-amber-400 font-black uppercase tracking-tighter text-xl shadow-[0_20px_50px_rgba(245,158,11,0.3)] transition-all hover:scale-[1.02] active:scale-[0.98]"
+          className="w-full h-20 rounded-2xl bg-amber-500 text-black hover:bg-amber-400 font-black uppercase tracking-tighter text-xl shadow-[0_20px_60px_rgba(245,158,11,0.4)] transition-all hover:scale-[1.02] active:scale-[0.98]"
         >
           <a href={whatsappLink} target="_blank" rel="noopener noreferrer" className="flex items-center justify-center gap-4">
-            <MessageCircle className="w-6 h-6 fill-black" />
+            <MessageCircle className="w-7 h-7 fill-black" />
             <span>{data.cta_text || 'Solicitar Orçamento'}</span>
           </a>
         </Button>
       </div>
 
-      {/* 3. QUICK INFO BADGES */}
+      {/* 3. QUICK INFO BADGES (Solid for readability) */}
       <div className="px-6 mt-10 grid grid-cols-2 gap-4">
-        <div className="p-4 rounded-2xl bg-white/5 border border-white/10 flex flex-col gap-2">
+        <div className="p-5 rounded-2xl bg-[#121212] border border-white/5 flex flex-col gap-2 shadow-xl">
           <Clock className="w-5 h-5 text-amber-500" />
-          <span className="text-[10px] font-black uppercase tracking-widest opacity-40">Atendimento</span>
-          <span className="text-xs font-bold">{data.horario_funcionamento || 'Consulte Horário'}</span>
+          <span className="text-[9px] font-black uppercase tracking-widest text-white/30">Atendimento</span>
+          <span className="text-[11px] font-bold text-white/90 leading-tight">{data.horario_funcionamento || 'Seg a Sex: 08h-18h'}</span>
         </div>
-        <div className="p-4 rounded-2xl bg-white/5 border border-white/10 flex flex-col gap-2">
+        <div className="p-5 rounded-2xl bg-[#121212] border border-white/5 flex flex-col gap-2 shadow-xl">
           <MapPin className="w-5 h-5 text-amber-500" />
-          <span className="text-[10px] font-black uppercase tracking-widest opacity-40">Localização</span>
-          <span className="text-xs font-bold truncate">{data.area_atendimento || 'Sob Consulta'}</span>
+          <span className="text-[9px] font-black uppercase tracking-widest text-white/30">Localização</span>
+          <span className="text-[11px] font-bold text-white/90 leading-tight truncate">{data.area_atendimento || 'Grande São Paulo'}</span>
         </div>
       </div>
 
-      {/* 4. SERVICES SHOWCASE (The Core) */}
+      {/* 4. ADDRESS SECTION (Visible as requested) */}
+      {data.endereco_completo && (
+        <div className="px-6 mt-4">
+          <a 
+            href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(data.endereco_completo)}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="w-full p-5 rounded-2xl bg-[#121212] border border-white/5 flex items-center gap-4 hover:bg-[#181818] transition-colors"
+          >
+            <div className="p-3 rounded-xl bg-amber-500/10 text-amber-500">
+              <MapPin className="w-5 h-5" />
+            </div>
+            <div className="flex flex-col gap-1 overflow-hidden">
+              <span className="text-[9px] font-black uppercase tracking-widest text-white/30">Endereço Completo</span>
+              <span className="text-[11px] font-bold text-white/80 leading-tight truncate">{data.endereco_completo}</span>
+            </div>
+          </a>
+        </div>
+      )}
+
+      {/* 5. SERVICES SHOWCASE */}
       <div className="px-6 mt-12">
         <div className="flex items-center gap-3 mb-8">
           <div className="h-6 w-1 bg-amber-500 rounded-full shadow-[0_0_15px_rgba(245,158,11,0.5)]" />
-          <h2 className="text-xs font-black uppercase tracking-[0.3em] opacity-80">Serviços Especializados</h2>
+          <h2 className="text-xs font-black uppercase tracking-[0.3em] opacity-60">Serviços & Tratamentos</h2>
         </div>
 
-        <div className="grid gap-6">
+        <div className="grid gap-4">
           {services.map((s: any, i: number) => (
             <motion.div 
               key={i}
-              initial={{ opacity: 0, x: -20 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ delay: i * 0.1 }}
-              className="group relative rounded-3xl overflow-hidden border border-white/5 bg-[#0f0f0f] transition-all hover:border-amber-500/30"
+              className="group relative rounded-3xl overflow-hidden border border-white/5 bg-[#121212] transition-all hover:border-amber-500/30 p-6 flex flex-col gap-3 shadow-lg"
             >
-              {/* Service Image Background (Optional) */}
-              {s.image && (
-                <div className="absolute right-0 top-0 w-1/3 h-full opacity-20 grayscale group-hover:grayscale-0 transition-all duration-700">
-                  <img src={s.image} alt={s.nome} className="w-full h-full object-cover" />
-                  <div className="absolute inset-0 bg-gradient-to-l from-transparent to-[#0f0f0f]" />
+              <div className="flex justify-between items-start">
+                <div className="flex flex-col gap-1">
+                  <h3 className="text-base font-black uppercase tracking-tight">{s.nome}</h3>
+                  <div className="h-0.5 w-8 bg-amber-500 rounded-full opacity-40 group-hover:w-full transition-all duration-500" />
                 </div>
-              )}
-
-              <div className="p-6 relative z-10 flex flex-col gap-2">
-                <div className="flex justify-between items-start">
-                  <h3 className="text-lg font-black uppercase tracking-tighter max-w-[70%]">{s.nome}</h3>
-                  {s.preco && (
-                    <span className="text-amber-500 font-black text-sm tracking-tighter bg-amber-500/10 px-3 py-1 rounded-xl">
-                      {s.preco}
-                    </span>
-                  )}
-                </div>
-                {s.descricao && (
-                  <p className="text-xs font-medium opacity-50 leading-relaxed max-w-[80%]">{s.descricao}</p>
+                {s.preco && (
+                  <span className="text-amber-500 font-black text-xs tracking-tighter bg-amber-500/10 px-3 py-1.5 rounded-xl border border-amber-500/20">
+                    {s.preco}
+                  </span>
                 )}
-                <div className="mt-2 flex items-center gap-1 text-amber-500/60 font-black text-[9px] uppercase tracking-widest group-hover:text-amber-500 transition-colors">
-                  Saiba mais <ChevronRight className="w-3 h-3" />
-                </div>
               </div>
+              {s.descricao && (
+                <p className="text-[11px] font-medium text-white/50 leading-relaxed">{s.descricao}</p>
+              )}
             </motion.div>
           ))}
         </div>
