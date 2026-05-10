@@ -10,47 +10,17 @@ export default async function AdminLayout({
 }) {
   const supabase = await createClient();
   
-  // 1. Extração direta e blindada do Token (Bypass SSR bugs)
-  const allCookies = (await cookies()).getAll();
-  const authCookie = allCookies.find(c => c.name.includes('-auth-token'));
-  
-  let accessToken: string | undefined = undefined;
-  if (authCookie?.value) {
-    try {
-      // Formato JSON padrão
-      if (authCookie.value.startsWith('{')) {
-        accessToken = JSON.parse(authCookie.value)?.access_token;
-      } else {
-        // Formato base64 (usado em novas versões do SSR)
-        const possibleJson = atob(authCookie.value);
-        accessToken = JSON.parse(possibleJson)?.access_token;
-      }
-    } catch (err) {
-      console.warn('SERVER: Failed to parse auth cookie manually', err);
-    }
-  }
-
-  // 2. Validar o token de forma explícita com o servidor Supabase
   let currentUser = null;
 
   try {
-    if (accessToken) {
-      const { data, error } = await supabase.auth.getUser(accessToken);
-      if (!error && data?.user) {
-        currentUser = data.user;
-      }
-    }
-
-    // Fallback se não houver token manual ou getUser falhou
-    if (!currentUser) {
-      const { data, error } = await supabase.auth.getSession();
-      if (!error && data?.session?.user) {
-        currentUser = data.session.user;
-      }
+    const { data: { user }, error: authError } = await supabase.auth.getUser();
+    if (!authError && user) {
+      currentUser = user;
     }
   } catch (err) {
     console.error('SERVER ADMIN: Session validation failed', err);
   }
+
   
   if (!currentUser) {
      return (
