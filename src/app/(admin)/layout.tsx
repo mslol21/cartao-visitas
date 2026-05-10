@@ -15,17 +15,10 @@ export default async function AdminLayout({
   const cookieNames = allCookies.map(c => c.name).join(', ');
 
   try {
-    // Tenta obter o usuário de forma segura
-    const { data: { user }, error: authError } = await supabase.auth.getUser();
-    
-    if (!authError && user) {
-      currentUser = user;
-    } else {
-      // Fallback para getSession
-      const { data: { session } } = await supabase.auth.getSession();
-      if (session?.user) {
-        currentUser = session.user;
-      }
+    // Usa getSession() como primário - lê o JWT do cookie localmente sem chamada de rede
+    const { data: { session }, error: sessionError } = await supabase.auth.getSession();
+    if (!sessionError && session?.user) {
+      currentUser = session.user;
     }
   } catch (err) {
     console.error('SERVER ADMIN: Session validation failed', err);
