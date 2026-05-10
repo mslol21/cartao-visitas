@@ -158,6 +158,7 @@ export function CardPreview({
   const isVeterinario = data.profession === 'veterinario' || data.category === 'veterinario';
   const isArtesao = data.profession === 'artesao' || data.category === 'artesao';
   const isMusico = data.profession === 'musico' || data.category === 'musico';
+  const cf = (data.custom_fields as any) || {};
   
   const isStandardized = isModernService || ['quentinhas', 'assistencia_celular', 'van_escolar', 'guia_turistico', 'loja_online', 'esteticista', 'pizzaria', 'cafeteria', 'vistoria_veicular'].some(p => data.profession === p);
 
