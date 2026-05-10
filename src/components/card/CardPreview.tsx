@@ -905,7 +905,7 @@ END:VCARD`;
                  className={cn(
                     "w-full h-full transition-colors duration-500 relative overflow-hidden",
                     (data.background_video_url) ? "hidden" : "",
-                    ((isPro || data.profession === 'esteticista' || data.profession === 'artesao' || data.profession === 'streetup') && (data.custom_fields as any)?.cor_fundo) ? "bg-transparent" :
+                    ((data.custom_fields as any)?.cor_fundo) ? "bg-transparent" :
                      isPro ? (
                        isBarbearia ? "bg-[#0f0f0f]" : 
                        isEsteticaAutomotiva ? "bg-[#050505]" : 
@@ -921,12 +921,7 @@ END:VCARD`;
                         isPetshop ? "bg-[#fffaf5]" :
                         isVeterinario ? "bg-[#ecfdf5]" :
                         isArtesao ? "bg-[#fffbeb]" :
-                       isAdvogado ? "bg-[#0f172a]" :
-                       "konnexy-digital-field"
-                     ) : "bg-white dark:bg-slate-950"
-                   )}
-                >
-                  {isBarbearia ? (
+                           {isBarbearia && !cf.cor_fundo ? (
                     <>
                       {/* Premium Wood/Leather Texture Simulation */}
                       <div className="absolute inset-0 opacity-20" style={{
@@ -938,7 +933,7 @@ END:VCARD`;
                       {/* Barber Pole Stripes (Animated) */}
                       <div className="absolute -left-20 top-0 bottom-0 w-40 opacity-5 pointer-events-none rotate-12 bg-gradient-to-r from-red-600 via-white to-blue-600 bg-[length:100%_40px] animate-[slide-down_5s_linear_infinite]" />
                     </>
-                  ) : isEsteticaAutomotiva ? (
+                  ) : isEsteticaAutomotiva && !cf.cor_fundo ? (
                     <>
                       <div className="absolute inset-0 bg-gradient-to-br from-[#121212] via-[#050505] to-[#000000]" />
                       <div className="absolute inset-0 opacity-[0.03]" style={{
@@ -947,7 +942,7 @@ END:VCARD`;
                         backgroundPosition: '0 0, 8px 8px'
                       }} />
                     </>
-                  ) : isBeauty ? (
+                  ) : isBeauty && !cf.cor_fundo ? (
                     <>
                        <div className="absolute inset-0 bg-gradient-to-br from-[#FEF9F9] via-[#FBFAF9] to-[#FDF2F8] dark:from-[#1a1012] dark:to-[#0a0506]" />
                        <div className="absolute inset-0 opacity-10" style={{
@@ -957,7 +952,7 @@ END:VCARD`;
                        {/* Silk/Glossy Effect */}
                        <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/10 to-transparent rotate-45 translate-x-1/2" />
                     </>
-                  ) : isHealth || isVeterinario ? (
+                  ) : (isHealth || isVeterinario) && !cf.cor_fundo ? (
                     <>
                        <div className="absolute inset-0 bg-gradient-to-br from-[#F0FDF4] via-[#F8FAFC] to-[#DCFCE7] dark:from-[#06100a] dark:to-[#020604]" />
                        <div className="absolute inset-0 opacity-10" style={{
@@ -968,7 +963,7 @@ END:VCARD`;
                        <div className="absolute top-0 right-0 w-64 h-64 bg-emerald-400/10 blur-[100px] rounded-full -translate-y-1/2 translate-x-1/2" />
                        <div className="absolute bottom-0 left-0 w-48 h-48 bg-emerald-600/10 blur-[80px] rounded-full translate-y-1/2 -translate-x-1/2" />
                     </>
-                  ) : isSales ? (
+                  ) : isSales && !cf.cor_fundo ? (
                     <>
                        <div className="absolute inset-0 bg-gradient-to-br from-[#F5F3FF] via-[#F8FAFC] to-[#EDE9FE] dark:from-[#0c0a13] dark:to-[#05040a]" />
                        <div className="absolute inset-0 opacity-[0.03]" style={{
@@ -976,7 +971,7 @@ END:VCARD`;
                          backgroundSize: '40px 40px'
                        }} />
                     </>
-                  ) : isFood ? (
+                  ) : isFood && !cf.cor_fundo ? (
                     <>
                        <div className="absolute inset-0 bg-gradient-to-br from-[#FEF2F2] via-[#F8FAFC] to-[#FEE2E2] dark:from-[#130a0a] dark:to-[#0a0505]" />
                        <div className="absolute inset-0 opacity-5" style={{
@@ -984,18 +979,18 @@ END:VCARD`;
                          backgroundSize: '30px 30px'
                        }} />
                     </>
-                   ) : isTech ? (
+                   ) : isTech && !cf.cor_fundo ? (
                      <>
                         <div className="absolute inset-0 bg-gradient-to-br from-[#020617] via-[#0f172a] to-[#0141ff20]" />
                         <div className="absolute inset-0 opacity-[0.1]" style={{
                           backgroundImage: `linear-gradient(rgba(59, 130, 246, 0.2) 1px, transparent 1px), linear-gradient(90deg, rgba(59, 130, 246, 0.2) 1px, transparent 1px)`,
                           backgroundSize: '30px 30px'
                         }} />
-                        <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(59,130,246,0.15),transparent_80%)]" />
+                        <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(59, 130, 246, 0.15),transparent_80%)]" />
                         {/* Matrix-like light effect */}
-                        <div className="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-blue-500 to-transparent opacity-50 shadow-[0_0_20px_rgba(59,130,246,0.5)]" />
+                        <div className="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-blue-500 to-transparent opacity-50 shadow-[0_0_20px_rgba(59, 130, 246, 0.5)]" />
                      </>
-                  ) : isRealEstate ? (
+                  ) : isRealEstate && !cf.cor_fundo ? (
                     <>
                        <div className="absolute inset-0 bg-gradient-to-br from-[#ffffff] via-[#f8fafc] to-[#f1f5f9]" />
                        <div className="absolute inset-0 opacity-[0.02]" style={{
@@ -1003,7 +998,7 @@ END:VCARD`;
                          backgroundSize: '60px 60px'
                        }} />
                     </>
-                  ) : isDriver ? (
+                  ) : isDriver && !cf.cor_fundo ? (
                     <>
                        <div className="absolute inset-0 bg-[#111111]" />
                        <div className="absolute top-0 left-0 right-0 h-1/2 bg-gradient-to-b from-white/5 to-transparent" />
@@ -1012,7 +1007,7 @@ END:VCARD`;
                          backgroundSize: '50px 50px'
                        }} />
                     </>
-                  ) : isPetshop ? (
+                  ) : isPetshop && !cf.cor_fundo ? (
                     <>
                        <div className="absolute inset-0 bg-gradient-to-br from-[#fff7ed] via-[#fffaf5] to-[#ffedd5]" />
                        <div className="absolute inset-0 opacity-[0.05]" style={{
@@ -1020,7 +1015,7 @@ END:VCARD`;
                          backgroundSize: '24px 24px'
                        }} />
                     </>
-                  ) : isVeterinario ? (
+                  ) : isVeterinario && !cf.cor_fundo ? (
                     <>
                        <div className="absolute inset-0 bg-gradient-to-br from-[#ecfdf5] via-[#f0fdf4] to-[#d1fae5]" />
                        <div className="absolute inset-0 opacity-[0.05]" style={{
@@ -1028,7 +1023,7 @@ END:VCARD`;
                          backgroundSize: '24px 24px'
                        }} />
                     </>
-                  ) : isArtesao ? (
+                  ) : isArtesao && !cf.cor_fundo ? (
                     <>
                        <div className="absolute inset-0 bg-gradient-to-br from-[#FFFBEB] via-[#FEF3C7] to-[#FDE68A] dark:from-[#130d05] dark:to-[#0a0702]" />
                        <div className="absolute inset-0 opacity-10" style={{
@@ -1041,7 +1036,7 @@ END:VCARD`;
                        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-amber-500/[0.03] to-amber-700/[0.05]" />
                        <div className="absolute -top-24 -left-24 w-64 h-64 bg-amber-500/10 blur-[100px] rounded-full" />
                     </>
-                  ) : isStandardized ? null : isService ? (
+                  ) : isStandardized && !cf.cor_fundo ? null : isService && !cf.cor_fundo ? (
                      <>
                         <div className="absolute inset-0 bg-gradient-to-br from-[#FFF7ED] via-[#F8FAFC] to-[#FFEDD5] dark:from-[#130d0a] dark:to-[#0a0705]" />
                         <div className="absolute inset-0 opacity-[0.04]" style={{
@@ -1049,7 +1044,7 @@ END:VCARD`;
                           backgroundSize: '25px 25px'
                         }} />
                      </>
-                   ) : isAdvogado ? (
+                   ) : isAdvogado && !cf.cor_fundo ? (
                      <>
                         <div className="absolute inset-0 bg-gradient-to-br from-[#0f172a] via-[#1e293b] to-[#0f172a]" />
                         <div className="absolute inset-0 opacity-[0.03]" style={{
@@ -1058,9 +1053,9 @@ END:VCARD`;
                         }} />
                         <div className="absolute inset-0 bg-gradient-to-t from-slate-900 via-transparent to-transparent" />
                      </>
-                   ) : (
+                   ) : !cf.cor_fundo ? (
                      <DigitalField accentColor={frameConfig?.accent || '#00D4FF'} active={isPro} />
-                   )}
+                   ) : null}
                   {!isPro && (
                     <div className="absolute inset-0 bg-slate-50 dark:bg-slate-900/50" />
                   )}
@@ -4423,3 +4418,4 @@ END:VCARD`;
   </TooltipProvider>
 );
 }
+
