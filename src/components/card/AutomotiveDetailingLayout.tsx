@@ -16,12 +16,40 @@ import {
   Linkedin,
   Facebook,
   Youtube,
-  Globe
+  Globe,
+  Copy,
+  Home,
+  Calendar,
+  Truck,
+  Monitor,
+  History,
+  HeartPulse,
+  Smartphone,
+  Calculator,
+  Receipt,
+  HardHat,
+  PawPrint,
+  UserPlus,
+  GraduationCap,
+  Package,
+  Gem,
+  Landmark,
+  Building2,
+  Scale,
+  Brush,
+  Flower2,
+  CheckCircle2,
+  Coffee,
+  Wifi,
+  Heart,
+  User
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Profile } from '@/types/profile';
 import { cn } from '@/lib/utils';
 import { motion } from 'framer-motion';
+import { getProfessionConfig } from '@/config/professions';
+import { toast } from 'sonner';
 
 interface AutomotiveDetailingLayoutProps {
   data: Partial<Profile>;
@@ -43,10 +71,52 @@ export function AutomotiveDetailingLayout({ data, isPro }: AutomotiveDetailingLa
     image: s.image_url
   }));
 
-  // Background logic: If background_video_url exists, use it. 
-  // Otherwise, use a high-quality detailing photo instead of stretching the logo.
+  const getFieldIcon = (fieldName: string) => {
+    const name = fieldName.toLowerCase();
+    if (name.includes('atende_domicilio') || name.includes('residencial') || name.includes('home')) return Home;
+    if (name.includes('agendamento') || name.includes('horario') || name.includes('schedule')) return Calendar;
+    if (name.includes('oab') || name.includes('creci') || name.includes('nr10') || name.includes('registro') || name.includes('crmv') || name.includes('garantia') || name.includes('seguro')) return ShieldCheck;
+    if (name.includes('delivery') || name.includes('entreg') || name.includes('frete') || name.includes('veiculo') || name.includes('truck') || name.includes('van')) return Truck;
+    if (name.includes('online') || name.includes('remoto') || name.includes('digital') || name.includes('zoom')) return Monitor;
+    if (name.includes('experiencia') || name.includes('anos')) return History;
+    if (name.includes('socorro') || name.includes('emergencia') || name.includes('urgencia') || name.includes('plantao')) return Zap;
+    if (name.includes('clinico') || name.includes('saude') || name.includes('medico') || name.includes('vital')) return HeartPulse;
+    if (name.includes('celular') || name.includes('mobile') || name.includes('phone')) return Smartphone;
+    if (name.includes('cartao') || name.includes('pagamento') || name.includes('pix') || name.includes('credit')) return Calculator;
+    if (name.includes('orcamento') || name.includes('recibo')) return Receipt;
+    if (['reforma', 'ferramentas', 'obra', 'construction', 'hard_hat', 'leva_produtos'].some(k => name.includes(k))) return HardHat;
+    if (name.includes('banho') || name.includes('tosa') || name.includes('grooming') || name.includes('animal') || name.includes('pet') || name.includes('vet')) return PawPrint;
+    if (name.includes('monitor') || name.includes('ajudante')) return UserPlus;
+    if (name.includes('ar_condicionado') || name.includes('climatizacao')) return Zap;
+    if (name.includes('escola') || name.includes('faculdade') || name.includes('universitario')) return GraduationCap;
+    if (name.includes('materiais') || name.includes('producao') || name.includes('encomenda') || name.includes('pronta_entrega')) return Package;
+    if (name.includes('alto_padrao') || name.includes('premium')) return Gem;
+    if (name.includes('financiamento')) return Landmark;
+    if (name.includes('planta') || name.includes('imovel') || name.includes('venda_aluguel')) return Building2;
+    if (name.includes('avaliacao')) return Scale;
+    if (name.includes('pele') || name.includes('estetica') || name.includes('facial') || name.includes('injetaveis') || name.includes('microagulhamento')) return Sparkles;
+    if (name.includes('unha') || name.includes('manicure') || name.includes('pigmentacao') || name.includes('nail_art')) return Brush;
+    if (name.includes('crp') || name.includes('autoclave') || name.includes('biosseguranca')) return ShieldCheck;
+    if (name.includes('terapia_casal')) return Heart;
+    if (name.includes('depilacao') || name.includes('laser')) return Zap;
+    if (name.includes('spa') || name.includes('drenagem') || name.includes('relaxante')) return Flower2;
+    if (name.includes('convenio') || name.includes('plano')) return CheckCircle2;
+    if (name.includes('cafe') || name.includes('coffee') || name.includes('torra') || name.includes('preparo')) return Coffee;
+    if (name.includes('wifi') || name.includes('wi_fi')) return Wifi;
+    if (name.includes('coworking')) return Monitor;
+    return Award;
+  };
+
+  // Background logic
   const bgMedia = data.background_video_url || 'https://images.unsplash.com/photo-1601362840469-51e4d8d59085?q=80&w=2070&auto=format&fit=crop';
   const isVideo = bgMedia.match(/\.(mp4|webm|ogg|mov)$/i);
+
+  const globalConfig = getProfessionConfig(data.profession || data.category);
+  const highlightFields = globalConfig?.customFields.filter(field => {
+    const value = cf?.[field.name];
+    if (field.type === 'boolean') return value === true;
+    return (value !== undefined && value !== null && value !== '' && (Array.isArray(value) ? value.length > 0 : true));
+  }) || [];
 
   return (
     <div className="w-full min-h-full bg-[#080808] text-white flex flex-col pb-20 font-sans selection:bg-amber-500 selection:text-black">
@@ -134,7 +204,7 @@ export function AutomotiveDetailingLayout({ data, isPro }: AutomotiveDetailingLa
         </div>
       </div>
 
-      {/* 4. ADDRESS SECTION (Visible as requested) */}
+      {/* 4. ADDRESS SECTION (Visible if filled) */}
       {data.endereco_completo && (
         <div className="px-6 mt-4">
           <a 
@@ -154,7 +224,96 @@ export function AutomotiveDetailingLayout({ data, isPro }: AutomotiveDetailingLa
         </div>
       )}
 
-      {/* 5. SERVICES SHOWCASE */}
+      {/* 5. HIGHLIGHTS SECTION (Atributos & Especialidades) */}
+      {highlightFields.length > 0 && (
+        <div className="px-6 mt-12">
+          <div className="flex items-center gap-3 mb-8">
+            <div className="h-6 w-1 bg-amber-500 rounded-full shadow-[0_0_15px_rgba(245,158,11,0.5)]" />
+            <h2 className="text-xs font-black uppercase tracking-[0.3em] opacity-60">Diferenciais & Atributos</h2>
+          </div>
+          <div className="grid grid-cols-2 gap-4">
+            {highlightFields.map((field) => {
+              const value = cf[field.name];
+              const Icon = getFieldIcon(field.name);
+              const displayLabel = field.label.replace(/\s*\(.*?\)\s*/g, '');
+              const isArray = field.type === 'array' || Array.isArray(value);
+
+              return (
+                <div key={field.name} className={cn(
+                  "p-5 rounded-3xl bg-[#121212] border border-white/5 flex flex-col items-center text-center gap-3",
+                  isArray ? "col-span-2" : ""
+                )}>
+                  {field.type === 'boolean' ? (
+                    <>
+                      <div className="p-3 rounded-2xl bg-amber-500/10 text-amber-500">
+                        <Icon className="w-6 h-6" />
+                      </div>
+                      <span className="text-[10px] font-black uppercase tracking-tight leading-tight">{displayLabel}</span>
+                      <div className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/20">
+                        <Check className="w-3 h-3 text-emerald-500" />
+                        <span className="text-[8px] font-black text-emerald-600 uppercase">Sim</span>
+                      </div>
+                    </>
+                  ) : isArray ? (
+                    <>
+                      <div className="flex items-center gap-3 mb-2 w-full justify-center">
+                        <Icon className="w-4 h-4 text-amber-500" />
+                        <span className="text-[10px] font-black uppercase tracking-widest text-white/30">{displayLabel}</span>
+                      </div>
+                      <div className="flex flex-wrap items-center justify-center gap-2 w-full">
+                        {(Array.isArray(value) ? value : String(value).split(/[,;]/)).map((item: string, i: number) => (
+                          <span key={i} className="text-[10px] font-bold px-3 py-1.5 rounded-xl bg-white/5 border border-white/5">
+                            {item.trim()}
+                          </span>
+                        ))}
+                      </div>
+                    </>
+                  ) : (
+                    <>
+                      <Icon className="w-5 h-5 text-amber-500/60" />
+                      <div className="flex flex-col gap-1">
+                        <span className="text-[9px] font-black uppercase tracking-widest text-white/30">{displayLabel}</span>
+                        <span className="text-xs font-bold text-white">{value}</span>
+                      </div>
+                    </>
+                  )}
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      )}
+
+      {/* 6. PIX SECTION (Visible if filled) */}
+      {cf.chave_pix && (
+        <div className="px-6 mt-12">
+          <div className="flex items-center gap-3 mb-6">
+            <div className="h-6 w-1 bg-teal-500 rounded-full shadow-[0_0_15px_rgba(20,184,166,0.5)]" />
+            <h2 className="text-xs font-black uppercase tracking-[0.3em] opacity-60 text-teal-500">Pagamento PIX</h2>
+          </div>
+          <Button
+            variant="outline"
+            onClick={() => {
+              navigator.clipboard.writeText(cf.chave_pix);
+              toast.success('Chave PIX copiada!');
+            }}
+            className="w-full h-16 rounded-2xl bg-teal-950/20 border-teal-500/20 hover:bg-teal-950/40 text-teal-100 flex items-center justify-between px-6 group"
+          >
+            <div className="flex items-center gap-4">
+              <div className="p-2 rounded-xl bg-teal-500/20 text-teal-400 group-hover:scale-110 transition-transform">
+                <Copy className="w-5 h-5" />
+              </div>
+              <div className="flex flex-col items-start">
+                <span className="text-[9px] font-black uppercase tracking-widest text-teal-500/60">Copiar Chave</span>
+                <span className="text-sm font-bold font-mono truncate max-w-[180px]">{cf.chave_pix}</span>
+              </div>
+            </div>
+            <span className="text-[10px] font-black uppercase text-teal-500 opacity-40">Tocar para copiar</span>
+          </Button>
+        </div>
+      )}
+
+      {/* 7. SERVICES SHOWCASE */}
       <div className="px-6 mt-12">
         <div className="flex items-center gap-3 mb-8">
           <div className="h-6 w-1 bg-amber-500 rounded-full shadow-[0_0_15px_rgba(245,158,11,0.5)]" />
@@ -186,32 +345,34 @@ export function AutomotiveDetailingLayout({ data, isPro }: AutomotiveDetailingLa
         </div>
       </div>
 
-      {/* 5. WHY US (Diferenciais) */}
-      <div className="px-6 mt-16 pb-10">
-        <div className="p-8 rounded-[3rem] bg-amber-500 text-black shadow-[0_30px_60px_-15px_rgba(245,158,11,0.3)]">
-          <div className="flex items-center gap-3 mb-6">
-            <ShieldCheck className="w-6 h-6" />
-            <h2 className="text-sm font-black uppercase tracking-widest">Compromisso de Qualidade</h2>
-          </div>
-          
-          <div className="grid gap-4">
-            {(data.diferenciais || ['Produtos Importados', 'Garantia de Satisfação', 'Entrega no Prazo']).map((dif, i) => (
-              <div key={i} className="flex items-center gap-3">
-                <Check className="w-4 h-4 stroke-[3px]" />
-                <span className="text-xs font-black uppercase tracking-tight">{dif}</span>
-              </div>
-            ))}
-          </div>
-
-          <div className="mt-8 pt-8 border-t border-black/10">
+      {/* 8. BIO / ABOUT */}
+      {data.bio_professional && (
+        <div className="px-6 mt-16 pb-10">
+          <div className="p-8 rounded-[3rem] bg-amber-500 text-black shadow-[0_30px_60px_-15px_rgba(245,158,11,0.3)]">
+            <div className="flex items-center gap-3 mb-6">
+              <User className="w-6 h-6" />
+              <h2 className="text-sm font-black uppercase tracking-widest">Sobre o Estúdio</h2>
+            </div>
+            
             <p className="text-sm font-bold leading-relaxed italic opacity-80">
-              "{data.bio_professional || 'Tratamos cada veículo como uma obra de arte única.'}"
+              "{data.bio_professional}"
             </p>
+
+            <div className="mt-8 pt-8 border-t border-black/10">
+              <div className="flex flex-wrap gap-2">
+                {(data.diferenciais || []).map((dif, i) => (
+                  <div key={i} className="flex items-center gap-2 px-3 py-1 bg-black/5 rounded-full">
+                    <Check className="w-3 h-3" />
+                    <span className="text-[9px] font-black uppercase">{dif}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
           </div>
         </div>
-      </div>
+      )}
 
-      {/* 6. SOCIAL & BRANDING */}
+      {/* 9. SOCIAL & BRANDING */}
       <div className="px-6 mt-8 flex flex-col items-center gap-10">
         <div className="flex gap-6">
           {data.instagram && (
