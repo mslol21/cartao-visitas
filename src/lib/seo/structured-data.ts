@@ -32,15 +32,8 @@ export function generateProductSchema() {
     offers: [
       {
         '@type': 'Offer',
-        name: 'Plano Gratuito',
-        price: '0',
-        priceCurrency: 'BRL',
-        availability: 'https://schema.org/InStock',
-      },
-      {
-        '@type': 'Offer',
-        name: 'Plano PRO',
-        price: '49',
+        name: 'Plano Konnexy Pro',
+        price: '49.90',
         priceCurrency: 'BRL',
         availability: 'https://schema.org/InStock',
         priceValidUntil: '2026-12-31',
