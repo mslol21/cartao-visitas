@@ -12,7 +12,7 @@ export function Footer() {
             <Link href="/" className="flex items-center">
               <Logo variant="horizontal" className="scale-75 origin-left" />
             </Link>
-            <p className="text-xs font-bold text-muted-foreground uppercase tracking-[0.2em]">Networking Digital de Elite</p>
+            <p className="text-xs font-bold text-muted-foreground uppercase tracking-[0.2em]">Venda mais pelo WhatsApp</p>
           </div>
 
           <nav className="flex flex-wrap justify-center items-center gap-x-12 gap-y-4">
@@ -35,7 +35,7 @@ export function Footer() {
               © {currentYear} Konnexy.
             </p>
             <p className="text-[9px] font-medium text-muted-foreground/40">
-              Feito com excelência para profissionais globais.
+              Transforme seu Instagram e WhatsApp em uma máquina de vendas.
             </p>
           </div>
         </div>

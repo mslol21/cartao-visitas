@@ -20,31 +20,39 @@ export function Logo({ className, variant = 'horizontal', showTagline = true }: 
       whileHover={{ scale: 1.02 }}
       transition={{ type: "spring", stiffness: 400, damping: 17 }}
     >
-      <div className="relative">
+      <div className="relative shrink-0">
         {/* Glow effect background that reacts to hover */}
-        <div className="absolute -inset-2 bg-gradient-to-r from-amber-500/20 to-orange-600/20 blur-xl rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+        <div className="absolute -inset-2 bg-gradient-to-r from-[#00D4FF]/25 to-[#0D5B80]/25 blur-xl rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
         
-        <img 
-          src="/logo.png" 
-          alt="Konnexy" 
-          className={cn(
-            "relative z-10 object-contain transition-all duration-500",
-            isSmall ? "w-12 h-12" : "h-16 w-auto",
-            "filter drop-shadow-[0_2px_8px_rgba(0,0,0,0.3)] group-hover:drop-shadow-[0_0_20px_rgba(245,158,11,0.4)]"
-          )} 
-        />
+        <div className="relative z-10 w-10 h-10 md:w-11 md:h-11 rounded-xl bg-slate-900 border border-white/10 flex items-center justify-center p-1.5 shadow-lg group-hover:border-[#00D4FF]/30 transition-colors">
+          <img 
+            src="/logo.png" 
+            alt="Konnexy Icon" 
+            className="w-full h-full object-contain filter drop-shadow-[0_2px_4px_rgba(0,0,0,0.4)]"
+          />
+        </div>
       </div>
 
       {!isSmall && (
         <div className="flex flex-col justify-center">
+          <div className="flex items-center gap-2">
+            <span className="font-display font-black text-lg md:text-xl tracking-tight text-white leading-none group-hover:text-[#00D4FF] transition-colors">
+              Konnexy
+            </span>
+            {variant === 'pro' && (
+              <span className="text-[8px] bg-gradient-to-r from-[#00D4FF] to-[#0D5B80] text-slate-950 font-black px-1.5 py-0.5 rounded-sm uppercase tracking-wider">
+                PRO
+              </span>
+            )}
+          </div>
           {showTagline && (
-            <div className="flex flex-col">
-              <span className="text-[11px] font-black text-transparent bg-clip-text bg-gradient-to-r from-amber-400 via-orange-500 to-amber-600 uppercase tracking-[0.3em] leading-none mb-1.5 drop-shadow-sm">
+            <div className="flex flex-col mt-1.5">
+              <span className="text-[10px] font-black text-transparent bg-clip-text bg-gradient-to-r from-[#00D4FF] via-[#0D5B80] to-[#00D4FF] uppercase tracking-[0.25em] leading-none mb-1 drop-shadow-sm">
                 CONECTA • ORGANIZA • VENDE
               </span>
-              <div className="flex items-center gap-2">
-                <div className="h-[2px] w-8 bg-gradient-to-r from-amber-500 to-orange-600 rounded-full" />
-                <div className="h-[1px] flex-1 bg-white/5 group-hover:bg-white/10 transition-colors" />
+              <div className="flex items-center gap-1.5">
+                <div className="h-[2px] w-6 bg-gradient-to-r from-[#00D4FF] to-[#0D5B80] rounded-full" />
+                <div className="h-[1px] flex-1 bg-white/5" />
               </div>
             </div>
           )}

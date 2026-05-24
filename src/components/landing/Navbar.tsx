@@ -29,32 +29,30 @@ export function Navbar() {
   return (
     <header 
       className={cn(
-        "fixed top-0 left-0 right-0 z-[100] transition-all duration-300 px-6",
-        scrolled ? "py-4" : "py-8"
+        "fixed top-0 left-0 right-0 z-[100] transition-all duration-300 w-full border-b backdrop-blur-md",
+        scrolled 
+          ? "bg-[#05070B]/90 border-white/5 py-4 shadow-xl" 
+          : "bg-transparent border-transparent py-5"
       )}
     >
-      <div className={cn(
-        "max-w-7xl mx-auto rounded-[2rem] transition-all duration-500",
-        scrolled ? "bg-slate-950/95 backdrop-blur-xl shadow-2xl px-6 h-16 border-b border-white/5" : "px-0 h-20"
-      )}>
-        <div className="flex items-center justify-between h-full">
-          {/* Brand */}
-          <Link href="/" className="flex items-center group">
-            <Logo variant="horizontal" showTagline={false} className="scale-75 origin-left" />
-          </Link>
+      <div className="max-w-7xl mx-auto px-6 flex items-center justify-between h-14 w-full">
+        {/* Brand */}
+        <Link href="/" className="flex items-center group">
+          <Logo variant="horizontal" showTagline={false} />
+        </Link>
 
-          {/* Nav Links */}
-          <nav className="hidden md:flex items-center gap-10">
-            {navLinks.map((link) => (
-              <a 
-                key={link.name}
-                href={link.href} 
-                className="text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground hover:text-primary transition-colors"
-              >
-                {link.name}
-              </a>
-            ))}
-          </nav>
+        {/* Nav Links */}
+        <nav className="hidden md:flex items-center gap-10">
+          {navLinks.map((link) => (
+            <a 
+              key={link.name}
+              href={link.href} 
+              className="text-[11px] font-black uppercase tracking-[0.25em] text-slate-450 hover:text-[#00D4FF] transition-colors"
+            >
+              {link.name}
+            </a>
+          ))}
+        </nav>
 
           {/* Auth Actions */}
           <div className="hidden md:flex items-center gap-3">
@@ -70,9 +68,9 @@ export function Navbar() {
                 <Button asChild variant="ghost" className="rounded-xl font-bold text-xs h-11">
                   <Link href="/login">Entrar</Link>
                 </Button>
-                <Button asChild className="rounded-2xl h-11 px-6 bg-gradient-to-r from-amber-500 to-orange-600 hover:from-amber-600 hover:to-orange-700 text-white font-bold shadow-xl shadow-amber-500/20 transition-all border-0">
+                <Button asChild className="rounded-2xl h-11 px-6 bg-gradient-to-r from-[#0D5B80] to-[#0A3D58] hover:from-[#116F9C] hover:to-[#0D5073] text-white font-bold shadow-xl shadow-[#0D5B80]/20 transition-all border border-[#00B4D8]/20">
                   <a href="https://wa.me/5516991551200?text=Ol%C3%A1%2C%20quero%20vender%20mais%20com%20a%20Konnexy" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2">
-                    <Sparkles className="w-4 h-4 text-amber-300 animate-pulse" />
+                    <Sparkles className="w-4 h-4 text-[#00D4FF] animate-pulse" />
                     Quero Vender Mais
                   </a>
                 </Button>
@@ -88,7 +86,6 @@ export function Navbar() {
             {isOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
           </button>
         </div>
-      </div>
 
       {/* Mobile Menu Overlay */}
       <AnimatePresence>
@@ -120,7 +117,7 @@ export function Navbar() {
                     <Button asChild variant="outline" size="lg" className="rounded-2xl w-full">
                       <Link href="/login" onClick={() => setIsOpen(false)}>Entrar</Link>
                     </Button>
-                    <Button asChild variant="hero" size="lg" className="rounded-2xl w-full">
+                    <Button asChild size="lg" className="rounded-2xl w-full bg-gradient-to-r from-[#0D5B80] to-[#0A3D58] hover:from-[#116F9C] hover:to-[#0D5073] text-white font-bold border border-[#00B4D8]/20">
                       <a href="https://wa.me/5516991551200?text=Ol%C3%A1%2C%20quero%20vender%20mais%20com%20a%20Konnexy" target="_blank" rel="noopener noreferrer" onClick={() => setIsOpen(false)}>Quero Vender Mais</a>
                     </Button>
                   </>
