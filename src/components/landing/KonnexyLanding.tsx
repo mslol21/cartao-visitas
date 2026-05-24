@@ -1342,8 +1342,220 @@ export function KonnexyLanding() {
           </div>
         </div>
       </section>
+      {/* 8. COMO FUNCIONA (Timeline) */}
+      <section id="como-funciona" className="py-24 border-t border-white/5 bg-[#070A0F]/30 relative overflow-hidden z-10">
+        {/* Subtle glow */}
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[350px] h-[350px] bg-[#00D4FF]/5 rounded-full blur-[100px] pointer-events-none -z-10" />
 
-      {/* 8. CTA FINAL */}
+        <div className="container px-6 mx-auto max-w-6xl">
+          <div className="text-center max-w-3xl mx-auto mb-20">
+            <span className="text-xs font-black uppercase tracking-[0.25em] text-[#00D4FF] mb-3 block">Linha do Tempo</span>
+            <h2 className="text-3xl md:text-4xl lg:text-5xl font-black mb-4 font-display text-white">
+              Como funciona o Konnexy?
+            </h2>
+            <p className="text-slate-400 text-base md:text-lg">
+              Em apenas três etapas simples, sua loja está configurada e pronta para receber pedidos direto no WhatsApp.
+            </p>
+          </div>
+
+          <div className="relative">
+            {/* Center line for desktop timeline */}
+            <div className="hidden lg:block absolute left-1/2 -translate-x-1/2 top-0 bottom-0 w-[2px] bg-gradient-to-b from-[#00D4FF]/20 via-[#0D5B80]/40 to-[#00D4FF]/10" />
+
+            <div className="space-y-16 lg:space-y-24 relative">
+              {/* Step 1 */}
+              <motion.div 
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.6 }}
+                className="flex flex-col lg:flex-row items-center gap-8 lg:gap-16"
+              >
+                <div className="lg:w-1/2 lg:text-right flex flex-col items-center lg:items-end order-2 lg:order-1">
+                  <span className="text-[10px] font-black text-[#00D4FF] bg-[#00D4FF]/10 px-3 py-1 rounded-full uppercase tracking-wider mb-3">Passo 1</span>
+                  <h3 className="text-xl font-bold text-white mb-3">Cadastre seus produtos</h3>
+                  <p className="text-sm text-slate-400 leading-relaxed max-w-md lg:text-right text-center">
+                    Crie categorias claras e adicione fotos, preços e variações em poucos cliques. Nosso painel é 100% otimizado para celular.
+                  </p>
+                </div>
+                {/* Timeline node */}
+                <div className="w-14 h-14 rounded-full bg-slate-900 border-2 border-[#00D4FF] text-white flex items-center justify-center font-bold text-lg shadow-lg shadow-[#00D4FF]/10 z-10 shrink-0 order-1 lg:order-2">
+                  1
+                </div>
+                <div className="lg:w-1/2 order-3">
+                  <div className="bg-[#0C0F16] border border-white/5 p-6 rounded-2xl max-w-md mx-auto lg:mx-0 shadow-xl">
+                    <div className="flex items-center gap-3 mb-4">
+                      <div className="w-2.5 h-2.5 rounded-full bg-[#00D4FF]" />
+                      <div className="w-2.5 h-2.5 rounded-full bg-[#0D5B80]/40" />
+                      <div className="w-2.5 h-2.5 rounded-full bg-[#0D5B80]/40" />
+                    </div>
+                    <div className="h-20 bg-slate-950/60 rounded-xl border border-white/5 flex items-center justify-center border-dashed text-slate-500 text-xs font-medium">
+                      + Adicionar Novo Produto
+                    </div>
+                  </div>
+                </div>
+              </motion.div>
+
+              {/* Step 2 */}
+              <motion.div 
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.6 }}
+                className="flex flex-col lg:flex-row items-center gap-8 lg:gap-16"
+              >
+                <div className="lg:w-1/2 order-2 lg:order-1 lg:block hidden" />
+                {/* Timeline node */}
+                <div className="w-14 h-14 rounded-full bg-slate-900 border-2 border-[#00D4FF] text-white flex items-center justify-center font-bold text-lg shadow-lg shadow-[#00D4FF]/10 z-10 shrink-0 order-1">
+                  2
+                </div>
+                <div className="lg:w-1/2 flex flex-col items-center lg:items-start order-2 lg:order-3">
+                  <span className="text-[10px] font-black text-[#00D4FF] bg-[#00D4FF]/10 px-3 py-1 rounded-full uppercase tracking-wider mb-3">Passo 2</span>
+                  <h3 className="text-xl font-bold text-white mb-3">Compartilhe seu link</h3>
+                  <p className="text-sm text-slate-400 leading-relaxed max-w-md lg:text-left text-center">
+                    Coloque o link do seu catálogo digital na biografia do seu Instagram ou envie diretamente no WhatsApp para seus clientes.
+                  </p>
+                </div>
+                <div className="lg:w-1/2 order-3 lg:hidden block">
+                  <div className="bg-[#0C0F16] border border-white/5 p-6 rounded-2xl max-w-md mx-auto shadow-xl">
+                    <div className="bg-slate-950/60 px-4 py-3.5 rounded-xl border border-white/5 flex items-center justify-between text-xs font-mono text-[#00D4FF]">
+                      <span>konnexy.app/sua-loja</span>
+                      <Copy className="w-4.5 h-4.5 text-slate-500 cursor-pointer hover:text-white transition-colors" />
+                    </div>
+                  </div>
+                </div>
+                {/* Desktop layout for step 2 visual on left */}
+                <div className="lg:w-1/2 lg:block hidden order-1">
+                  <div className="bg-[#0C0F16] border border-white/5 p-6 rounded-2xl max-w-md ml-auto shadow-xl">
+                    <div className="bg-slate-950/60 px-4 py-3.5 rounded-xl border border-white/5 flex items-center justify-between text-xs font-mono text-[#00D4FF]">
+                      <span>konnexy.app/sua-loja</span>
+                      <Copy className="w-4.5 h-4.5 text-slate-500 cursor-pointer hover:text-white transition-colors" />
+                    </div>
+                  </div>
+                </div>
+              </motion.div>
+
+              {/* Step 3 */}
+              <motion.div 
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.6 }}
+                className="flex flex-col lg:flex-row items-center gap-8 lg:gap-16"
+              >
+                <div className="lg:w-1/2 lg:text-right flex flex-col items-center lg:items-end order-2 lg:order-1">
+                  <span className="text-[10px] font-black text-[#00D4FF] bg-[#00D4FF]/10 px-3 py-1 rounded-full uppercase tracking-wider mb-3">Passo 3</span>
+                  <h3 className="text-xl font-bold text-white mb-3">Receba pedidos organizados</h3>
+                  <p className="text-sm text-slate-400 leading-relaxed max-w-md lg:text-right text-center">
+                    Seu cliente navega pelo catálogo e monta o pedido. Você recebe tudo resumido no WhatsApp, pronto para finalizar.
+                  </p>
+                </div>
+                {/* Timeline node */}
+                <div className="w-14 h-14 rounded-full bg-slate-900 border-2 border-[#00D4FF] text-white flex items-center justify-center font-bold text-lg shadow-lg shadow-[#00D4FF]/10 z-10 shrink-0 order-1 lg:order-2">
+                  3
+                </div>
+                <div className="lg:w-1/2 order-3">
+                  <div className="bg-emerald-950/20 border border-emerald-500/20 p-5 rounded-2xl max-w-md mx-auto lg:mx-0 shadow-xl flex items-center gap-3">
+                    <div className="w-8 h-8 rounded-full bg-emerald-500 flex items-center justify-center text-white text-xs">✓</div>
+                    <div>
+                      <div className="text-[9px] text-emerald-400 font-bold uppercase tracking-wider">WHATSAPP RECEBIDO</div>
+                      <div className="text-xs text-white font-semibold">"Novo pedido feito pelo catálogo!"</div>
+                    </div>
+                  </div>
+                </div>
+              </motion.div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* 9. SECTION — DEPOIMENTOS (Testimonials) */}
+      <section id="depoimentos" className="py-24 border-t border-white/5 relative z-10 bg-[#05070B]">
+        <div className="container px-6 mx-auto max-w-6xl">
+          <div className="text-center max-w-3xl mx-auto mb-16">
+            <span className="text-xs font-black uppercase tracking-[0.25em] text-[#00D4FF] mb-3 block">Depoimentos</span>
+            <h2 className="text-3xl md:text-4xl font-black mb-4 font-display text-white">
+              Quem usa, recomenda o Konnexy
+            </h2>
+            <p className="text-slate-400 text-base md:text-lg">
+              Veja como donos de negócios locais transformaram suas vendas e organizaram sua rotina.
+            </p>
+          </div>
+
+          <div className="grid md:grid-cols-3 gap-6">
+            {/* Testimonial 1 */}
+            <div className="group bg-[#0C0F16]/80 hover:bg-[#0E121C]/80 border border-white/5 hover:border-[#00D4FF]/20 p-8 rounded-3xl transition-all duration-300 shadow-2xl flex flex-col justify-between hover:-translate-y-1 relative overflow-hidden">
+              <div className="absolute top-0 right-0 w-[100px] h-[100px] bg-[#00D4FF]/5 rounded-full blur-[30px] opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" />
+              <div>
+                {/* Rating stars */}
+                <div className="flex gap-1 mb-6 text-amber-500">
+                  {"★".repeat(5)}
+                </div>
+                <p className="text-sm text-slate-300 leading-relaxed italic mb-8">
+                  "Antes do Konnexy, meus atendentes passavam o dia enviando fotos de garrafas de vinho e preços individuais. Hoje o cliente monta o carrinho direto no link da bio e o pedido cai no nosso sistema 100% resumido. As vendas da adega aumentaram em 35%."
+                </p>
+              </div>
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-full bg-[#0D5B80] flex items-center justify-center font-bold text-white text-sm shadow-md">
+                  RL
+                </div>
+                <div>
+                  <h4 className="font-bold text-sm text-white">Roberto Lima</h4>
+                  <p className="text-xs text-[#00D4FF] font-semibold">Adega Express 🍷</p>
+                </div>
+              </div>
+            </div>
+
+            {/* Testimonial 2 */}
+            <div className="group bg-[#0C0F16]/80 hover:bg-[#0E121C]/80 border border-white/5 hover:border-[#00D4FF]/20 p-8 rounded-3xl transition-all duration-300 shadow-2xl flex flex-col justify-between hover:-translate-y-1 relative overflow-hidden">
+              <div className="absolute top-0 right-0 w-[100px] h-[100px] bg-[#00D4FF]/5 rounded-full blur-[30px] opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" />
+              <div>
+                {/* Rating stars */}
+                <div className="flex gap-1 mb-6 text-amber-500">
+                  {"★".repeat(5)}
+                </div>
+                <p className="text-sm text-slate-300 leading-relaxed italic mb-8">
+                  "Expor nossos terços e velas aromáticas com clareza era um desafio no Instagram. Com o catálogo digital do Konnexy, criamos uma vitrine profissional e cheia de respeito. Nossos fiéis compram com muito mais facilidade."
+                </p>
+              </div>
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-full bg-[#0D5B80] flex items-center justify-center font-bold text-white text-sm shadow-md">
+                  MH
+                </div>
+                <div>
+                  <h4 className="font-bold text-sm text-white">Maria Helena</h4>
+                  <p className="text-xs text-[#00D4FF] font-semibold">Luz & Fé Artigos 📿</p>
+                </div>
+              </div>
+            </div>
+
+            {/* Testimonial 3 */}
+            <div className="group bg-[#0C0F16]/80 hover:bg-[#0E121C]/80 border border-white/5 hover:border-[#00D4FF]/20 p-8 rounded-3xl transition-all duration-300 shadow-2xl flex flex-col justify-between hover:-translate-y-1 relative overflow-hidden">
+              <div className="absolute top-0 right-0 w-[100px] h-[100px] bg-[#00D4FF]/5 rounded-full blur-[30px] opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" />
+              <div>
+                {/* Rating stars */}
+                <div className="flex gap-1 mb-6 text-amber-500">
+                  {"★".repeat(5)}
+                </div>
+                <p className="text-sm text-slate-300 leading-relaxed italic mb-8">
+                  "Fazer bolos gourmet sob encomenda exige organização na agenda. O Konnexy nos ajudou a padronizar as informações dos pedidos (sabor, tamanho, data de entrega, taxa) direto no carrinho. Sem erros de produção."
+                </p>
+              </div>
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-full bg-[#0D5B80] flex items-center justify-center font-bold text-white text-sm shadow-md">
+                  AJ
+                </div>
+                <div>
+                  <h4 className="font-bold text-sm text-white">Ana Julia</h4>
+                  <p className="text-xs text-[#00D4FF] font-semibold">Ateliê do Doce Gourmet 🧁</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* 10. CTA FINAL */}
       <section className="py-28 bg-gradient-to-b from-slate-950 to-[#070A0F] border-t border-white/5 relative overflow-hidden z-10">
         
         {/* Soft petroleum blue radial leaks */}
