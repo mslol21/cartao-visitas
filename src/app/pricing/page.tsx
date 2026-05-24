@@ -4,18 +4,18 @@ import { Pricing } from "@/components/landing/Pricing";
 import { Footer } from "@/components/landing/Footer";
 
 export const metadata: Metadata = {
-  title: 'Planos e Preços - Cartão de Visitas Digital',
-  description: 'Escolha o plano ideal para seu cartão de visitas digital. Plano gratuito disponível. Plano PRO com recursos avançados por apenas R$ 19/mês.',
+  title: 'Planos e Preços - Catálogo Digital e Vendas WhatsApp',
+  description: 'Escolha o plano ideal para gerenciar seu catálogo digital e organizar seus pedidos pelo WhatsApp com a Konnexy.',
   keywords: [
-    'preços cartão digital',
-    'planos cartão de visitas',
-    'cartão digital grátis',
-    'assinatura cartão digital',
-    'plano pro cartão digital'
+    'preços catálogo digital',
+    'planos catálogo whatsapp',
+    'catálogo digital whatsapp',
+    'vender pelo whatsapp',
+    'pedidos whatsapp saas'
   ],
   openGraph: {
-    title: 'Planos e Preços - Cartão de Visitas Digital | Konnexy',
-    description: 'Escolha o plano ideal para seu cartão de visitas digital. Plano gratuito disponível.',
+    title: 'Planos e Preços - Catálogo Digital e Vendas WhatsApp | Konnexy',
+    description: 'Escolha o plano ideal para gerenciar seu catálogo digital e organizar seus pedidos pelo WhatsApp com a Konnexy.',
     type: 'website',
   },
   alternates: {

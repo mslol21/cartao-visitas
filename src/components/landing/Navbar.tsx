@@ -22,8 +22,11 @@ export function Navbar() {
   }, []);
 
   const navLinks = [
-    { name: 'Soluções', href: '#como-funciona' },
-    { name: 'Planos', href: '#precos' },
+    { name: 'Recursos', href: '#funcionalidades' },
+    { name: 'Nichos', href: '#nichos' },
+    { name: 'Demonstração', href: '#demonstracao' },
+    { name: 'Preços', href: '#precos' },
+    { name: 'FAQ', href: '#faq' },
   ];
 
   return (
@@ -69,9 +72,9 @@ export function Navbar() {
                   <Link href="/login">Entrar</Link>
                 </Button>
                 <Button asChild className="rounded-2xl h-11 px-6 bg-gradient-to-r from-[#0D5B80] to-[#0A3D58] hover:from-[#116F9C] hover:to-[#0D5073] text-white font-bold shadow-xl shadow-[#0D5B80]/20 transition-all border border-[#00B4D8]/20">
-                  <a href="https://wa.me/5516991551200?text=Ol%C3%A1%2C%20quero%20vender%20mais%20com%20a%20Konnexy" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2">
+                  <a href="https://wa.me/5516991551200?text=Olá,%20vi%20o%20site%20da%20Konnexy%2520e%20gostaria%20de%20criar%20meu%20catálogo." target="_blank" rel="noopener noreferrer" className="flex items-center gap-2">
                     <Sparkles className="w-4 h-4 text-[#00D4FF] animate-pulse" />
-                    Quero Vender Mais
+                    Criar Catálogo
                   </a>
                 </Button>
               </>
@@ -118,7 +121,7 @@ export function Navbar() {
                       <Link href="/login" onClick={() => setIsOpen(false)}>Entrar</Link>
                     </Button>
                     <Button asChild size="lg" className="rounded-2xl w-full bg-gradient-to-r from-[#0D5B80] to-[#0A3D58] hover:from-[#116F9C] hover:to-[#0D5073] text-white font-bold border border-[#00B4D8]/20">
-                      <a href="https://wa.me/5516991551200?text=Ol%C3%A1%2C%20quero%20vender%20mais%20com%20a%20Konnexy" target="_blank" rel="noopener noreferrer" onClick={() => setIsOpen(false)}>Quero Vender Mais</a>
+                      <a href="https://wa.me/5516991551200?text=Olá,%20vi%20o%20site%20da%20Konnexy%2520e%20gostaria%20de%20criar%20meu%20catálogo." target="_blank" rel="noopener noreferrer" onClick={() => setIsOpen(false)}>Criar Catálogo</a>
                     </Button>
                   </>
                 )}

@@ -1,249 +1,220 @@
 "use client";
 
 import { useState } from "react";
-
-const CheckIcon = () => (
-  <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-    <circle cx="8" cy="8" r="8" fill="#25D366" fillOpacity="0.15" />
-    <path d="M4.5 8L7 10.5L11.5 6" stroke="#25D366" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-  </svg>
-);
-
-const CrownIcon = () => (
-  <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
-    <path d="M3 17L5 9L9.5 13L12 6L14.5 13L19 9L21 17H3Z" fill="#f59e0b" stroke="#f59e0b" strokeWidth="1.5" strokeLinejoin="round" />
-    <path d="M3 20H21" stroke="#f59e0b" strokeWidth="1.5" strokeLinecap="round" />
-  </svg>
-);
-
-const StarIcon = () => (
-  <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
-    <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z" fill="#a78bfa" stroke="#a78bfa" strokeWidth="1.5" strokeLinejoin="round" />
-  </svg>
-);
+import { Check, Crown, Star, Sparkles, MessageSquare, Zap } from "lucide-react";
+import { Button } from "@/components/ui/button";
 
 const FOUNDING_SPOTS = 20;
 const spotsLeft = 7;
+const filled = FOUNDING_SPOTS - spotsLeft;
 
 const plans = [
   {
-    id: "founding",
-    name: "Membro Fundador",
-    price: "Consultar",
-    period: "preço",
-    description: "Acesso vitalício completo. Pague uma vez, use para sempre.",
-    accent: "#ef4444",
-    border: "#ef444440",
-    cta: "Garantir minha vaga",
-    ctaStyle: "solid-red",
-    badge: "🔥 OFERTA DE LANÇAMENTO",
+    id: "pro",
+    name: "Plano PRO",
+    price: "R$ 49",
+    period: "por mês",
+    description: "Ideal para negócios locais que querem começar a vender de forma organizada pelo WhatsApp.",
+    icon: Crown,
+    accent: "#00D4FF",
+    border: "border-white/5",
+    hoverBorder: "hover:border-[#00D4FF]/30",
+    glowColor: "rgba(0, 212, 255, 0.05)",
+    cta: "Começar Agora",
     features: [
-      "Perfil público completo",
-      "Links ilimitados",
-      "Todos os temas visuais",
-      "QR Code personalizado",
-      "Analytics completo",
-      "SEO personalizado",
-      "Tipografia premium",
-      "Filtro e borda de foto",
-      "Horário de atendimento",
-      "Banco de imagens Pixabay",
-      "Todas as novidades futuras",
-      "Suporte prioritário via WhatsApp",
+      "Catálogo digital profissional",
+      "Produtos e fotos ilimitados",
+      "Organização por Categorias",
+      "Carrinho de compras integrado",
+      "Pedidos automatizados no WhatsApp",
+      "Cálculo automático de taxa de entrega",
+      "Formas de pagamento e chave Pix",
+      "Suporte humanizado via WhatsApp",
     ],
-    href: "https://wa.me/5516991551200?text=Ol%C3%A1%2C%20tenho%20interesse%20no%20plano%20Membro%20Fundador",
+    href: "https://wa.me/5516991551200?text=Olá, tenho interesse no Plano PRO da Konnexy.",
   },
   {
-    id: "pro",
-    name: "PRO",
-    price: "Consultar",
-    period: "preço",
-    description: "Para profissionais que querem se destacar e converter mais.",
-    icon: <CrownIcon />,
-    accent: "#f59e0b",
-    border: "#f59e0b30",
-    cta: "Assinar PRO",
-    ctaStyle: "solid-gold",
+    id: "founding",
+    name: "Membro Fundador",
+    price: "R$ 497",
+    period: "pagamento único",
+    description: "Acesso vitalício sem mensalidades. Vagas limitadas para os primeiros parceiros da plataforma.",
+    icon: Sparkles,
+    accent: "#22C55E",
+    border: "border-green-500/20",
+    hoverBorder: "hover:border-green-500/40",
+    glowColor: "rgba(34, 197, 94, 0.05)",
+    badge: "🔥 ACESSO VITALÍCIO",
+    cta: "Garantir Vaga Vitalícia",
     features: [
-      "Perfil público completo",
-      "Links ilimitados",
-      "Todos os temas visuais",
-      "QR Code personalizado",
-      "Analytics completo",
-      "SEO personalizado",
-      "Tipografia premium",
-      "Filtro e borda de foto",
-      "Horário de atendimento",
-      "Banco de imagens Pixabay",
-      "Suporte via WhatsApp",
+      "Tudo do plano PRO para sempre",
+      "Sem mensalidades ou anuidades",
+      "Setup inicial gratuito (configuramos para você)",
+      "Suporte VIP vitalício via WhatsApp",
+      "Prioridade em novas funcionalidades",
+      "Selo exclusivo no painel",
     ],
-    href: "https://wa.me/5516991551200?text=Ol%C3%A1%2C%20tenho%20interesse%20no%20plano%20PRO",
+    href: "https://wa.me/5516991551200?text=Olá, quero garantir minha vaga de Membro Fundador com acesso vitalício.",
   },
   {
     id: "business",
-    name: "Business",
-    price: "Consultar",
-    period: "preço",
-    description: "Para empresas e agências que precisam do máximo controle.",
-    icon: <StarIcon />,
+    name: "Plano Business",
+    price: "R$ 99",
+    period: "por mês",
+    description: "Para empresas que precisam de domínio próprio, marca exclusiva e análise profunda de dados.",
+    icon: Star,
     accent: "#a78bfa",
-    border: "#a78bfa30",
-    cta: "Assinar Business",
-    ctaStyle: "solid-purple",
+    border: "border-white/5",
+    hoverBorder: "hover:border-purple-500/30",
+    glowColor: "rgba(167, 139, 250, 0.05)",
+    cta: "Falar com Consultor",
     features: [
-      "Tudo do plano PRO",
-      "Domínio próprio",
-      "Remover marca Konnexy",
-      "Analytics avançado",
-      "Suporte prioritário",
+      "Tudo do Plano PRO",
+      "Domínio próprio (ex: suaadega.com.br)",
+      "Remoção da marca Konnexy",
+      "Relatórios de visitas e vendas",
+      "Pixel do Facebook integrado",
+      "Suporte prioritário 24/7",
     ],
-    href: "https://wa.me/5516991551200?text=Ol%C3%A1%2C%20tenho%20interesse%20no%20plano%20Business",
+    href: "https://wa.me/5516991551200?text=Olá, gostaria de saber mais sobre o Plano Business da Konnexy.",
   },
 ];
 
 export function Pricing() {
   const [hovered, setHovered] = useState<string | null>(null);
-  const filled = FOUNDING_SPOTS - spotsLeft;
 
   return (
-    <section id="precos" style={{
-      minHeight: "100vh",
-      background: "#080c18",
-      fontFamily: "'Sora', sans-serif",
-      color: "#fff",
-      padding: "0 16px 80px",
-      position: "relative",
-      overflow: "hidden",
-    }}>
-      <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+    <section id="precos" className="py-24 bg-[#05070B] text-slate-100 font-sans relative overflow-hidden z-10 border-t border-white/5">
+      {/* Decorative glows */}
+      <div className="absolute top-[10%] left-1/2 -translate-x-1/2 w-[70%] h-[300px] rounded-full bg-[#00D4FF]/5 blur-[120px] pointer-events-none" />
+      <div className="absolute bottom-0 right-[-10%] w-[400px] h-[400px] rounded-full bg-purple-500/5 blur-[100px] pointer-events-none" />
 
-      {/* Decorative backgrounds inside section logic */}
-      <div style={{ position: "absolute", top: "-150px", left: "50%", transform: "translateX(-50%)", width: "800px", height: "500px", background: "radial-gradient(ellipse, #ef444410 0%, transparent 65%)", pointerEvents: "none" }} />
-      <div style={{ position: "absolute", bottom: "0", right: "-100px", width: "400px", height: "400px", background: "radial-gradient(ellipse, #a78bfa08 0%, transparent 70%)", pointerEvents: "none" }} />
+      <div className="container px-6 mx-auto max-w-6xl relative z-10">
+        
+        {/* Founding Spot Alert banner */}
+        <div className="flex flex-col items-center mb-16 text-center">
+          <div className="inline-flex items-center gap-3 bg-red-950/20 border border-red-500/25 rounded-2xl px-5 py-3.5 mb-6 text-left max-w-lg shadow-xl shadow-red-500/5">
+            <span className="text-xl">🔥</span>
+            <div>
+              <div className="text-[11px] font-black text-red-400 uppercase tracking-widest leading-none mb-1">OFERTA DE LANÇAMENTO — VAGAS LIMITADAS</div>
+              <div className="text-xs text-slate-400">
+                Apenas <strong className="text-white">{spotsLeft} vagas restantes</strong> de {FOUNDING_SPOTS} para o acesso vitalício.
+              </div>
+            </div>
+          </div>
 
-      <div style={{ maxWidth: "960px", margin: "0 auto", paddingTop: "60px", textAlign: "center", position: "relative", zIndex: 10 }}>
-
-        {/* Logo */}
-        <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: "10px", marginBottom: "48px" }}>
-          <div style={{ width: "36px", height: "36px", borderRadius: "9px", background: "linear-gradient(135deg, #25D366, #1aab52)", display: "flex", alignItems: "center", justifyContent: "center", fontWeight: 800, fontSize: "17px", color: "#fff" }}>K</div>
-          <span style={{ fontWeight: 700, fontSize: "19px", letterSpacing: "-0.5px" }}>Konnexy</span>
-        </div>
-
-        {/* Founding banner */}
-        <div style={{ background: "linear-gradient(135deg, #ef444412, #f9731610)", border: "1px solid #ef444428", borderRadius: "14px", padding: "14px 22px", marginBottom: "32px", display: "inline-flex", alignItems: "center", gap: "12px", textAlign: "left" }}>
-          <span style={{ fontSize: "20px" }}>🔥</span>
-          <div style={{ textAlign: "left" }}>
-            <div style={{ fontSize: "12px", fontWeight: 700, color: "#ef4444", letterSpacing: "0.5px" }}>OFERTA DE LANÇAMENTO — VAGAS LIMITADAS</div>
-            <div style={{ fontSize: "12px", color: "#ffffff55", marginTop: "2px" }}>
-              Apenas <strong style={{ color: "#fff" }}>{spotsLeft} vagas restantes</strong> de {FOUNDING_SPOTS} para acesso vitalício exclusivo
+          {/* Progress bar */}
+          <div className="w-full max-w-[340px] text-left">
+            <div className="flex justify-between mb-1.5 text-[10px] font-bold uppercase tracking-wider text-slate-500">
+              <span>Vagas Preenchidas</span>
+              <span className="text-red-400">{filled} / {FOUNDING_SPOTS}</span>
+            </div>
+            <div className="h-1.5 bg-slate-900 border border-white/5 rounded-full overflow-hidden">
+              <div 
+                className="h-full bg-gradient-to-r from-red-500 to-orange-500 rounded-full transition-all duration-1000" 
+                style={{ width: `${(filled / FOUNDING_SPOTS) * 100}%` }}
+              />
             </div>
           </div>
         </div>
 
-        {/* Progress bar */}
-        <div style={{ maxWidth: "380px", margin: "0 auto 48px", textAlign: "left" }}>
-          <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "6px" }}>
-            <span style={{ fontSize: "11px", color: "#ffffff35" }}>Vagas preenchidas</span>
-            <span style={{ fontSize: "11px", color: "#ef4444", fontWeight: 700 }}>{filled}/{FOUNDING_SPOTS}</span>
-          </div>
-          <div style={{ height: "5px", background: "#ffffff08", borderRadius: "100px", overflow: "hidden" }}>
-            <div style={{ height: "100%", width: `${(filled / FOUNDING_SPOTS) * 100}%`, background: "linear-gradient(90deg, #ef4444, #f97316)", borderRadius: "100px" }} />
-          </div>
+        {/* Title */}
+        <div className="text-center max-w-3xl mx-auto mb-20">
+          <span className="text-xs font-black uppercase tracking-[0.25em] text-[#00D4FF] mb-3 block">Planos e Preços</span>
+          <h2 className="text-4xl md:text-5xl font-black mb-4 font-display leading-[1.1]">
+            Escolha o plano ideal para o seu negócio crescer.
+          </h2>
+          <p className="text-slate-400 text-base md:text-lg">
+            Sem taxas ocultas, sem comissão por venda. Cancele ou altere seu plano quando quiser.
+          </p>
         </div>
 
-        <h2 style={{ fontSize: "clamp(28px, 5vw, 46px)", fontWeight: 800, lineHeight: 1.1, letterSpacing: "-1.5px", margin: "0 0 12px 0", background: "linear-gradient(135deg, #fff 40%, #ffffff65)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>
-          Seu cartão digital,<br />do seu jeito.
-        </h2>
-        <p style={{ color: "#ffffff45", fontSize: "15px", lineHeight: 1.6, maxWidth: "400px", margin: "0 auto 52px" }}>
-          Sem Linktree. Sem mensalidades ocultas. Presença digital completa em minutos.
-        </p>
-
         {/* Plans grid */}
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(265px, 1fr))", gap: "14px", alignItems: "start", textAlign: "left" }}>
-          {plans.map((plan) => (
-            <div
-              key={plan.id}
-              onMouseEnter={() => setHovered(plan.id)}
-              onMouseLeave={() => setHovered(null)}
-              style={{
-                background: plan.id === "founding" ? "linear-gradient(160deg, #180a0a 0%, #0d1020 100%)" : "#0c1020",
-                border: `1px solid ${hovered === plan.id ? plan.border.replace("30", "70").replace("40", "80") : plan.border}`,
-                borderRadius: "20px", padding: "28px 22px", position: "relative",
-                transition: "transform 0.2s, border-color 0.2s, box-shadow 0.2s",
-                transform: hovered === plan.id ? "translateY(-5px)" : "translateY(0)",
-                boxShadow: plan.id === "founding" ? `0 0 40px #ef444412` : "none",
-              }}
-            >
-              {plan.badge && (
-                <div style={{ position: "absolute", top: "-13px", left: "50%", transform: "translateX(-50%)", background: "linear-gradient(90deg, #ef4444, #f97316)", color: "#fff", fontSize: "10px", fontWeight: 800, padding: "4px 14px", borderRadius: "100px", whiteSpace: "nowrap", letterSpacing: "0.8px" }}>
-                  {plan.badge}
-                </div>
-              )}
-
-              <div style={{ marginBottom: "20px" }}>
-                <div style={{ display: "flex", alignItems: "center", gap: "7px", marginBottom: "10px" }}>
-                  {plan.id === "founding"
-                    ? <span style={{ fontSize: "16px" }}>🔥</span>
-                    : plan.icon}
-                  <span style={{ fontSize: "11px", fontWeight: 700, color: plan.accent, letterSpacing: "1.5px", textTransform: "uppercase" }}>{plan.name}</span>
-                </div>
-
-                <div style={{ display: "flex", alignItems: "baseline", gap: "6px", marginBottom: "6px" }}>
-                  <span style={{ fontSize: "32px", fontWeight: 800, letterSpacing: "-1.5px", color: "#fff" }}>{plan.price}</span>
-                  <span style={{ fontSize: "12px", color: "#ffffff30" }}>{plan.period}</span>
-                </div>
-
-                {plan.id === "founding" && (
-                  <div style={{ display: "inline-flex", alignItems: "center", gap: "5px", background: "#ef444412", border: "1px solid #ef444425", borderRadius: "6px", padding: "3px 8px", marginBottom: "8px" }}>
-                    <span style={{ fontSize: "11px", color: "#ef4444", fontWeight: 600 }}>✦ Pague uma vez, use para sempre</span>
+        <div className="grid md:grid-cols-3 gap-6 items-start">
+          {plans.map((plan) => {
+            const Icon = plan.icon;
+            const isHovered = hovered === plan.id;
+            return (
+              <div
+                key={plan.id}
+                onMouseEnter={() => setHovered(plan.id)}
+                onMouseLeave={() => setHovered(null)}
+                className={`bg-[#0C0F16]/80 backdrop-blur-md border rounded-[2rem] p-8 flex flex-col justify-between transition-all duration-300 relative min-h-[580px] ${plan.border} ${plan.hoverBorder} ${
+                  isHovered ? "-translate-y-2 shadow-2xl shadow-slate-950" : "translate-y-0"
+                }`}
+                style={{
+                  boxShadow: isHovered ? `0 20px 40px -15px ${plan.glowColor}` : "none",
+                }}
+              >
+                {plan.badge && (
+                  <div className="absolute -top-3.5 left-1/2 -translate-x-1/2 bg-gradient-to-r from-green-500 to-emerald-600 text-white text-[9px] font-black px-4.5 py-1.5 rounded-full uppercase tracking-widest shadow-lg shadow-green-500/20 whitespace-nowrap">
+                    {plan.badge}
                   </div>
                 )}
 
-                <p style={{ fontSize: "12px", color: "#ffffff40", lineHeight: 1.5, margin: 0 }}>{plan.description}</p>
-              </div>
+                <div>
+                  {/* Card Header */}
+                  <div className="flex items-center gap-2 mb-4">
+                    <div className="p-2 rounded-lg bg-slate-900 border border-white/5 text-[#00D4FF] flex items-center justify-center shrink-0">
+                      <Icon className="w-5 h-5" style={{ color: plan.accent }} />
+                    </div>
+                    <span className="font-bold text-xs uppercase tracking-wider text-slate-400" style={{ color: plan.accent }}>
+                      {plan.name}
+                    </span>
+                  </div>
 
-              <a
-                href={plan.href}
-                style={{
-                  display: "block", textAlign: "center", textDecoration: "none",
-                  width: "100%", padding: "13px", borderRadius: "12px", boxSizing: "border-box",
-                  fontFamily: "'Sora', sans-serif", fontSize: "14px", fontWeight: 700,
-                  cursor: "pointer", marginBottom: "20px", border: "none",
-                  ...(plan.ctaStyle === "solid-red"
-                    ? { background: "linear-gradient(135deg, #ef4444, #f97316)", color: "#fff", boxShadow: "0 4px 24px #ef444435" }
-                    : plan.ctaStyle === "solid-gold"
-                    ? { background: "linear-gradient(135deg, #f59e0b, #fbbf24)", color: "#000", boxShadow: "0 4px 20px #f59e0b25" }
-                    : { background: "linear-gradient(135deg, #7c3aed, #a78bfa)", color: "#fff", boxShadow: "0 4px 20px #a78bfa20" }),
-                }}
-              >
-                {plan.cta} →
-              </a>
+                  {/* Price */}
+                  <div className="flex items-baseline gap-2 mb-4">
+                    <span className="text-4xl font-black text-white font-display tracking-tight">{plan.price}</span>
+                    <span className="text-xs text-slate-500 font-medium uppercase tracking-wider">{plan.period}</span>
+                  </div>
 
-              <div style={{ height: "1px", background: "#ffffff07", marginBottom: "18px" }} />
+                  <p className="text-slate-400 text-xs.5 leading-relaxed mb-6">
+                    {plan.description}
+                  </p>
 
-              <ul style={{ listStyle: "none", padding: 0, margin: 0, display: "flex", flexDirection: "column", gap: "10px" }}>
-                {plan.features.map((f, i) => (
-                  <li key={i} style={{ display: "flex", alignItems: "center", gap: "9px", fontSize: "13px", color: "#ffffffa0" }}>
-                    <CheckIcon />{f}
-                  </li>
-                ))}
-              </ul>
+                  <div className="h-[1px] bg-white/5 mb-6" />
 
-              {plan.id === "founding" && (
-                <div style={{ marginTop: "18px", padding: "11px", background: "#ef44440a", borderRadius: "10px", border: "1px solid #ef444418", fontSize: "12px", color: "#ffffff45", textAlign: "center", lineHeight: 1.5 }}>
-                  ⚡ Oferta exclusiva para os primeiros <strong style={{ color: "#fff" }}>20 membros</strong>
+                  {/* Features List */}
+                  <ul className="space-y-3.5 mb-8">
+                    {plan.features.map((feature, idx) => (
+                      <li key={idx} className="flex items-start gap-2.5 text-xs.5 text-slate-300">
+                        <Check className="w-4 h-4 text-green-400 shrink-0 mt-0.5" />
+                        <span>{feature}</span>
+                      </li>
+                    ))}
+                  </ul>
                 </div>
-              )}
-            </div>
-          ))}
+
+                {/* CTA Button */}
+                <div>
+                  <Button
+                    asChild
+                    className={`w-full h-12 rounded-xl font-bold text-xs uppercase tracking-widest active:scale-95 transition-all flex items-center justify-center gap-1.5 border-0 ${
+                      plan.id === "founding"
+                        ? "bg-gradient-to-r from-green-500 to-emerald-600 text-white shadow-xl shadow-green-500/20 hover:from-green-600 hover:to-emerald-700"
+                        : plan.id === "business"
+                        ? "bg-gradient-to-r from-purple-500 to-indigo-600 text-white shadow-xl shadow-purple-500/20 hover:from-purple-600 hover:to-indigo-700"
+                        : "bg-gradient-to-r from-[#0D5B80] to-[#0A3D58] hover:from-[#116F9C] hover:to-[#0D5073] text-white shadow-xl shadow-[#0D5B80]/20 border border-[#00B4D8]/20"
+                    }`}
+                  >
+                    <a href={plan.href} target="_blank" rel="noopener noreferrer">
+                      {plan.cta}
+                    </a>
+                  </Button>
+                </div>
+              </div>
+            );
+          })}
         </div>
 
-        {/* Trust row */}
-        <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: "28px", marginTop: "44px", flexWrap: "wrap" }}>
-          {["🔒 Pagamento seguro", "💬 Suporte via WhatsApp", "⚡ Acesso imediato"].map((item) => (
-            <span key={item} style={{ fontSize: "12px", color: "#ffffff25", fontWeight: 500 }}>{item}</span>
-          ))}
+        {/* Footer badges */}
+        <div className="flex flex-wrap items-center justify-center gap-x-8 gap-y-4 mt-16 text-slate-500 text-[11px] font-bold uppercase tracking-wider">
+          <span>🛡️ Checkout Integrado</span>
+          <span>💬 Suporte Dedicado</span>
+          <span>⚡ Configuração em até 24h</span>
         </div>
+
       </div>
     </section>
   );

@@ -5,7 +5,7 @@ export function generateOrganizationSchema() {
     name: 'Konnexy',
     url: 'https://konnexy.com.br',
     logo: 'https://konnexy.com.br/logo.png',
-    description: 'Plataforma de cartões de visitas digitais para autônomos e profissionais liberais',
+    description: 'Plataforma de catálogo digital e organização de pedidos pelo WhatsApp para pequenos varejistas',
     contactPoint: {
       '@type': 'ContactPoint',
       contactType: 'Customer Service',
@@ -23,8 +23,8 @@ export function generateProductSchema() {
   return {
     '@context': 'https://schema.org',
     '@type': 'Product',
-    name: 'Cartão de Visitas Digital Konnexy',
-    description: 'Cartão de visitas digital profissional com QR Code, links personalizados e analytics',
+    name: 'Catálogo Digital Konnexy',
+    description: 'Catálogo digital profissional com carrinho de compras integrado, formas de pagamento e pedidos automatizados no WhatsApp',
     brand: {
       '@type': 'Brand',
       name: 'Konnexy',
@@ -40,7 +40,7 @@ export function generateProductSchema() {
       {
         '@type': 'Offer',
         name: 'Plano PRO',
-        price: '19',
+        price: '49',
         priceCurrency: 'BRL',
         availability: 'https://schema.org/InStock',
         priceValidUntil: '2026-12-31',

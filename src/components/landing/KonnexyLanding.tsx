@@ -30,12 +30,14 @@ import {
   ThumbsUp,
   TrendingUp,
   AlertTriangle,
-  Play
+  Play,
+  ChevronDown
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Navbar } from "./Navbar";
 import { Footer } from "./Footer";
 import { Logo } from "../brand/Logo";
+import { Pricing } from "./Pricing";
 
 // Types
 interface Product {
@@ -146,6 +148,33 @@ const NICHES: Record<string, NicheConfig> = {
   }
 };
 
+const FAQS = [
+  {
+    question: "O que é o Konnexy?",
+    answer: "O Konnexy é uma plataforma SaaS desenvolvida para ajudar pequenos varejistas a venderem mais e se organizarem melhor pelo WhatsApp. Com ele, você cria um catálogo online profissional e recebe pedidos detalhados e estruturados, sem precisar lidar com anotações manuais ou perder informações em longas conversas de chat."
+  },
+  {
+    question: "Preciso instalar algum aplicativo para usar?",
+    answer: "Não! Nem você nem seu cliente precisam baixar ou instalar qualquer aplicativo. Seu catálogo digital funciona direto no navegador do celular do cliente. O painel administrativo também é 100% web, otimizado para celular, permitindo que você gerencie tudo de onde estiver."
+  },
+  {
+    question: "Como os pedidos chegam no meu WhatsApp?",
+    answer: "Quando o cliente finaliza o pedido no catálogo, o Konnexy gera uma mensagem pronta com todos os detalhes (produtos escolhidos, quantidades, observações, dados de entrega, subtotal e forma de pagamento). O cliente clica em enviar e a mensagem chega formatada e organizada diretamente no seu número de atendimento."
+  },
+  {
+    question: "O Konnexy cobra comissão por venda?",
+    answer: "Não! Ao contrário de aplicativos de entrega convencionais, nós não cobramos nenhuma porcentagem ou taxa sobre as suas vendas. Você paga apenas o valor da assinatura fixa do plano escolhido e 100% do lucro das vendas é inteiramente seu."
+  },
+  {
+    question: "Como funciona a integração do Pix?",
+    answer: "Você cadastra sua chave Pix no painel administrativo do Konnexy. Na tela de finalização do pedido, o cliente visualiza sua chave Pix e pode efetuar o pagamento. Ele envia o comprovante de pagamento junto com o resumo do pedido diretamente para seu WhatsApp."
+  },
+  {
+    question: "Posso utilizar meu domínio próprio?",
+    answer: "Sim! No plano Business, você pode conectar seu próprio domínio (ex: sualoja.com.br) para dar ainda mais profissionalismo à sua marca e passar total credibilidade para os seus clientes."
+  }
+];
+
 export function KonnexyLanding() {
   // Active Niche selector state
   const [activeNiche, setActiveNiche] = useState<string>("adegas");
@@ -157,6 +186,8 @@ export function KonnexyLanding() {
   const [copiedLink, setCopiedLink] = useState<boolean>(false);
   // Toast notifications
   const [toastMessage, setToastMessage] = useState<string | null>(null);
+  // FAQ active state
+  const [openFaqIdx, setOpenFaqIdx] = useState<number | null>(null);
 
   // Phone simulation states
   const [simStep, setSimStep] = useState<number>(0);
@@ -1551,6 +1582,66 @@ export function KonnexyLanding() {
                 </div>
               </div>
             </div>
+          </div>
+        </div>
+      </section>
+
+      {/* 9.5 PREÇOS (Pricing Section) */}
+      <Pricing />
+
+      {/* 9.6 FAQ SECTION */}
+      <section id="faq" className="py-24 border-t border-white/5 bg-[#05070B] relative z-10">
+        {/* Subtle glow */}
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[300px] h-[300px] bg-[#00D4FF]/5 rounded-full blur-[120px] pointer-events-none -z-10" />
+
+        <div className="container px-6 mx-auto max-w-4xl">
+          <div className="text-center max-w-3xl mx-auto mb-16">
+            <span className="text-xs font-black uppercase tracking-[0.25em] text-[#00D4FF] mb-3 block">Dúvidas Frequentes</span>
+            <h2 className="text-3xl md:text-4xl font-black mb-4 font-display text-white">
+              Perguntas Frequentes
+            </h2>
+            <p className="text-slate-400 text-base">
+              Ainda tem alguma dúvida sobre o Konnexy? Confira as respostas para as perguntas mais comuns.
+            </p>
+          </div>
+
+          <div className="space-y-4">
+            {FAQS.map((faq, index) => {
+              const isOpen = openFaqIdx === index;
+              return (
+                <div 
+                  key={index}
+                  className="bg-[#0C0F16]/60 border border-white/5 rounded-2xl overflow-hidden transition-all duration-300 hover:border-white/10"
+                >
+                  <button
+                    onClick={() => setOpenFaqIdx(isOpen ? null : index)}
+                    className="w-full px-6 py-5 text-left flex items-center justify-between gap-4 text-white hover:text-[#00D4FF] transition-colors"
+                  >
+                    <span className="font-bold text-sm md:text-base leading-snug">{faq.question}</span>
+                    <ChevronDown 
+                      className={`w-5 h-5 text-slate-500 shrink-0 transition-transform duration-300 ${
+                        isOpen ? "rotate-180 text-[#00D4FF]" : "rotate-0"
+                      }`}
+                    />
+                  </button>
+
+                  <AnimatePresence initial={false}>
+                    {isOpen && (
+                      <motion.div
+                        initial={{ height: 0, opacity: 0 }}
+                        animate={{ height: "auto", opacity: 1 }}
+                        exit={{ height: 0, opacity: 0 }}
+                        transition={{ duration: 0.3, ease: "easeInOut" }}
+                      >
+                        <div className="px-6 pb-6 text-xs.5 md:text-sm text-slate-400 leading-relaxed border-t border-white/5 pt-4">
+                          {faq.answer}
+                        </div>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </div>
+              );
+            })}
           </div>
         </div>
       </section>

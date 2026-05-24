@@ -5,7 +5,7 @@ export function Footer() {
   const currentYear = new Date().getFullYear();
   
   return (
-    <footer className="bg-slate-50 dark:bg-slate-950 py-20 border-t border-border/30">
+    <footer className="bg-[#05070B] py-20 border-t border-white/5">
       <div className="container px-6">
         <div className="flex flex-col md:flex-row items-center justify-between gap-12">
           <div className="flex flex-col items-center md:items-start gap-4">
@@ -15,19 +15,25 @@ export function Footer() {
             <p className="text-xs font-bold text-muted-foreground uppercase tracking-[0.2em]">Venda mais pelo WhatsApp</p>
           </div>
 
-          <nav className="flex flex-wrap justify-center items-center gap-x-12 gap-y-4">
-            <Link href="/" className="text-[10px] font-black uppercase tracking-widest text-muted-foreground hover:text-primary transition-colors">
-              Início
-            </Link>
-            <a href="#como-funciona" className="text-[10px] font-black uppercase tracking-widest text-muted-foreground hover:text-primary transition-colors">
-              Soluções
+          <nav className="flex flex-wrap justify-center items-center gap-x-8 gap-y-4">
+            <a href="#funcionalidades" className="text-[10px] font-black uppercase tracking-widest text-slate-500 hover:text-[#00D4FF] transition-colors">
+              Recursos
             </a>
-            <a href="#precos" className="text-[10px] font-black uppercase tracking-widest text-muted-foreground hover:text-primary transition-colors">
-              Preços
+            <a href="#nichos" className="text-[10px] font-black uppercase tracking-widest text-slate-500 hover:text-[#00D4FF] transition-colors">
+              Nichos
             </a>
-            <Link href="/terms" className="text-[10px] font-black uppercase tracking-widest text-muted-foreground hover:text-primary transition-colors">
-              Termos
-            </Link>
+            <a href="#faq" className="text-[10px] font-black uppercase tracking-widest text-slate-500 hover:text-[#00D4FF] transition-colors">
+              FAQ
+            </a>
+            <a href="https://wa.me/5516991551200?text=Olá,%20preciso%20de%20suporte%20com%20o%20Konnexy" target="_blank" rel="noopener noreferrer" className="text-[10px] font-black uppercase tracking-widest text-slate-500 hover:text-[#00D4FF] transition-colors">
+              Suporte
+            </a>
+            <a href="https://wa.me/5516991551200" target="_blank" rel="noopener noreferrer" className="text-[10px] font-black uppercase tracking-widest text-slate-500 hover:text-[#00D4FF] transition-colors">
+              WhatsApp
+            </a>
+            <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" className="text-[10px] font-black uppercase tracking-widest text-slate-500 hover:text-[#00D4FF] transition-colors">
+              Instagram
+            </a>
           </nav>
 
           <div className="text-center md:text-right space-y-2">
