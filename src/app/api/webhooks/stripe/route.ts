@@ -14,10 +14,16 @@ export async function POST(request: Request) {
   let event: Stripe.Event;
 
   try {
-    if (!sig || !endpointSecret) {
-      // For development/mocking
+    if (process.env.NODE_ENV !== 'production' && (!sig || !endpointSecret)) {
+      // For local development/mocking only
       event = JSON.parse(body) as Stripe.Event;
     } else {
+      if (!sig) {
+        return NextResponse.json({ error: 'Missing stripe-signature header' }, { status: 400 });
+      }
+      if (!endpointSecret) {
+        return NextResponse.json({ error: 'STRIPE_WEBHOOK_SECRET is not configured' }, { status: 500 });
+      }
       event = stripe.webhooks.constructEvent(body, sig, endpointSecret);
     }
   } catch (err: unknown) {
