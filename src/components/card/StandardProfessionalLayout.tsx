@@ -126,6 +126,7 @@ export function StandardProfessionalLayout({
     profession === 'pizzaria' ? "Olá! Vi seu perfil na Konnexy e gostaria de fazer um pedido de pizza 🍕" :
     profession === 'cafeteria' ? "Olá! Gostaria de fazer um pedido / reservar uma mesa na cafeteria ☕" :
     profession === 'vistoria_veicular' ? "Olá! Gostaria de agendar uma vistoria no meu veículo 🛡️🚘" :
+    profession === 'montador_moveis' ? "Olá! Vi seu perfil na Konnexy e gostaria de solicitar uma montagem de móveis 🔧" :
     `Olá! Vi seu perfil na Konnexy e gostaria de saber mais sobre seu trabalho como ${config.label}.`);
 
   const whatsappLink = `https://wa.me/${formattedWhatsapp}?text=${encodeURIComponent(defaultMessage)}`;
@@ -410,7 +411,7 @@ export function StandardProfessionalLayout({
       )}
 
       {/* 6. BIO / ABOUT */}
-      {data.bio_professional && (
+      {data.bio_profissional && (
         <motion.div 
           custom={5} initial="hidden" animate="visible" variants={fadeIn}
           className="px-6"
@@ -432,7 +433,7 @@ export function StandardProfessionalLayout({
                 <h2 className="text-[10px] font-black uppercase tracking-[0.25em] opacity-60">Sobre o Profissional</h2>
               </div>
               <p className="text-[13px] font-medium leading-relaxed tracking-tight italic opacity-90">
-                "{data.bio_professional}"
+                "{data.bio_profissional}"
               </p>
            </div>
         </motion.div>

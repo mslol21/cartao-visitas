@@ -482,14 +482,30 @@ export const professionsMap: Record<ProfessionCategory, ProfessionConfig> = {
   montador_moveis: {
     id: 'montador_moveis',
     label: 'Montador de Móveis',
-    theme: { color: 'stone', style: 'standard' },
+    theme: { color: 'amber', style: 'oled' },
     customFields: [
-      { name: 'ferramentas_proprias', label: 'Ferramentas Próprias?', type: 'boolean' }
+      { name: 'ferramentas_proprias', label: 'Ferramentas e Furadeira Próprias?', type: 'boolean' },
+      { name: 'atende_condominio', label: 'Atende em Condomínios?', type: 'boolean' },
+      { name: 'monta_cozinha_planejada', label: 'Monta Cozinhas Planejadas?', type: 'boolean' },
+      { name: 'desmontagem_remontagem', label: 'Desmontagem e Remontagem?', type: 'boolean' },
+      { name: 'garantia_servico', label: 'Garantia no Serviço?', type: 'boolean' },
+      { name: 'atende_final_semana', label: 'Atende Finais de Semana?', type: 'boolean' },
+      { name: 'marcas_atendidas', label: 'Marcas que Monta (Separadas por vírgula)', type: 'array', placeholder: 'Ex: Tok&Stok, IKEA, Leroy Merlin, MadeiraMadeira' },
+      { name: 'anos_experiencia', label: 'Anos de Experiência', type: 'text', placeholder: 'Ex: 8 anos' }
     ],
     suggestedBackgrounds: [
-      'https://images.unsplash.com/photo-1517036660161-aa8e935640e?auto=format&fit=crop&q=80&w=1080&h=1920',
-      'https://images.unsplash.com/photo-1502005229762-cf1b2da7c5d6?auto=format&fit=crop&q=80&w=1080&h=1920',
-      'https://images.unsplash.com/photo-1622396481328-9b1b78cdd9fd?auto=format&fit=crop&q=80&w=1080&h=1920'
+      'https://images.unsplash.com/photo-1555041469-a586c61ea9bc?auto=format&fit=crop&q=80&w=1080&h=1920',
+      'https://images.unsplash.com/photo-1538688525198-9b88f6f53126?auto=format&fit=crop&q=80&w=1080&h=1920',
+      'https://images.unsplash.com/photo-1631679706909-1844bbd07221?auto=format&fit=crop&q=80&w=1080&h=1920',
+      'https://images.unsplash.com/photo-1506439773649-6e0eb8cfb237?auto=format&fit=crop&q=80&w=1080&h=1920'
+    ],
+    defaultBio: 'Montagem profissional de móveis com rapidez, organização e capricho. Atendo residências, escritórios e condomínios, garantindo que cada peça fique no lugar certo, firme e com acabamento perfeito. Ferramentas próprias, pontualidade e satisfação garantida em cada serviço.',
+    defaultCta: 'Solicitar Montagem 🔧',
+    defaultServices: [
+      { nome: 'Montagem de Guarda-Roupa', descricao: 'Montagem de guarda-roupas de 2 a 8 portas, com espelho, gavetas e organizadores.', preco: 'A partir de R$ 120' },
+      { nome: 'Montagem de Cozinha Planejada', descricao: 'Instalação completa de cozinhas moduladas, incluindo ajuste de dobradiças e fixação de tampo.', preco: 'Sob consulta' },
+      { nome: 'Montagem de Escritório / Home Office', descricao: 'Mesa, estante, rack e cadeira executiva montados com precisão e organização.', preco: 'A partir de R$ 80' },
+      { nome: 'Desmontagem + Remontagem', descricao: 'Ideal para mudanças: desmontamos, transportamos (frete à consultar) e remontamos no novo local.', preco: 'Sob consulta' }
     ]
   },
   gesseiro: {
