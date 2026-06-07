@@ -63,14 +63,34 @@ export default async function PublicPage({ params }: Props) {
 
   const themeColor = profile.theme_color || '#3b82f6';
   const customFields = (profile.custom_fields as any) || {};
-  const bgColor = customFields.cor_fundo || '#fafafa';
+
+  // Profissões com cartão naturalmente escuro precisam de fundo escuro na página
+  const DARK_PROFESSIONS = new Set([
+    'tech', 'tecnico_informatica', 'designer', 'fotografo',
+    'barbearia',
+    'estetica_automotiva', 'manutencao_automotiva', 'vistoria_veicular',
+    'driver', 'advogado', 'musico',
+  ]);
+  const profession = profile.profession || profile.category || '';
+  const isDarkCard = DARK_PROFESSIONS.has(profession);
+
+  // Prioridade: 1) cor_fundo customizada pelo usuário  2) detectada pela profissão  3) default neutro claro
+  let pageBg: string;
+  if (customFields.cor_fundo) {
+    pageBg = customFields.cor_fundo;
+  } else if (isDarkCard) {
+    // Fundo escuro com halo sutil na cor do tema do usuário
+    pageBg = `radial-gradient(ellipse 80% 40% at 50% -5%, ${themeColor}22 0%, #020617 55%)`;
+  } else {
+    pageBg = '#f8fafc';
+  }
 
   return (
-    <div 
+    <div
       className="min-h-screen flex flex-col items-center justify-center p-6 relative overflow-hidden transition-colors duration-500"
-      style={{ backgroundColor: bgColor }}
+      style={{ background: pageBg }}
     >
-      <ProfileClientWrapper profile={profile} themeColor={themeColor} />
+      <ProfileClientWrapper profile={profile} themeColor={themeColor} isDarkCard={isDarkCard} />
     </div>
   );
 }

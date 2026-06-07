@@ -10,9 +10,10 @@ import { cn } from '@/lib/utils';
 interface ProfileClientWrapperProps {
   profile: Profile;
   themeColor: string;
+  isDarkCard?: boolean;
 }
 
-export function ProfileClientWrapper({ profile, themeColor }: ProfileClientWrapperProps) {
+export function ProfileClientWrapper({ profile, themeColor, isDarkCard = false }: ProfileClientWrapperProps) {
   const isPro = profile.plan === 'pro';
 
   return (
@@ -53,7 +54,8 @@ export function ProfileClientWrapper({ profile, themeColor }: ProfileClientWrapp
       {isPro ? (
         <div className="fixed inset-0 pointer-events-none bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-[0.03] contrast-150 brightness-100 z-0 mix-blend-overlay" />
       ) : (
-        <div className="fixed inset-0 pointer-events-none bg-slate-50 dark:bg-slate-950 opacity-40 transition-all duration-1000 z-0" />
+        // Overlay neutro: invisível sobre fundos escuros, imperceptível sobre fundos claros
+        <div className={`fixed inset-0 pointer-events-none z-0 transition-all duration-1000 ${isDarkCard ? 'opacity-0' : 'bg-slate-100/30'}`} />
       )}
 
       <div className="relative w-full max-w-[400px] flex flex-col items-center">
