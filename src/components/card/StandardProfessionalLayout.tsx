@@ -101,6 +101,7 @@ import { cn, hexToHsl } from '@/lib/utils';
 import { motion, Variants } from 'framer-motion';
 import { ProfessionConfig } from '@/config/professions';
 import { toast } from 'sonner';
+import { AutoCarousel } from './AutoCarousel';
 
 interface StandardProfessionalLayoutProps {
   data: Partial<Profile>;
@@ -153,6 +154,14 @@ export function StandardProfessionalLayout({
   const themeHex = data.theme_color || '#3b82f6';
   const bgColor = cf.cor_fundo;
   const textColor = cf.cor_texto;
+
+  // Portfolio images resolver: suporta array ou string separada por vírgula
+  const rawPortfolioImages = cf.portfolio_images;
+  const portfolioImages: string[] = Array.isArray(rawPortfolioImages)
+    ? rawPortfolioImages.filter(Boolean)
+    : typeof rawPortfolioImages === 'string'
+      ? rawPortfolioImages.split(/[,;]/).map((s: string) => s.trim()).filter(Boolean)
+      : [];
 
   return (
     <div 
@@ -227,6 +236,23 @@ export function StandardProfessionalLayout({
           </div>
         </div>
       </motion.div>
+
+      {/* 1.5. AUTO CAROUSEL (Portfolio de Fotos) */}
+      {portfolioImages.length > 0 && (
+        <motion.div
+          custom={0.5} initial="hidden" animate="visible" variants={fadeIn}
+          className="px-6 -mt-2"
+        >
+          <AutoCarousel
+            images={portfolioImages}
+            themeHex={themeHex}
+            label="Portfólio de Fotos"
+            isPro={isPro}
+            interval={profession === 'chef_eventos' ? 3000 : 3500}
+            aspectRatio={profession === 'chef_eventos' ? '4/3' : '4/5'}
+          />
+        </motion.div>
+      )}
 
       {/* 2. MEDIA SECTION (Visuals) */}
       {(profession === 'area_lazer' || (data.custom_fields as any)?.foto_local || data.background_video_url) && (
