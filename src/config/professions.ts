@@ -1110,6 +1110,39 @@ export const professionsMap: Record<ProfessionCategory, ProfessionConfig> = {
       { nome: 'Brindes Promocionais', descricao: 'Chaveiros, ecobags, canetas e pendrives em grandes quantidades para eventos e feiras.', preco: 'Consulte Atacado' }
     ]
   },
+  chef_eventos: {
+    id: 'chef_eventos',
+    label: 'Chef Particular de Eventos',
+    theme: { color: 'amber', style: 'oled' },
+    customFields: [
+      { name: 'cozinha_especialidade', label: 'Especialidade Culinária', type: 'text', placeholder: 'Ex: Brasileira contemporânea, Italiana, Oriental' },
+      { name: 'tipos_eventos_atendidos', label: 'Tipos de Evento que Atende (separados por vírgula)', type: 'array', placeholder: 'Ex: Casamentos, Aniversários, Corporativos, Jantares íntimos' },
+      { name: 'capacidade_minima_pessoas', label: 'Mínimo de Pessoas por Evento', type: 'text', placeholder: 'Ex: 10 pessoas' },
+      { name: 'capacidade_maxima_pessoas', label: 'Máximo de Pessoas por Evento', type: 'text', placeholder: 'Ex: 200 pessoas' },
+      { name: 'cardapio_degustacao', label: 'Menu Degustação / Chef\'s Table?', type: 'boolean' },
+      { name: 'menu_vegetariano_vegano', label: 'Opções Vegetarianas e Veganas?', type: 'boolean' },
+      { name: 'atende_exterior', label: 'Atende em Locações Externas?', type: 'boolean' },
+      { name: 'servico_garcom', label: 'Inclui Equipe de Garçons?', type: 'boolean' },
+      { name: 'locacao_equipamentos', label: 'Leva Equipamentos / Cozinha Completa?', type: 'boolean' },
+      { name: 'link_cardapio', label: 'Link do Cardápio (PDF/Drive/Instagram)', type: 'text', placeholder: 'https://link-do-cardapio.com' },
+      { name: 'portfolio_images', label: 'Fotos dos Pratos e Eventos (URLs separadas por vírgula)', type: 'array', placeholder: 'https://ex.com/jantar1.jpg' }
+    ],
+    suggestedBackgrounds: [
+      'https://images.unsplash.com/photo-1414235077428-338989a2e8c0?auto=format&fit=crop&q=80&w=1080&h=1920',
+      'https://images.unsplash.com/photo-1555244162-803834f70033?auto=format&fit=crop&q=80&w=1080&h=1920',
+      'https://images.unsplash.com/photo-1528605248644-14dd04022da1?auto=format&fit=crop&q=80&w=1080&h=1920',
+      'https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?auto=format&fit=crop&q=80&w=1080&h=1920'
+    ],
+    defaultBio: 'Transformo celebrações em experiências gastronômicas inesquecíveis. Como chef particular, crio menus exclusivos para festas, casamentos, aniversários e jantares íntimos — adaptando cada prato ao gosto, restrição e orçamento do cliente. Do mise en place à sobremesa, cuido de tudo para que você aproveite cada momento com seus convidados sem se preocupar com a cozinha.',
+    defaultCta: 'Solicitar Cardápio e Orçamento 👨‍🍳',
+    defaultServices: [
+      { nome: 'Jantar Íntimo (até 15 pessoas)', descricao: 'Menu degustação de 5 tempos, mise en place completo, serviço de mesa e harmonização sugerida.', preco: 'A partir de R$ 180/pessoa' },
+      { nome: 'Festa de Aniversário', descricao: 'Cardápio personalizado com finger foods, pratos principais e sobremesas para grupos de 20 a 100 pessoas.', preco: 'Sob consulta' },
+      { nome: 'Casamento / Recepção', descricao: 'Serviço completo de banquete: buffet ou prato servido, equipe de garçons e coordenação gastronômica no dia.', preco: 'Sob consulta' },
+      { nome: 'Evento Corporativo / Happy Hour', descricao: 'Canapés, petiscos gourmet e finger foods para confraternizações empresariais e lançamentos.', preco: 'A partir de R$ 85/pessoa' },
+      { nome: 'Chef\'s Table Experience', descricao: 'Experiência exclusiva com menu autoral, interação com o chef e harmonização enológica para até 8 convidados.', preco: 'A partir de R$ 250/pessoa' }
+    ]
+  },
   default: {
     id: 'default',
     label: 'Outros Profissionais',

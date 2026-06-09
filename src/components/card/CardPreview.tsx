@@ -161,7 +161,7 @@ export function CardPreview({
   const isMusico = data.profession === 'musico' || data.category === 'musico';
   const cf = (data.custom_fields as any) || {};
   
-  const isStandardized = isModernService || ['quentinhas', 'assistencia_celular', 'van_escolar', 'guia_turistico', 'loja_online', 'esteticista', 'pizzaria', 'cafeteria', 'vistoria_veicular'].some(p => data.profession === p);
+  const isStandardized = isModernService || ['quentinhas', 'assistencia_celular', 'van_escolar', 'guia_turistico', 'loja_online', 'esteticista', 'pizzaria', 'cafeteria', 'vistoria_veicular', 'chef_eventos'].some(p => data.profession === p);
 
   // Data helpers that prefer new fields but fall back to old ones for compatibility
   const previewName = data.business_name || data.name || 'Seu Nome';

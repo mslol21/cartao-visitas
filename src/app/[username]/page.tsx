@@ -70,6 +70,7 @@ export default async function PublicPage({ params }: Props) {
     'barbearia',
     'estetica_automotiva', 'manutencao_automotiva', 'vistoria_veicular',
     'driver', 'advogado', 'musico',
+    'chef_eventos',
   ]);
   const profession = profile.profession || profile.category || '';
   const isDarkCard = DARK_PROFESSIONS.has(profession);

@@ -48,6 +48,7 @@ export type ProfessionCategory =
   | 'vistoria_veicular'
   | 'estetica_automotiva'
   | 'streetup'
+  | 'chef_eventos'
   | 'default';
 
 export interface Service {
@@ -285,6 +286,18 @@ export interface CustomFields {
   brindes_ecologicos?: boolean;
   kit_onboarding?: boolean;
   catalogo_pdf?: string;
+
+  // Chef de Eventos
+  cozinha_especialidade?: string;
+  cardapio_degustacao?: boolean;
+  atende_exterior?: boolean;
+  servico_garcom?: boolean;
+  locacao_equipamentos?: boolean;
+  menu_vegetariano_vegano?: boolean;
+  capacidade_minima_pessoas?: string;
+  capacidade_maxima_pessoas?: string;
+  tipos_eventos_atendidos?: string[];
+  link_cardapio?: string;
 }
 
 // Keeping old items for backwards compatibility during migration

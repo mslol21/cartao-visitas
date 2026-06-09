@@ -127,6 +127,7 @@ export function StandardProfessionalLayout({
     profession === 'cafeteria' ? "Olá! Gostaria de fazer um pedido / reservar uma mesa na cafeteria ☕" :
     profession === 'vistoria_veicular' ? "Olá! Gostaria de agendar uma vistoria no meu veículo 🛡️🚘" :
     profession === 'montador_moveis' ? "Olá! Vi seu perfil na Konnexy e gostaria de solicitar uma montagem de móveis 🔧" :
+    profession === 'chef_eventos' ? "Olá! Vi seu perfil na Konnexy e gostaria de solicitar um orçamento para meu evento 👨‍🍳🍽️" :
     `Olá! Vi seu perfil na Konnexy e gostaria de saber mais sobre seu trabalho como ${config.label}.`);
 
   const whatsappLink = `https://wa.me/${formattedWhatsapp}?text=${encodeURIComponent(defaultMessage)}`;
