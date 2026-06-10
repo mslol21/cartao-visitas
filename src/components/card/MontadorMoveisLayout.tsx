@@ -193,16 +193,15 @@ export function MontadorMoveisLayout({ data, isPro }: MontadorMoveisLayoutProps)
       {hasBgImage && (
         <>
           <div
-            className="fixed inset-0 w-full h-full z-0"
+            className="absolute inset-0 w-full h-full z-0"
             style={{
               backgroundImage: `url('${bgImage}')`,
               backgroundSize: 'cover',
               backgroundPosition: 'center',
-              backgroundAttachment: 'fixed',
             }}
           />
           {/* Overlay escuro para garantir legibilidade */}
-          <div className="fixed inset-0 z-0" style={{ background: 'linear-gradient(to bottom, rgba(10,10,10,0.72) 0%, rgba(10,10,10,0.94) 100%)' }} />
+          <div className="absolute inset-0 z-0" style={{ background: 'linear-gradient(to bottom, rgba(10,10,10,0.72) 0%, rgba(10,10,10,0.94) 100%)' }} />
         </>
       )}
 
