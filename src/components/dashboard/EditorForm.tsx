@@ -108,6 +108,8 @@ export function EditorForm({ initialData, onSubmit, onChange, isPro = false, can
   const fileInputRef = useRef<HTMLInputElement>(null);
   const videoInputRef = useRef<HTMLInputElement>(null);
   const fotoLocalInputRef = useRef<HTMLInputElement>(null);
+  const imagemFundoInputRef = useRef<HTMLInputElement>(null);
+  const portfolioImagesInputRef = useRef<HTMLInputElement>(null);
   const supabase = createClient();
   const firstRender = useRef(true);
   const [isDirty, setIsDirty] = useState(false);
@@ -339,6 +341,98 @@ export function EditorForm({ initialData, onSubmit, onChange, isPro = false, can
     } finally {
       setUploading(false);
       if (fotoLocalInputRef.current) fotoLocalInputRef.current.value = '';
+    }
+  };
+
+  const handleImagemFundoUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    if (file.size > 10 * 1024 * 1024) {
+      toast.error('Arquivo muito grande. Máximo 10MB.');
+      return;
+    }
+
+    const isImage = file.type.startsWith('image/');
+    if (!isImage) {
+      toast.error('Formato inválido. Selecione uma imagem (PNG, JPG ou WEBP).');
+      return;
+    }
+
+    setUploading(true);
+    try {
+      const fileExt = file.name.split('.').pop();
+      const fileName = `${Math.random().toString(36).substring(2)}.${fileExt}`;
+      const filePath = `card_backgrounds/${fileName}`;
+
+      const { error: uploadError } = await supabase.storage
+        .from('avatars')
+        .upload(filePath, file);
+
+      if (uploadError) throw uploadError;
+
+      const { data: { publicUrl } } = supabase.storage
+        .from('avatars')
+        .getPublicUrl(filePath);
+
+      handleCustomFieldChange('imagem_fundo' as keyof CustomFields, publicUrl);
+      toast.success('Imagem de fundo enviada!');
+    } catch (error: any) {
+      toast.error('Erro ao enviar arquivo: ' + error.message);
+    } finally {
+      setUploading(false);
+      if (imagemFundoInputRef.current) imagemFundoInputRef.current.value = '';
+    }
+  };
+
+  const handlePortfolioImagesUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = e.target.files;
+    if (!files || files.length === 0) return;
+
+    setUploading(true);
+    try {
+      const urls: string[] = [];
+      for (let i = 0; i < files.length; i++) {
+        const file = files[i];
+        if (file.size > 10 * 1024 * 1024) {
+          toast.error(`Arquivo ${file.name} é muito grande. Máximo 10MB.`);
+          continue;
+        }
+
+        const isImage = file.type.startsWith('image/');
+        if (!isImage) {
+          toast.error(`Arquivo ${file.name} não é uma imagem válida.`);
+          continue;
+        }
+
+        const fileExt = file.name.split('.').pop();
+        const fileName = `${Math.random().toString(36).substring(2)}.${fileExt}`;
+        const filePath = `portfolio/${fileName}`;
+
+        const { error: uploadError } = await supabase.storage
+          .from('avatars')
+          .upload(filePath, file);
+
+        if (uploadError) throw uploadError;
+
+        const { data: { publicUrl } } = supabase.storage
+          .from('avatars')
+          .getPublicUrl(filePath);
+
+        urls.push(publicUrl);
+      }
+
+      if (urls.length > 0) {
+        const currentImages = (formData.custom_fields as any)?.portfolio_images || [];
+        const updatedImages = [...currentImages, ...urls];
+        handleCustomFieldChange('portfolio_images' as keyof CustomFields, updatedImages);
+        toast.success(`${urls.length} foto(s) enviada(s) com sucesso!`);
+      }
+    } catch (error: any) {
+      toast.error('Erro ao enviar fotos: ' + error.message);
+    } finally {
+      setUploading(false);
+      if (portfolioImagesInputRef.current) portfolioImagesInputRef.current.value = '';
     }
   };
 
@@ -1020,7 +1114,60 @@ export function EditorForm({ initialData, onSubmit, onChange, isPro = false, can
                               />
                             </div>
                           ) : field.type === 'text' ? (
-                            field.name === 'foto_local' ? (
+                            field.name === 'imagem_fundo' ? (
+                              // Campo especial: upload de imagem de fundo
+                              <div className="space-y-3">
+                                <Label className="text-xs font-bold uppercase tracking-wider opacity-60">{field.label}</Label>
+                                {/* Preview da imagem de fundo */}
+                                {(formData.custom_fields as any)?.[field.name] && (
+                                  <div className="relative w-full aspect-video rounded-2xl overflow-hidden border border-slate-200 dark:border-slate-700 bg-black">
+                                    <img
+                                      src={(formData.custom_fields as any)[field.name]}
+                                      alt="Imagem de Fundo"
+                                      className="w-full h-full object-cover"
+                                    />
+                                    <button
+                                      type="button"
+                                      onClick={() => handleCustomFieldChange('imagem_fundo' as keyof CustomFields, '')}
+                                      className="absolute top-2 right-2 w-7 h-7 rounded-full bg-black/70 flex items-center justify-center text-white hover:bg-red-600 transition-colors"
+                                    >
+                                      <X className="w-4 h-4" />
+                                    </button>
+                                  </div>
+                                )}
+                                {/* Botão de upload */}
+                                <input
+                                  type="file"
+                                  ref={imagemFundoInputRef}
+                                  accept="image/*"
+                                  className="hidden"
+                                  onChange={handleImagemFundoUpload}
+                                />
+                                <button
+                                  type="button"
+                                  onClick={() => imagemFundoInputRef.current?.click()}
+                                  disabled={uploading}
+                                  className="w-full flex items-center justify-center gap-3 p-4 rounded-2xl border-2 border-dashed border-primary/30 bg-primary/5 hover:bg-primary/10 hover:border-primary/60 transition-all cursor-pointer group"
+                                >
+                                  {uploading ? (
+                                    <Loader2 className="w-5 h-5 animate-spin text-primary" />
+                                  ) : (
+                                    <Upload className="w-5 h-5 text-primary group-hover:scale-110 transition-transform" />
+                                  )}
+                                  <div className="flex flex-col items-start text-left">
+                                    <span className="text-sm font-black text-primary">{uploading ? 'Enviando...' : 'Enviar Imagem de Fundo'}</span>
+                                    <span className="text-[10px] text-muted-foreground">JPG, PNG, WEBP &bull; Máx. 10MB</span>
+                                  </div>
+                                </button>
+                                {/* Ou colar URL manualmente */}
+                                <Input
+                                  value={(formData.custom_fields as any)?.[field.name] || ''}
+                                  onChange={(e) => handleCustomFieldChange(field.name as keyof CustomFields, e.target.value)}
+                                  placeholder="Ou cole a URL da imagem de fundo aqui"
+                                  className="rounded-2xl h-10 text-xs text-muted-foreground"
+                                />
+                              </div>
+                            ) : field.name === 'foto_local' ? (
                               // Campo especial: upload de foto/vídeo do local
                               <div className="space-y-3">
                                 <Label className="text-xs font-bold uppercase tracking-wider opacity-60">{field.label}</Label>
@@ -1071,7 +1218,7 @@ export function EditorForm({ initialData, onSubmit, onChange, isPro = false, can
                                   ) : (
                                     <Upload className="w-5 h-5 text-primary group-hover:scale-110 transition-transform" />
                                   )}
-                                  <div className="flex flex-col items-start">
+                                  <div className="flex flex-col items-start text-left">
                                     <span className="text-sm font-black text-primary">{uploading ? 'Enviando...' : 'Enviar Foto ou Vídeo do Local'}</span>
                                     <span className="text-[10px] text-muted-foreground">JPG, PNG, WEBP, MP4, MOV &bull; Máx. 50MB</span>
                                   </div>
@@ -1096,15 +1243,78 @@ export function EditorForm({ initialData, onSubmit, onChange, isPro = false, can
                               </>
                             )
                           ) : field.type === 'array' ? (
-                            <>
-                              <Label className="text-xs font-bold uppercase tracking-wider opacity-60">{field.label} (Separado por vírgula)</Label>
-                              <Input
-                                value={((formData.custom_fields as any)?.[field.name] || []).join(', ')}
-                                onChange={(e) => handleCustomFieldChange(field.name as keyof CustomFields, e.target.value.split(',').map(s => s.trim()))}
-                                placeholder={field.placeholder}
-                                className="rounded-2xl h-11"
-                              />
-                            </>
+                            field.name === 'portfolio_images' ? (
+                              <div className="space-y-3 md:col-span-2">
+                                <Label className="text-xs font-bold uppercase tracking-wider opacity-60">{field.label}</Label>
+                                
+                                {/* Grid de Imagens do Portfólio Atuais */}
+                                {Array.isArray((formData.custom_fields as any)?.[field.name]) && 
+                                 ((formData.custom_fields as any)[field.name] as string[]).filter(Boolean).length > 0 && (
+                                  <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 p-3 rounded-2xl bg-white dark:bg-slate-900/50 border border-slate-200 dark:border-slate-800">
+                                    {((formData.custom_fields as any)[field.name] as string[]).filter(Boolean).map((imgUrl, imgIdx) => (
+                                      <div key={imgIdx} className="relative aspect-video rounded-xl overflow-hidden group border border-slate-200 dark:border-slate-700 bg-black">
+                                        <img src={imgUrl} alt={`Foto ${imgIdx + 1}`} className="w-full h-full object-cover" />
+                                        <button
+                                          type="button"
+                                          onClick={() => {
+                                            const currentArr = ((formData.custom_fields as any)[field.name] as string[]) || [];
+                                            const updatedArr = currentArr.filter((_, idx) => idx !== imgIdx);
+                                            handleCustomFieldChange('portfolio_images' as keyof CustomFields, updatedArr);
+                                          }}
+                                          className="absolute top-1 right-1 w-6 h-6 rounded-full bg-black/70 flex items-center justify-center text-white hover:bg-red-600 transition-colors"
+                                        >
+                                          <X className="w-3.5 h-3.5" />
+                                        </button>
+                                      </div>
+                                    ))}
+                                  </div>
+                                )}
+
+                                {/* Botão de Upload Múltiplo */}
+                                <input
+                                  type="file"
+                                  ref={portfolioImagesInputRef}
+                                  accept="image/*"
+                                  multiple
+                                  className="hidden"
+                                  onChange={handlePortfolioImagesUpload}
+                                />
+                                <button
+                                  type="button"
+                                  onClick={() => portfolioImagesInputRef.current?.click()}
+                                  disabled={uploading}
+                                  className="w-full flex items-center justify-center gap-3 p-4 rounded-2xl border-2 border-dashed border-primary/30 bg-primary/5 hover:bg-primary/10 hover:border-primary/60 transition-all cursor-pointer group"
+                                >
+                                  {uploading ? (
+                                    <Loader2 className="w-5 h-5 animate-spin text-primary" />
+                                  ) : (
+                                    <Upload className="w-5 h-5 text-primary group-hover:scale-110 transition-transform" />
+                                  )}
+                                  <div className="flex flex-col items-start text-left">
+                                    <span className="text-sm font-black text-primary">{uploading ? 'Enviando...' : 'Anexar Fotos do Portfólio'}</span>
+                                    <span className="text-[10px] text-muted-foreground">Selecione uma ou mais fotos &bull; Máx. 10MB por foto</span>
+                                  </div>
+                                </button>
+                                
+                                {/* Ou colar URLs separadas por vírgula */}
+                                <Input
+                                  value={((formData.custom_fields as any)?.[field.name] || []).join(', ')}
+                                  onChange={(e) => handleCustomFieldChange(field.name as keyof CustomFields, e.target.value.split(',').map(s => s.trim()))}
+                                  placeholder="Ou cole as URLs das fotos separadas por vírgula aqui"
+                                  className="rounded-2xl h-10 text-xs text-muted-foreground"
+                                />
+                              </div>
+                            ) : (
+                              <>
+                                <Label className="text-xs font-bold uppercase tracking-wider opacity-60">{field.label} (Separado por vírgula)</Label>
+                                <Input
+                                  value={((formData.custom_fields as any)?.[field.name] || []).join(', ')}
+                                  onChange={(e) => handleCustomFieldChange(field.name as keyof CustomFields, e.target.value.split(',').map(s => s.trim()))}
+                                  placeholder={field.placeholder}
+                                  className="rounded-2xl h-11"
+                                />
+                              </>
+                            )
                           ) : null}
                         </div>
                       ))
