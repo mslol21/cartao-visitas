@@ -1,107 +1,41 @@
 "use client";
 
+import { useState, useEffect, useCallback, useRef } from 'react';
+import { motion, AnimatePresence, Variants } from 'framer-motion';
 import { 
-  MapPin, 
-  Globe, 
-  Instagram, 
   MessageCircle, 
-  Linkedin, 
-  Facebook, 
-  Twitter, 
-  Youtube,
-  BadgeCheck,
-  Send,
-  ExternalLink,
-  Lock,
-  Sparkles,
-  Download,
+  MapPin, 
+  ChevronRight, 
+  Star, 
+  Award, 
+  ShieldCheck, 
+  Check, 
   Image as ImageIcon,
-  MoreVertical,
-  UserPlus,
-  FileText,
-  Star,
   Briefcase,
-  Code,
-  Paintbrush,
   Utensils,
-  UtensilsCrossed,
-  ShoppingBag,
-  Heart,
-  User,
-  Settings,
-  Cpu,
-  Hammer,
   Wrench,
-  Scissors,
-  Music,
-  Video,
-  GraduationCap,
-  Stethoscope,
-  Scale,
-  Calculator,
-  Building2,
-  Rocket,
-  Zap,
-  Target,
-  Users,
-  Award,
-  Camera,
-  Smartphone,
-  Link,
-  Crown,
-  Plus,
-  Tag,
-  Shield,
-  Clock,
-  ChevronRight,
-  Construction,
-  History,
-  ShieldCheck,
-  Car,
-  PawPrint,
-  Terminal,
-  Code2,
-  Home,
-  Gem,
-  Navigation,
-  Package,
-  HardHat,
-  HeartPulse,
-  Check,
-  CheckCircle2,
-  Truck,
-  Calendar,
-  Monitor,
-  Play,
-  Headphones,
-  Mic2,
-  Copy,
-  Umbrella,
-  Sun,
-  Palmtree,
-  Receipt,
-  CreditCard,
-  Landmark,
-  Brush,
-  Flower2,
-  Eye,
-  Smile,
-  Baby,
   Wind,
-  Coffee,
-  Wifi,
-  Waves,
-  Ticket,
-  Info,
-  ChevronDown
+  Hammer,
+  Settings,
+  Zap,
+  Smile,
+  Truck,
+  Eye,
+  Brush,
+  Smartphone,
+  HardHat,
+  Sun,
+  Car,
+  Scissors,
+  Scale,
+  Music,
+  ExternalLink,
+  Users
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Profile } from '@/types/profile';
-import { cn, hexToHsl } from '@/lib/utils';
-import { motion, Variants } from 'framer-motion';
+import { cn } from '@/lib/utils';
 import { ProfessionConfig } from '@/config/professions';
-import { toast } from 'sonner';
-import { AutoCarousel } from './AutoCarousel';
 
 interface StandardProfessionalLayoutProps {
   data: Partial<Profile>;
@@ -110,412 +44,505 @@ interface StandardProfessionalLayoutProps {
   profession: string;
 }
 
+// ─────────────────────────────────────────
+// DYNAMIC ICON RESOLVER
+// ─────────────────────────────────────────
+function getProfessionIcon(prof: string) {
+  switch (prof) {
+    case 'chef_eventos': return Utensils;
+    case 'montador_moveis': return Wrench;
+    case 'ar_condicionado': return Wind;
+    case 'pedreiro': return Hammer;
+    case 'mecanico': return Settings;
+    case 'eletricista': return Zap;
+    case 'encanador': return Wrench;
+    case 'diarista': return Smile;
+    case 'frete': return Truck;
+    case 'gesseiro': return Hammer;
+    case 'vidraceiro': return Eye;
+    case 'pintor': return Brush;
+    case 'serralheiro': return Hammer;
+    case 'marceneiro': return Wrench;
+    case 'assistencia_celular': return Smartphone;
+    case 'mestre_de_obras': return HardHat;
+    case 'area_lazer': return Sun;
+    case 'manutencao_automotiva': return Car;
+    case 'barbearia': return Scissors;
+    case 'advogado': return Scale;
+    case 'musico': return Music;
+    default: return Briefcase;
+  }
+}
+
+// ─────────────────────────────────────────
+// CARROSSEL FULLBLEED HERO
+// ─────────────────────────────────────────
+function HeroCarousel({ images, themeHex }: { images: string[]; themeHex: string }) {
+  const [current, setCurrent] = useState(0);
+  const [paused, setPaused] = useState(false);
+  const [touchStart, setTouchStart] = useState<number | null>(null);
+  const timer = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  const goTo = useCallback((i: number) => setCurrent((i + images.length) % images.length), [images.length]);
+  const next = useCallback(() => goTo(current + 1), [current, goTo]);
+  const prev = useCallback(() => goTo(current - 1), [current, goTo]);
+
+  useEffect(() => {
+    if (paused || images.length <= 1) return;
+    timer.current = setTimeout(next, 3200);
+    return () => { if (timer.current) clearTimeout(timer.current); };
+  }, [current, paused, images.length, next]);
+
+  return (
+    <div
+      className="relative w-full overflow-hidden animate-in fade-in duration-700"
+      style={{ aspectRatio: '16/10' }}
+      onMouseEnter={() => setPaused(true)}
+      onMouseLeave={() => setPaused(false)}
+      onTouchStart={e => setTouchStart(e.touches[0].clientX)}
+      onTouchEnd={e => {
+        if (touchStart === null) return;
+        const diff = touchStart - e.changedTouches[0].clientX;
+        if (Math.abs(diff) > 40) diff > 0 ? next() : prev();
+        setTouchStart(null);
+      }}
+    >
+      <AnimatePresence mode="wait">
+        <motion.div
+          key={current}
+          className="absolute inset-0"
+          initial={{ opacity: 0, scale: 1.05 }}
+          animate={{ opacity: 1, scale: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.85, ease: [0.25, 0.46, 0.45, 0.94] }}
+        >
+          <img src={images[current]} alt={`Portfólio ${current + 1}`} className="w-full h-full object-cover" />
+        </motion.div>
+      </AnimatePresence>
+
+      {/* Gradients */}
+      <div className="absolute inset-x-0 top-0 h-1/3 bg-gradient-to-b from-black/55 to-transparent z-10 pointer-events-none" />
+      <div className="absolute inset-x-0 bottom-0 h-3/4 bg-gradient-to-t from-[#0a0a0a] via-black/50 to-transparent z-10 pointer-events-none" />
+
+      {/* Progress bars */}
+      {images.length > 1 && (
+        <div className="absolute top-3 inset-x-3 flex gap-1 z-20">
+          {images.map((_, i) => (
+            <button key={i} onClick={() => goTo(i)} className="flex-1 h-[3px] rounded-full overflow-hidden bg-white/20" aria-label={`Foto ${i + 1}`}>
+              {i === current ? (
+                <motion.div
+                  key={current}
+                  className="h-full rounded-full origin-left"
+                  style={{ backgroundColor: themeHex }}
+                  initial={{ scaleX: 0 }}
+                  animate={{ scaleX: paused ? 0 : 1 }}
+                  transition={{ duration: paused ? 0 : 3.2, ease: 'linear' }}
+                />
+              ) : (
+                <div className="h-full rounded-full" style={{ backgroundColor: i < current ? themeHex : 'transparent', opacity: i < current ? 0.7 : 0 }} />
+              )}
+            </button>
+          ))}
+        </div>
+      )}
+
+      {/* Bottom dots + counter */}
+      {images.length > 1 && (
+        <div className="absolute inset-x-5 bottom-5 z-20 flex items-center justify-between">
+          <div className="flex gap-1.5">
+            {images.map((_, i) => (
+              <button key={i} onClick={() => goTo(i)}
+                className={cn('rounded-full transition-all duration-300', i === current ? 'w-5 h-2' : 'w-2 h-2 opacity-30')}
+                style={{ backgroundColor: i === current ? themeHex : 'white' }}
+              />
+            ))}
+          </div>
+          <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-full backdrop-blur-md bg-black/30">
+            <div className={cn('w-1.5 h-1.5 rounded-full transition-colors', paused ? 'bg-white/30' : 'bg-green-400')} />
+            <span className="text-[9px] font-black text-white/50 uppercase tracking-widest">
+              {paused ? 'pausado' : 'auto'} · {String(current + 1).padStart(2, '0')}/{String(images.length).padStart(2, '0')}
+            </span>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
+// ─────────────────────────────────────────
+// LAYOUT PRINCIPAL PADRONIZADO PREMIUM
+// ─────────────────────────────────────────
 export function StandardProfessionalLayout({ 
   data, 
   config, 
   isPro,
   profession 
 }: StandardProfessionalLayoutProps) {
-  
   const cf = (data.custom_fields as any) || {};
+  const themeHex = data.theme_color || '#3b82f6';
+  const textColor = cf.cor_texto;
 
-  // Helpers
-  const cleanWhatsapp = data.whatsapp?.replace(/\D/g, '') || '';
-  const formattedWhatsapp = cleanWhatsapp.startsWith('55') ? cleanWhatsapp : `55${cleanWhatsapp}`;
-  const defaultMessage = 
-    data.whatsapp_message || (
-    profession === 'pizzaria' ? "Olá! Vi seu perfil na Konnexy e gostaria de fazer um pedido de pizza 🍕" :
-    profession === 'cafeteria' ? "Olá! Gostaria de fazer um pedido / reservar uma mesa na cafeteria ☕" :
-    profession === 'vistoria_veicular' ? "Olá! Gostaria de agendar uma vistoria no meu veículo 🛡️🚘" :
-    profession === 'montador_moveis' ? "Olá! Vi seu perfil na Konnexy e gostaria de solicitar uma montagem de móveis 🔧" :
-    profession === 'chef_eventos' ? "Olá! Vi seu perfil na Konnexy e gostaria de solicitar um orçamento para meu evento 👨‍🍳🍽️" :
-    `Olá! Vi seu perfil na Konnexy e gostaria de saber mais sobre seu trabalho como ${config.label}.`);
+  // WhatsApp Principal
+  const cleanWpp = data.whatsapp?.replace(/\D/g, '') || '';
+  const fmtWpp = cleanWpp.startsWith('55') ? cleanWpp : `55${cleanWpp}`;
+  const defaultWppMsg = data.whatsapp_message || `Olá! Vi seu perfil na Konnexy e gostaria de solicitar um orçamento para seus serviços de ${config.label} 🚀`;
+  const wppLink = fmtWpp ? `https://wa.me/${fmtWpp}?text=${encodeURIComponent(defaultWppMsg)}` : '#';
 
-  const whatsappLink = `https://wa.me/${formattedWhatsapp}?text=${encodeURIComponent(defaultMessage)}`;
-  
-  const cleanWhatsappSecondary = data.whatsapp_secondary?.replace(/\D/g, '') || '';
-  const formattedWhatsappSecondary = cleanWhatsappSecondary.startsWith('55') ? cleanWhatsappSecondary : `55${cleanWhatsappSecondary}`;
-  const whatsappSecondaryLink = `https://wa.me/${formattedWhatsappSecondary}?text=${encodeURIComponent(data.whatsapp_secondary_message || defaultMessage)}`;
+  // WhatsApp Secundário
+  const cleanWppSec = data.whatsapp_secondary?.replace(/\D/g, '') || '';
+  const fmtWppSec = cleanWppSec.startsWith('55') ? cleanWppSec : `55${cleanWppSec}`;
+  const wppSecLink = fmtWppSec ? `https://wa.me/${fmtWppSec}?text=${encodeURIComponent(data.whatsapp_secondary_message || defaultWppMsg)}` : null;
 
-  // Animation variants
-  const fadeIn: Variants = {
-    hidden: { opacity: 0, y: 30 },
+  // Portfolio images resolver (suporta array ou string separada por vírgula)
+  const rawImgs = cf.portfolio_images;
+  const images: string[] = Array.isArray(rawImgs)
+    ? rawImgs.filter(Boolean)
+    : typeof rawImgs === 'string'
+      ? rawImgs.split(/[,;]/).map((s: string) => s.trim()).filter(Boolean)
+      : [];
+
+  // Imagem de fundo estática
+  const bgImage: string | undefined = cf.imagem_fundo || cf.cor_fundo;
+  const hasBgImage = bgImage && (bgImage.startsWith('http') || bgImage.startsWith('/'));
+
+  // Services
+  const rawServices = data.servicos || data.services || [];
+  const services = rawServices.map((s: any) => ({
+    nome: s.nome || s.name || '',
+    descricao: s.descricao || s.description || '',
+    preco: s.preco || s.price || '',
+  })).filter((s: any) => s.nome);
+
+  // Dynamic Icon for Profession
+  const IconComponent = getProfessionIcon(profession);
+
+  // Mapeamento dinâmico de campos customizados para exibir como tags/destaques
+  const booleanDiferenciais = config.customFields
+    .filter(f => f.type === 'boolean' && cf[f.name] === true)
+    .map(f => ({ name: f.name, label: f.label }));
+
+  const arrayFields = config.customFields
+    .filter(f => f.type === 'array' && cf[f.name] && !['portfolio_images'].includes(f.name))
+    .map(f => {
+      const val = cf[f.name];
+      const items: string[] = Array.isArray(val)
+        ? val
+        : typeof val === 'string'
+          ? val.split(/[,;]/).map((s: string) => s.trim()).filter(Boolean)
+          : [];
+      return { name: f.name, label: f.label, items };
+    });
+
+  const textHighlights = config.customFields
+    .filter(f => f.type === 'text' && cf[f.name] && !['imagem_fundo', 'link_cardapio', 'link_catalogo', 'foto_local'].includes(f.name))
+    .map(f => ({ name: f.name, label: f.label, value: cf[f.name] }));
+
+  // Link do catálogo ou arquivo externo
+  const externalLink = cf.link_catalogo || cf.link_cardapio;
+
+  const fadeUp: Variants = {
+    hidden: { opacity: 0, y: 24 },
     visible: (i: number) => ({
-      opacity: 1,
-      y: 0,
-      transition: { 
-        delay: i * 0.12, 
-        duration: 0.8, 
-        ease: [0.16, 1, 0.3, 1] 
-      }
+      opacity: 1, y: 0,
+      transition: { delay: i * 0.09, duration: 0.7, ease: [0.16, 1, 0.3, 1] as [number, number, number, number] }
     })
   };
 
-  const themeHex = data.theme_color || '#3b82f6';
-  const bgColor = cf.cor_fundo;
-  const textColor = cf.cor_texto;
-
-  // Portfolio images resolver: suporta array ou string separada por vírgula
-  const rawPortfolioImages = cf.portfolio_images;
-  const portfolioImages: string[] = Array.isArray(rawPortfolioImages)
-    ? rawPortfolioImages.filter(Boolean)
-    : typeof rawPortfolioImages === 'string'
-      ? rawPortfolioImages.split(/[,;]/).map((s: string) => s.trim()).filter(Boolean)
-      : [];
-
   return (
-    <div 
-      className={cn(
-        "w-full min-h-full flex flex-col gap-8 pb-20 transition-colors duration-1000 overflow-x-hidden",
-        !bgColor && (isPro ? "bg-slate-950 text-white" : "bg-white text-slate-900")
-      )}
-      style={{ 
-        '--primary': isPro ? hexToHsl(data.theme_color || '#3b82f6') : undefined,
-        backgroundColor: bgColor || undefined,
-        color: textColor || undefined
-      } as React.CSSProperties}
+    <div
+      className="w-full min-h-full flex flex-col overflow-x-hidden relative"
+      style={{
+        backgroundColor: hasBgImage ? 'transparent' : (cf.cor_fundo || '#0a0a0a'),
+        color: textColor || '#ffffff',
+        fontFamily: data.font_family || 'inherit',
+      }}
     >
-      
-      {/* 1. HEADER SECTION (Identity) */}
-      <motion.div 
-        custom={0} initial="hidden" animate="visible" variants={fadeIn}
-        className="flex flex-col items-center text-center px-4 pt-10 relative"
-      >
-        <div className={cn("konnexy-aura mb-8", isPro && "scale-110")}>
-          <div className={cn(
-            "relative w-36 h-36 rounded-full border-4 shadow-[0_20px_50px_rgba(0,0,0,0.15)] overflow-hidden z-10 transition-all duration-700",
-            isPro ? "border-white/20" : "border-white dark:border-slate-800"
-          )}
-          style={isPro ? { borderColor: themeHex + '80' } : {}}
-          >
-            {data.photo_url ? (
-               <img 
-                 src={data.photo_url || ''} 
-                 alt={data.business_name || ''} 
-                 className="w-full h-full object-cover transition-transform group-hover:scale-110 duration-700" 
-               />
-            ) : (
-               <div className="w-full h-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center">
-                  <span className="text-4xl font-black opacity-20">{data.business_name?.[0] || '?'}</span>
-               </div>
-            )}
-          </div>
-        </div>
-
-        <div className={cn(
-          "relative p-8 rounded-[3rem] w-full max-w-[340px] transition-all duration-700 overflow-hidden",
-          !cf.cor_info_fundo && (isPro ? "bg-white/10 backdrop-blur-2xl border border-white/20 shadow-xl" : "bg-white/80 border border-slate-100 shadow-xl")
-        )}
-        style={{ 
-          backgroundColor: cf.cor_info_fundo || undefined, 
-          borderColor: cf.cor_info_fundo ? cf.cor_info_fundo + '30' : undefined,
-          color: cf.cor_info_texto || textColor || undefined
-        }}
-        >
-          <h1 
-            className="text-4xl font-black tracking-tighter mb-3 leading-[0.9] uppercase font-sora"
-            style={{ color: cf.cor_info_texto || textColor || undefined }}
-          >
-            {data.business_name || 'Seu Negócio'}
-          </h1>
-          
-          <div className="flex flex-col items-center gap-4">
-            <div 
-              className="inline-flex items-center gap-2.5 px-4 py-2 rounded-full text-[10px] font-black uppercase tracking-[0.15em] transition-all shadow-sm"
-              style={cf.cor_botoes ? { backgroundColor: cf.cor_botoes + '20', color: cf.cor_botoes } : { backgroundColor: 'hsl(var(--primary)/0.1)', color: 'hsl(var(--primary))' }}
-            >
-               <span className="opacity-100">{config.label}</span>
-            </div>
-
-            <p 
-            className="text-[11px] font-bold leading-tight opacity-70 tracking-tight uppercase max-w-[200px]"
-            style={{ color: cf.cor_info_texto || textColor || undefined }}
-          >
-            {data.subtitle || data.tagline || 'Sua Especialidade Profissional'}
-          </p>
-          </div>
-        </div>
-      </motion.div>
-
-      {/* 1.5. AUTO CAROUSEL (Portfolio de Fotos) */}
-      {portfolioImages.length > 0 && (
-        <motion.div
-          custom={0.5} initial="hidden" animate="visible" variants={fadeIn}
-          className="px-6 -mt-2"
-        >
-          <AutoCarousel
-            images={portfolioImages}
-            themeHex={themeHex}
-            label="Portfólio de Fotos"
-            isPro={isPro}
-            interval={profession === 'chef_eventos' ? 3000 : 3500}
-            aspectRatio={profession === 'chef_eventos' ? '4/3' : '4/5'}
+      {/* ── IMAGEM DE FUNDO GLOBAL (quando definida) ── */}
+      {hasBgImage && (
+        <>
+          <div
+            className="absolute inset-0 w-full h-full z-0"
+            style={{
+              backgroundImage: `url('${bgImage}')`,
+              backgroundSize: 'cover',
+              backgroundPosition: 'center',
+            }}
           />
-        </motion.div>
+          {/* Overlay escuro para garantir legibilidade */}
+          <div className="absolute inset-0 z-0" style={{ background: 'linear-gradient(to bottom, rgba(10,10,10,0.72) 0%, rgba(10,10,10,0.94) 100%)' }} />
+        </>
       )}
 
-      {/* 2. MEDIA SECTION (Visuals) */}
-      {(profession === 'area_lazer' || (data.custom_fields as any)?.foto_local || data.background_video_url) && (
-        <motion.div 
-          custom={1} initial="hidden" animate="visible" variants={fadeIn}
-          className="px-6"
-        >
-          <div className="w-full rounded-[2.5rem] overflow-hidden shadow-2xl relative border-4 border-white/10 bg-black aspect-[4/5] sm:aspect-video group">
-            {(() => {
-              const mediaUrl = (data.custom_fields as any)?.foto_local || data.background_video_url;
-              if (!mediaUrl) return null;
-              
-              return mediaUrl.match(/\.(mp4|webm|ogg|mov)$/i) ? (
-                <>
-                  <video 
-                    src={mediaUrl}
-                    autoPlay 
-                    muted 
-                    loop 
-                    playsInline 
-                    className="absolute inset-0 w-full h-full object-cover blur-2xl opacity-50 scale-150"
-                  />
-                  <video 
-                    src={mediaUrl} 
-                    controls 
-                    playsInline 
-                    className="relative z-10 w-full h-full object-contain"
-                  />
-                </>
-              ) : (
-                <>
-                  <div 
-                    className="absolute inset-0 w-full h-full blur-2xl opacity-50 scale-150 z-0" 
-                    style={{ 
-                      backgroundImage: `url('${mediaUrl}')`, 
-                      backgroundSize: 'cover', 
-                      backgroundPosition: 'center' 
-                    }} 
-                  />
-                  <img 
-                    src={mediaUrl} 
-                    alt={data.business_name || 'Visual Portfólio'} 
-                    className="relative z-10 w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105"
-                  />
-                </>
-              );
-            })()}
-          </div>
-        </motion.div>
-      )}
+      {/* Conteúdo z-10 */}
+      <div className="relative z-10 flex flex-col w-full">
 
-      {/* 3. CONTACT SECTION (Primary Actions) */}
-      <motion.div 
-        custom={2} initial="hidden" animate="visible" variants={fadeIn}
-        className="px-6 flex flex-col gap-4"
-      >
-        {data.whatsapp && (
-          <Button 
-            asChild
-            className={cn(
-              "w-full h-16 rounded-[1.5rem] text-lg font-black uppercase tracking-tighter shadow-2xl border-none flex items-center justify-center gap-4 transition-all hover:scale-[1.03] active:scale-[0.97]",
-              !cf.cor_botoes && "bg-[#25D366] text-white shadow-[#25D366]/30"
-            )}
-            style={cf.cor_botoes ? {
-               backgroundColor: cf.cor_botoes,
-               color: cf.cor_texto_botoes || '#ffffff',
-               boxShadow: `0 20px 40px -10px ${cf.cor_botoes}60`
-            } : undefined}
-          >
-            <a href={whatsappLink} target="_blank" rel="noopener noreferrer">
-              <MessageCircle className={cn("w-6 h-6", !cf.cor_botoes && "fill-white")} />
-              <span className="font-sora">{data.cta_text || config.defaultCta || 'Chamar no WhatsApp'}</span>
-            </a>
-          </Button>
-        )}
-
-        {data.whatsapp_secondary && (
-          <Button 
-            asChild
-            variant="outline"
-            className={cn(
-              "w-full h-14 rounded-[1.2rem] text-base font-black uppercase tracking-tighter border-2 flex items-center justify-center gap-3 transition-all hover:scale-[1.02] active:scale-[0.98] backdrop-blur-md",
-              !cf.cor_botoes && "border-[#25D366] text-[#25D366] hover:bg-[#25D366]/5"
-            )}
-            style={cf.cor_botoes ? {
-               borderColor: cf.cor_botoes,
-               color: cf.cor_botoes,
-            } : undefined}
-          >
-            <a href={whatsappSecondaryLink} target="_blank" rel="noopener noreferrer" className="flex items-center justify-center gap-2">
-              <MessageCircle className="w-5 h-5 stroke-[2.5px]" />
-              <span className="text-[11px] tracking-[0.2em] font-black">Segundo WhatsApp</span>
-            </a>
-          </Button>
-        )}
-      </motion.div>
-
-      {/* 4. DIFFERENTIATORS (Diferenciais) */}
-      {data.diferenciais && data.diferenciais.length > 0 && (
-        <motion.div 
-          custom={3} initial="hidden" animate="visible" variants={fadeIn}
-          className="px-6"
-        >
-          <div className="flex items-center gap-3 mb-6 px-2">
-            <div className="h-6 w-1.5 bg-primary rounded-full" style={{ backgroundColor: themeHex }} />
-            <h2 className="text-[10px] font-black uppercase tracking-[0.25em]" style={{ color: textColor || 'inherit', opacity: 0.6 }}>Por que nos escolher?</h2>
-          </div>
-          <div className="grid grid-cols-2 gap-3">
-            {data.diferenciais.map((dif, idx) => (
-              <div 
-                key={idx} 
-                className={cn(
-                  "p-5 rounded-2xl border flex flex-col gap-3 transition-all",
-                  !cf.cor_diferenciais_fundo && (isPro ? "bg-white/5 border-white/5" : "bg-white border-slate-100")
-                )}
-                style={{ 
-                  backgroundColor: cf.cor_diferenciais_fundo || undefined, 
-                  color: cf.cor_diferenciais_texto || textColor || undefined,
-                  borderColor: cf.cor_diferenciais_fundo ? cf.cor_diferenciais_fundo + '30' : undefined 
-                }}
-              >
-                <div className="w-10 h-10 rounded-2xl bg-primary/10 flex items-center justify-center">
-                   <Award className="w-5 h-5 text-primary" style={{ color: themeHex }} />
-                </div>
-                <span className="text-[11px] font-black leading-tight tracking-tight uppercase opacity-90">
-                  {dif}
-                </span>
-              </div>
-            ))}
-          </div>
-        </motion.div>
-      )}
-
-      {/* 5. SERVICES SECTION */}
-      {data.servicos && data.servicos.length > 0 && (
-        <motion.div 
-          custom={4} initial="hidden" animate="visible" variants={fadeIn}
-          className="px-6"
-        >
-          <div className="flex items-center justify-between mb-6 px-2">
-            <div className="flex items-center gap-3">
-              <div className="h-6 w-1.5 bg-primary rounded-full" style={{ backgroundColor: themeHex }} />
-              <h2 className="text-[10px] font-black uppercase tracking-[0.25em]" style={{ color: textColor || 'inherit', opacity: 0.6 }}>Serviços & Preços</h2>
+        {/* ── HERO: CARROSSEL OU PLACEHOLDER ── */}
+        <div className="relative w-full">
+          {images.length > 0 ? (
+            <HeroCarousel images={images} themeHex={themeHex} />
+          ) : hasBgImage ? (
+            <div className="w-full h-48 relative">
+              <div className="absolute inset-x-0 bottom-0 h-full bg-gradient-to-t from-black/80 to-transparent pointer-events-none" />
             </div>
-          </div>
-          <div className="flex flex-col gap-4">
-            {data.servicos.map((servico: any, idx: number) => (
-              <div 
-                key={idx} 
-                className={cn(
-                  "p-6 rounded-3xl border transition-all",
-                  !cf.cor_servicos_fundo && (isPro ? "bg-white/5 border-white/5" : "bg-white border-slate-100")
-                )}
-                style={{ 
-                  backgroundColor: cf.cor_servicos_fundo || undefined, 
-                  color: cf.cor_servicos_texto || textColor || undefined,
-                  borderColor: cf.cor_servicos_fundo ? cf.cor_servicos_fundo + '30' : undefined 
-                }}
+          ) : (
+            /* Placeholder elegante com animação e ícone */
+            <div
+              className="w-full flex items-center justify-center"
+              style={{ aspectRatio: '16/10', background: `linear-gradient(135deg, #111 0%, #172033 50%, #111 100%)` }}
+            >
+              <div className="flex flex-col items-center gap-3 opacity-25">
+                <IconComponent className="w-10 h-10 animate-bounce" style={{ color: themeHex }} />
+                <span className="text-[10px] font-black uppercase tracking-[0.3em] text-white">Fotos de seus serviços</span>
+              </div>
+            </div>
+          )}
+
+          {/* ── IDENTIDADE DO PROFISSIONAL ANCORADA ── */}
+          <motion.div
+            custom={0} initial="hidden" animate="visible" variants={fadeUp}
+            className="absolute inset-x-0 bottom-0 z-20 px-5 pb-5"
+            style={{ background: images.length > 0 || hasBgImage ? 'linear-gradient(to top, rgba(10,10,10,1) 35%, transparent)' : 'none' }}
+          >
+            <div className="flex items-end gap-4 pt-12">
+              {/* Avatar */}
+              <div
+                className="relative flex-none w-[68px] h-[68px] rounded-2xl overflow-hidden shadow-2xl border-2"
+                style={{ borderColor: themeHex + '40' }}
               >
-                <div className="flex justify-between items-start gap-4">
-                  <div className="flex-1">
-                    <h3 className="text-sm font-black uppercase tracking-tight mb-2">
-                      {servico.nome}
-                    </h3>
-                    {servico.descricao && (
-                      <p className="text-[11px] font-medium leading-relaxed opacity-70">
-                        {servico.descricao}
-                      </p>
-                    )}
+                {data.photo_url ? (
+                  <img src={data.photo_url} alt={data.business_name || ''} className="w-full h-full object-cover" />
+                ) : (
+                  <div className="w-full h-full flex items-center justify-center text-2xl font-black" style={{ background: themeHex + '20', color: themeHex }}>
+                    {(data.business_name || 'K')[0].toUpperCase()}
                   </div>
-                  {servico.preco && (
-                    <div className="bg-primary/10 px-4 py-2 rounded-2xl">
-                      <span className="text-sm font-black text-primary tracking-tighter" style={{ color: themeHex }}>
-                        {servico.preco}
-                      </span>
-                    </div>
-                  )}
-                </div>
+                )}
               </div>
-            ))}
-          </div>
-        </motion.div>
-      )}
 
-      {/* 6. BIO / ABOUT */}
-      {data.bio_profissional && (
-        <motion.div 
-          custom={5} initial="hidden" animate="visible" variants={fadeIn}
-          className="px-6"
-        >
-           <div className={cn(
-             "p-8 rounded-[3rem] border-2 transition-all",
-             !cf.cor_bio_fundo && (isPro ? "bg-white/5 backdrop-blur-xl border-white/10 text-slate-300 shadow-2xl" : "bg-white/80 dark:bg-slate-900/80 border-slate-100 dark:border-slate-800")
-           )}
-           style={{ 
-             backgroundColor: cf.cor_bio_fundo || undefined, 
-             color: cf.cor_bio_texto || textColor || undefined,
-             borderColor: cf.cor_bio_fundo ? cf.cor_bio_fundo + '30' : undefined 
-           }}
-           >
-              <div className="flex items-center gap-3 mb-6">
-                <div className="w-10 h-10 rounded-2xl bg-primary/10 flex items-center justify-center">
-                   <User className="w-5 h-5 text-primary" style={{ color: themeHex }} />
+              {/* Nome + profissão */}
+              <div className="flex-1 min-w-0 pb-1">
+                <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[9px] font-black uppercase tracking-[0.2em] mb-2" style={{ backgroundColor: themeHex + '20', color: themeHex }}>
+                  <IconComponent className="w-3 h-3" />
+                  {config.label}
                 </div>
-                <h2 className="text-[10px] font-black uppercase tracking-[0.25em] opacity-60">Sobre o Profissional</h2>
+                <h1 className="text-[26px] font-black tracking-tight leading-[1.0] uppercase text-white drop-shadow-lg">
+                  {data.business_name || 'Profissional'}
+                </h1>
+                {(data.subtitle || data.tagline) && (
+                  <p className="text-[11px] text-white/50 font-medium mt-1 tracking-wide">{data.subtitle || data.tagline}</p>
+                )}
               </div>
-              <p className="text-[13px] font-medium leading-relaxed tracking-tight italic opacity-90">
-                "{data.bio_profissional}"
-              </p>
-           </div>
-        </motion.div>
-      )}
+            </div>
+          </motion.div>
+        </div>
 
-      {/* 7. ADDRESS / LOCATION */}
-      {data.endereco_completo && (
-        <motion.div 
-          custom={6} initial="hidden" animate="visible" variants={fadeIn}
-          className="px-6"
-        >
-          <Button 
+        {/* ── TAGS: DESTAQUES / ATRIBUTOS DIVERSOS ── */}
+        {(textHighlights.length > 0 || booleanDiferenciais.length > 0) && (
+          <motion.div custom={1} initial="hidden" animate="visible" variants={fadeUp} className="px-5 pt-4 pb-1">
+            <div className="flex flex-wrap gap-2">
+              {textHighlights.map((highlight, i) => (
+                <span key={i} className="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-[11px] font-bold border" style={{ borderColor: themeHex + '35', color: themeHex, backgroundColor: themeHex + '12' }}>
+                  <Star className="w-3.5 h-3.5" />
+                  {highlight.label}: {highlight.value}
+                </span>
+              ))}
+              {booleanDiferenciais.slice(0, 2).map((b, i) => (
+                <span key={i} className="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-[11px] font-bold border border-white/10 text-white/55 bg-white/5">
+                  <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" />
+                  {b.label}
+                </span>
+              ))}
+            </div>
+          </motion.div>
+        )}
+
+        {/* ── CTA WHATSAPP PRINCIPAL ── */}
+        <motion.div custom={2} initial="hidden" animate="visible" variants={fadeUp} className="px-5 pt-5 pb-2">
+          <Button
             asChild
-            variant="outline"
-            className="w-full h-auto py-6 rounded-[2.5rem] border-2 bg-white/50 dark:bg-slate-900/50 backdrop-blur-md border-slate-200 dark:border-white/10 hover:border-primary/40 group overflow-hidden"
-            style={{ 
-              backgroundColor: bgColor ? bgColor + '80' : undefined,
-              borderColor: textColor ? textColor + '20' : undefined,
-              color: textColor || 'inherit'
+            className="w-full h-14 rounded-2xl text-[13px] font-black uppercase tracking-widest border-none flex items-center justify-center gap-3 shadow-2xl transition-all hover:scale-[1.02] active:scale-[0.98]"
+            style={{
+              background: cf.cor_botoes || `linear-gradient(135deg, ${themeHex} 0%, #1e3a8a 100%)`,
+              color: cf.cor_texto_botoes || '#ffffff',
+              boxShadow: `0 16px 40px -8px ${themeHex}55`,
             }}
           >
-            <a 
-              href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(data.endereco_completo)}`}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex flex-col items-center gap-3"
-            >
-              <div className="w-10 h-10 rounded-2xl bg-red-500/10 flex items-center justify-center group-hover:scale-110 transition-transform">
-                <MapPin className="w-5 h-5 text-red-500" />
-              </div>
-              <div className="flex flex-col items-center gap-1 px-4">
-                <span className="text-[10px] font-black uppercase tracking-[0.2em] opacity-40">Localização</span>
-                <span className="text-[11px] font-bold text-center leading-tight opacity-90">
-                  {data.endereco_completo}
-                </span>
-              </div>
+            <a href={wppLink} target="_blank" rel="noopener noreferrer">
+              <MessageCircle className="w-5 h-5 fill-current" />
+              {data.cta_text || config.defaultCta || 'Falar no WhatsApp'}
             </a>
           </Button>
         </motion.div>
-      )}
 
-      {/* 8. FOOTER / BRANDING */}
-      <motion.div 
-        custom={7} initial="hidden" animate="visible" variants={fadeIn}
-        className="mt-12 flex flex-col items-center gap-4 opacity-40 hover:opacity-100 transition-opacity"
-      >
-        <p className="text-[9px] font-black uppercase tracking-[0.3em]" style={{ color: textColor || 'inherit' }}>Tecnologia por</p>
-        <div className="flex items-center gap-2 grayscale brightness-50">
-           <div className="w-6 h-6 bg-primary rounded-lg rotate-12 flex items-center justify-center" style={{ backgroundColor: themeHex }}>
-              <span className="text-white text-[10px] font-black">K</span>
-           </div>
-           <span className="text-xs font-black tracking-tighter uppercase" style={{ color: textColor || 'inherit' }}>Konnexy Digital</span>
-        </div>
-      </motion.div>
+        {/* ── CTA WHATSAPP SECUNDÁRIO ── */}
+        {wppSecLink && (
+          <motion.div custom={2.2} initial="hidden" animate="visible" variants={fadeUp} className="px-5 pt-1.5 pb-2">
+            <Button
+              asChild
+              variant="outline"
+              className="w-full h-12 rounded-2xl text-[11px] font-black uppercase tracking-widest border flex items-center justify-center gap-2 bg-transparent transition-all hover:scale-[1.01]"
+              style={{ borderColor: themeHex + '30', color: themeHex }}
+            >
+              <a href={wppSecLink} target="_blank" rel="noopener noreferrer">
+                <MessageCircle className="w-4.5 h-4.5" />
+                Segundo WhatsApp / Suporte
+              </a>
+            </Button>
+          </motion.div>
+        )}
 
+        {/* ── DIFERENCIAIS DETALHADOS (BOOLEANS SOBRANTES E ARRAY DIFFERENTIALS) ── */}
+        {(booleanDiferenciais.length > 0 || (data.diferenciais && data.diferenciais.length > 0)) && (
+          <motion.div custom={2.5} initial="hidden" animate="visible" variants={fadeUp} className="px-5 pt-4 pb-1">
+            <p className="text-[9px] font-black uppercase tracking-[0.3em] text-white/25 mb-3">Qualidades & Diferenciais</p>
+            <div className="flex flex-wrap gap-2">
+              {booleanDiferenciais.map(b => (
+                <div key={b.name} className="flex items-center gap-2 px-3 py-2 rounded-xl text-[11px] font-bold border" style={{ borderColor: themeHex + '22', color: themeHex, background: themeHex + '0C' }}>
+                  <span className="w-1.5 h-1.5 rounded-full flex-none" style={{ backgroundColor: themeHex }} />
+                  {b.label}
+                </div>
+              ))}
+              {(data.diferenciais || []).map((dif: string, i: number) => (
+                <div key={i} className="flex items-center gap-2 px-3 py-2 rounded-xl text-[11px] font-bold border border-white/5 text-white/60 bg-white/[0.02]">
+                  <span className="w-1.5 h-1.5 rounded-full flex-none bg-white/30" />
+                  {dif}
+                </div>
+              ))}
+            </div>
+          </motion.div>
+        )}
+
+        {/* ── TAGS DE ARRAYS (Marcas, Especialidades etc) ── */}
+        {arrayFields.length > 0 && (
+          <motion.div custom={2.8} initial="hidden" animate="visible" variants={fadeUp} className="px-5 pt-4 pb-1">
+            {arrayFields.map((field) => (
+              <div key={field.name} className="mb-4 last:mb-0">
+                <p className="text-[9px] font-black uppercase tracking-[0.3em] text-white/25 mb-2.5">{field.label}</p>
+                <div className="flex flex-wrap gap-1.5">
+                  {field.items.map((item, i) => (
+                    <span key={i} className="px-2.5 py-1 rounded-lg text-[10px] font-black uppercase tracking-wider border border-white/8 text-white/45 bg-white/[0.01]">
+                      {item}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            ))}
+          </motion.div>
+        )}
+
+        {/* ── SERVIÇOS ── */}
+        {services.length > 0 && (
+          <motion.div custom={3} initial="hidden" animate="visible" variants={fadeUp} className="px-5 pt-6 pb-2">
+            {/* Separador */}
+            <div className="flex items-center gap-3 mb-5">
+              <div className="h-px flex-1" style={{ background: `linear-gradient(to right, ${themeHex}45, transparent)` }} />
+              <span className="text-[9px] font-black uppercase tracking-[0.35em] text-white/25">Serviços & Pacotes</span>
+              <div className="h-px flex-1" style={{ background: `linear-gradient(to left, ${themeHex}45, transparent)` }} />
+            </div>
+
+            <div className="flex flex-col gap-3">
+              {services.map((srv: any, idx: number) => (
+                <motion.a
+                  key={idx}
+                  href={wppLink}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  whileHover={{ scale: 1.012, y: -2 }}
+                  whileTap={{ scale: 0.98 }}
+                  className="group relative overflow-hidden rounded-2xl border flex items-start gap-4 p-4 transition-all"
+                  style={{ borderColor: themeHex + '15', backgroundColor: hasBgImage ? 'rgba(10,10,10,0.7)' : '#111111', backdropFilter: hasBgImage ? 'blur(12px)' : undefined }}
+                >
+                  {/* Number */}
+                  <div className="flex-none w-8 h-8 rounded-xl flex items-center justify-center text-[11px] font-black mt-0.5" style={{ background: themeHex + '18', color: themeHex }}>
+                    {String(idx + 1).padStart(2, '0')}
+                  </div>
+
+                  <div className="flex-1 min-w-0">
+                    <h3 className="text-[13px] font-black uppercase tracking-tight text-white leading-tight mb-1">{srv.nome}</h3>
+                    {srv.descricao && <p className="text-[11px] text-white/40 leading-relaxed font-medium line-clamp-2">{srv.descricao}</p>}
+                  </div>
+
+                  {srv.preco && (
+                    <div className="flex-none flex flex-col items-end gap-1 shrink-0">
+                      <span className="text-[12px] font-black leading-tight whitespace-nowrap" style={{ color: themeHex }}>{srv.preco}</span>
+                      <ChevronRight className="w-3.5 h-3.5 opacity-0 group-hover:opacity-40 transition-opacity" style={{ color: themeHex }} />
+                    </div>
+                  )}
+
+                  {/* Hover glow */}
+                  <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none" style={{ background: `radial-gradient(circle at 15% 50%, ${themeHex}0A, transparent 60%)` }} />
+                </motion.a>
+              ))}
+            </div>
+          </motion.div>
+        )}
+
+        {/* ── BIO / SOBRE ── */}
+        {data.bio_profissional && (
+          <motion.div custom={4} initial="hidden" animate="visible" variants={fadeUp} className="px-5 pt-6 pb-2">
+            <div
+              className="relative p-6 rounded-3xl border overflow-hidden"
+              style={{
+                borderColor: themeHex + '18',
+                backgroundColor: hasBgImage ? 'rgba(10,10,10,0.65)' : '#0f0f0f',
+                backdropFilter: hasBgImage ? 'blur(16px)' : undefined
+              }}
+            >
+              {/* Aspas decorativas */}
+              <span className="absolute top-1 left-4 text-8xl font-black leading-none select-none pointer-events-none" style={{ color: themeHex + '10' }}>"</span>
+              <div className="flex items-center gap-2.5 mb-4 relative z-10">
+                <div className="w-7 h-7 rounded-xl flex items-center justify-center" style={{ background: themeHex + '18' }}>
+                  <IconComponent className="w-3.5 h-3.5" style={{ color: themeHex }} />
+                </div>
+                <span className="text-[9px] font-black uppercase tracking-[0.3em] text-white/30">Sobre o Profissional</span>
+              </div>
+              <p className="text-[13px] text-white/65 leading-relaxed tracking-tight relative z-10 italic">
+                {data.bio_profissional}
+              </p>
+            </div>
+          </motion.div>
+        )}
+
+        {/* ── LINK EXTERNO / CATÁLOGO ── */}
+        {externalLink && (
+          <motion.div custom={4.5} initial="hidden" animate="visible" variants={fadeUp} className="px-5 pt-4 pb-2">
+            <Button asChild variant="outline"
+              className="w-full h-12 rounded-2xl border text-[12px] font-black uppercase tracking-wider flex items-center justify-center gap-2 bg-transparent transition-all hover:scale-[1.01]"
+              style={{ borderColor: themeHex + '30', color: themeHex, backdropFilter: 'blur(8px)' }}
+            >
+              <a href={externalLink.startsWith('http') ? externalLink : `https://${externalLink}`} target="_blank" rel="noopener noreferrer">
+                <ExternalLink className="w-4 h-4" />
+                Visualizar Catálogo Completo
+              </a>
+            </Button>
+          </motion.div>
+        )}
+
+        {/* ── ENDEREÇO / REGIÃO DE ATENDIMENTO ── */}
+        {data.endereco_completo && (
+          <motion.div custom={5} initial="hidden" animate="visible" variants={fadeUp} className="px-5 pt-3 pb-2">
+            <a
+              href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(data.endereco_completo)}`}
+              target="_blank" rel="noopener noreferrer"
+              className="flex items-center gap-3 px-4 py-3 rounded-2xl border border-white/8 text-white/40 hover:text-white/60 transition-colors"
+              style={{ backgroundColor: hasBgImage ? 'rgba(255,255,255,0.05)' : 'rgba(255,255,255,0.03)', backdropFilter: hasBgImage ? 'blur(8px)' : undefined }}
+            >
+              <MapPin className="w-4 h-4 flex-none text-red-400/60" />
+              <span className="text-[11px] font-medium truncate">{data.endereco_completo}</span>
+            </a>
+          </motion.div>
+        )}
+
+        {/* ── BRANDING ── */}
+        <motion.div custom={6} initial="hidden" animate="visible" variants={fadeUp} className="px-5 pt-8 pb-14 flex items-center justify-center">
+          <div className="flex items-center gap-2 opacity-15 hover:opacity-40 transition-opacity">
+            <div className="w-5 h-5 rounded-md rotate-12 flex items-center justify-center" style={{ background: themeHex }}>
+              <span className="text-black text-[9px] font-black">K</span>
+            </div>
+            <span className="text-[10px] font-black uppercase tracking-[0.25em] text-white">Konnexy Digital</span>
+          </div>
+        </motion.div>
+
+      </div>
     </div>
   );
 }
