@@ -118,6 +118,8 @@ import { AnimatedQR } from '@/components/pro/AnimatedQR';
 import { isPaidUser } from '@/utils/planUtils';
 import { StandardProfessionalLayout } from './StandardProfessionalLayout';
 import { AutomotiveDetailingLayout } from './AutomotiveDetailingLayout';
+import { ChefEventosLayout } from './ChefEventosLayout';
+import { MontadorMoveisLayout } from './MontadorMoveisLayout';
 import { getProfessionConfig as getGlobalConfig } from '@/config/professions';
 
 interface CardPreviewProps {
@@ -147,7 +149,7 @@ export function CardPreview({
   const isService = data.profession === 'service' || data.category === 'service';
   const isModernService = [
     'pedreiro', 'mecanico', 'eletricista', 'encanador', 'diarista', 
-    'frete', 'ar_condicionado', 'montador_moveis', 'gesseiro', 
+    'frete', 'ar_condicionado', 'gesseiro', 
     'vidraceiro', 'pintor', 'serralheiro', 'marceneiro', 
     'assistencia_celular', 'mestre_de_obras', 'area_lazer', 'manutencao_automotiva'
   ].includes(data.profession as string);
@@ -161,7 +163,7 @@ export function CardPreview({
   const isMusico = data.profession === 'musico' || data.category === 'musico';
   const cf = (data.custom_fields as any) || {};
   
-  const isStandardized = isModernService || ['quentinhas', 'assistencia_celular', 'van_escolar', 'guia_turistico', 'loja_online', 'esteticista', 'pizzaria', 'cafeteria', 'vistoria_veicular', 'chef_eventos'].some(p => data.profession === p);
+  const isStandardized = isModernService || ['quentinhas', 'assistencia_celular', 'van_escolar', 'guia_turistico', 'loja_online', 'esteticista', 'pizzaria', 'cafeteria', 'vistoria_veicular'].some(p => data.profession === p);
 
   // Data helpers that prefer new fields but fall back to old ones for compatibility
   const previewName = data.business_name || data.name || 'Seu Nome';
@@ -1106,7 +1108,15 @@ END:VCARD`;
                 </div>
               )}
           </div>
-        {isEsteticaAutomotiva ? (
+        {data.profession === 'chef_eventos' ? (
+          <div className="relative flex flex-col w-full min-h-[600px] z-10 overflow-y-auto scroll-hide">
+            <ChefEventosLayout data={data as Profile} isPro={isPro} />
+          </div>
+        ) : data.profession === 'montador_moveis' ? (
+          <div className="relative flex flex-col w-full min-h-[600px] z-10 overflow-y-auto scroll-hide">
+            <MontadorMoveisLayout data={data as Profile} isPro={isPro} />
+          </div>
+        ) : isEsteticaAutomotiva ? (
           <AutomotiveDetailingLayout data={data} isPro={isPro} />
         ) : isStandardized ? (
             <div className="relative flex flex-col w-full min-h-[600px] z-10 overflow-y-auto scroll-hide">
@@ -3651,6 +3661,14 @@ END:VCARD`;
                  <div className="mt-auto opacity-20 text-center">
                     <p className="text-[8px] font-black uppercase tracking-[0.5em]">Advocacia de Excelência</p>
                  </div>
+              </div>
+            ) : data.profession === 'chef_eventos' ? (
+              <div className="relative flex flex-col w-full min-h-[600px] z-10 overflow-y-auto scroll-hide">
+                <ChefEventosLayout data={data as Profile} isPro={isPro} />
+              </div>
+            ) : data.profession === 'montador_moveis' ? (
+              <div className="relative flex flex-col w-full min-h-[600px] z-10 overflow-y-auto scroll-hide">
+                <MontadorMoveisLayout data={data as Profile} isPro={isPro} />
               </div>
             ) : isStandardized ? (
               <div className="relative flex flex-col w-full min-h-[600px] z-10 overflow-y-auto scroll-hide">

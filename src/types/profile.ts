@@ -298,6 +298,7 @@ export interface CustomFields {
   capacidade_maxima_pessoas?: string;
   tipos_eventos_atendidos?: string[];
   link_cardapio?: string;
+  imagem_fundo?: string;
 }
 
 // Keeping old items for backwards compatibility during migration

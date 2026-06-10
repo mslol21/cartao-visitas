@@ -491,7 +491,9 @@ export const professionsMap: Record<ProfessionCategory, ProfessionConfig> = {
       { name: 'garantia_servico', label: 'Garantia no Serviço?', type: 'boolean' },
       { name: 'atende_final_semana', label: 'Atende Finais de Semana?', type: 'boolean' },
       { name: 'marcas_atendidas', label: 'Marcas que Monta (Separadas por vírgula)', type: 'array', placeholder: 'Ex: Tok&Stok, IKEA, Leroy Merlin, MadeiraMadeira' },
-      { name: 'anos_experiencia', label: 'Anos de Experiência', type: 'text', placeholder: 'Ex: 8 anos' }
+      { name: 'anos_experiencia', label: 'Anos de Experiência', type: 'text', placeholder: 'Ex: 8 anos' },
+      { name: 'imagem_fundo', label: 'Imagem de Fundo do Cartão (URL)', type: 'text', placeholder: 'https://link-da-imagem.jpg' },
+      { name: 'portfolio_images', label: 'Fotos dos Serviços Realizados (URLs separadas por vírgula)', type: 'array', placeholder: 'https://ex.com/foto1.jpg' }
     ],
     suggestedBackgrounds: [
       'https://images.unsplash.com/photo-1555041469-a586c61ea9bc?auto=format&fit=crop&q=80&w=1080&h=1920',
@@ -1125,6 +1127,7 @@ export const professionsMap: Record<ProfessionCategory, ProfessionConfig> = {
       { name: 'servico_garcom', label: 'Inclui Equipe de Garçons?', type: 'boolean' },
       { name: 'locacao_equipamentos', label: 'Leva Equipamentos / Cozinha Completa?', type: 'boolean' },
       { name: 'link_cardapio', label: 'Link do Cardápio (PDF/Drive/Instagram)', type: 'text', placeholder: 'https://link-do-cardapio.com' },
+      { name: 'imagem_fundo', label: 'Imagem de Fundo do Cartão (URL)', type: 'text', placeholder: 'https://link-da-imagem.jpg' },
       { name: 'portfolio_images', label: 'Fotos dos Pratos e Eventos (URLs separadas por vírgula)', type: 'array', placeholder: 'https://ex.com/jantar1.jpg' }
     ],
     suggestedBackgrounds: [
