@@ -115,6 +115,16 @@ export function ChefEventosLayout({ data, isPro }: ChefEventosLayoutProps) {
   const themeHex = data.theme_color || '#f59e0b';
   const textColor = cf.cor_texto;
 
+  // Cores por seção
+  const bioFundo = cf.cor_bio_fundo;
+  const bioTexto = cf.cor_bio_texto;
+  const servicosFundo = cf.cor_servicos_fundo;
+  const servicosTexto = cf.cor_servicos_texto;
+  const diferenciaisFundo = cf.cor_diferenciais_fundo;
+  const diferenciaisTexto = cf.cor_diferenciais_texto;
+  const infoFundo = cf.cor_info_fundo;
+  const infoTexto = cf.cor_info_texto;
+
   // WhatsApp
   const cleanWpp = data.whatsapp?.replace(/\D/g, '') || '';
   const fmtWpp = cleanWpp.startsWith('55') ? cleanWpp : `55${cleanWpp}`;
@@ -284,14 +294,25 @@ export function ChefEventosLayout({ data, isPro }: ChefEventosLayoutProps) {
         {/* ── DIFERENCIAIS (booleans) ── */}
         {boolDiferenciais.length > 0 && (
           <motion.div custom={2.5} initial="hidden" animate="visible" variants={fadeUp} className="px-5 pt-4 pb-1">
-            <p className="text-[9px] font-black uppercase tracking-[0.3em] text-white/25 mb-3">O que está incluso</p>
-            <div className="flex flex-wrap gap-2">
-              {boolDiferenciais.map(b => (
-                <div key={b.key} className="flex items-center gap-2 px-3 py-2 rounded-xl text-[11px] font-bold border" style={{ borderColor: themeHex + '22', color: themeHex, background: themeHex + '0C' }}>
-                  <span className="w-1.5 h-1.5 rounded-full flex-none" style={{ backgroundColor: themeHex }} />
-                  {b.label}
-                </div>
-              ))}
+            <div
+              className="rounded-2xl p-4"
+              style={{
+                backgroundColor: diferenciaisFundo || (hasBgImage ? 'rgba(10,10,10,0.65)' : 'transparent'),
+                color: diferenciaisTexto || undefined,
+              }}
+            >
+              <p
+                className="text-[9px] font-black uppercase tracking-[0.3em] mb-3"
+                style={{ color: diferenciaisTexto ? diferenciaisTexto + 'aa' : 'rgba(255,255,255,0.25)' }}
+              >O que está incluso</p>
+              <div className="flex flex-wrap gap-2">
+                {boolDiferenciais.map(b => (
+                  <div key={b.key} className="flex items-center gap-2 px-3 py-2 rounded-xl text-[11px] font-bold border" style={{ borderColor: themeHex + '22', color: diferenciaisTexto || themeHex, background: themeHex + '0C' }}>
+                    <span className="w-1.5 h-1.5 rounded-full flex-none" style={{ backgroundColor: diferenciaisTexto || themeHex }} />
+                    {b.label}
+                  </div>
+                ))}
+              </div>
             </div>
           </motion.div>
         )}
@@ -302,7 +323,7 @@ export function ChefEventosLayout({ data, isPro }: ChefEventosLayoutProps) {
             {/* Separator */}
             <div className="flex items-center gap-3 mb-5">
               <div className="h-px flex-1" style={{ background: `linear-gradient(to right, ${themeHex}45, transparent)` }} />
-              <span className="text-[9px] font-black uppercase tracking-[0.35em] text-white/25">Serviços & Pacotes</span>
+              <span className="text-[9px] font-black uppercase tracking-[0.35em]" style={{ color: servicosTexto ? servicosTexto + '99' : 'rgba(255,255,255,0.25)' }}>Serviços & Pacotes</span>
               <div className="h-px flex-1" style={{ background: `linear-gradient(to left, ${themeHex}45, transparent)` }} />
             </div>
 
@@ -316,7 +337,11 @@ export function ChefEventosLayout({ data, isPro }: ChefEventosLayoutProps) {
                   whileHover={{ scale: 1.012, y: -2 }}
                   whileTap={{ scale: 0.98 }}
                   className="group relative overflow-hidden rounded-2xl border flex items-start gap-4 p-4 transition-all"
-                  style={{ borderColor: themeHex + '15', backgroundColor: hasBgImage ? 'rgba(10,10,10,0.7)' : '#111111', backdropFilter: hasBgImage ? 'blur(12px)' : undefined }}
+                  style={{
+                    borderColor: themeHex + '15',
+                    backgroundColor: servicosFundo || (hasBgImage ? 'rgba(10,10,10,0.7)' : '#111111'),
+                    backdropFilter: hasBgImage ? 'blur(12px)' : undefined
+                  }}
                 >
                   {/* Number */}
                   <div className="flex-none w-8 h-8 rounded-xl flex items-center justify-center text-[11px] font-black mt-0.5" style={{ background: themeHex + '18', color: themeHex }}>
@@ -324,8 +349,8 @@ export function ChefEventosLayout({ data, isPro }: ChefEventosLayoutProps) {
                   </div>
 
                   <div className="flex-1 min-w-0">
-                    <h3 className="text-[13px] font-black uppercase tracking-tight text-white leading-tight mb-1">{srv.nome}</h3>
-                    {srv.descricao && <p className="text-[11px] text-white/40 leading-relaxed font-medium line-clamp-2">{srv.descricao}</p>}
+                    <h3 className="text-[13px] font-black uppercase tracking-tight leading-tight mb-1" style={{ color: servicosTexto || '#ffffff' }}>{srv.nome}</h3>
+                    {srv.descricao && <p className="text-[11px] leading-relaxed font-medium line-clamp-2" style={{ color: servicosTexto ? servicosTexto + '88' : 'rgba(255,255,255,0.4)' }}>{srv.descricao}</p>}
                   </div>
 
                   {srv.preco && (
@@ -350,7 +375,7 @@ export function ChefEventosLayout({ data, isPro }: ChefEventosLayoutProps) {
               className="relative p-6 rounded-3xl border overflow-hidden"
               style={{
                 borderColor: themeHex + '18',
-                backgroundColor: hasBgImage ? 'rgba(10,10,10,0.65)' : '#0f0f0f',
+                backgroundColor: bioFundo || (hasBgImage ? 'rgba(10,10,10,0.65)' : '#0f0f0f'),
                 backdropFilter: hasBgImage ? 'blur(16px)' : undefined
               }}
             >
@@ -360,9 +385,9 @@ export function ChefEventosLayout({ data, isPro }: ChefEventosLayoutProps) {
                 <div className="w-7 h-7 rounded-xl flex items-center justify-center" style={{ background: themeHex + '18' }}>
                   <Utensils className="w-3.5 h-3.5" style={{ color: themeHex }} />
                 </div>
-                <span className="text-[9px] font-black uppercase tracking-[0.3em] text-white/30">Sobre o Chef</span>
+                <span className="text-[9px] font-black uppercase tracking-[0.3em]" style={{ color: bioTexto ? bioTexto + 'aa' : 'rgba(255,255,255,0.3)' }}>Sobre o Chef</span>
               </div>
-              <p className="text-[13px] text-white/65 leading-relaxed tracking-tight relative z-10 italic">
+              <p className="text-[13px] leading-relaxed tracking-tight relative z-10 italic" style={{ color: bioTexto || 'rgba(255,255,255,0.65)' }}>
                 {data.bio_profissional}
               </p>
             </div>
@@ -390,8 +415,13 @@ export function ChefEventosLayout({ data, isPro }: ChefEventosLayoutProps) {
             <a
               href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(data.endereco_completo)}`}
               target="_blank" rel="noopener noreferrer"
-              className="flex items-center gap-3 px-4 py-3 rounded-2xl border border-white/8 text-white/40 hover:text-white/60 transition-colors"
-              style={{ backgroundColor: hasBgImage ? 'rgba(255,255,255,0.05)' : 'rgba(255,255,255,0.03)', backdropFilter: hasBgImage ? 'blur(8px)' : undefined }}
+              className="flex items-center gap-3 px-4 py-3 rounded-2xl border transition-colors"
+              style={{
+                backgroundColor: infoFundo || (hasBgImage ? 'rgba(255,255,255,0.05)' : 'rgba(255,255,255,0.03)'),
+                borderColor: infoFundo ? 'transparent' : 'rgba(255,255,255,0.08)',
+                color: infoTexto || 'rgba(255,255,255,0.4)',
+                backdropFilter: hasBgImage ? 'blur(8px)' : undefined
+              }}
             >
               <MapPin className="w-4 h-4 flex-none text-red-400/60" />
               <span className="text-[11px] font-medium truncate">{data.endereco_completo}</span>
