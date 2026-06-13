@@ -1,237 +1,444 @@
-
 "use client";
 
-import { 
-  MessageCircle, MapPin, Award, Check, ChevronRight, Car, Sparkles, Clock, ShieldCheck,
-  Zap, Instagram, Linkedin, Facebook, Youtube, Globe, Copy, Home, Calendar, Truck,
-  Monitor, History, HeartPulse, Smartphone, Calculator, Receipt, HardHat, PawPrint,
-  UserPlus, GraduationCap, Package, Gem, Landmark, Building2, Scale, Brush, Flower2,
-  CheckCircle2, Coffee, Wifi, Heart, User, QrCode, Image as ImageIcon
+import { useState, useEffect, useCallback, useRef } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import {
+  MessageCircle,
+  MapPin,
+  ChevronRight,
+  Car,
+  ShieldCheck,
+  Star,
+  Sparkles,
+  Image as ImageIcon,
+  ExternalLink,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Profile } from '@/types/profile';
 import { cn } from '@/lib/utils';
-import { motion } from 'framer-motion';
-import { AnimatedQR } from '@/components/pro/AnimatedQR';
 
 interface AutomotiveDetailingLayoutProps {
   data: Partial<Profile>;
   isPro: boolean;
 }
 
-export function AutomotiveDetailingLayout({ data, isPro }: AutomotiveDetailingLayoutProps) {
-  // --- DATA EXTRACTION ---
-  const cf = (data as any).custom_fields || (data as any).customFields || {};
-  const merged = { ...data, ...cf };
-  
-  // Bio
-  const bio = merged.bio_profissional || merged.bio_professional || merged.bio || merged.biografia || '';
-  
-  // Services
-  const sRaw = merged.servicos || merged.services || (data as any).service_list || [];
-  const services = Array.isArray(sRaw) ? sRaw.map(s => {
-    if (typeof s === 'string') return { nome: s };
-    if (s && typeof s === 'object') return {
-      nome: s.nome || s.name || s.titulo || '',
-      preco: s.preco || s.price || s.valor || '',
-      descricao: s.descricao || s.description || ''
-    };
-    return null;
-  }).filter(s => s && s.nome) : [];
+// ─────────────────────────────────────────
+// CARROSSEL FULLBLEED HERO
+// ─────────────────────────────────────────
+function HeroCarousel({ images, themeHex }: { images: string[]; themeHex: string }) {
+  const [current, setCurrent] = useState(0);
+  const [paused, setPaused] = useState(false);
+  const [touchStart, setTouchStart] = useState<number | null>(null);
+  const timer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  // Differentials (Improved splitting for strings)
-  const dRaw = merged.diferenciais || merged.differentials || merged.highlights || [];
-  let differentials: string[] = [];
-  if (Array.isArray(dRaw)) {
-    differentials = dRaw.filter(d => typeof d === 'string' && d.trim().length > 0);
-  } else if (typeof dRaw === 'string') {
-    differentials = dRaw.split('\n').map(d => d.trim()).filter(d => d.length > 0);
-  }
+  const goTo = useCallback((i: number) => setCurrent((i + images.length) % images.length), [images.length]);
+  const next = useCallback(() => goTo(current + 1), [current, goTo]);
+  const prev = useCallback(() => goTo(current - 1), [current, goTo]);
 
-  // WhatsApp
-  const cleanWhatsapp = (data.whatsapp || '').replace(/\D/g, '');
-  const formattedWhatsapp = cleanWhatsapp.startsWith('55') ? cleanWhatsapp : `55${cleanWhatsapp}`;
-  const whatsappLink = `https://wa.me/${formattedWhatsapp}?text=${encodeURIComponent(data.whatsapp_message || 'Olá! Gostaria de um orçamento.')}`;
+  useEffect(() => {
+    if (paused || images.length <= 1) return;
+    timer.current = setTimeout(next, 3200);
+    return () => { if (timer.current) clearTimeout(timer.current); };
+  }, [current, paused, images.length, next]);
 
   return (
-    <div className="relative w-full min-h-screen bg-[#080808] text-white flex flex-col pb-20 overflow-x-hidden">
-      
-      {/* HERO / BACKGROUND SECTION */}
-      <div className="relative w-full h-[65vh] shrink-0 overflow-hidden flex flex-col items-center justify-center pt-10 pb-16">
-        {/* Background Image/Video */}
-        <div className="absolute inset-0 z-0">
-          {data.background_video_url?.match(/\.(mp4|webm|ogg|mov)$/i) ? (
-            <video src={data.background_video_url} autoPlay muted loop playsInline className="w-full h-full object-cover brightness-[0.35]" />
-          ) : (
-            <img src={data.background_video_url || 'https://images.unsplash.com/photo-1601362840469-51e4d8d59085'} alt="B" className="w-full h-full object-cover brightness-[0.35]" />
-          )}
-          <div className="absolute inset-0 bg-gradient-to-t from-[#080808] via-transparent to-black/20" />
+    <div
+      className="relative w-full overflow-hidden"
+      style={{ aspectRatio: '16/10' }}
+      onMouseEnter={() => setPaused(true)}
+      onMouseLeave={() => setPaused(false)}
+      onTouchStart={e => setTouchStart(e.touches[0].clientX)}
+      onTouchEnd={e => {
+        if (touchStart === null) return;
+        const diff = touchStart - e.changedTouches[0].clientX;
+        if (Math.abs(diff) > 40) diff > 0 ? next() : prev();
+        setTouchStart(null);
+      }}
+    >
+      <AnimatePresence mode="wait">
+        <motion.div
+          key={current}
+          className="absolute inset-0"
+          initial={{ opacity: 0, scale: 1.05 }}
+          animate={{ opacity: 1, scale: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.85, ease: [0.25, 0.46, 0.45, 0.94] }}
+        >
+          <img src={images[current]} alt={`Serviço ${current + 1}`} className="w-full h-full object-cover" />
+        </motion.div>
+      </AnimatePresence>
+
+      {/* Gradients */}
+      <div className="absolute inset-x-0 top-0 h-1/3 bg-gradient-to-b from-black/55 to-transparent z-10 pointer-events-none" />
+      <div className="absolute inset-x-0 bottom-0 h-3/4 bg-gradient-to-t from-[#0a0a0a] via-black/50 to-transparent z-10 pointer-events-none" />
+
+      {/* Progress bars */}
+      {images.length > 1 && (
+        <div className="absolute top-3 inset-x-3 flex gap-1 z-20">
+          {images.map((_, i) => (
+            <button key={i} onClick={() => goTo(i)} className="flex-1 h-[3px] rounded-full overflow-hidden bg-white/20" aria-label={`Foto ${i + 1}`}>
+              {i === current ? (
+                <motion.div
+                  key={current}
+                  className="h-full rounded-full origin-left"
+                  style={{ backgroundColor: themeHex }}
+                  initial={{ scaleX: 0 }}
+                  animate={{ scaleX: paused ? 0 : 1 }}
+                  transition={{ duration: paused ? 0 : 3.2, ease: 'linear' }}
+                />
+              ) : (
+                <div className="h-full rounded-full" style={{ backgroundColor: i < current ? themeHex : 'transparent', opacity: i < current ? 0.7 : 0 }} />
+              )}
+            </button>
+          ))}
         </div>
+      )}
 
-        {/* Logo & Identity */}
-        <div className="relative z-10 flex flex-col items-center gap-6 px-6 text-center">
-          {data.photo_url && (
-            <div className="w-28 h-28 rounded-full border-4 border-amber-500/20 p-1 bg-black/40 backdrop-blur-md">
-              <img src={data.photo_url} alt="Logo" className="w-full h-full object-contain rounded-full" />
-            </div>
-          )}
-          <div className="space-y-3">
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-500 text-black text-[9px] font-black uppercase tracking-widest shadow-lg">
-              <Sparkles className="w-3 h-3 fill-black" />
-              <span>Premium Detailing</span>
-            </div>
-            <h1 className="text-4xl sm:text-5xl font-black uppercase tracking-tighter leading-none drop-shadow-2xl">
-              {data.business_name || 'Studio G3'}
-            </h1>
-            <p className="text-[11px] font-bold text-amber-500/90 uppercase tracking-[0.2em] max-w-[280px] mx-auto leading-relaxed">
-              {data.subtitle || 'Excelência Automotiva'}
-            </p>
-          </div>
-        </div>
-      </div>
-
-      {/* PRIMARY CTA & QUICK INFO */}
-      <div className="px-6 -mt-1 relative z-20 flex flex-col gap-4">
-        <Button asChild className="w-full h-20 rounded-[2rem] bg-amber-500 text-black font-black uppercase tracking-tighter text-xl shadow-[0_20px_50px_rgba(245,158,11,0.35)] hover:scale-[1.02] active:scale-[0.98] transition-all">
-          <a href={whatsappLink} target="_blank" rel="noopener noreferrer" className="flex items-center gap-3">
-            <MessageCircle className="w-7 h-7 fill-black" />
-            <span>{data.cta_text || 'Chamar no WhatsApp'}</span>
-          </a>
-        </Button>
-
-        <div className="grid grid-cols-2 gap-3">
-          <div className="p-5 rounded-3xl bg-[#121212]/90 backdrop-blur-sm border border-white/5 flex flex-col gap-1 shadow-xl">
-            <Clock className="w-4 h-4 text-amber-500" />
-            <span className="text-[8px] font-black uppercase tracking-widest text-white/20">Atendimento</span>
-            <span className="text-[10px] font-bold text-white/90 leading-tight">{data.horario_funcionamento || 'Fale Conosco'}</span>
-          </div>
-          <div className="p-5 rounded-3xl bg-[#121212]/90 backdrop-blur-sm border border-white/5 flex flex-col gap-1 shadow-xl">
-            <MapPin className="w-4 h-4 text-amber-500" />
-            <span className="text-[8px] font-black uppercase tracking-widest text-white/20">Localização</span>
-            <span className="text-[10px] font-bold text-white/90 leading-tight truncate">{data.area_atendimento || 'Sob Consulta'}</span>
-          </div>
-        </div>
-      </div>
-
-      {/* DIFFERENTIALS SECTION */}
-      {differentials.length > 0 && (
-        <div className="px-6 mt-16">
-          <div className="flex items-center gap-3 mb-8">
-            <div className="h-6 w-1 bg-amber-500 rounded-full shadow-[0_0_15px_rgba(245,158,11,0.5)]" />
-            <h2 className="text-[11px] font-black uppercase tracking-[0.3em] opacity-40">Nossos Diferenciais</h2>
-          </div>
-          <div className="flex flex-col gap-3">
-            {differentials.map((d, i) => (
-              <div key={i} className="flex items-center gap-4 p-5 rounded-2xl bg-[#121212] border border-white/5 shadow-lg group hover:border-amber-500/20 transition-all">
-                <div className="w-8 h-8 rounded-xl bg-amber-500/10 flex items-center justify-center shrink-0">
-                  <CheckCircle2 className="w-5 h-5 text-amber-500" />
-                </div>
-                <span className="text-xs font-black uppercase tracking-tight text-white/80">{d}</span>
-              </div>
+      {/* Bottom dots + counter */}
+      {images.length > 1 && (
+        <div className="absolute inset-x-5 bottom-5 z-20 flex items-center justify-between">
+          <div className="flex gap-1.5">
+            {images.map((_, i) => (
+              <button key={i} onClick={() => goTo(i)}
+                className={cn('rounded-full transition-all duration-300', i === current ? 'w-5 h-2' : 'w-2 h-2 opacity-30')}
+                style={{ backgroundColor: i === current ? themeHex : 'white' }}
+              />
             ))}
           </div>
+          <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-full backdrop-blur-md bg-black/30">
+            <div className={cn('w-1.5 h-1.5 rounded-full transition-colors', paused ? 'bg-white/30' : 'bg-green-400')} />
+            <span className="text-[9px] font-black text-white/50 uppercase tracking-widest">
+              {paused ? 'pausado' : 'auto'} · {String(current + 1).padStart(2, '0')}/{String(images.length).padStart(2, '0')}
+            </span>
+          </div>
         </div>
       )}
+    </div>
+  );
+}
 
-      {/* SERVICES CATALOG */}
-      {services.length > 0 && (
-        <div className="px-6 mt-16">
-          <div className="flex items-center gap-3 mb-8">
-            <div className="h-6 w-1 bg-amber-500 rounded-full shadow-[0_0_15px_rgba(245,158,11,0.5)]" />
-            <h2 className="text-[11px] font-black uppercase tracking-[0.3em] opacity-40">Catálogo de Serviços</h2>
-          </div>
-          <div className="flex flex-col gap-3">
-            {services.map((s, i) => {
-              const serviceWhatsappLink = `https://wa.me/${formattedWhatsapp}?text=${encodeURIComponent(`Olá! Gostaria de saber mais sobre o serviço: ${s.nome}`)}`;
-              return (
-                <a 
-                  key={i} 
-                  href={serviceWhatsappLink}
+// ─────────────────────────────────────────
+// LAYOUT PRINCIPAL — ESTÉTICA AUTOMOTIVA
+// ─────────────────────────────────────────
+export function AutomotiveDetailingLayout({ data, isPro }: AutomotiveDetailingLayoutProps) {
+  const cf = (data.custom_fields as any) || {};
+  const themeHex = data.theme_color || '#f59e0b';
+  const textColor = cf.cor_texto;
+
+  // WhatsApp
+  const cleanWpp = data.whatsapp?.replace(/\D/g, '') || '';
+  const fmtWpp = cleanWpp.startsWith('55') ? cleanWpp : `55${cleanWpp}`;
+  const wppMsg = data.whatsapp_message || 'Olá! Vi seu perfil na Konnexy e gostaria de solicitar um orçamento de estética automotiva 🚗✨';
+  const wppLink = fmtWpp ? `https://wa.me/${fmtWpp}?text=${encodeURIComponent(wppMsg)}` : '#';
+
+  // Portfolio images (suporta background_video_url ou cf.portfolio_images)
+  const rawImgs = cf.portfolio_images;
+  const portfolioImages: string[] = Array.isArray(rawImgs)
+    ? rawImgs.filter(Boolean)
+    : typeof rawImgs === 'string'
+      ? rawImgs.split(/[,;]/).map((s: string) => s.trim()).filter(Boolean)
+      : [];
+
+  // Fallback: usar background_video_url como imagem única se não houver portfolio
+  const images: string[] = portfolioImages.length > 0
+    ? portfolioImages
+    : data.background_video_url && !data.background_video_url.match(/\.(mp4|webm|ogg|mov)$/i)
+      ? [data.background_video_url]
+      : [];
+
+  // Imagem de fundo estática
+  const bgImage: string | undefined = cf.imagem_fundo || cf.cor_fundo;
+  const hasBgImage = bgImage && (bgImage.startsWith('http') || bgImage.startsWith('/'));
+
+  // Services
+  const rawServices = data.servicos || data.services || [];
+  const services = rawServices.map((s: any) => ({
+    nome: s.nome || s.name || '',
+    descricao: s.descricao || s.description || '',
+    preco: s.preco || s.price || '',
+  })).filter((s: any) => s.nome);
+
+  // Diferenciais booleanos específicos de estética automotiva
+  const boolDiferenciais = [
+    { key: 'polimento_tecnico', label: 'Polimento Técnico' },
+    { key: 'higienizacao_interna', label: 'Higienização Interna' },
+    { key: 'vitrificacao_pintura', label: 'Vitrificação' },
+    { key: 'peliculas_ppf', label: 'Películas PPF' },
+    { key: 'ceramic_coating', label: 'Ceramic Coating' },
+    { key: 'lavagem_ecologica', label: 'Lavagem Ecológica' },
+    { key: 'atende_em_domicilio', label: 'Atende em Domicílio' },
+    { key: 'leva_e_traz', label: 'Leva & Traz' },
+  ].filter(b => cf[b.key] === true);
+
+  // Especialidades (array)
+  const rawEspecialidades = cf.especialidades || cf.diferenciais || data.diferenciais || [];
+  const especialidades: string[] = Array.isArray(rawEspecialidades)
+    ? rawEspecialidades.filter(Boolean)
+    : typeof rawEspecialidades === 'string'
+      ? rawEspecialidades.split(/[,;]/).map((s: string) => s.trim()).filter(Boolean)
+      : [];
+
+  // Link externo (catálogo, portfólio etc.)
+  const externalLink = cf.link_catalogo || cf.link_portfolio;
+
+  const fadeUp = {
+    hidden: { opacity: 0, y: 24 },
+    visible: (i: number) => ({
+      opacity: 1, y: 0,
+      transition: { delay: i * 0.09, duration: 0.7, ease: [0.16, 1, 0.3, 1] as [number, number, number, number] }
+    })
+  };
+
+  return (
+    <div
+      className="w-full min-h-full flex flex-col overflow-x-hidden relative"
+      style={{
+        backgroundColor: hasBgImage ? 'transparent' : (cf.cor_fundo || '#0a0a0a'),
+        color: textColor || '#ffffff',
+        fontFamily: data.font_family || 'inherit',
+      }}
+    >
+      {/* ── IMAGEM DE FUNDO GLOBAL ── */}
+      {hasBgImage && (
+        <>
+          <div
+            className="absolute inset-0 w-full h-full z-0"
+            style={{
+              backgroundImage: `url('${bgImage}')`,
+              backgroundSize: 'cover',
+              backgroundPosition: 'center',
+            }}
+          />
+          <div className="absolute inset-0 z-0" style={{ background: 'linear-gradient(to bottom, rgba(10,10,10,0.72) 0%, rgba(10,10,10,0.94) 100%)' }} />
+        </>
+      )}
+
+      {/* Conteúdo z-10 */}
+      <div className="relative z-10 flex flex-col w-full">
+
+        {/* ── HERO: CARROSSEL OU PLACEHOLDER ── */}
+        <div className="relative w-full">
+          {images.length > 0 ? (
+            <HeroCarousel images={images} themeHex={themeHex} />
+          ) : hasBgImage ? (
+            <div className="w-full h-48 relative">
+              <div className="absolute inset-x-0 bottom-0 h-full bg-gradient-to-t from-black/80 to-transparent pointer-events-none" />
+            </div>
+          ) : (
+            <div
+              className="w-full flex items-center justify-center"
+              style={{ aspectRatio: '16/10', background: `linear-gradient(135deg, #111 0%, #1a1209 50%, #111 100%)` }}
+            >
+              <div className="flex flex-col items-center gap-3 opacity-20">
+                <Car className="w-10 h-10" style={{ color: themeHex }} />
+                <span className="text-[11px] font-black uppercase tracking-[0.3em] text-white">Adicione fotos dos serviços</span>
+              </div>
+            </div>
+          )}
+
+          {/* ── IDENTIDADE ANCORADA NO BOTTOM DO HERO ── */}
+          <motion.div
+            custom={0} initial="hidden" animate="visible" variants={fadeUp}
+            className="absolute inset-x-0 bottom-0 z-20 px-5 pb-5"
+            style={{ background: images.length > 0 || hasBgImage ? 'linear-gradient(to top, rgba(10,10,10,1) 30%, transparent)' : 'none' }}
+          >
+            <div className="flex items-end gap-4 pt-12">
+              {/* Avatar */}
+              <div
+                className="relative flex-none w-[68px] h-[68px] rounded-2xl overflow-hidden shadow-2xl border-2"
+                style={{ borderColor: themeHex + '50' }}
+              >
+                {data.photo_url ? (
+                  <img src={data.photo_url} alt={data.business_name || ''} className="w-full h-full object-cover" />
+                ) : (
+                  <div className="w-full h-full flex items-center justify-center text-2xl font-black" style={{ background: themeHex + '20', color: themeHex }}>
+                    {(data.business_name || 'A')[0].toUpperCase()}
+                  </div>
+                )}
+              </div>
+
+              {/* Nome + profissão */}
+              <div className="flex-1 min-w-0 pb-1">
+                <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[9px] font-black uppercase tracking-[0.2em] mb-2" style={{ backgroundColor: themeHex + '20', color: themeHex }}>
+                  <Car className="w-3 h-3" />
+                  {data.subtitle ? 'Estética Automotiva' : 'Detailing Premium'}
+                </div>
+                <h1 className="text-[26px] font-black tracking-tight leading-[1.0] uppercase text-white drop-shadow-lg">
+                  {data.business_name || 'Studio Detailing'}
+                </h1>
+                {(data.subtitle || data.tagline) && (
+                  <p className="text-[11px] text-white/50 font-medium mt-1 tracking-wide">{data.subtitle || data.tagline}</p>
+                )}
+              </div>
+            </div>
+          </motion.div>
+        </div>
+
+        {/* ── TAGS: ESPECIALIDADES ── */}
+        {(especialidades.length > 0 || cf.anos_experiencia) && (
+          <motion.div custom={1} initial="hidden" animate="visible" variants={fadeUp} className="px-5 pt-4 pb-1">
+            <div className="flex flex-wrap gap-2">
+              {cf.anos_experiencia && (
+                <span className="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-[11px] font-bold border" style={{ borderColor: themeHex + '35', color: themeHex, backgroundColor: themeHex + '12' }}>
+                  <Star className="w-3 h-3" />
+                  {cf.anos_experiencia}
+                </span>
+              )}
+              {especialidades.slice(0, 4).map((esp: string, i: number) => (
+                <span key={i} className="px-3 py-1.5 rounded-full text-[10px] font-black uppercase tracking-wider border border-white/8 text-white/40">
+                  {esp}
+                </span>
+              ))}
+            </div>
+          </motion.div>
+        )}
+
+        {/* ── CTA WHATSAPP ── */}
+        <motion.div custom={2} initial="hidden" animate="visible" variants={fadeUp} className="px-5 pt-5 pb-2">
+          <Button
+            asChild
+            className="w-full h-14 rounded-2xl text-[13px] font-black uppercase tracking-widest border-none flex items-center justify-center gap-3 shadow-2xl transition-all hover:scale-[1.02] active:scale-[0.98]"
+            style={{
+              background: cf.cor_botoes || `linear-gradient(135deg, ${themeHex} 0%, #b45309 100%)`,
+              color: cf.cor_texto_botoes || '#000000',
+              boxShadow: `0 16px 40px -8px ${themeHex}55`,
+            }}
+          >
+            <a href={wppLink} target="_blank" rel="noopener noreferrer">
+              <MessageCircle className="w-5 h-5 fill-current" />
+              {data.cta_text || 'Solicitar Orçamento'}
+            </a>
+          </Button>
+        </motion.div>
+
+        {/* ── DIFERENCIAIS BOOLEANOS ── */}
+        {boolDiferenciais.length > 0 && (
+          <motion.div custom={2.5} initial="hidden" animate="visible" variants={fadeUp} className="px-5 pt-4 pb-1">
+            <p className="text-[9px] font-black uppercase tracking-[0.3em] text-white/25 mb-3">Serviços & Diferenciais</p>
+            <div className="flex flex-wrap gap-2">
+              {boolDiferenciais.map(b => (
+                <div key={b.key} className="flex items-center gap-2 px-3 py-2 rounded-xl text-[11px] font-bold border" style={{ borderColor: themeHex + '22', color: themeHex, background: themeHex + '0C' }}>
+                  <span className="w-1.5 h-1.5 rounded-full flex-none" style={{ backgroundColor: themeHex }} />
+                  {b.label}
+                </div>
+              ))}
+            </div>
+          </motion.div>
+        )}
+
+        {/* ── SERVIÇOS ── */}
+        {services.length > 0 && (
+          <motion.div custom={3} initial="hidden" animate="visible" variants={fadeUp} className="px-5 pt-6 pb-2">
+            {/* Separator */}
+            <div className="flex items-center gap-3 mb-5">
+              <div className="h-px flex-1" style={{ background: `linear-gradient(to right, ${themeHex}45, transparent)` }} />
+              <span className="text-[9px] font-black uppercase tracking-[0.35em] text-white/25">Serviços & Pacotes</span>
+              <div className="h-px flex-1" style={{ background: `linear-gradient(to left, ${themeHex}45, transparent)` }} />
+            </div>
+
+            <div className="flex flex-col gap-3">
+              {services.map((srv: any, idx: number) => (
+                <motion.a
+                  key={idx}
+                  href={wppLink}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="p-6 rounded-[2.5rem] bg-[#121212] border border-white/5 flex flex-col gap-3 shadow-2xl hover:border-amber-500/30 transition-all group active:scale-[0.98]"
+                  whileHover={{ scale: 1.012, y: -2 }}
+                  whileTap={{ scale: 0.98 }}
+                  className="group relative overflow-hidden rounded-2xl border flex items-start gap-4 p-4 transition-all"
+                  style={{ borderColor: themeHex + '15', backgroundColor: hasBgImage ? 'rgba(10,10,10,0.7)' : '#111111', backdropFilter: hasBgImage ? 'blur(12px)' : undefined }}
                 >
-                  <div className="flex justify-between items-start gap-4">
-                    <h3 className="text-sm font-black uppercase text-amber-500 group-hover:text-amber-400 transition-colors">{s.nome}</h3>
-                    {s.preco && (
-                      <span className="shrink-0 text-[10px] font-black bg-amber-500/10 text-amber-500 px-3 py-1 rounded-full border border-amber-500/20">
-                        {s.preco}
-                      </span>
-                    )}
+                  {/* Number */}
+                  <div className="flex-none w-8 h-8 rounded-xl flex items-center justify-center text-[11px] font-black mt-0.5" style={{ background: themeHex + '18', color: themeHex }}>
+                    {String(idx + 1).padStart(2, '0')}
                   </div>
-                  {s.descricao && (
-                    <p className="text-[11px] font-medium text-white/30 leading-relaxed group-hover:text-white/50 transition-colors italic">
-                      {s.descricao}
-                    </p>
+
+                  <div className="flex-1 min-w-0">
+                    <h3 className="text-[13px] font-black uppercase tracking-tight text-white leading-tight mb-1">{srv.nome}</h3>
+                    {srv.descricao && <p className="text-[11px] text-white/40 leading-relaxed font-medium line-clamp-2">{srv.descricao}</p>}
+                  </div>
+
+                  {srv.preco && (
+                    <div className="flex-none flex flex-col items-end gap-1 shrink-0">
+                      <span className="text-[12px] font-black leading-tight whitespace-nowrap" style={{ color: themeHex }}>{srv.preco}</span>
+                      <ChevronRight className="w-3.5 h-3.5 opacity-0 group-hover:opacity-40 transition-opacity" style={{ color: themeHex }} />
+                    </div>
                   )}
-                  <div className="flex items-center gap-2 text-[8px] font-black uppercase tracking-widest text-amber-500/40 group-hover:text-amber-500 transition-colors mt-2">
-                    <MessageCircle className="w-3 h-3" />
-                    <span>Consultar agora</span>
-                  </div>
-                </a>
-              );
-            })}
-          </div>
-        </div>
-      )}
 
-      {/* PROFESSIONAL BIO */}
-      {bio && (
-        <div className="px-6 mt-20">
-          <div className="relative p-10 rounded-[3rem] bg-amber-500 text-black shadow-2xl overflow-hidden group">
-            <div className="absolute top-0 right-0 p-8 opacity-10 rotate-12 group-hover:rotate-0 transition-transform duration-700">
-              <Sparkles className="w-24 h-24" />
+                  {/* Hover glow */}
+                  <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none" style={{ background: `radial-gradient(circle at 15% 50%, ${themeHex}0A, transparent 60%)` }} />
+                </motion.a>
+              ))}
             </div>
-            <div className="relative z-10">
-              <div className="flex items-center gap-3 mb-6">
-                <User className="w-6 h-6" />
-                <h2 className="text-[12px] font-black uppercase tracking-widest">A Nossa História</h2>
+          </motion.div>
+        )}
+
+        {/* ── BIO / SOBRE ── */}
+        {data.bio_profissional && (
+          <motion.div custom={4} initial="hidden" animate="visible" variants={fadeUp} className="px-5 pt-6 pb-2">
+            <div
+              className="relative p-6 rounded-3xl border overflow-hidden"
+              style={{
+                borderColor: themeHex + '18',
+                backgroundColor: hasBgImage ? 'rgba(10,10,10,0.65)' : '#0f0f0f',
+                backdropFilter: hasBgImage ? 'blur(16px)' : undefined
+              }}
+            >
+              <span className="absolute top-1 left-4 text-8xl font-black leading-none select-none pointer-events-none" style={{ color: themeHex + '10' }}>"</span>
+              <div className="flex items-center gap-2.5 mb-4 relative z-10">
+                <div className="w-7 h-7 rounded-xl flex items-center justify-center" style={{ background: themeHex + '18' }}>
+                  <Sparkles className="w-3.5 h-3.5" style={{ color: themeHex }} />
+                </div>
+                <span className="text-[9px] font-black uppercase tracking-[0.3em] text-white/30">Sobre o Estúdio</span>
               </div>
-              <p className="text-sm font-bold leading-relaxed italic opacity-90">"{bio}"</p>
+              <p className="text-[13px] text-white/65 leading-relaxed tracking-tight relative z-10 italic">
+                {data.bio_profissional}
+              </p>
             </div>
-          </div>
-        </div>
-      )}
+          </motion.div>
+        )}
 
-      {/* QR CODE SECTION */}
-      {isPro && (data.username || data.id) && (
-        <div className="px-6 mt-20 flex flex-col items-center text-center gap-6">
-          <div className="p-8 rounded-[3rem] bg-white/5 border border-white/10 backdrop-blur-xl shadow-2xl">
-            <AnimatedQR
-              url={`${process.env.NEXT_PUBLIC_APP_URL || 'https://konnexy.com.br'}/${data.username || data.id}`}
-              accentColor="#f59e0b"
-              size={160}
-              active={true}
-              customFields={data.custom_fields}
-            />
-          </div>
-          <div className="space-y-1">
-            <p className="text-[10px] font-black uppercase tracking-widest opacity-20">Escaneie para compartilhar</p>
-            <p className="text-[9px] font-bold opacity-10 tracking-widest uppercase">Konnexy Digital ID</p>
-          </div>
-        </div>
-      )}
+        {/* ── LINK EXTERNO ── */}
+        {externalLink && (
+          <motion.div custom={4.5} initial="hidden" animate="visible" variants={fadeUp} className="px-5 pt-4 pb-2">
+            <Button asChild variant="outline"
+              className="w-full h-12 rounded-2xl border text-[12px] font-black uppercase tracking-wider flex items-center justify-center gap-2 bg-transparent transition-all hover:scale-[1.01]"
+              style={{ borderColor: themeHex + '30', color: themeHex, backdropFilter: 'blur(8px)' }}
+            >
+              <a href={externalLink.startsWith('http') ? externalLink : `https://${externalLink}`} target="_blank" rel="noopener noreferrer">
+                <ExternalLink className="w-4 h-4" />
+                Ver Portfólio Completo
+              </a>
+            </Button>
+          </motion.div>
+        )}
 
-      {/* SOCIAL LINKS & FOOTER */}
-      <div className="px-6 mt-24 flex flex-col items-center gap-12">
-        <div className="flex gap-6">
-          {data.instagram && (
-            <a href={`https://instagram.com/${data.instagram}`} target="_blank" className="w-14 h-14 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center hover:bg-amber-500/10 hover:border-amber-500/30 transition-all group">
-              <Instagram className="w-6 h-6 group-hover:text-amber-500 transition-colors" />
+        {/* ── ENDEREÇO ── */}
+        {data.endereco_completo && (
+          <motion.div custom={5} initial="hidden" animate="visible" variants={fadeUp} className="px-5 pt-3 pb-2">
+            <a
+              href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(data.endereco_completo)}`}
+              target="_blank" rel="noopener noreferrer"
+              className="flex items-center gap-3 px-4 py-3 rounded-2xl border border-white/8 text-white/40 hover:text-white/60 transition-colors"
+              style={{ backgroundColor: hasBgImage ? 'rgba(255,255,255,0.05)' : 'rgba(255,255,255,0.03)', backdropFilter: hasBgImage ? 'blur(8px)' : undefined }}
+            >
+              <MapPin className="w-4 h-4 flex-none text-red-400/60" />
+              <span className="text-[11px] font-medium truncate">{data.endereco_completo}</span>
             </a>
-          )}
-          {data.facebook && (
-            <a href={`https://facebook.com/${data.facebook}`} target="_blank" className="w-14 h-14 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center hover:bg-amber-500/10 hover:border-amber-500/30 transition-all group">
-              <Facebook className="w-6 h-6 group-hover:text-amber-500 transition-colors" />
-            </a>
-          )}
-        </div>
-        <div className="flex flex-col items-center gap-4 opacity-10">
-          <div className="h-px w-20 bg-white" />
-          <div className="text-[9px] font-black uppercase tracking-[0.6em] pb-10">Konnexy</div>
-        </div>
+          </motion.div>
+        )}
+
+        {/* ── BRANDING ── */}
+        <motion.div custom={6} initial="hidden" animate="visible" variants={fadeUp} className="px-5 pt-8 pb-14 flex items-center justify-center">
+          <div className="flex items-center gap-2 opacity-15 hover:opacity-40 transition-opacity">
+            <div className="w-5 h-5 rounded-md rotate-12 flex items-center justify-center" style={{ background: themeHex }}>
+              <span className="text-black text-[9px] font-black">K</span>
+            </div>
+            <span className="text-[10px] font-black uppercase tracking-[0.25em] text-white">Konnexy Digital</span>
+          </div>
+        </motion.div>
+
       </div>
-
     </div>
   );
 }

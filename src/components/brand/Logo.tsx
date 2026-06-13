@@ -39,7 +39,7 @@ export function Logo({ className, variant = 'horizontal', showTagline = true }: 
             <span className="font-display font-black text-lg md:text-xl tracking-tight text-white leading-none group-hover:text-[#00D4FF] transition-colors">
               Konnexy
             </span>
-            {variant === 'pro' && (
+            {(variant as string) === 'pro' && (
               <span className="text-[8px] bg-gradient-to-r from-[#00D4FF] to-[#0D5B80] text-slate-950 font-black px-1.5 py-0.5 rounded-sm uppercase tracking-wider">
                 PRO
               </span>
