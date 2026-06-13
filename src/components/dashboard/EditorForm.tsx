@@ -1002,7 +1002,7 @@ export function EditorForm({ initialData, onSubmit, onChange, isPro = false, can
                          <div className="space-y-4">
                             <h4 className="text-[10px] font-black uppercase tracking-widest text-[#f97316]/50 border-b border-[#f97316]/10 pb-2">Configurações Gerais</h4>
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                               {professionConfig.customFields.filter(f => !f.name.startsWith('menu_item')).map((field) => (
+                               {professionConfig.customFields.filter(f => !f.name.startsWith('menu_item') && f.name !== 'portfolio_images').map((field) => (
                                   <div key={field.name} className="flex flex-col gap-1.5 p-3 rounded-2xl bg-white dark:bg-slate-900/40 border border-slate-200 dark:border-slate-800">
                                      {field.type === 'boolean' ? (
                                         <div className="flex items-center justify-between">
@@ -1062,7 +1062,7 @@ export function EditorForm({ initialData, onSubmit, onChange, isPro = false, can
                                <ShieldCheck className="w-3 h-3" /> Configurações de Vistoria
                             </h4>
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                               {professionConfig.customFields.filter(f => !['anos_atuacao'].includes(f.name)).map((field) => (
+                               {professionConfig.customFields.filter(f => !['anos_atuacao', 'portfolio_images'].includes(f.name)).map((field) => (
                                   <div key={field.name} className="flex flex-col gap-1.5 p-3 rounded-2xl bg-white dark:bg-slate-900/40 border border-slate-200 dark:border-slate-800">
                                      {field.type === 'boolean' ? (
                                         <div className="flex items-center justify-between">
@@ -1103,7 +1103,7 @@ export function EditorForm({ initialData, onSubmit, onChange, isPro = false, can
                          </div>
                       </div>
                     ) : (
-                      professionConfig.customFields.map((field) => (
+                      professionConfig.customFields.filter(f => f.name !== 'portfolio_images').map((field) => (
                         <div key={field.name} className="flex flex-col gap-2">
                           {field.type === 'boolean' ? (
                             <div className="flex items-center justify-between p-3 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800">
@@ -1355,6 +1355,77 @@ export function EditorForm({ initialData, onSubmit, onChange, isPro = false, can
                       className="rounded-2xl min-h-[100px] bg-white dark:bg-slate-950"
                     />
                   </div>
+                </div>
+              </div>
+
+              {/* Carousel Photos Section */}
+              <div className="p-6 rounded-3xl bg-slate-50 dark:bg-slate-900/50 border border-slate-200 dark:border-slate-800 space-y-4">
+                <div className="flex items-center gap-2 mb-2">
+                   <div className="p-2 bg-primary/10 rounded-lg">
+                      <ImageIcon className="w-4 h-4 text-primary" />
+                   </div>
+                   <h3 className="text-sm font-black uppercase tracking-widest text-slate-800 dark:text-white">Fotos do Carrossel (Portfólio)</h3>
+                </div>
+                
+                <div className="space-y-3">
+                  <Label className="text-xs opacity-60">Escolha ou envie fotos para exibir no carrossel de portfólio (topo do perfil).</Label>
+                  
+                  {/* Grid de Imagens do Portfólio Atuais */}
+                  {Array.isArray((formData.custom_fields as any)?.portfolio_images) && 
+                   ((formData.custom_fields as any).portfolio_images as string[]).filter(Boolean).length > 0 && (
+                    <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 p-3 rounded-2xl bg-white dark:bg-slate-900/50 border border-slate-200 dark:border-slate-800">
+                      {((formData.custom_fields as any).portfolio_images as string[]).filter(Boolean).map((imgUrl, imgIdx) => (
+                        <div key={imgIdx} className="relative aspect-video rounded-xl overflow-hidden group border border-slate-200 dark:border-slate-700 bg-black">
+                          <img src={imgUrl} alt={`Foto ${imgIdx + 1}`} className="w-full h-full object-cover" />
+                          <button
+                            type="button"
+                            onClick={() => {
+                              const currentArr = ((formData.custom_fields as any).portfolio_images as string[]) || [];
+                              const updatedArr = currentArr.filter((_, idx) => idx !== imgIdx);
+                              handleCustomFieldChange('portfolio_images' as keyof CustomFields, updatedArr);
+                            }}
+                            className="absolute top-1 right-1 w-6 h-6 rounded-full bg-black/70 flex items-center justify-center text-white hover:bg-red-600 transition-colors"
+                          >
+                            <X className="w-3.5 h-3.5" />
+                          </button>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+
+                  {/* Botão de Upload Múltiplo */}
+                  <input
+                    type="file"
+                    ref={portfolioImagesInputRef}
+                    accept="image/*"
+                    multiple
+                    className="hidden"
+                    onChange={handlePortfolioImagesUpload}
+                  />
+                  <button
+                    type="button"
+                    onClick={() => portfolioImagesInputRef.current?.click()}
+                    disabled={uploading}
+                    className="w-full flex items-center justify-center gap-3 p-4 rounded-2xl border-2 border-dashed border-primary/30 bg-primary/5 hover:bg-primary/10 hover:border-primary/60 transition-all cursor-pointer group"
+                  >
+                    {uploading ? (
+                      <Loader2 className="w-5 h-5 animate-spin text-primary" />
+                    ) : (
+                      <Upload className="w-5 h-5 text-primary group-hover:scale-110 transition-transform" />
+                    )}
+                    <div className="flex flex-col items-start text-left">
+                      <span className="text-sm font-black text-primary">{uploading ? 'Enviando...' : 'Anexar Fotos do Portfólio'}</span>
+                      <span className="text-[10px] text-muted-foreground">Selecione uma ou mais fotos &bull; Máx. 10MB por foto</span>
+                    </div>
+                  </button>
+                  
+                  {/* Ou colar URLs separadas por vírgula */}
+                  <Input
+                    value={((formData.custom_fields as any)?.portfolio_images || []).join(', ')}
+                    onChange={(e) => handleCustomFieldChange('portfolio_images' as keyof CustomFields, e.target.value.split(',').map(s => s.trim()).filter(Boolean))}
+                    placeholder="Ou cole as URLs das fotos separadas por vírgula aqui"
+                    className="rounded-2xl h-10 text-xs text-muted-foreground"
+                  />
                 </div>
               </div>
 

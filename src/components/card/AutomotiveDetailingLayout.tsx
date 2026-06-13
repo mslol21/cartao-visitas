@@ -216,63 +216,39 @@ export function AutomotiveDetailingLayout({ data, isPro }: AutomotiveDetailingLa
       {/* Conteúdo z-10 */}
       <div className="relative z-10 flex flex-col w-full">
 
-        {/* ── HERO: CARROSSEL OU PLACEHOLDER ── */}
-        <div className="relative w-full">
-          {images.length > 0 ? (
-            <HeroCarousel images={images} themeHex={themeHex} />
-          ) : hasBgImage ? (
-            <div className="w-full h-48 relative">
-              <div className="absolute inset-x-0 bottom-0 h-full bg-gradient-to-t from-black/80 to-transparent pointer-events-none" />
-            </div>
-          ) : (
-            <div
-              className="w-full flex items-center justify-center"
-              style={{ aspectRatio: '16/10', background: `linear-gradient(135deg, #111 0%, #1a1209 50%, #111 100%)` }}
-            >
-              <div className="flex flex-col items-center gap-3 opacity-20">
-                <Car className="w-10 h-10" style={{ color: themeHex }} />
-                <span className="text-[11px] font-black uppercase tracking-[0.3em] text-white">Adicione fotos dos serviços</span>
-              </div>
-            </div>
-          )}
-
-          {/* ── IDENTIDADE ANCORADA NO BOTTOM DO HERO ── */}
-          <motion.div
-            custom={0} initial="hidden" animate="visible" variants={fadeUp}
-            className="absolute inset-x-0 bottom-0 z-20 px-5 pb-5"
-            style={{ background: images.length > 0 || hasBgImage ? 'linear-gradient(to top, rgba(10,10,10,1) 30%, transparent)' : 'none' }}
+        {/* ── HEADER IDENTIDADE DO PROFISSIONAL (Estática no topo) ── */}
+        <motion.div
+          custom={0} initial="hidden" animate="visible" variants={fadeUp}
+          className="px-5 pt-8 pb-4 flex flex-col items-center text-center relative"
+        >
+          {/* Avatar com borda premium */}
+          <div
+            className="relative w-28 h-28 rounded-full overflow-hidden shadow-2xl border-4 mb-4 transition-transform hover:scale-105 duration-500"
+            style={{ borderColor: themeHex }}
           >
-            <div className="flex items-end gap-4 pt-12">
-              {/* Avatar */}
-              <div
-                className="relative flex-none w-[68px] h-[68px] rounded-2xl overflow-hidden shadow-2xl border-2"
-                style={{ borderColor: themeHex + '50' }}
-              >
-                {data.photo_url ? (
-                  <img src={data.photo_url} alt={data.business_name || ''} className="w-full h-full object-cover" />
-                ) : (
-                  <div className="w-full h-full flex items-center justify-center text-2xl font-black" style={{ background: themeHex + '20', color: themeHex }}>
-                    {(data.business_name || 'A')[0].toUpperCase()}
-                  </div>
-                )}
+            {data.photo_url ? (
+              <img src={data.photo_url} alt={data.business_name || ''} className="w-full h-full object-cover" />
+            ) : (
+              <div className="w-full h-full flex items-center justify-center text-4xl font-black" style={{ background: themeHex + '20', color: themeHex }}>
+                {(data.business_name || 'A')[0].toUpperCase()}
               </div>
+            )}
+          </div>
 
-              {/* Nome + profissão */}
-              <div className="flex-1 min-w-0 pb-1">
-                <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[9px] font-black uppercase tracking-[0.2em] mb-2" style={{ backgroundColor: themeHex + '20', color: themeHex }}>
-                  <Car className="w-3 h-3" />
-                  {data.subtitle ? 'Estética Automotiva' : 'Detailing Premium'}
-                </div>
-                <h1 className="text-[26px] font-black tracking-tight leading-[1.0] uppercase text-white drop-shadow-lg">
-                  {data.business_name || 'Studio Detailing'}
-                </h1>
-                {(data.subtitle || data.tagline) && (
-                  <p className="text-[11px] text-white/50 font-medium mt-1 tracking-wide">{data.subtitle || data.tagline}</p>
-                )}
-              </div>
+          {/* Nome + profissão */}
+          <div className="flex flex-col items-center w-full">
+            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[9px] font-black uppercase tracking-[0.2em] mb-3" style={{ backgroundColor: themeHex + '18', color: themeHex }}>
+              <Car className="w-3.5 h-3.5" />
+              {data.subtitle ? 'Estética Automotiva' : 'Detailing Premium'}
             </div>
-          </motion.div>
-        </div>
+            <h1 className="text-[28px] font-black tracking-tight leading-none uppercase text-white drop-shadow-lg mb-2">
+              {data.business_name || 'Studio Detailing'}
+            </h1>
+            {(data.subtitle || data.tagline) && (
+              <p className="text-[12px] text-white/50 font-medium tracking-wide max-w-[90%]">{data.subtitle || data.tagline}</p>
+            )}
+          </div>
+        </motion.div>
 
         {/* ── TAGS: ESPECIALIDADES ── */}
         {(especialidades.length > 0 || cf.anos_experiencia) && (
@@ -310,6 +286,15 @@ export function AutomotiveDetailingLayout({ data, isPro }: AutomotiveDetailingLa
             </a>
           </Button>
         </motion.div>
+
+        {/* ── HERO: CARROSSEL (Abaixo do CTA) ── */}
+        {images.length > 0 && (
+          <motion.div custom={2.3} initial="hidden" animate="visible" variants={fadeUp} className="px-5 py-4">
+            <div className="rounded-3xl overflow-hidden shadow-2xl border border-white/10">
+              <HeroCarousel images={images} themeHex={themeHex} />
+            </div>
+          </motion.div>
+        )}
 
         {/* ── DIFERENCIAIS BOOLEANOS ── */}
         {boolDiferenciais.length > 0 && (

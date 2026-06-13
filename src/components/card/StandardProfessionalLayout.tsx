@@ -276,64 +276,39 @@ export function StandardProfessionalLayout({
       {/* Conteúdo z-10 */}
       <div className="relative z-10 flex flex-col w-full">
 
-        {/* ── HERO: CARROSSEL OU PLACEHOLDER ── */}
-        <div className="relative w-full">
-          {images.length > 0 ? (
-            <HeroCarousel images={images} themeHex={themeHex} />
-          ) : hasBgImage ? (
-            <div className="w-full h-48 relative">
-              <div className="absolute inset-x-0 bottom-0 h-full bg-gradient-to-t from-black/80 to-transparent pointer-events-none" />
-            </div>
-          ) : (
-            /* Placeholder elegante com animação e ícone */
-            <div
-              className="w-full flex items-center justify-center"
-              style={{ aspectRatio: '16/10', background: `linear-gradient(135deg, #111 0%, #172033 50%, #111 100%)` }}
-            >
-              <div className="flex flex-col items-center gap-3 opacity-25">
-                <IconComponent className="w-10 h-10 animate-bounce" style={{ color: themeHex }} />
-                <span className="text-[10px] font-black uppercase tracking-[0.3em] text-white">Fotos de seus serviços</span>
-              </div>
-            </div>
-          )}
-
-          {/* ── IDENTIDADE DO PROFISSIONAL ANCORADA ── */}
-          <motion.div
-            custom={0} initial="hidden" animate="visible" variants={fadeUp}
-            className="absolute inset-x-0 bottom-0 z-20 px-5 pb-5"
-            style={{ background: images.length > 0 || hasBgImage ? 'linear-gradient(to top, rgba(10,10,10,1) 35%, transparent)' : 'none' }}
+        {/* ── HEADER IDENTIDADE DO PROFISSIONAL (Estática no topo) ── */}
+        <motion.div
+          custom={0} initial="hidden" animate="visible" variants={fadeUp}
+          className="px-5 pt-8 pb-4 flex flex-col items-center text-center relative"
+        >
+          {/* Avatar com borda premium */}
+          <div
+            className="relative w-28 h-28 rounded-full overflow-hidden shadow-2xl border-4 mb-4 transition-transform hover:scale-105 duration-500"
+            style={{ borderColor: themeHex }}
           >
-            <div className="flex items-end gap-4 pt-12">
-              {/* Avatar */}
-              <div
-                className="relative flex-none w-[68px] h-[68px] rounded-2xl overflow-hidden shadow-2xl border-2"
-                style={{ borderColor: themeHex + '40' }}
-              >
-                {data.photo_url ? (
-                  <img src={data.photo_url} alt={data.business_name || ''} className="w-full h-full object-cover" />
-                ) : (
-                  <div className="w-full h-full flex items-center justify-center text-2xl font-black" style={{ background: themeHex + '20', color: themeHex }}>
-                    {(data.business_name || 'K')[0].toUpperCase()}
-                  </div>
-                )}
+            {data.photo_url ? (
+              <img src={data.photo_url} alt={data.business_name || ''} className="w-full h-full object-cover" />
+            ) : (
+              <div className="w-full h-full flex items-center justify-center text-4xl font-black" style={{ background: themeHex + '20', color: themeHex }}>
+                {(data.business_name || 'K')[0].toUpperCase()}
               </div>
+            )}
+          </div>
 
-              {/* Nome + profissão */}
-              <div className="flex-1 min-w-0 pb-1">
-                <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[9px] font-black uppercase tracking-[0.2em] mb-2" style={{ backgroundColor: themeHex + '20', color: themeHex }}>
-                  <IconComponent className="w-3 h-3" />
-                  {config.label}
-                </div>
-                <h1 className="text-[26px] font-black tracking-tight leading-[1.0] uppercase text-white drop-shadow-lg">
-                  {data.business_name || 'Profissional'}
-                </h1>
-                {(data.subtitle || data.tagline) && (
-                  <p className="text-[11px] text-white/50 font-medium mt-1 tracking-wide">{data.subtitle || data.tagline}</p>
-                )}
-              </div>
+          {/* Nome + profissão */}
+          <div className="flex flex-col items-center w-full">
+            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[9px] font-black uppercase tracking-[0.2em] mb-3" style={{ backgroundColor: themeHex + '18', color: themeHex }}>
+              <IconComponent className="w-3.5 h-3.5" />
+              {config.label}
             </div>
-          </motion.div>
-        </div>
+            <h1 className="text-[28px] font-black tracking-tight leading-none uppercase text-white drop-shadow-lg mb-2">
+              {data.business_name || 'Profissional'}
+            </h1>
+            {(data.subtitle || data.tagline) && (
+              <p className="text-[12px] text-white/50 font-medium tracking-wide max-w-[90%]">{data.subtitle || data.tagline}</p>
+            )}
+          </div>
+        </motion.div>
 
         {/* ── TAGS: DESTAQUES / ATRIBUTOS DIVERSOS ── */}
         {(textHighlights.length > 0 || booleanDiferenciais.length > 0) && (
@@ -387,6 +362,15 @@ export function StandardProfessionalLayout({
                 Segundo WhatsApp / Suporte
               </a>
             </Button>
+          </motion.div>
+        )}
+
+        {/* ── HERO: CARROSSEL (Abaixo do CTA) ── */}
+        {images.length > 0 && (
+          <motion.div custom={2.3} initial="hidden" animate="visible" variants={fadeUp} className="px-5 py-4">
+            <div className="rounded-3xl overflow-hidden shadow-2xl border border-white/10">
+              <HeroCarousel images={images} themeHex={themeHex} />
+            </div>
           </motion.div>
         )}
 
