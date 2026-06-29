@@ -1,48 +1,88 @@
 import Link from 'next/link';
 import { Logo } from '@/components/brand/Logo';
+import { Instagram, Linkedin, Github, Globe } from 'lucide-react';
 
 export function Footer() {
   const currentYear = new Date().getFullYear();
   
   return (
-    <footer className="bg-[#05070B] py-20 border-t border-white/5">
-      <div className="container px-6">
-        <div className="flex flex-col md:flex-row items-center justify-between gap-12">
-          <div className="flex flex-col items-center md:items-start gap-4">
+    <footer id="contato" className="bg-[#030712] py-20 border-t border-white/5 relative overflow-hidden">
+      {/* Glow decorations */}
+      <div className="absolute bottom-[-150px] left-[10%] w-[350px] h-[350px] rounded-full bg-blue-500/5 blur-[120px] pointer-events-none" />
+      
+      <div className="max-w-7xl mx-auto px-6 relative z-10">
+        <div className="grid grid-cols-1 md:grid-cols-12 gap-12 md:gap-8 pb-16 border-b border-white/5">
+          {/* Brand block (5 columns) */}
+          <div className="md:col-span-5 space-y-6">
             <Link href="/" className="flex items-center">
-              <Logo variant="horizontal" className="scale-75 origin-left" />
+              <Logo variant="horizontal" className="scale-95 origin-left" />
             </Link>
-            <p className="text-xs font-bold text-muted-foreground uppercase tracking-[0.2em]">Venda mais pelo WhatsApp</p>
+            <p className="text-slate-400 text-sm max-w-sm leading-relaxed">
+              Desenvolvemos plataformas digitais completas e personalizadas para alavancar a gestão e as vendas de negócios em todo o Brasil.
+            </p>
+            <div className="flex items-center gap-4 text-slate-500">
+              <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" className="hover:text-[#00D4FF] transition-colors">
+                <Instagram className="w-5 h-5" />
+              </a>
+              <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" className="hover:text-[#00D4FF] transition-colors">
+                <Linkedin className="w-5 h-5" />
+              </a>
+              <a href="https://github.com" target="_blank" rel="noopener noreferrer" className="hover:text-[#00D4FF] transition-colors">
+                <Github className="w-5 h-5" />
+              </a>
+              <a href="#" className="hover:text-[#00D4FF] transition-colors">
+                <Globe className="w-5 h-5" />
+              </a>
+            </div>
           </div>
 
-          <nav className="flex flex-wrap justify-center items-center gap-x-8 gap-y-4">
-            <a href="#funcionalidades" className="text-[10px] font-black uppercase tracking-widest text-slate-500 hover:text-[#00D4FF] transition-colors">
-              Recursos
-            </a>
-            <a href="#nichos" className="text-[10px] font-black uppercase tracking-widest text-slate-500 hover:text-[#00D4FF] transition-colors">
-              Nichos
-            </a>
-            <a href="#faq" className="text-[10px] font-black uppercase tracking-widest text-slate-500 hover:text-[#00D4FF] transition-colors">
-              FAQ
-            </a>
-            <a href="https://wa.me/5516991551200?text=Olá,%20preciso%20de%20suporte%20com%20o%20Konnexy" target="_blank" rel="noopener noreferrer" className="text-[10px] font-black uppercase tracking-widest text-slate-500 hover:text-[#00D4FF] transition-colors">
-              Suporte
-            </a>
-            <a href="https://wa.me/5516991551200" target="_blank" rel="noopener noreferrer" className="text-[10px] font-black uppercase tracking-widest text-slate-500 hover:text-[#00D4FF] transition-colors">
-              WhatsApp
-            </a>
-            <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" className="text-[10px] font-black uppercase tracking-widest text-slate-500 hover:text-[#00D4FF] transition-colors">
-              Instagram
-            </a>
-          </nav>
+          {/* Quick links block (7 columns: divided into 3 sub-columns) */}
+          <div className="md:col-span-7 grid grid-cols-2 sm:grid-cols-3 gap-8">
+            <div className="space-y-4">
+              <h4 className="text-[10px] font-black uppercase tracking-[0.25em] text-white">Soluções</h4>
+              <ul className="space-y-2.5 text-xs font-semibold text-slate-405">
+                <li><a href="#produtos" className="hover:text-white transition-colors">Konnexy Pet</a></li>
+                <li><a href="#produtos" className="hover:text-white transition-colors">Konnexy Catálogo</a></li>
+                <li><a href="#produtos" className="hover:text-white transition-colors">Konnexy Link</a></li>
+                <li><a href="#produtos" className="hover:text-white transition-colors">Konnexy Vitrine</a></li>
+                <li><a href="#produtos" className="hover:text-white transition-colors">Konnexy Sites</a></li>
+              </ul>
+            </div>
 
-          <div className="text-center md:text-right space-y-2">
-            <p className="text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground opacity-50">
-              © {currentYear} Konnexy.
-            </p>
-            <p className="text-[9px] font-medium text-muted-foreground/40">
-              Transforme seu Instagram e WhatsApp em uma máquina de vendas.
-            </p>
+            <div className="space-y-4">
+              <h4 className="text-[10px] font-black uppercase tracking-[0.25em] text-white">Institucional</h4>
+              <ul className="space-y-2.5 text-xs font-semibold text-slate-405">
+                <li><a href="#segmentos" className="hover:text-white transition-colors">Segmentos</a></li>
+                <li><a href="#demonstracoes" className="hover:text-white transition-colors">Demonstrações</a></li>
+                <li><a href="#precos" className="hover:text-white transition-colors">Preços</a></li>
+                <li><a href="/login" className="hover:text-white transition-colors">Acessar Conta</a></li>
+              </ul>
+            </div>
+
+            <div className="space-y-4 col-span-2 sm:col-span-1">
+              <h4 className="text-[10px] font-black uppercase tracking-[0.25em] text-white">Suporte</h4>
+              <ul className="space-y-2.5 text-xs font-semibold text-slate-405">
+                <li>
+                  <a href="https://wa.me/5516991551200?text=Olá,%20preciso%20de%20ajuda%20com%20meu%20projeto" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors">
+                    Atendimento Online
+                  </a>
+                </li>
+                <li>
+                  <a href="mailto:contato@konnexy.com.br" className="hover:text-white transition-colors">
+                    contato@konnexy.com.br
+                  </a>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div className="pt-10 flex flex-col sm:flex-row items-center justify-between gap-6">
+          <div className="text-slate-500 text-xs font-semibold">
+            © {currentYear} Konnexy. Todos os direitos reservados.
+          </div>
+          <div className="text-slate-400 text-xs font-semibold tracking-wider italic">
+            Konnexy — Tecnologia que conecta empresas ao futuro.
           </div>
         </div>
       </div>
