@@ -157,7 +157,7 @@ export function AutomotiveDetailingLayout({ data, isPro }: AutomotiveDetailingLa
       : [];
 
   // Imagem de fundo estática
-  const bgImage: string | undefined = cf.imagem_fundo || cf.cor_fundo;
+  const bgImage: string | undefined = (isPro && data.background_video_url) || cf.imagem_fundo || cf.cor_fundo;
   const hasBgImage = bgImage && (bgImage.startsWith('http') || bgImage.startsWith('/'));
 
   // Services
@@ -208,8 +208,8 @@ export function AutomotiveDetailingLayout({ data, isPro }: AutomotiveDetailingLa
         fontFamily: data.font_family || 'inherit',
       }}
     >
-      {/* ── IMAGEM DE FUNDO GLOBAL ── */}
-      {hasBgImage && (
+      {/* ── IMAGEM DE FUNDO GLOBAL (quando definida localmente sem background_video_url) ── */}
+      {hasBgImage && !(isPro && data.background_video_url) && (
         <>
           <div
             className="absolute inset-0 w-full h-full z-0"

@@ -200,7 +200,7 @@ export function StandardProfessionalLayout({
 
   // WhatsApp Secundário
   const cleanWppSec = data.whatsapp_secondary?.replace(/\D/g, '') || '';
-  const fmtWppSec = cleanWppSec.startsWith('55') ? cleanWppSec : `55${cleanWppSec}`;
+  const fmtWppSec = cleanWppSec ? (cleanWppSec.startsWith('55') ? cleanWppSec : `55${cleanWppSec}`) : '';
   const wppSecLink = fmtWppSec ? `https://wa.me/${fmtWppSec}?text=${encodeURIComponent(data.whatsapp_secondary_message || defaultWppMsg)}` : null;
 
   // Portfolio images resolver (suporta array ou string separada por vírgula)
@@ -212,7 +212,7 @@ export function StandardProfessionalLayout({
       : [];
 
   // Imagem de fundo estática
-  const bgImage: string | undefined = cf.imagem_fundo || cf.cor_fundo;
+  const bgImage: string | undefined = (isPro && data.background_video_url) || cf.imagem_fundo || cf.cor_fundo;
   const hasBgImage = bgImage && (bgImage.startsWith('http') || bgImage.startsWith('/'));
 
   // Services
@@ -267,8 +267,8 @@ export function StandardProfessionalLayout({
         fontFamily: data.font_family || 'inherit',
       }}
     >
-      {/* ── IMAGEM DE FUNDO GLOBAL (quando definida) ── */}
-      {hasBgImage && (
+      {/* ── IMAGEM DE FUNDO GLOBAL (quando definida localmente sem background_video_url) ── */}
+      {hasBgImage && !(isPro && data.background_video_url) && (
         <>
           <div
             className="absolute inset-0 w-full h-full z-0"
