@@ -291,6 +291,7 @@ export function KonnexyLanding() {
                 className="object-cover"
                 priority
               />
+            </div>
           </div>
         </div>
       </section>
