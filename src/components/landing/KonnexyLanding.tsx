@@ -264,12 +264,12 @@ export function KonnexyLanding() {
             </div>
 
             <div className="flex flex-wrap items-center gap-4">
-              <Button asChild className="h-14 px-8 rounded-2xl text-xs font-black uppercase tracking-widest bg-gradient-to-r from-[#EADBB9] to-[#C5CAD2] hover:from-[#f3e7d3] hover:to-[#d2d6dd] text-white shadow-xl shadow-amber-500/5 transition-all hover:scale-[1.02] active:scale-95 border border-[#EADBB9]/20">
+              <Button asChild className="h-14 px-8 rounded-2xl text-xs font-black uppercase tracking-widest bg-[#EADBB9] hover:bg-[#EADBB9]/90 text-[#030c1b] shadow-xl shadow-[#EADBB9]/5 transition-all hover:scale-[1.02] active:scale-95 border border-[#EADBB9]/20">
                 <a href="#produtos">
                   Conhecer Soluções
                 </a>
               </Button>
-              <Button asChild variant="outline" className="h-14 px-8 rounded-2xl text-xs font-black uppercase tracking-widest border border-white/10 hover:border-white/20 hover:bg-white/5 text-white transition-all">
+              <Button asChild variant="outline" className="h-14 px-8 rounded-2xl text-xs font-black uppercase tracking-widest border border-[#C5CAD2]/10 hover:border-[#EADBB9]/30 hover:bg-[#030c1b]/60 text-white transition-all hover:scale-[1.02] backdrop-blur-md">
                 <a href="https://wa.me/5516991551200?text=Olá,%20gostaria%20de%20solicitar%20uma%20demonstração%20das%20soluções%20da%20Konnexy" target="_blank" rel="noopener noreferrer">
                   Solicitar Demonstração
                 </a>
@@ -279,9 +279,11 @@ export function KonnexyLanding() {
 
           {/* Right Column (Mockups & Floating Stats) */}
           <div className="lg:col-span-5 relative flex justify-center items-center mt-10 lg:mt-0">
-            {/* Visual background circles */}
+            {/* Lunar Glow Effect */}
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[120%] h-[120%] bg-[radial-gradient(circle_at_center,rgba(234,219,185,0.12),transparent_65%)] blur-3xl pointer-events-none" />
+
             {/* Brand Identity Mockup */}
-            <div className="relative z-10 w-full max-w-[460px] aspect-[4/3] rounded-[2rem] overflow-hidden border border-white/10 shadow-2xl shadow-black/80">
+            <div className="relative z-10 w-full max-w-[460px] aspect-[4/3] rounded-[2rem] overflow-hidden border border-[#C5CAD2]/10 shadow-2xl shadow-black/80">
               <Image 
                 src="/images/koi_hero.png" 
                 alt="Konnexy Koi Brand Identity" 
@@ -306,21 +308,37 @@ export function KonnexyLanding() {
         </div>
 
         {/* Product Cards Layout */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <motion.div 
+          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
+          initial="hidden"
+          whileInView="show"
+          viewport={{ once: true }}
+          variants={{
+            hidden: { opacity: 0 },
+            show: {
+              opacity: 1,
+              transition: { staggerChildren: 0.1 }
+            }
+          }}
+        >
           {PRODUTOS.map((product, idx) => {
             const Icon = product.icon;
             return (
-              <div 
+              <motion.div 
                 key={product.id}
-                className="bg-[#081426]/90 border border-white/5 hover:border-white/10 rounded-[2.2rem] p-8 flex flex-col justify-between transition-all duration-300 hover:y-[-6px] relative group"
+                variants={{
+                  hidden: { opacity: 0, y: 20 },
+                  show: { opacity: 1, y: 0, transition: { type: "spring", stiffness: 100 } }
+                }}
+                className="bg-[#030c1b]/60 backdrop-blur-md border border-[#C5CAD2]/10 hover:border-[#EADBB9]/30 hover:shadow-[inset_0_0_20px_rgba(234,219,185,0.05)] rounded-[2.2rem] p-8 flex flex-col justify-between transition-all duration-300 relative group"
               >
                 <div>
                   {/* Card Header & Icon */}
                   <div className="flex items-center justify-between mb-6">
-                    <div className="w-12 h-12 rounded-2xl bg-white/5 flex items-center justify-center text-[#EADBB9] group-hover:bg-[#EADBB9]/10 transition-colors">
+                    <div className="w-12 h-12 rounded-2xl bg-[#C5CAD2]/5 flex items-center justify-center text-[#EADBB9] group-hover:bg-[#EADBB9]/10 transition-colors">
                       <Icon className="w-6 h-6" />
                     </div>
-                    <span className="text-[9px] font-black uppercase tracking-widest text-slate-650">SaaS Premium</span>
+                    <span className="text-[9px] font-black uppercase tracking-widest text-slate-500">SaaS Premium</span>
                   </div>
 
                   {/* Title & Description */}
@@ -351,14 +369,14 @@ export function KonnexyLanding() {
                 {/* Demonstration Button */}
                 <Button 
                   onClick={() => setSelectedDemoImage(product.image)}
-                  className="w-full h-12 rounded-xl text-xs font-black uppercase tracking-wider bg-white/5 hover:bg-white/10 text-white border border-white/5"
+                  className="w-full h-12 rounded-xl text-xs font-black uppercase tracking-wider bg-[#030c1b]/40 hover:bg-[#EADBB9]/10 text-white border border-[#C5CAD2]/10 transition-all"
                 >
                   Ver Demonstração
                 </Button>
-              </div>
+              </motion.div>
             );
           })}
-        </div>
+        </motion.div>
       </section>
 
       {/* ── SOLUÇÕES POR SEGMENTO SECTION ── */}
@@ -455,13 +473,13 @@ export function KonnexyLanding() {
             ].map((dif, idx) => {
               const Icon = dif.icon;
               return (
-                <div key={idx} className="flex gap-4 p-5 rounded-2xl bg-[#081426]/50 border border-white/5">
-                  <div className="w-8 h-8 rounded-xl bg-white/5 flex items-center justify-center text-[#EADBB9] shrink-0">
+                <div key={idx} className="flex gap-4 p-5 rounded-2xl bg-[#030c1b]/60 backdrop-blur-md border border-[#C5CAD2]/10 hover:border-[#EADBB9]/30 hover:shadow-[inset_0_0_15px_rgba(234,219,185,0.05)] transition-all group">
+                  <div className="w-8 h-8 rounded-xl bg-[#C5CAD2]/5 flex items-center justify-center text-[#EADBB9] shrink-0 group-hover:bg-[#EADBB9]/10 transition-colors">
                     <Icon className="w-4.5 h-4.5" />
                   </div>
                   <div>
                     <h3 className="text-xs font-black text-white mb-1 uppercase tracking-wider">{dif.title}</h3>
-                    <p className="text-[11px] text-slate-400 leading-normal font-medium">{dif.desc}</p>
+                    <p className="text-[11px] text-[#C5CAD2] leading-normal font-medium">{dif.desc}</p>
                   </div>
                 </div>
               );
