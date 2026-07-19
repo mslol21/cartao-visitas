@@ -34,7 +34,7 @@ interface AnimatedQRProps {
 export function AnimatedQR({
   url,
   photoUrl,
-  accentColor = "#dfba83",
+  accentColor = "#EADBB9",
   profGradient,
   size = 112,
   active = true,

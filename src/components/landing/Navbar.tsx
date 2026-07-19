@@ -52,7 +52,7 @@ export function Navbar() {
               className="text-xs font-medium text-slate-400 hover:text-white transition-colors duration-200 relative py-2 group"
             >
               {link.name}
-              <span className="absolute bottom-0 left-0 w-0 h-[1.5px] bg-[#dfba83] transition-all duration-300 group-hover:w-full" />
+              <span className="absolute bottom-0 left-0 w-0 h-[1.5px] bg-[#EADBB9] transition-all duration-300 group-hover:w-full" />
             </a>
           ))}
         </nav>
@@ -71,7 +71,7 @@ export function Navbar() {
               <Button asChild variant="ghost" className="rounded-xl font-medium text-xs h-10 text-slate-400 hover:text-white hover:bg-white/5 transition-colors">
                 <Link href="/login">Entrar</Link>
               </Button>
-              <Button asChild className="rounded-xl h-10 px-5 bg-gradient-to-r from-[#dfba83] to-[#9A7B56] hover:from-[#ebd0aa] hover:to-[#a88a66] text-white font-bold shadow-lg shadow-amber-500/10 transition-all hover:scale-[1.02] border border-[#dfba83]/20">
+              <Button asChild className="rounded-xl h-10 px-5 bg-gradient-to-r from-[#EADBB9] to-[#C5CAD2] hover:from-[#f3e7d3] hover:to-[#d2d6dd] text-white font-bold shadow-lg shadow-amber-500/5 transition-all hover:scale-[1.02] border border-[#EADBB9]/20">
                 <a href="https://wa.me/5516991551200?text=Olá,%20gostaria%20de%20solicitar%20uma%20demonstração%20das%20soluções%20da%20Konnexy" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2">
                   <span>Falar Conosco</span>
                   <ArrowRight className="w-3.5 h-3.5" />
@@ -99,7 +99,7 @@ export function Navbar() {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
             transition={{ duration: 0.2 }}
-            className="md:hidden absolute top-full left-0 right-0 bg-[#030712]/98 border-b border-white/5 backdrop-blur-xl shadow-2xl z-50 px-6 py-8"
+            className="md:hidden absolute top-full left-0 right-0 bg-[#030c1b]/98 border-b border-white/5 backdrop-blur-xl shadow-2xl z-50 px-6 py-8"
           >
             <nav className="flex flex-col gap-4 mb-6">
               {navLinks.map((link) => (
@@ -123,7 +123,7 @@ export function Navbar() {
                   <Button asChild variant="outline" className="rounded-xl w-full border-white/10 text-slate-300">
                     <Link href="/login" onClick={() => setIsOpen(false)}>Entrar</Link>
                   </Button>
-                  <Button asChild className="rounded-xl w-full bg-gradient-to-r from-[#dfba83] to-[#9A7B56] text-white font-bold">
+                  <Button asChild className="rounded-xl w-full bg-gradient-to-r from-[#EADBB9] to-[#C5CAD2] text-white font-bold">
                     <a href="https://wa.me/5516991551200?text=Olá,%20gostaria%20de%20solicitar%20uma%20demonstração%20das%20soluções%20da%20Konnexy" target="_blank" rel="noopener noreferrer" onClick={() => setIsOpen(false)}>
                       Falar Conosco
                     </a>

@@ -30,11 +30,11 @@
   }
 
   .dark {
-    --background: 222 47% 6%;
+    --background: 217 81% 4%;
     --foreground: 210 40% 98%;
-    --card: 222 47% 8%;
+    --card: 215 65% 9%;
     --card-foreground: 210 40% 98%;
-    --popover: 222 47% 8%;
+    --popover: 215 65% 9%;
     --popover-foreground: 210 40% 98%;
     --primary: 217 91% 60%;
     --primary-foreground: 222 47% 11%;
@@ -46,9 +46,9 @@
     --accent-foreground: 210 40% 98%;
     --destructive: 0 62.8% 30.6%;
     --destructive-foreground: 210 40% 98%;
-    --border: 217.2 32.6% 17.5%;
-    --input: 217.2 32.6% 17.5%;
-    --ring: 224.3 76.3% 48%;
+    --border: 215 40% 15%;
+    --input: 215 40% 15%;
+    --ring: 217 81% 4%;
   }
 }
 
@@ -121,13 +121,13 @@
 
   .aura-glow {
     @apply absolute inset-0 rounded-full blur-[12px] opacity-60;
-    background: conic-gradient(from 0deg, #dfba83, #9A7B56, #ebd0aa, #dfba83);
+    background: conic-gradient(from 0deg, #EADBB9, #C5CAD2, #030c1b, #EADBB9);
   }
 
   .aura-arc {
     @apply absolute -inset-2 rounded-full border-2 border-transparent opacity-40;
-    border-top-color: #dfba83;
-    border-right-color: #9A7B56;
+    border-top-color: #EADBB9;
+    border-right-color: #C5CAD2;
     animation: aura-spin 18s linear infinite;
   }
 

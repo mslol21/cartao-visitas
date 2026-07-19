@@ -6,9 +6,9 @@ export function Footer() {
   const currentYear = new Date().getFullYear();
   
   return (
-    <footer id="contato" className="bg-[#030712] py-20 border-t border-white/5 relative overflow-hidden">
+    <footer id="contato" className="bg-[#030c1b] py-20 border-t border-white/5 relative overflow-hidden">
       {/* Glow decorations */}
-      <div className="absolute bottom-[-150px] left-[10%] w-[350px] h-[350px] rounded-full bg-blue-500/5 blur-[120px] pointer-events-none" />
+      <div className="absolute bottom-[-150px] left-[10%] w-[350px] h-[350px] rounded-full bg-[#EADBB9]/5 blur-[120px] pointer-events-none" />
       
       <div className="max-w-7xl mx-auto px-6 relative z-10">
         <div className="grid grid-cols-1 md:grid-cols-12 gap-12 md:gap-8 pb-16 border-b border-white/5">
@@ -21,16 +21,16 @@ export function Footer() {
               Desenvolvemos plataformas digitais completas e personalizadas para alavancar a gestão e as vendas de negócios em todo o Brasil.
             </p>
             <div className="flex items-center gap-4 text-slate-500">
-              <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" className="hover:text-[#00D4FF] transition-colors">
+              <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" className="hover:text-[#EADBB9] transition-colors">
                 <Instagram className="w-5 h-5" />
               </a>
-              <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" className="hover:text-[#00D4FF] transition-colors">
+              <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" className="hover:text-[#EADBB9] transition-colors">
                 <Linkedin className="w-5 h-5" />
               </a>
-              <a href="https://github.com" target="_blank" rel="noopener noreferrer" className="hover:text-[#00D4FF] transition-colors">
+              <a href="https://github.com" target="_blank" rel="noopener noreferrer" className="hover:text-[#EADBB9] transition-colors">
                 <Github className="w-5 h-5" />
               </a>
-              <a href="#" className="hover:text-[#00D4FF] transition-colors">
+              <a href="#" className="hover:text-[#EADBB9] transition-colors">
                 <Globe className="w-5 h-5" />
               </a>
             </div>
