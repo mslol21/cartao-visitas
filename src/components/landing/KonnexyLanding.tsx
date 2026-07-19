@@ -289,11 +289,6 @@ export function KonnexyLanding() {
                 className="object-cover"
                 priority
               />
-            </div>
-            <div className="absolute bottom-[-30px] left-[30px] z-20 bg-slate-950/85 backdrop-blur-md border border-white/10 rounded-2xl p-3 px-4 shadow-xl flex items-center gap-3">
-              <span className="w-2 h-2 rounded-full bg-emerald-400 animate-ping" />
-              <span className="text-[11px] font-bold text-slate-350">Clientes Ativos: +1.200</span>
-            </div>
           </div>
         </div>
       </section>
