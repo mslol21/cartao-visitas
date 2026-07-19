@@ -193,7 +193,7 @@ export function KonnexyLanding() {
   };
 
   return (
-    <div className="bg-[#030712] text-slate-155 font-sans min-h-screen selection:bg-[#00D4FF]/30 selection:text-white relative overflow-x-hidden">
+    <div className="bg-[#030712] text-slate-155 font-sans min-h-screen selection:bg-[#dfba83]/30 selection:text-white relative overflow-x-hidden">
       
       {/* Navbar */}
       <Navbar />
@@ -207,7 +207,7 @@ export function KonnexyLanding() {
         <div className="max-w-7xl mx-auto px-6 grid grid-cols-1 lg:grid-cols-12 gap-16 items-center relative z-10 w-full">
           {/* Left Column (Text & CTAs) */}
           <div className="lg:col-span-7 space-y-8 text-left">
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-500/10 border border-blue-400/20 text-[#00D4FF] text-[10px] font-black uppercase tracking-widest">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#dfba83]/10 border border-[#dfba83]/20 text-[#dfba83] text-[10px] font-black uppercase tracking-widest">
               <Sparkles className="w-3.5 h-3.5" />
               Tecnologia & Desenvolvimento Premium
             </div>
@@ -221,7 +221,7 @@ export function KonnexyLanding() {
             </p>
 
             <div className="flex flex-wrap items-center gap-4">
-              <Button asChild className="h-14 px-8 rounded-2xl text-xs font-black uppercase tracking-widest bg-gradient-to-r from-[#00D4FF] to-blue-600 hover:from-[#00E5FF] hover:to-blue-500 text-white shadow-xl shadow-blue-500/25 transition-all hover:scale-[1.02] active:scale-95 border border-blue-400/20">
+              <Button asChild className="h-14 px-8 rounded-2xl text-xs font-black uppercase tracking-widest bg-gradient-to-r from-[#dfba83] to-[#9A7B56] hover:from-[#ebd0aa] hover:to-[#a88a66] text-white shadow-xl shadow-amber-500/10 transition-all hover:scale-[1.02] active:scale-95 border border-[#dfba83]/20">
                 <a href="#produtos">
                   Conhecer Soluções
                 </a>
@@ -262,7 +262,7 @@ export function KonnexyLanding() {
             </div>
 
             <div className="absolute bottom-[20px] right-[-20px] z-20 bg-slate-950/85 backdrop-blur-md border border-white/10 rounded-2xl p-4 shadow-xl flex items-center gap-3 animate-bounce" style={{ animationDuration: '5s', animationDelay: '1s' }}>
-              <div className="w-8 h-8 rounded-xl bg-[#00D4FF]/25 flex items-center justify-center text-[#00D4FF]">
+              <div className="w-8 h-8 rounded-xl bg-[#dfba83]/25 flex items-center justify-center text-[#dfba83]">
                 <Calendar className="w-5 h-5" />
               </div>
               <div>
@@ -282,7 +282,7 @@ export function KonnexyLanding() {
       {/* ── NOSSOS PRODUTOS SECTION ── */}
       <section id="produtos" className="py-24 max-w-7xl mx-auto px-6 relative border-b border-white/5">
         <div className="text-center max-w-3xl mx-auto mb-20">
-          <span className="text-xs font-black uppercase tracking-[0.3em] text-[#00D4FF] mb-3 block">Nossos Produtos</span>
+          <span className="text-xs font-black uppercase tracking-[0.3em] text-[#dfba83] mb-3 block">Nossos Produtos</span>
           <h2 className="text-4xl md:text-5xl font-black text-white leading-tight font-display mb-4">
             Plataformas digitais desenhadas para o seu nicho.
           </h2>
@@ -303,7 +303,7 @@ export function KonnexyLanding() {
                 <div>
                   {/* Card Header & Icon */}
                   <div className="flex items-center justify-between mb-6">
-                    <div className="w-12 h-12 rounded-2xl bg-white/5 flex items-center justify-center text-[#00D4FF] group-hover:bg-[#00D4FF]/10 transition-colors">
+                    <div className="w-12 h-12 rounded-2xl bg-white/5 flex items-center justify-center text-[#dfba83] group-hover:bg-[#dfba83]/10 transition-colors">
                       <Icon className="w-6 h-6" />
                     </div>
                     <span className="text-[9px] font-black uppercase tracking-widest text-slate-650">SaaS Premium</span>
@@ -321,7 +321,7 @@ export function KonnexyLanding() {
                     <ul className="space-y-2.5">
                       {product.recursos.slice(0, 5).map((rec, rIdx) => (
                         <li key={rIdx} className="flex items-center gap-2 text-[11px] text-slate-300 font-medium">
-                          <Check className="w-3.5 h-3.5 text-[#00D4FF] shrink-0" />
+                          <Check className="w-3.5 h-3.5 text-[#dfba83] shrink-0" />
                           <span>{rec}</span>
                         </li>
                       ))}
@@ -352,7 +352,7 @@ export function KonnexyLanding() {
         <div className="absolute top-[10%] left-[-10%] w-[300px] h-[300px] bg-blue-500/5 blur-[100px] pointer-events-none" />
         
         <div className="text-center max-w-3xl mx-auto mb-16">
-          <span className="text-xs font-black uppercase tracking-[0.3em] text-[#00D4FF] mb-3 block">Mercado e Segmentos</span>
+          <span className="text-xs font-black uppercase tracking-[0.3em] text-[#dfba83] mb-3 block">Mercado e Segmentos</span>
           <h2 className="text-4xl md:text-5xl font-black text-white leading-tight font-display mb-4">
             Tecnologia adaptada ao seu modelo de negócio.
           </h2>
@@ -370,7 +370,7 @@ export function KonnexyLanding() {
                 key={idx}
                 className="bg-[#090D16]/80 border border-white/5 rounded-2xl p-5 flex flex-col items-center justify-center text-center gap-3 transition-colors hover:bg-white/[0.03] hover:border-white/10"
               >
-                <div className="w-10 h-10 rounded-xl bg-white/5 flex items-center justify-center text-[#00D4FF]">
+                <div className="w-10 h-10 rounded-xl bg-white/5 flex items-center justify-center text-[#dfba83]">
                   <Icon className="w-5 h-5" />
                 </div>
                 <span className="text-[11px] font-bold text-slate-300 leading-tight">{seg.name}</span>
@@ -383,7 +383,7 @@ export function KonnexyLanding() {
       {/* ── COMO FUNCIONA SECTION ── */}
       <section className="py-24 max-w-7xl mx-auto px-6 border-b border-white/5 relative">
         <div className="text-center max-w-3xl mx-auto mb-20">
-          <span className="text-xs font-black uppercase tracking-[0.3em] text-[#00D4FF] mb-3 block">Fluxo de Entrega</span>
+          <span className="text-xs font-black uppercase tracking-[0.3em] text-[#dfba83] mb-3 block">Fluxo de Entrega</span>
           <h2 className="text-4xl md:text-5xl font-black text-white leading-tight font-display mb-4">
             Sua plataforma no ar em quatro etapas simples.
           </h2>
@@ -402,7 +402,7 @@ export function KonnexyLanding() {
           ].map((step, idx) => (
             <div key={idx} className="bg-[#090D16]/50 border border-white/5 p-8 rounded-[2rem] relative flex flex-col justify-between min-h-[220px]">
               <div>
-                <span className="text-3xl font-black bg-gradient-to-r from-[#00D4FF] to-blue-600 bg-clip-text text-transparent block mb-4">
+                <span className="text-3xl font-black bg-gradient-to-r from-[#dfba83] to-[#9A7B56] bg-clip-text text-transparent block mb-4">
                   {step.num}
                 </span>
                 <h3 className="text-base font-black text-white mb-2 leading-tight">{step.title}</h3>
@@ -417,7 +417,7 @@ export function KonnexyLanding() {
       <section className="py-24 max-w-7xl mx-auto px-6 border-b border-white/5">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 items-center">
           <div className="lg:col-span-5 space-y-6">
-            <span className="text-xs font-black uppercase tracking-[0.3em] text-[#00D4FF]">Diferenciais de Valor</span>
+            <span className="text-xs font-black uppercase tracking-[0.3em] text-[#dfba83]">Diferenciais de Valor</span>
             <h2 className="text-4xl md:text-5xl font-black text-white leading-tight font-display">
               Infraestrutura de ponta, sem dor de cabeça.
             </h2>
@@ -442,7 +442,7 @@ export function KonnexyLanding() {
               const Icon = dif.icon;
               return (
                 <div key={idx} className="flex gap-4 p-5 rounded-2xl bg-[#090D16]/50 border border-white/5">
-                  <div className="w-8 h-8 rounded-xl bg-white/5 flex items-center justify-center text-[#00D4FF] shrink-0">
+                  <div className="w-8 h-8 rounded-xl bg-white/5 flex items-center justify-center text-[#dfba83] shrink-0">
                     <Icon className="w-4.5 h-4.5" />
                   </div>
                   <div>
@@ -461,7 +461,7 @@ export function KonnexyLanding() {
         <div className="absolute bottom-[10%] right-[-10%] w-[300px] h-[300px] bg-indigo-500/5 blur-[100px] pointer-events-none" />
 
         <div className="text-center max-w-3xl mx-auto mb-20">
-          <span className="text-xs font-black uppercase tracking-[0.3em] text-[#00D4FF] mb-3 block">Demonstrações Reais</span>
+          <span className="text-xs font-black uppercase tracking-[0.3em] text-[#dfba83] mb-3 block">Demonstrações Reais</span>
           <h2 className="text-4xl md:text-5xl font-black text-white leading-tight font-display mb-4">
             Explore nossos projetos em detalhes.
           </h2>
@@ -493,7 +493,7 @@ export function KonnexyLanding() {
               </div>
               <div className="p-6 flex items-center justify-between">
                 <span className="text-xs font-black text-white">{demo.name}</span>
-                <span className="text-[10px] text-[#00D4FF] font-black uppercase tracking-wider flex items-center gap-1">
+                <span className="text-[10px] text-[#dfba83] font-black uppercase tracking-wider flex items-center gap-1">
                   Ver demonstração <ChevronRight className="w-3 h-3" />
                 </span>
               </div>
@@ -508,7 +508,7 @@ export function KonnexyLanding() {
       {/* ── TESTIMONIALS SECTION (Placeholder preparado) ── */}
       <section className="py-24 max-w-7xl mx-auto px-6 border-b border-white/5">
         <div className="text-center max-w-3xl mx-auto mb-16">
-          <span className="text-xs font-black uppercase tracking-[0.3em] text-[#00D4FF] mb-3 block">Cases & Sucesso</span>
+          <span className="text-xs font-black uppercase tracking-[0.3em] text-[#dfba83] mb-3 block">Cases & Sucesso</span>
           <h2 className="text-4xl md:text-5xl font-black text-white leading-tight font-display mb-4">
             Empresas que conectam ao futuro.
           </h2>
@@ -548,7 +548,7 @@ export function KonnexyLanding() {
       {/* ── FAQ SECTION ── */}
       <section id="faq" className="py-24 max-w-3xl mx-auto px-6 border-b border-white/5">
         <div className="text-center mb-16">
-          <span className="text-xs font-black uppercase tracking-[0.3em] text-[#00D4FF] mb-3 block">FAQ</span>
+          <span className="text-xs font-black uppercase tracking-[0.3em] text-[#dfba83] mb-3 block">FAQ</span>
           <h2 className="text-3xl md:text-4xl font-black text-white leading-tight font-display mb-4">
             Dúvidas Frequentes
           </h2>
@@ -571,7 +571,7 @@ export function KonnexyLanding() {
                   className="w-full p-6 flex items-center justify-between text-left text-slate-205 hover:text-white transition-colors"
                 >
                   <span className="text-xs font-black uppercase tracking-wider leading-snug">{faq.question}</span>
-                  <ChevronDown className={`w-4 h-4 shrink-0 transition-transform duration-300 ${isOpen ? "rotate-180 text-[#00D4FF]" : "text-slate-550"}`} />
+                  <ChevronDown className={`w-4 h-4 shrink-0 transition-transform duration-300 ${isOpen ? "rotate-180 text-[#dfba83]" : "text-slate-550"}`} />
                 </button>
 
                 <AnimatePresence initial={false}>
@@ -597,7 +597,7 @@ export function KonnexyLanding() {
       {/* ── CTA FINAL SECTION ── */}
       <section className="py-24 relative overflow-hidden">
         {/* Glow decoration */}
-        <div className="absolute inset-0 bg-[#00D4FF]/5 blur-[120px] pointer-events-none" />
+        <div className="absolute inset-0 bg-[#dfba83]/5 blur-[120px] pointer-events-none" />
 
         <div className="max-w-4xl mx-auto px-6 text-center relative z-10 space-y-8">
           <h2 className="text-4xl sm:text-5xl font-black text-white tracking-tight font-display leading-tight">
@@ -613,7 +613,7 @@ export function KonnexyLanding() {
                 Solicitar Demonstração
               </a>
             </Button>
-            <Button asChild variant="outline" className="h-14 px-8 rounded-2xl text-xs font-black uppercase tracking-widest border border-[#00D4FF]/30 hover:border-[#00D4FF]/50 text-[#00D4FF] hover:bg-[#00D4FF]/5 transition-all">
+            <Button asChild variant="outline" className="h-14 px-8 rounded-2xl text-xs font-black uppercase tracking-widest border border-[#dfba83]/30 hover:border-[#dfba83]/50 text-[#dfba83] hover:bg-[#dfba83]/5 transition-all">
               <a href="https://wa.me/5516991551200" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2">
                 <MessageCircle className="w-4 h-4 fill-current" />
                 Falar pelo WhatsApp

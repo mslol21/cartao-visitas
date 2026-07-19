@@ -1062,7 +1062,7 @@ END:VCARD`;
                         <div className="absolute inset-0 bg-gradient-to-t from-slate-900 via-transparent to-transparent" />
                      </>
                    ) : !cf.cor_fundo ? (
-                     <DigitalField accentColor={frameConfig?.accent || '#00D4FF'} active={isPro} />
+                     <DigitalField accentColor={frameConfig?.accent || '#dfba83'} active={isPro} />
                    ) : null}
                   {!isPro && (
                     <div className="absolute inset-0 bg-slate-50 dark:bg-slate-900/50" />

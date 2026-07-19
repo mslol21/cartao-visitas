@@ -52,7 +52,7 @@ export function Navbar() {
               className="text-xs font-medium text-slate-400 hover:text-white transition-colors duration-200 relative py-2 group"
             >
               {link.name}
-              <span className="absolute bottom-0 left-0 w-0 h-[1.5px] bg-[#00D4FF] transition-all duration-300 group-hover:w-full" />
+              <span className="absolute bottom-0 left-0 w-0 h-[1.5px] bg-[#dfba83] transition-all duration-300 group-hover:w-full" />
             </a>
           ))}
         </nav>
@@ -71,7 +71,7 @@ export function Navbar() {
               <Button asChild variant="ghost" className="rounded-xl font-medium text-xs h-10 text-slate-400 hover:text-white hover:bg-white/5 transition-colors">
                 <Link href="/login">Entrar</Link>
               </Button>
-              <Button asChild className="rounded-xl h-10 px-5 bg-gradient-to-r from-[#00D4FF] to-blue-600 hover:from-[#00E5FF] hover:to-blue-500 text-white font-bold shadow-lg shadow-blue-500/20 transition-all hover:scale-[1.02] border border-blue-400/20">
+              <Button asChild className="rounded-xl h-10 px-5 bg-gradient-to-r from-[#dfba83] to-[#9A7B56] hover:from-[#ebd0aa] hover:to-[#a88a66] text-white font-bold shadow-lg shadow-amber-500/10 transition-all hover:scale-[1.02] border border-[#dfba83]/20">
                 <a href="https://wa.me/5516991551200?text=Olá,%20gostaria%20de%20solicitar%20uma%20demonstração%20das%20soluções%20da%20Konnexy" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2">
                   <span>Falar Conosco</span>
                   <ArrowRight className="w-3.5 h-3.5" />
@@ -123,7 +123,7 @@ export function Navbar() {
                   <Button asChild variant="outline" className="rounded-xl w-full border-white/10 text-slate-300">
                     <Link href="/login" onClick={() => setIsOpen(false)}>Entrar</Link>
                   </Button>
-                  <Button asChild className="rounded-xl w-full bg-gradient-to-r from-[#00D4FF] to-blue-600 text-white font-bold">
+                  <Button asChild className="rounded-xl w-full bg-gradient-to-r from-[#dfba83] to-[#9A7B56] text-white font-bold">
                     <a href="https://wa.me/5516991551200?text=Olá,%20gostaria%20de%20solicitar%20uma%20demonstração%20das%20soluções%20da%20Konnexy" target="_blank" rel="noopener noreferrer" onClick={() => setIsOpen(false)}>
                       Falar Conosco
                     </a>

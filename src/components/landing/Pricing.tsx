@@ -39,7 +39,7 @@ export function Pricing() {
       ],
       whatsappMsg: "Olá! Gostaria de solicitar o desenvolvimento do meu Konnexy Catálogo.",
       badge: "Mais Popular",
-      gradient: "from-[#00D4FF] to-blue-600",
+      gradient: "from-[#dfba83] to-[#9A7B56]",
     },
     {
       name: "Konnexy Sites",
@@ -90,7 +90,7 @@ export function Pricing() {
       <div className="max-w-7xl mx-auto px-6 relative z-10">
         {/* Title */}
         <div className="text-center max-w-3xl mx-auto mb-20">
-          <span className="text-xs font-black uppercase tracking-[0.3em] text-[#00D4FF] mb-3 block">Orçamento Sob Medida</span>
+          <span className="text-xs font-black uppercase tracking-[0.3em] text-[#dfba83] mb-3 block">Orçamento Sob Medida</span>
           <h2 className="text-4xl md:text-5xl font-black mb-6 font-display leading-[1.1] text-white">
             Soluções sob medida para o seu negócio crescer.
           </h2>
@@ -109,7 +109,7 @@ export function Pricing() {
                 key={idx}
                 className={`relative flex flex-col justify-between rounded-[2rem] p-8 border transition-all duration-300 hover:y-[-8px] bg-[#090D16]/90 backdrop-blur-md ${
                   isCatalog 
-                    ? "border-[#00D4FF]/40 shadow-[0_20px_50px_rgba(0,212,255,0.1)] scale-102 z-20" 
+                    ? "border-[#dfba83]/40 shadow-[0_20px_50px_rgba(223,186,131,0.1)] scale-102 z-20" 
                     : isPet 
                       ? "border-emerald-500/30 hover:border-emerald-500/50" 
                       : "border-white/5 hover:border-white/10"
@@ -121,7 +121,7 @@ export function Pricing() {
                     isPet 
                       ? "bg-emerald-500/10 text-emerald-400 border border-emerald-500/30" 
                       : isCatalog 
-                        ? "bg-[#00D4FF]/10 text-[#00D4FF] border border-[#00D4FF]/30" 
+                        ? "bg-[#dfba83]/10 text-[#dfba83] border border-[#dfba83]/30" 
                         : "bg-purple-500/10 text-purple-400 border border-purple-500/30"
                   }`}>
                     {plan.badge}
@@ -139,7 +139,7 @@ export function Pricing() {
                   <div className="space-y-2 mb-8 py-3">
                     <span className="text-[10px] text-slate-550 uppercase tracking-widest font-black block">Investimento</span>
                     <div className="flex items-baseline gap-1 mt-0.5">
-                      <span className={`text-2xl font-black ${isCatalog ? "text-[#00D4FF]" : isPet ? "text-emerald-400" : "text-white"}`}>Sob Consulta</span>
+                      <span className={`text-2xl font-black ${isCatalog ? "text-[#dfba83]" : isPet ? "text-emerald-400" : "text-white"}`}>Sob Consulta</span>
                     </div>
                     <p className="text-[11px] text-slate-400 leading-normal font-medium">
                       Solicite uma análise rápida e receba um orçamento personalizado.
@@ -152,7 +152,7 @@ export function Pricing() {
                   <ul className="space-y-3 mb-8">
                     {plan.features.map((feature, fIdx) => (
                       <li key={fIdx} className="flex items-start gap-2 text-[11px] text-slate-300 font-medium">
-                        <Check className={`w-3.5 h-3.5 shrink-0 mt-0.5 ${isPet ? "text-emerald-400" : isCatalog ? "text-[#00D4FF]" : "text-purple-400"}`} />
+                        <Check className={`w-3.5 h-3.5 shrink-0 mt-0.5 ${isPet ? "text-emerald-400" : isCatalog ? "text-[#dfba83]" : "text-purple-400"}`} />
                         <span className="leading-snug">{feature}</span>
                       </li>
                     ))}
@@ -164,7 +164,7 @@ export function Pricing() {
                   asChild
                   className={`w-full h-12 rounded-xl text-xs font-black uppercase tracking-wider active:scale-95 transition-all shadow-md ${
                     isCatalog
-                      ? "bg-gradient-to-r from-[#00D4FF] to-blue-600 text-white shadow-blue-500/20"
+                      ? "bg-gradient-to-r from-[#dfba83] to-[#9A7B56] text-white shadow-amber-500/10"
                       : isPet
                         ? "bg-gradient-to-r from-emerald-500 to-teal-600 text-white shadow-emerald-500/10 hover:opacity-90"
                         : "bg-white/5 border border-white/10 hover:bg-white/10 hover:border-white/20 text-white"
@@ -183,7 +183,7 @@ export function Pricing() {
         <div className="mt-16 text-center border border-white/5 rounded-2.5rem p-6 bg-white/[0.01] max-w-2xl mx-auto flex flex-col sm:flex-row items-center justify-center gap-4 text-slate-400 text-xs font-semibold">
           <Sparkles className="w-5 h-5 text-amber-500 shrink-0" />
           <span>Precisa de um projeto de sistema ou aplicativo sob medida fora das soluções acima?</span>
-          <a href="https://wa.me/5516991551200?text=Olá,%20gostaria%20de%20conversar%20sobre%20um%20projeto%20personalizado%20de%20tecnologia" target="_blank" rel="noopener noreferrer" className="text-[#00D4FF] hover:underline font-black uppercase tracking-wider shrink-0">
+          <a href="https://wa.me/5516991551200?text=Olá,%20gostaria%20de%20conversar%20sobre%20um%20projeto%20personalizado%20de%20tecnologia" target="_blank" rel="noopener noreferrer" className="text-[#dfba83] hover:underline font-black uppercase tracking-wider shrink-0">
             Fale Conosco
           </a>
         </div>

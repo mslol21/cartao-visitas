@@ -121,13 +121,13 @@
 
   .aura-glow {
     @apply absolute inset-0 rounded-full blur-[12px] opacity-60;
-    background: conic-gradient(from 0deg, #00D4FF, #3B82F6, #22D3EE, #00D4FF);
+    background: conic-gradient(from 0deg, #dfba83, #9A7B56, #ebd0aa, #dfba83);
   }
 
   .aura-arc {
     @apply absolute -inset-2 rounded-full border-2 border-transparent opacity-40;
-    border-top-color: #00D4FF;
-    border-right-color: #3B82F6;
+    border-top-color: #dfba83;
+    border-right-color: #9A7B56;
     animation: aura-spin 18s linear infinite;
   }
 

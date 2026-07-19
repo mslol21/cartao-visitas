@@ -22,9 +22,9 @@ export function Logo({ className, variant = 'horizontal', showTagline = true }: 
     >
       <div className="relative shrink-0">
         {/* Glow effect background that reacts to hover */}
-        <div className="absolute -inset-2 bg-gradient-to-r from-[#00D4FF]/25 to-[#0D5B80]/25 blur-xl rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+        <div className="absolute -inset-2 bg-gradient-to-r from-[#dfba83]/25 to-[#9A7B56]/25 blur-xl rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
         
-        <div className="relative z-10 w-10 h-10 md:w-11 md:h-11 rounded-xl bg-slate-900 border border-white/10 flex items-center justify-center p-1.5 shadow-lg group-hover:border-[#00D4FF]/30 transition-colors">
+        <div className="relative z-10 w-10 h-10 md:w-11 md:h-11 rounded-xl bg-slate-900 border border-white/10 flex items-center justify-center p-1.5 shadow-lg group-hover:border-[#dfba83]/30 transition-colors">
           <img 
             src="/logo.png" 
             alt="Konnexy Icon" 
@@ -36,22 +36,22 @@ export function Logo({ className, variant = 'horizontal', showTagline = true }: 
       {!isSmall && (
         <div className="flex flex-col justify-center">
           <div className="flex items-center gap-2">
-            <span className="font-display font-black text-lg md:text-xl tracking-tight text-white leading-none group-hover:text-[#00D4FF] transition-colors">
+            <span className="font-display font-black text-lg md:text-xl tracking-tight text-white leading-none group-hover:text-[#dfba83] transition-colors">
               Konnexy
             </span>
             {(variant as string) === 'pro' && (
-              <span className="text-[8px] bg-gradient-to-r from-[#00D4FF] to-[#0D5B80] text-slate-950 font-black px-1.5 py-0.5 rounded-sm uppercase tracking-wider">
+              <span className="text-[8px] bg-gradient-to-r from-[#dfba83] to-[#9A7B56] text-slate-950 font-black px-1.5 py-0.5 rounded-sm uppercase tracking-wider">
                 PRO
               </span>
             )}
           </div>
           {showTagline && (
             <div className="flex flex-col mt-1.5">
-              <span className="text-[10px] font-black text-transparent bg-clip-text bg-gradient-to-r from-[#00D4FF] via-[#0D5B80] to-[#00D4FF] uppercase tracking-[0.25em] leading-none mb-1 drop-shadow-sm">
+              <span className="text-[10px] font-black text-transparent bg-clip-text bg-gradient-to-r from-[#dfba83] via-[#9A7B56] to-[#dfba83] uppercase tracking-[0.25em] leading-none mb-1 drop-shadow-sm">
                 CONECTA • ORGANIZA • VENDE
               </span>
               <div className="flex items-center gap-1.5">
-                <div className="h-[2px] w-6 bg-gradient-to-r from-[#00D4FF] to-[#0D5B80] rounded-full" />
+                <div className="h-[2px] w-6 bg-gradient-to-r from-[#dfba83] to-[#9A7B56] rounded-full" />
                 <div className="h-[1px] flex-1 bg-white/5" />
               </div>
             </div>

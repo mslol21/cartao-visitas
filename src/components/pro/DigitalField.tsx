@@ -14,7 +14,7 @@ interface DigitalFieldProps {
  * Renderizado dentro do header do cartão PRO como camada de fundo.
  */
 export function DigitalField({
-  accentColor = "#00D4FF",
+  accentColor = "#dfba83",
   active = false,
 }: DigitalFieldProps) {
   if (!active) return null;
