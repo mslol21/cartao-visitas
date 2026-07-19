@@ -252,13 +252,16 @@ export function KonnexyLanding() {
               Tecnologia & Desenvolvimento Premium
             </div>
             
-            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black text-white leading-[1.08] tracking-tight font-display">
-              Tecnologia para transformar a gestão e as vendas do seu negócio.
+            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-black text-white leading-[1.08] tracking-tight font-display">
+              O Brilho da Transformação Digital: Conheça a Nova Identidade da Konnexy
             </h1>
             
-            <p className="text-slate-400 text-sm sm:text-base lg:text-lg leading-relaxed max-w-2xl">
-              A Konnexy desenvolve plataformas digitais personalizadas que ajudam empresas a vender mais, organizar processos e oferecer uma experiência profissional aos seus clientes.
-            </p>
+            <div className="text-slate-400 text-sm sm:text-base leading-relaxed max-w-2xl space-y-4">
+              <p>A evolução é uma constante no universo da tecnologia, mas na Konnexy, acreditamos que evoluir também significa honrar o caminho de quem trabalha para crescer. Nossa nova identidade visual nasce do encontro entre a força da natureza e o infinito das soluções digitais.</p>
+              <p>Nosso mascote, o peixe Koi, é o símbolo milenar da persistência, da superação e da adaptabilidade. Assim como a carpa que nada contra a correnteza para alcançar o topo, os pequenos comércios e indústrias locais enfrentam desafios diários para prosperar. A Konnexy entra nessa jornada como a tecnologia que impulsiona esse movimento, transformando circuitos e linhas de código em caminhos de sucesso.</p>
+              <p>Para guiar essa nova fase, escolhemos as cores da lua cheia. A lua não tem luz própria; ela reflete o sol e ilumina a noite mais escura. Da mesma forma, nosso propósito não é apenas aparecer, mas ser o reflexo do potencial do seu negócio, iluminando sua presença digital através de sites, catálogos, links profissionais e sistemas integrados.</p>
+              <p className="font-bold text-[#EADBB9]">Konnexy: Conectando o seu esforço ao futuro da tecnologia.</p>
+            </div>
 
             <div className="flex flex-wrap items-center gap-4">
               <Button asChild className="h-14 px-8 rounded-2xl text-xs font-black uppercase tracking-widest bg-gradient-to-r from-[#EADBB9] to-[#C5CAD2] hover:from-[#f3e7d3] hover:to-[#d2d6dd] text-white shadow-xl shadow-amber-500/5 transition-all hover:scale-[1.02] active:scale-95 border border-[#EADBB9]/20">
@@ -277,40 +280,16 @@ export function KonnexyLanding() {
           {/* Right Column (Mockups & Floating Stats) */}
           <div className="lg:col-span-5 relative flex justify-center items-center mt-10 lg:mt-0">
             {/* Visual background circles */}
-            <div className="absolute w-[350px] h-[350px] rounded-full border border-white/5 scale-120 animate-pulse pointer-events-none" style={{ animationDuration: '6s' }} />
-
-            {/* Devices Composition Mockup */}
+            {/* Brand Identity Mockup */}
             <div className="relative z-10 w-full max-w-[460px] aspect-[4/3] rounded-[2rem] overflow-hidden border border-white/10 shadow-2xl shadow-black/80">
               <Image 
-                src="/images/landing/hero_devices.png" 
-                alt="Konnexy Multi-device Platform Preview" 
+                src="/images/koi_hero.png" 
+                alt="Konnexy Koi Brand Identity" 
                 fill
                 className="object-cover"
                 priority
               />
             </div>
-
-            {/* Floating Info Cards (Linear style) */}
-            <div className="absolute top-[-20px] left-[-20px] z-20 bg-slate-950/85 backdrop-blur-md border border-white/10 rounded-2xl p-4 shadow-xl flex items-center gap-3 animate-bounce" style={{ animationDuration: '4s' }}>
-              <div className="w-8 h-8 rounded-xl bg-emerald-500/25 flex items-center justify-center text-emerald-400">
-                <CheckCircle2 className="w-5 h-5" />
-              </div>
-              <div>
-                <p className="text-[10px] text-slate-500 uppercase tracking-wider font-bold">Pedidos recebidos</p>
-                <p className="text-xs font-black text-white">Prontos p/ entrega</p>
-              </div>
-            </div>
-
-            <div className="absolute bottom-[20px] right-[-20px] z-20 bg-slate-950/85 backdrop-blur-md border border-white/10 rounded-2xl p-4 shadow-xl flex items-center gap-3 animate-bounce" style={{ animationDuration: '5s', animationDelay: '1s' }}>
-              <div className="w-8 h-8 rounded-xl bg-[#EADBB9]/25 flex items-center justify-center text-[#EADBB9]">
-                <Calendar className="w-5 h-5" />
-              </div>
-              <div>
-                <p className="text-[10px] text-slate-500 uppercase tracking-wider font-bold">Agendamentos</p>
-                <p className="text-xs font-black text-white">Sincronizados na agenda</p>
-              </div>
-            </div>
-
             <div className="absolute bottom-[-30px] left-[30px] z-20 bg-slate-950/85 backdrop-blur-md border border-white/10 rounded-2xl p-3 px-4 shadow-xl flex items-center gap-3">
               <span className="w-2 h-2 rounded-full bg-emerald-400 animate-ping" />
               <span className="text-[11px] font-bold text-slate-350">Clientes Ativos: +1.200</span>
