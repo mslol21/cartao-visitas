@@ -164,16 +164,37 @@ const PRODUTOS = [
       "Monitoramento em Tempo Real",
       "Alertas Automáticos"
     ]
+  },
+  {
+    id: "travel",
+    title: "Konnexy Travel",
+    description: "Plataforma avançada para agências de turismo e pacotes de viagens.",
+    longDesc: "Crie roteiros irresistíveis e venda pacotes de viagem diretamente pelo seu site com integração ao WhatsApp, simplificando a jornada do seu cliente.",
+    icon: Compass,
+    image: "/images/landing/demo_turismo.png",
+    idealFor: "Agências de Turismo, Guias, Ecoturismo, Intercâmbio, Excursões",
+    recursos: [
+      "Busca de Destinos Inteligente",
+      "Filtros por Tipos de Viagem",
+      "Gestão de Roteiros e Pacotes",
+      "Orçamentos via WhatsApp",
+      "Integração com IA",
+      "Design Aventureiro e Premium"
+    ]
   }
 ];
 
 const DEMONSTRACOES = [
+  { name: "Clínica Especializada (Konnexy Sites)", image: "/images/landing/demo_clinica.png" },
+  { name: "Consultoria & Palestras (Konnexy Sites)", image: "/images/landing/demo_miltonbarros.png" },
+  { name: "Biotecnologia e Pesquisa (Konnexy Sites)", image: "/images/landing/demo_lapharmatec.png" },
+  { name: "Agência de Turismo (Konnexy Travel)", image: "/images/landing/demo_turismo.png" },
+  { name: "Vitrine Floral (Konnexy Catálogo)", image: "/images/landing/demo_floricultura.png" },
   { name: "Pet Shop (Konnexy Pet)", image: "/images/landing/demo_petshop.png" },
   { name: "Catálogo Digital (Konnexy Catálogo)", image: "/images/landing/demo_catalogo.png" },
   { name: "Vitrine de Beleza (Konnexy Vitrine)", image: "/images/landing/demo_vitrine.png" },
   { name: "Painel de Produção (Konnexy Fábrica)", image: "/images/landing/demo_fabrica.png" },
-  { name: "Link Profissional (Konnexy Link)", image: "/images/landing/demo_link.png" },
-  { name: "Landing Pages (Konnexy Sites)", image: "/images/landing/demo_landing.png" }
+  { name: "Link Profissional (Konnexy Link)", image: "/images/landing/demo_link.png" }
 ];
 
 const FAQS = [
