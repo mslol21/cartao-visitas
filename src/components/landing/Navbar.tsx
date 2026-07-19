@@ -24,7 +24,7 @@ export function Navbar() {
     { name: 'Produtos', href: '#produtos' },
     { name: 'Segmentos', href: '#segmentos' },
     { name: 'Demonstrações', href: '#demonstracoes' },
-    { name: 'Preços', href: '#precos' },
+    { name: 'Orçamento', href: '#precos' },
     { name: 'Contato', href: '#contato' },
   ];
 

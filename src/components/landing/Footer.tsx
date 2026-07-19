@@ -54,7 +54,7 @@ export function Footer() {
               <ul className="space-y-2.5 text-xs font-semibold text-slate-405">
                 <li><a href="#segmentos" className="hover:text-white transition-colors">Segmentos</a></li>
                 <li><a href="#demonstracoes" className="hover:text-white transition-colors">Demonstrações</a></li>
-                <li><a href="#precos" className="hover:text-white transition-colors">Preços</a></li>
+                <li><a href="#precos" className="hover:text-white transition-colors">Orçamento</a></li>
                 <li><a href="/login" className="hover:text-white transition-colors">Acessar Conta</a></li>
               </ul>
             </div>

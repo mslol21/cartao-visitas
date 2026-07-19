@@ -90,12 +90,12 @@ export function Pricing() {
       <div className="max-w-7xl mx-auto px-6 relative z-10">
         {/* Title */}
         <div className="text-center max-w-3xl mx-auto mb-20">
-          <span className="text-xs font-black uppercase tracking-[0.3em] text-[#00D4FF] mb-3 block">Valores Claros</span>
+          <span className="text-xs font-black uppercase tracking-[0.3em] text-[#00D4FF] mb-3 block">Orçamento Sob Medida</span>
           <h2 className="text-4xl md:text-5xl font-black mb-6 font-display leading-[1.1] text-white">
             Soluções sob medida para o seu negócio crescer.
           </h2>
-          <p className="text-slate-400 text-sm md:text-base leading-relaxed max-w-2xl mx-auto">
-            Sem pegadinhas ou comissões sobre vendas. Escolha a solução ideal para digitalizar a operação da sua empresa hoje mesmo.
+          <p className="text-slate-400 text-sm md:text-base leading-relaxed max-w-2xl mx-auto font-medium">
+            Desenvolvemos plataformas personalizadas e completas. Escolha a solução ideal e fale conosco para receber uma proposta comercial detalhada.
           </p>
         </div>
 
@@ -135,29 +135,15 @@ export function Pricing() {
 
                   <div className="h-[1px] bg-white/5 mb-6" />
 
-                  {/* Pricing Details */}
-                  <div className="space-y-4 mb-8">
-                    <div>
-                      <span className="text-[10px] text-slate-500 uppercase tracking-widest font-black block">Taxa de Implantação</span>
-                      <div className="flex items-baseline gap-1 mt-0.5">
-                        <span className="text-2xl font-black text-white">{plan.setupPrice}</span>
-                        <span className="text-[10px] text-slate-500 uppercase font-black tracking-wider">taxa única</span>
-                      </div>
+                  {/* Pricing Details replaced with Solicitar Orçamento */}
+                  <div className="space-y-2 mb-8 py-3">
+                    <span className="text-[10px] text-slate-550 uppercase tracking-widest font-black block">Investimento</span>
+                    <div className="flex items-baseline gap-1 mt-0.5">
+                      <span className={`text-2xl font-black ${isCatalog ? "text-[#00D4FF]" : isPet ? "text-emerald-400" : "text-white"}`}>Sob Consulta</span>
                     </div>
-
-                    <div>
-                      <span className="text-[10px] text-slate-500 uppercase tracking-widest font-black block">Manutenção Mensal</span>
-                      {plan.monthlyDesc ? (
-                        <div className="flex items-baseline gap-1 mt-0.5">
-                          <span className="text-sm font-black text-slate-350">{plan.monthlyDesc}</span>
-                        </div>
-                      ) : (
-                        <div className="flex items-baseline gap-1 mt-0.5">
-                          <span className={`text-3xl font-black ${isCatalog ? "text-[#00D4FF]" : "text-white"}`}>{plan.monthlyPrice}</span>
-                          <span className="text-[10px] text-slate-500 uppercase font-black tracking-wider">/ mês</span>
-                        </div>
-                      )}
-                    </div>
+                    <p className="text-[11px] text-slate-400 leading-normal font-medium">
+                      Solicite uma análise rápida e receba um orçamento personalizado.
+                    </p>
                   </div>
 
                   <div className="h-[1px] bg-white/5 mb-6" />
@@ -185,7 +171,7 @@ export function Pricing() {
                   }`}
                 >
                   <a href={`https://wa.me/5516991551200?text=${encodeURIComponent(plan.whatsappMsg)}`} target="_blank" rel="noopener noreferrer">
-                    Solicitar Solução
+                    Solicitar Orçamento
                   </a>
                 </Button>
               </div>
