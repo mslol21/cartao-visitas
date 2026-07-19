@@ -121,7 +121,7 @@ const PRODUTOS = [
     description: "Catálogo profissional para quem vende produtos personalizados.",
     longDesc: "Mostre a essência dos seus produtos sob encomenda ou artesanais. Organize o fluxo de pedidos sem complicações.",
     icon: Tag,
-    image: "/images/landing/demo_link.png",
+    image: "/images/landing/demo_vitrine.png",
     idealFor: "Artesanato, Decoração, Artistas plásticos, Papelaria, Produtos personalizados",
     recursos: [
       "Catálogo de Imagens",
@@ -152,6 +152,7 @@ const PRODUTOS = [
 const DEMONSTRACOES = [
   { name: "Pet Shop (Konnexy Pet)", image: "/images/landing/demo_petshop.png" },
   { name: "Catálogo Digital (Konnexy Catálogo)", image: "/images/landing/demo_catalogo.png" },
+  { name: "Vitrine de Beleza (Konnexy Vitrine)", image: "/images/landing/demo_vitrine.png" },
   { name: "Link Profissional (Konnexy Link)", image: "/images/landing/demo_link.png" },
   { name: "Landing Pages (Konnexy Sites)", image: "/images/landing/demo_landing.png" },
   { name: "Painel Administrativo", image: "/images/landing/demo_admin.png" }
