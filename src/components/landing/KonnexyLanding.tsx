@@ -33,6 +33,7 @@ import {
   Compass,
   Building,
   Calendar,
+  Factory,
   X
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -146,6 +147,23 @@ const PRODUTOS = [
       "Google Maps incorporado",
       "Alta performance em celulares"
     ]
+  },
+  {
+    id: "fabrica",
+    title: "Konnexy Fábrica",
+    description: "Gestão completa para linhas de produção.",
+    longDesc: "Acompanhe em tempo real a sua produção, identifique gargalos industriais e tenha controle absoluto sobre cada etapa operacional.",
+    icon: Factory,
+    image: "/images/landing/demo_fabrica.png",
+    idealFor: "Serralherias, Marcenarias, Confecções, Indústrias, Manufaturas",
+    recursos: [
+      "Painel de Operações",
+      "Kanban de Produção",
+      "Controle de Gargalos",
+      "Gestão de Estoque Crítico",
+      "Monitoramento em Tempo Real",
+      "Alertas Automáticos"
+    ]
   }
 ];
 
@@ -153,9 +171,9 @@ const DEMONSTRACOES = [
   { name: "Pet Shop (Konnexy Pet)", image: "/images/landing/demo_petshop.png" },
   { name: "Catálogo Digital (Konnexy Catálogo)", image: "/images/landing/demo_catalogo.png" },
   { name: "Vitrine de Beleza (Konnexy Vitrine)", image: "/images/landing/demo_vitrine.png" },
+  { name: "Painel de Produção (Konnexy Fábrica)", image: "/images/landing/demo_fabrica.png" },
   { name: "Link Profissional (Konnexy Link)", image: "/images/landing/demo_link.png" },
-  { name: "Landing Pages (Konnexy Sites)", image: "/images/landing/demo_landing.png" },
-  { name: "Painel Administrativo", image: "/images/landing/demo_admin.png" }
+  { name: "Landing Pages (Konnexy Sites)", image: "/images/landing/demo_landing.png" }
 ];
 
 const FAQS = [
