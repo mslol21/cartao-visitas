@@ -185,16 +185,16 @@ const PRODUTOS = [
 ];
 
 const DEMONSTRACOES = [
-  { name: "Clínica Especializada (Konnexy Sites)", image: "/images/landing/demo_clinica.png" },
-  { name: "Consultoria & Palestras (Konnexy Sites)", image: "/images/landing/demo_miltonbarros.png" },
-  { name: "Biotecnologia e Pesquisa (Konnexy Sites)", image: "/images/landing/demo_lapharmatec.png" },
-  { name: "Agência de Turismo (Konnexy Travel)", image: "/images/landing/demo_turismo.png" },
-  { name: "Vitrine Floral (Konnexy Catálogo)", image: "/images/landing/demo_floricultura.png" },
-  { name: "Pet Shop (Konnexy Pet)", image: "/images/landing/demo_petshop.png" },
-  { name: "Catálogo Digital (Konnexy Catálogo)", image: "/images/landing/demo_catalogo.png" },
-  { name: "Vitrine de Beleza (Konnexy Vitrine)", image: "/images/landing/demo_vitrine.png" },
-  { name: "Painel de Produção (Konnexy Fábrica)", image: "/images/landing/demo_fabrica.png" },
-  { name: "Link Profissional (Konnexy Link)", image: "/images/landing/demo_link.png" }
+  { name: "Clínica Especializada (Konnexy Sites)", image: "/images/landing/demo_clinica.png", url: "https://www.amartea.com.br/" },
+  { name: "Consultoria & Palestras (Konnexy Sites)", image: "/images/landing/demo_miltonbarros.png", url: "https://miltonbarros.com.br/" },
+  { name: "Biotecnologia e Pesquisa (Konnexy Sites)", image: "/images/landing/demo_lapharmatec.png", url: "https://www.lapharmatec.com.br/" },
+  { name: "Agência de Turismo (Konnexy Travel)", image: "/images/landing/demo_turismo.png", url: "https://konnexy-turismo.vercel.app/" },
+  { name: "Vitrine Floral (Konnexy Catálogo)", image: "/images/landing/demo_floricultura.png", url: "https://konney-floricultura.vercel.app/" },
+  { name: "Pet Shop (Konnexy Pet)", image: "/images/landing/demo_petshop.png", url: "https://konnexypet.vercel.app/" },
+  { name: "Catálogo Digital (Konnexy Catálogo)", image: "/images/landing/demo_catalogo.png", url: null },
+  { name: "Vitrine de Beleza (Konnexy Vitrine)", image: "/images/landing/demo_vitrine.png", url: "https://konnexy-vitrine.vercel.app/" },
+  { name: "Painel de Produção (Konnexy Fábrica)", image: "/images/landing/demo_fabrica.png", url: "https://konnexy-fabrica.vercel.app/" },
+  { name: "Link Profissional (Konnexy Link)", image: "/images/landing/demo_link.png", url: null }
 ];
 
 const FAQS = [
@@ -512,33 +512,40 @@ export function KonnexyLanding() {
 
         {/* Gallery Grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-          {DEMONSTRACOES.map((demo, idx) => (
-            <div 
-              key={idx}
-              className="bg-[#081426]/90 border border-white/5 rounded-[2rem] overflow-hidden group cursor-pointer"
-              onClick={() => setSelectedDemoImage(demo.image)}
-            >
-              <div className="relative aspect-[4/3] w-full overflow-hidden border-b border-white/5">
-                <Image 
-                  src={demo.image} 
-                  alt={demo.name} 
-                  fill
-                  className="object-cover transition-transform duration-500 group-hover:scale-105"
-                />
-                <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                  <span className="text-[10px] font-black uppercase tracking-widest bg-white text-black px-4 py-2 rounded-xl">
-                    Visualizar Detalhes
+          {DEMONSTRACOES.map((demo, idx) => {
+            const Wrapper = demo.url ? 'a' : 'div';
+            const wrapperProps = demo.url 
+              ? { href: demo.url, target: "_blank", rel: "noopener noreferrer" } 
+              : { onClick: () => setSelectedDemoImage(demo.image) };
+              
+            return (
+              <Wrapper 
+                key={idx}
+                className="bg-[#081426]/90 border border-white/5 rounded-[2rem] overflow-hidden group cursor-pointer block"
+                {...wrapperProps}
+              >
+                <div className="relative aspect-[4/3] w-full overflow-hidden border-b border-white/5">
+                  <Image 
+                    src={demo.image} 
+                    alt={demo.name} 
+                    fill
+                    className="object-cover transition-transform duration-500 group-hover:scale-105"
+                  />
+                  <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                    <span className="text-[10px] font-black uppercase tracking-widest bg-white text-black px-4 py-2 rounded-xl flex items-center gap-2">
+                      {demo.url ? "Acessar Site" : "Visualizar Detalhes"} {demo.url && <ChevronRight className="w-3 h-3" />}
+                    </span>
+                  </div>
+                </div>
+                <div className="p-6 flex items-center justify-between">
+                  <span className="text-xs font-black text-white">{demo.name}</span>
+                  <span className="text-[10px] text-[#EADBB9] font-black uppercase tracking-wider flex items-center gap-1">
+                    {demo.url ? "Visitar" : "Ver demonstração"} <ChevronRight className="w-3 h-3" />
                   </span>
                 </div>
-              </div>
-              <div className="p-6 flex items-center justify-between">
-                <span className="text-xs font-black text-white">{demo.name}</span>
-                <span className="text-[10px] text-[#EADBB9] font-black uppercase tracking-wider flex items-center gap-1">
-                  Ver demonstração <ChevronRight className="w-3 h-3" />
-                </span>
-              </div>
-            </div>
-          ))}
+              </Wrapper>
+            );
+          })}
         </div>
       </section>
 
