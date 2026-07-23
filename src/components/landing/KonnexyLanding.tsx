@@ -67,7 +67,7 @@ const PRODUTOS = [
     description: "Plataforma completa para Pet Shops.",
     longDesc: "Gerencie banho e tosa, histórico de pets, vendas de produtos e a comunicação com os tutores de forma unificada.",
     icon: Dog,
-    image: "/images/landing/demo_petshop.png",
+    image: "/pet.png",
     recursos: [
       "Site profissional",
       "Agendamento Online",
@@ -87,7 +87,7 @@ const PRODUTOS = [
     description: "Catálogo Digital integrado ao WhatsApp.",
     longDesc: "Exiba seus produtos online, permita que clientes montem carrinhos e receba pedidos organizados diretamente no WhatsApp.",
     icon: ShoppingCart,
-    image: "/images/landing/demo_catalogo.png",
+    image: "/catalogo.png",
     idealFor: "Adegas, Lojas, Restaurantes, Hamburguerias, Docerias, Delivery",
     recursos: [
       "Exibição de Produtos",
@@ -104,7 +104,7 @@ const PRODUTOS = [
     description: "Página profissional semelhante ao Linktree.",
     longDesc: "Centralize seus canais de atendimento, redes sociais, músicas e portfólio em uma única URL premium de alta conversão.",
     icon: Share2,
-    image: "/images/landing/demo_link.png",
+    image: "/link.png",
     idealFor: "Músicos, Bandas, Influenciadores, Empresas, Criadores de conteúdo",
     recursos: [
       "Redes sociais integradas",
@@ -122,7 +122,7 @@ const PRODUTOS = [
     description: "Catálogo profissional para quem vende produtos personalizados.",
     longDesc: "Mostre a essência dos seus produtos sob encomenda ou artesanais. Organize o fluxo de pedidos sem complicações.",
     icon: Tag,
-    image: "/images/landing/demo_vitrine.png",
+    image: "/vitrine.png",
     idealFor: "Artesanato, Decoração, Artistas plásticos, Papelaria, Produtos personalizados",
     recursos: [
       "Catálogo de Imagens",
@@ -138,7 +138,7 @@ const PRODUTOS = [
     description: "Landing Pages profissionais.",
     longDesc: "Destaque seus serviços e capte mais contatos qualificados através de páginas institucionais velozes e otimizadas.",
     icon: Globe,
-    image: "/images/landing/demo_landing.png",
+    image: "/site.png",
     idealFor: "Clínicas, Escritórios, Construtoras, Empresas, Eventos, Prestadores de serviço",
     recursos: [
       "Otimização SEO avançada",
@@ -154,7 +154,7 @@ const PRODUTOS = [
     description: "Gestão completa para linhas de produção.",
     longDesc: "Acompanhe em tempo real a sua produção, identifique gargalos industriais e tenha controle absoluto sobre cada etapa operacional.",
     icon: Factory,
-    image: "/images/landing/demo_fabrica.png",
+    image: "/fabrica.png",
     idealFor: "Serralherias, Marcenarias, Confecções, Indústrias, Manufaturas",
     recursos: [
       "Painel de Operações",
@@ -171,7 +171,7 @@ const PRODUTOS = [
     description: "Plataforma avançada para agências de turismo e pacotes de viagens.",
     longDesc: "Crie roteiros irresistíveis e venda pacotes de viagem diretamente pelo seu site com integração ao WhatsApp, simplificando a jornada do seu cliente.",
     icon: Compass,
-    image: "/images/landing/demo_turismo.png",
+    image: "/turismo.png",
     idealFor: "Agências de Turismo, Guias, Ecoturismo, Intercâmbio, Excursões",
     recursos: [
       "Busca de Destinos Inteligente",
@@ -188,13 +188,13 @@ const DEMONSTRACOES = [
   { name: "Clínica Especializada (Konnexy Sites)", image: "/images/landing/demo_clinica.png", url: "https://www.amartea.com.br/" },
   { name: "Consultoria & Palestras (Konnexy Sites)", image: "/images/landing/demo_miltonbarros.png", url: "https://miltonbarros.com.br/" },
   { name: "Biotecnologia e Pesquisa (Konnexy Sites)", image: "/images/landing/demo_lapharmatec.png", url: "https://www.lapharmatec.com.br/" },
-  { name: "Agência de Turismo (Konnexy Travel)", image: "/images/landing/demo_turismo.png", url: "https://konnexy-turismo.vercel.app/" },
+  { name: "Agência de Turismo (Konnexy Travel)", image: "/turismo.png", url: "https://konnexy-turismo.vercel.app/" },
   { name: "Vitrine Floral (Konnexy Catálogo)", image: "/images/landing/demo_floricultura.png", url: "https://konney-floricultura.vercel.app/" },
-  { name: "Pet Shop (Konnexy Pet)", image: "/images/landing/demo_petshop.png", url: "https://konnexypet.vercel.app/" },
-  { name: "Catálogo Digital (Konnexy Catálogo)", image: "/images/landing/demo_catalogo.png", url: null },
-  { name: "Vitrine de Beleza (Konnexy Vitrine)", image: "/images/landing/demo_vitrine.png", url: "https://konnexy-vitrine.vercel.app/" },
-  { name: "Painel de Produção (Konnexy Fábrica)", image: "/images/landing/demo_fabrica.png", url: "https://konnexy-fabrica.vercel.app/" },
-  { name: "Link Profissional (Konnexy Link)", image: "/images/landing/demo_link.png", url: null }
+  { name: "Pet Shop (Konnexy Pet)", image: "/pet.png", url: "https://konnexypet.vercel.app/" },
+  { name: "Catálogo Digital (Konnexy Catálogo)", image: "/catalogo.png", url: null },
+  { name: "Vitrine de Beleza (Konnexy Vitrine)", image: "/vitrine.png", url: "https://konnexy-vitrine.vercel.app/" },
+  { name: "Painel de Produção (Konnexy Fábrica)", image: "/fabrica.png", url: "https://konnexy-fabrica.vercel.app/" },
+  { name: "Link Profissional (Konnexy Link)", image: "/link.png", url: null }
 ];
 
 const FAQS = [
