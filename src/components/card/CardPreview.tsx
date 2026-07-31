@@ -1,5 +1,7 @@
 "use client";
 
+import React, { useEffect, useRef, useState } from 'react';
+
 import { 
   MapPin, 
   Globe, 
@@ -128,6 +130,75 @@ interface CardPreviewProps {
   suppressTracking?: boolean;
   isDownloadMode?: boolean;
   forceProPreview?: boolean; // Novo: força a exibição de recursos PRO no editor
+}
+
+function AutoCarousel({ images }: { images: string[] }) {
+  const scrollRef = useRef<HTMLDivElement>(null);
+  const [paused, setPaused] = useState(false);
+
+  useEffect(() => {
+    if (!scrollRef.current || images.length <= 1 || paused) return;
+    
+    const interval = setInterval(() => {
+      if (scrollRef.current) {
+        const { scrollLeft, scrollWidth, clientWidth } = scrollRef.current;
+        const scrollMax = scrollWidth - clientWidth;
+        const itemWidth = 280 + 12; // 280px width + 12px gap
+        
+        let newScrollLeft = scrollLeft + itemWidth;
+        // Volta ao inicio se estiver no final
+        if (newScrollLeft >= scrollMax + itemWidth / 2) {
+          newScrollLeft = 0;
+        }
+        
+        scrollRef.current.scrollTo({
+          left: newScrollLeft,
+          behavior: 'smooth'
+        });
+      }
+    }, 2500);
+
+    return () => clearInterval(interval);
+  }, [images.length, paused]);
+
+  return (
+    <div className="w-full relative group">
+      <div 
+        ref={scrollRef}
+        onMouseEnter={() => setPaused(true)}
+        onMouseLeave={() => setPaused(false)}
+        onTouchStart={() => setPaused(true)}
+        onTouchEnd={() => setPaused(false)}
+        className="flex gap-3 overflow-x-auto pb-4 scroll-hide snap-x snap-mandatory px-1"
+      >
+        {images.map((img, i) => (
+          <motion.div
+            key={i}
+            whileHover={{ scale: 1.02 }}
+            className="relative flex-none w-[280px] aspect-[4/5] rounded-[2rem] overflow-hidden snap-center border border-white/10 shadow-lg bg-slate-100 dark:bg-slate-900"
+          >
+            <Image 
+              src={img} 
+              alt={`Portfolio ${i + 1}`} 
+              fill 
+              className="object-cover"
+              unoptimized
+            />
+            <div className="absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+          </motion.div>
+        ))}
+      </div>
+      
+      {/* Visual indicator for scrollability */}
+      {images.length > 1 && (
+        <div className="absolute -bottom-1 left-1/2 -translate-x-1/2 flex gap-1.5 pointer-events-none">
+          {images.slice(0, 5).map((_, i) => (
+            <div key={i} className="w-1.5 h-1.5 rounded-full bg-primary/20" />
+          ))}
+        </div>
+      )}
+    </div>
+  );
 }
 
 export function CardPreview({ 
@@ -863,35 +934,7 @@ END:VCARD`;
 
         {/* Image Carousel (Scrollable) */}
         {images.length > 0 && (
-          <div className="w-full relative">
-            <div className="flex gap-3 overflow-x-auto pb-4 scroll-hide snap-x snap-mandatory px-1">
-              {images.map((img, i) => (
-                <motion.div
-                  key={i}
-                  whileHover={{ scale: 1.02 }}
-                  className="relative flex-none w-[280px] aspect-[4/5] rounded-[2rem] overflow-hidden snap-center border border-white/10 shadow-lg bg-slate-100 dark:bg-slate-900"
-                >
-                  <Image 
-                    src={img} 
-                    alt={`Portfolio ${i + 1}`} 
-                    fill 
-                    className="object-cover"
-                    unoptimized
-                  />
-                  <div className="absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
-                </motion.div>
-              ))}
-            </div>
-            
-            {/* Visual indicator for scrollability */}
-            {images.length > 1 && (
-              <div className="absolute -bottom-1 left-1/2 -translate-x-1/2 flex gap-1.5">
-                {images.slice(0, 5).map((_, i) => (
-                  <div key={i} className="w-1.5 h-1.5 rounded-full bg-primary/20" />
-                ))}
-              </div>
-            )}
-          </div>
+          <AutoCarousel images={images} />
         )}
       </div>
     );
