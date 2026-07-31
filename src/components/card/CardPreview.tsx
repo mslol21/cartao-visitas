@@ -756,6 +756,44 @@ END:VCARD`;
     );
   };
 
+  const renderSocialLinks = () => {
+    if (validSocialLinks.length === 0) return null;
+    const isDark = isBarbearia || isTech || isAdvogado || isDriver || isMusico || isEsteticaAutomotiva || (data.background_video_url);
+    
+    return (
+      <div className="w-full space-y-4 mb-10 px-1 mt-6">
+        <div className="flex items-center gap-3 mb-2">
+          <span className={cn("text-[10px] font-black uppercase tracking-[0.2em]", isDark ? "text-white/40" : "text-slate-400")}>Redes Sociais</span>
+          <div className={cn("h-[1px] flex-1", isDark ? "bg-white/10" : "bg-slate-200 dark:bg-slate-800")} />
+        </div>
+        <div className="flex flex-wrap justify-center gap-3">
+          {validSocialLinks.map((social, i) => {
+            const Icon = social.icon;
+            return (
+              <motion.a
+                key={i}
+                whileHover={{ scale: 1.1, y: -2 }}
+                whileTap={{ scale: 0.95 }}
+                href={social.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                title={social.label}
+                className={cn(
+                  "w-12 h-12 rounded-full flex items-center justify-center transition-all shadow-md",
+                  isDark 
+                    ? "bg-white/10 backdrop-blur-xl border border-white/20 text-white hover:bg-white/20" 
+                    : "bg-white border border-slate-200/50 hover:border-primary/30 text-slate-800 hover:shadow-lg"
+                )}
+              >
+                <Icon className="w-5 h-5" />
+              </motion.a>
+            );
+          })}
+        </div>
+      </div>
+    );
+  };
+
   const renderOriginalCustomPortfolio = () => {
     if (!isPro || customLinks.length === 0) return null;
     const isDark = isBarbearia || isTech || isAdvogado || isDriver || isEsteticaAutomotiva || (data.background_video_url);
@@ -861,11 +899,12 @@ END:VCARD`;
 
   const renderCustomPortfolio = () => {
     return (
-      <>
+      <div className="px-5 pb-8">
+        {renderSocialLinks()}
         {renderPixArea()}
         {renderVisualPortfolio()}
         {renderOriginalCustomPortfolio()}
-      </>
+      </div>
     );
   };
 
@@ -1111,13 +1150,18 @@ END:VCARD`;
         {data.profession === 'chef_eventos' ? (
           <div className="relative flex flex-col w-full min-h-[600px] z-10 overflow-y-auto scroll-hide">
             <ChefEventosLayout data={data as Profile} isPro={isPro} />
+            {renderCustomPortfolio()}
           </div>
         ) : data.profession === 'montador_moveis' ? (
           <div className="relative flex flex-col w-full min-h-[600px] z-10 overflow-y-auto scroll-hide">
             <MontadorMoveisLayout data={data as Profile} isPro={isPro} />
+            {renderCustomPortfolio()}
           </div>
         ) : isEsteticaAutomotiva ? (
-          <AutomotiveDetailingLayout data={data} isPro={isPro} />
+          <div className="relative flex flex-col w-full min-h-[600px] z-10 overflow-y-auto scroll-hide">
+            <AutomotiveDetailingLayout data={data} isPro={isPro} />
+            {renderCustomPortfolio()}
+          </div>
         ) : (
           <div className="relative flex flex-col w-full min-h-[600px] z-10 overflow-y-auto scroll-hide">
             <StandardProfessionalLayout 
@@ -1126,6 +1170,7 @@ END:VCARD`;
               config={getGlobalConfig(data.profession)}
               profession={data.profession || 'default'}
             />
+            {renderCustomPortfolio()}
           </div>
         )}
       </div>
