@@ -149,6 +149,7 @@ export function ChefEventosLayout({ data, isPro }: ChefEventosLayoutProps) {
     nome: s.nome || s.name || '',
     descricao: s.descricao || s.description || '',
     preco: s.preco || s.price || '',
+    imagem: s.imagem || s.image || '',
   })).filter((s: any) => s.nome);
 
   // Booleans diferenciais

@@ -166,6 +166,7 @@ export function AutomotiveDetailingLayout({ data, isPro }: AutomotiveDetailingLa
     nome: s.nome || s.name || '',
     descricao: s.descricao || s.description || '',
     preco: s.preco || s.price || '',
+    imagem: s.imagem || s.image || '',
   })).filter((s: any) => s.nome);
 
   // Diferenciais booleanos específicos de estética automotiva

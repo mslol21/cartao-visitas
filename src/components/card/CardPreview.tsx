@@ -411,7 +411,7 @@ END:VCARD`;
       whatsappUrl = `https://wa.me/${formattedWhatsapp}?text=${encodeURIComponent(serviceMessage)}`;
     }
 
-    return { name: nome, price: preco, description: descricao, icon: (s as any).icon || 'Sparkles', whatsappUrl };
+    return { name: nome, price: preco, description: descricao, image: (s as any).imagem || (s as any).image || '', icon: (s as any).icon || 'Sparkles', whatsappUrl };
   }).filter(s => s.name?.trim() !== '') || [];
   const activeServicesArr = services.slice(0, activeServicesLimit);
   
