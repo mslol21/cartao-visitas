@@ -56,6 +56,7 @@ export interface Service {
   descricao?: string;
   preco?: string;
   duracao?: string;
+  imagem?: string;
 }
 
 export interface CustomFields {

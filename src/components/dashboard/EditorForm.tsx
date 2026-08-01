@@ -109,6 +109,12 @@ export function EditorForm({ initialData, onSubmit, onChange, isPro = false, can
   const [editServiceName, setEditServiceName] = useState('');
   const [editServicePrice, setEditServicePrice] = useState('');
   const [editServiceDescription, setEditServiceDescription] = useState('');
+  const [newServiceImage, setNewServiceImage] = useState('');
+  const [uploadingServiceImage, setUploadingServiceImage] = useState(false);
+  const [editServiceImage, setEditServiceImage] = useState('');
+  const [uploadingEditServiceImage, setUploadingEditServiceImage] = useState(false);
+  const serviceImageInputRef = useRef<HTMLInputElement>(null);
+  const editServiceImageInputRef = useRef<HTMLInputElement>(null);
   const [usernameStatus, setUsernameStatus] = useState<'idle' | 'checking' | 'available' | 'taken'>('idle');
   const fileInputRef = useRef<HTMLInputElement>(null);
   const videoInputRef = useRef<HTMLInputElement>(null);
@@ -437,7 +443,47 @@ export function EditorForm({ initialData, onSubmit, onChange, isPro = false, can
       toast.error('Erro ao enviar fotos: ' + error.message);
     } finally {
       setUploading(false);
-      if (portfolioImagesInputRef.current) portfolioImagesInputRef.current.value = '';
+  const handleServiceImageUpload = async (e: React.ChangeEvent<HTMLInputElement>, isEdit = false) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    if (isEdit) {
+      setUploadingEditServiceImage(true);
+    } else {
+      setUploadingServiceImage(true);
+    }
+
+    try {
+      const fileExt = file.name.split('.').pop();
+      const fileName = `services/${Math.random().toString(36).substring(2)}.${fileExt}`;
+
+      const { error: uploadError } = await supabase.storage
+        .from('avatars')
+        .upload(fileName, file);
+
+      if (uploadError) throw uploadError;
+
+      const { data: { publicUrl } } = supabase.storage
+        .from('avatars')
+        .getPublicUrl(fileName);
+
+      if (isEdit) {
+        setEditServiceImage(publicUrl);
+      } else {
+        setNewServiceImage(publicUrl);
+      }
+      toast.success('Imagem do serviço carregada!');
+    } catch (error: unknown) {
+      const err = error as Error;
+      toast.error('Erro ao carregar imagem: ' + err.message);
+    } finally {
+      if (isEdit) {
+        setUploadingEditServiceImage(false);
+        if (editServiceImageInputRef.current) editServiceImageInputRef.current.value = '';
+      } else {
+        setUploadingServiceImage(false);
+        if (serviceImageInputRef.current) serviceImageInputRef.current.value = '';
+      }
     }
   };
 
@@ -1444,43 +1490,94 @@ export function EditorForm({ initialData, onSubmit, onChange, isPro = false, can
                 </div>
                 
                 <div className="space-y-3">
-                  <Label className="text-xs opacity-60">Adicione seus serviços principais com valores.</Label>
+                  <Label className="text-xs opacity-60">Adicione seus serviços principais com valores e imagens.</Label>
                   <div className="grid grid-cols-[1fr_100px] gap-2">
                     <Input
                       value={newService}
                       onChange={(e) => setNewService(e.target.value)}
                       placeholder="Nome do Serviço"
-                      className="rounded-2xl h-11"
+                      className="rounded-2xl h-11 text-xs"
                     />
                     <Input
                       value={newServicePrice}
                       onChange={(e) => setNewServicePrice(e.target.value)}
                       placeholder="Preço R$"
-                      className="rounded-2xl h-11"
+                      className="rounded-2xl h-11 text-xs"
                     />
                   </div>
-                  <div className="flex gap-2">
-                    <Input
-                      value={newServiceDescription}
-                      onChange={(e) => setNewServiceDescription(e.target.value)}
-                      placeholder="Descrição opcional"
-                      className="rounded-2xl h-11 flex-1"
-                    />
+                  
+                  <Input
+                    value={newServiceDescription}
+                    onChange={(e) => setNewServiceDescription(e.target.value)}
+                    placeholder="Descrição opcional"
+                    className="rounded-2xl h-11 text-xs"
+                  />
+
+                  <div className="flex gap-2 items-center">
+                    <div className="relative flex-1 flex items-center gap-2">
+                      <Input
+                        value={newServiceImage}
+                        onChange={(e) => setNewServiceImage(e.target.value)}
+                        placeholder="Imagem (URL ex: https://... ou faça upload)"
+                        className="rounded-2xl h-11 text-xs pr-10"
+                      />
+                      <input 
+                        type="file" 
+                        ref={serviceImageInputRef} 
+                        onChange={(e) => handleServiceImageUpload(e, false)} 
+                        accept="image/*" 
+                        className="hidden" 
+                      />
+                      <Button
+                        type="button"
+                        variant="outline"
+                        size="icon"
+                        disabled={uploadingServiceImage}
+                        onClick={() => serviceImageInputRef.current?.click()}
+                        className="h-11 w-11 rounded-xl shrink-0 border-slate-200 dark:border-slate-800"
+                        title="Anexar Imagem por Arquivo"
+                      >
+                        {uploadingServiceImage ? (
+                          <Loader2 className="w-4 h-4 animate-spin text-primary" />
+                        ) : (
+                          <Upload className="w-4 h-4 text-primary" />
+                        )}
+                      </Button>
+                    </div>
+
                     <Button type="button" size="icon" onClick={() => {
                       if (!newService.trim()) return;
                       const srv = formData.servicos || [];
                       handleChange('servicos', [...srv, { 
                         nome: newService.trim(), 
                         preco: newServicePrice.trim(), 
-                        descricao: newServiceDescription.trim() 
+                        descricao: newServiceDescription.trim(),
+                        imagem: newServiceImage.trim() || undefined
                       }]);
                       setNewService('');
                       setNewServicePrice('');
                       setNewServiceDescription('');
-                    }} className="h-11 w-11 rounded-xl">
+                      setNewServiceImage('');
+                    }} className="h-11 w-11 rounded-xl shrink-0">
                       <Plus className="w-5 h-5" />
                     </Button>
                   </div>
+
+                  {newServiceImage && (
+                    <div className="flex items-center gap-2 p-1.5 px-3 rounded-xl bg-white/50 dark:bg-slate-950/50 border border-slate-200 dark:border-slate-800 w-fit">
+                      <img src={newServiceImage} alt="Preview" className="w-7 h-7 rounded-lg object-cover" />
+                      <span className="text-[10px] text-slate-500 max-w-[180px] truncate">{newServiceImage}</span>
+                      <Button 
+                        type="button" 
+                        variant="ghost" 
+                        size="icon" 
+                        onClick={() => setNewServiceImage('')} 
+                        className="h-5 w-5 rounded-md text-red-500 hover:text-red-600 ml-1"
+                      >
+                        <X className="w-3.5 h-3.5" />
+                      </Button>
+                    </div>
+                  )}
 
                   <div className="flex flex-col gap-2.5 mt-4">
                     {(formData.servicos || []).map((s, idx) => {
@@ -1507,13 +1604,45 @@ export function EditorForm({ initialData, onSubmit, onChange, isPro = false, can
                                 className="rounded-xl h-10 text-xs bg-white dark:bg-slate-900"
                               />
                             </div>
-                            <div className="flex gap-2">
-                              <Input
-                                value={editServiceDescription}
-                                onChange={(e) => setEditServiceDescription(e.target.value)}
-                                placeholder="Descrição opcional"
-                                className="rounded-xl h-10 text-xs flex-1 bg-white dark:bg-slate-900"
-                              />
+                            <Input
+                              value={editServiceDescription}
+                              onChange={(e) => setEditServiceDescription(e.target.value)}
+                              placeholder="Descrição opcional"
+                              className="rounded-xl h-10 text-xs bg-white dark:bg-slate-900"
+                            />
+
+                            <div className="flex gap-2 items-center">
+                              <div className="relative flex-1 flex items-center gap-2">
+                                <Input
+                                  value={editServiceImage}
+                                  onChange={(e) => setEditServiceImage(e.target.value)}
+                                  placeholder="Imagem (URL ex: https://... ou upload)"
+                                  className="rounded-xl h-10 text-xs bg-white dark:bg-slate-900 pr-10"
+                                />
+                                <input 
+                                  type="file" 
+                                  ref={editServiceImageInputRef} 
+                                  onChange={(e) => handleServiceImageUpload(e, true)} 
+                                  accept="image/*" 
+                                  className="hidden" 
+                                />
+                                <Button
+                                  type="button"
+                                  variant="outline"
+                                  size="icon"
+                                  disabled={uploadingEditServiceImage}
+                                  onClick={() => editServiceImageInputRef.current?.click()}
+                                  className="h-10 w-10 rounded-xl shrink-0 border-slate-200 dark:border-slate-800"
+                                  title="Anexar Imagem por Arquivo"
+                                >
+                                  {uploadingEditServiceImage ? (
+                                    <Loader2 className="w-4 h-4 animate-spin text-primary" />
+                                  ) : (
+                                    <Upload className="w-4 h-4 text-primary" />
+                                  )}
+                                </Button>
+                              </div>
+
                               <Button 
                                 type="button" 
                                 size="sm" 
@@ -1524,12 +1653,13 @@ export function EditorForm({ initialData, onSubmit, onChange, isPro = false, can
                                     ...srv[idx],
                                     nome: editServiceName.trim(),
                                     preco: editServicePrice.trim(),
-                                    descricao: editServiceDescription.trim()
+                                    descricao: editServiceDescription.trim(),
+                                    imagem: editServiceImage.trim() || undefined
                                   };
                                   handleChange('servicos', srv);
                                   setEditingServiceIdx(null);
                                 }} 
-                                className="h-10 px-3.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs flex items-center gap-1"
+                                className="h-10 px-3.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs flex items-center gap-1 shrink-0"
                               >
                                 <Check className="w-4 h-4" /> Salvar
                               </Button>
@@ -1538,17 +1668,36 @@ export function EditorForm({ initialData, onSubmit, onChange, isPro = false, can
                                 size="sm" 
                                 variant="ghost" 
                                 onClick={() => setEditingServiceIdx(null)} 
-                                className="h-10 px-2 rounded-xl text-slate-400 hover:text-white"
+                                className="h-10 px-2 rounded-xl text-slate-400 hover:text-white shrink-0"
                               >
                                 <X className="w-4 h-4" />
                               </Button>
                             </div>
+
+                            {editServiceImage && (
+                              <div className="flex items-center gap-2 p-1.5 px-3 rounded-xl bg-white/50 dark:bg-slate-950/50 border border-slate-200 dark:border-slate-800 w-fit">
+                                <img src={editServiceImage} alt="Preview" className="w-7 h-7 rounded-lg object-cover" />
+                                <span className="text-[10px] text-slate-500 max-w-[180px] truncate">{editServiceImage}</span>
+                                <Button 
+                                  type="button" 
+                                  variant="ghost" 
+                                  size="icon" 
+                                  onClick={() => setEditServiceImage('')} 
+                                  className="h-5 w-5 rounded-md text-red-500 hover:text-red-600 ml-1"
+                                >
+                                  <X className="w-3.5 h-3.5" />
+                                </Button>
+                              </div>
+                            )}
                           </div>
                         );
                       }
 
                       return (
                         <div key={idx} className="flex items-center gap-3 p-3 bg-white/50 dark:bg-slate-950/50 rounded-2xl border border-slate-200 dark:border-slate-800 group/srv transition-colors hover:border-slate-300 dark:hover:border-slate-700">
+                           {s.imagem ? (
+                             <img src={s.imagem} alt={s.nome} className="w-10 h-10 rounded-xl object-cover border border-slate-200 dark:border-slate-800 flex-none" />
+                           ) : null}
                            <div className="flex-1 min-w-0">
                              <p className="text-xs font-bold uppercase truncate">{s.nome}</p>
                              <div className="flex items-center gap-2 mt-0.5">
@@ -1570,6 +1719,7 @@ export function EditorForm({ initialData, onSubmit, onChange, isPro = false, can
                                  setEditServiceName(s.nome || '');
                                  setEditServicePrice(s.preco || '');
                                  setEditServiceDescription(s.descricao || '');
+                                 setEditServiceImage(s.imagem || '');
                                }} 
                                className="h-8 w-8 text-slate-400 hover:text-primary transition-colors rounded-xl"
                                title="Editar Serviço"

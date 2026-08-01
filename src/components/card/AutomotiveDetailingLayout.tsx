@@ -358,10 +358,16 @@ export function AutomotiveDetailingLayout({ data, isPro }: AutomotiveDetailingLa
                     backdropFilter: hasBgImage ? 'blur(12px)' : undefined
                   }}
                 >
-                  {/* Number */}
-                  <div className="flex-none w-8 h-8 rounded-xl flex items-center justify-center text-[11px] font-black mt-0.5" style={{ background: themeHex + '18', color: themeHex }}>
-                    {String(idx + 1).padStart(2, '0')}
-                  </div>
+                  {/* Number or Image */}
+                  {srv.imagem ? (
+                    <div className="flex-none w-12 h-12 rounded-xl overflow-hidden relative border border-white/10 shrink-0">
+                      <img src={srv.imagem} alt={srv.nome} className="w-full h-full object-cover" />
+                    </div>
+                  ) : (
+                    <div className="flex-none w-8 h-8 rounded-xl flex items-center justify-center text-[11px] font-black mt-0.5" style={{ background: themeHex + '18', color: themeHex }}>
+                      {String(idx + 1).padStart(2, '0')}
+                    </div>
+                  )}
 
                   <div className="flex-1 min-w-0">
                     <h3 className="text-[13px] font-black uppercase tracking-tight leading-tight mb-1" style={{ color: servicosTexto || '#ffffff' }}>{srv.nome}</h3>
