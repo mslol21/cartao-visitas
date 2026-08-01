@@ -66,7 +66,8 @@ import {
   PawPrint,
   Info,
   FileText,
-  Tag
+  Tag,
+  Pencil
 } from 'lucide-react';
 import { 
   Popover,
@@ -104,6 +105,10 @@ export function EditorForm({ initialData, onSubmit, onChange, isPro = false, can
   const [newService, setNewService] = useState('');
   const [newServicePrice, setNewServicePrice] = useState('');
   const [newServiceDescription, setNewServiceDescription] = useState('');
+  const [editingServiceIdx, setEditingServiceIdx] = useState<number | null>(null);
+  const [editServiceName, setEditServiceName] = useState('');
+  const [editServicePrice, setEditServicePrice] = useState('');
+  const [editServiceDescription, setEditServiceDescription] = useState('');
   const [usernameStatus, setUsernameStatus] = useState<'idle' | 'checking' | 'available' | 'taken'>('idle');
   const fileInputRef = useRef<HTMLInputElement>(null);
   const videoInputRef = useRef<HTMLInputElement>(null);
@@ -1477,21 +1482,118 @@ export function EditorForm({ initialData, onSubmit, onChange, isPro = false, can
                     </Button>
                   </div>
 
-                  <div className="flex flex-col gap-2 mt-4">
-                    {(formData.servicos || []).map((s, idx) => (
-                      <div key={idx} className="flex items-center gap-3 p-3 bg-white/50 dark:bg-slate-950/50 rounded-2xl border border-slate-200 dark:border-slate-800 group/srv">
-                         <div className="flex-1 min-w-0">
-                           <p className="text-xs font-bold uppercase">{s.nome}</p>
-                           <p className="text-[10px] text-primary font-black">{s.preco || 'Sob consulta'}</p>
-                         </div>
-                         <Button variant="ghost" size="icon" onClick={() => {
-                           const srv = formData.servicos || [];
-                           handleChange('servicos', srv.filter((_, i) => i !== idx));
-                         }} className="opacity-0 group-hover/srv:opacity-100 transition-opacity">
-                           <X className="w-4 h-4 text-red-500" />
-                         </Button>
-                      </div>
-                    ))}
+                  <div className="flex flex-col gap-2.5 mt-4">
+                    {(formData.servicos || []).map((s, idx) => {
+                      const isEditing = editingServiceIdx === idx;
+                      if (isEditing) {
+                        return (
+                          <div key={idx} className="p-3.5 bg-primary/5 dark:bg-primary/10 rounded-2xl border border-primary/30 space-y-2.5">
+                            <div className="flex items-center justify-between">
+                              <span className="text-[10px] font-black uppercase text-primary tracking-wider flex items-center gap-1.5">
+                                <Pencil className="w-3 h-3" /> Editando Serviço
+                              </span>
+                            </div>
+                            <div className="grid grid-cols-[1fr_100px] gap-2">
+                              <Input
+                                value={editServiceName}
+                                onChange={(e) => setEditServiceName(e.target.value)}
+                                placeholder="Nome do Serviço"
+                                className="rounded-xl h-10 text-xs bg-white dark:bg-slate-900"
+                              />
+                              <Input
+                                value={editServicePrice}
+                                onChange={(e) => setEditServicePrice(e.target.value)}
+                                placeholder="Preço R$"
+                                className="rounded-xl h-10 text-xs bg-white dark:bg-slate-900"
+                              />
+                            </div>
+                            <div className="flex gap-2">
+                              <Input
+                                value={editServiceDescription}
+                                onChange={(e) => setEditServiceDescription(e.target.value)}
+                                placeholder="Descrição opcional"
+                                className="rounded-xl h-10 text-xs flex-1 bg-white dark:bg-slate-900"
+                              />
+                              <Button 
+                                type="button" 
+                                size="sm" 
+                                onClick={() => {
+                                  if (!editServiceName.trim()) return;
+                                  const srv = [...(formData.servicos || [])];
+                                  srv[idx] = {
+                                    ...srv[idx],
+                                    nome: editServiceName.trim(),
+                                    preco: editServicePrice.trim(),
+                                    descricao: editServiceDescription.trim()
+                                  };
+                                  handleChange('servicos', srv);
+                                  setEditingServiceIdx(null);
+                                }} 
+                                className="h-10 px-3.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs flex items-center gap-1"
+                              >
+                                <Check className="w-4 h-4" /> Salvar
+                              </Button>
+                              <Button 
+                                type="button" 
+                                size="sm" 
+                                variant="ghost" 
+                                onClick={() => setEditingServiceIdx(null)} 
+                                className="h-10 px-2 rounded-xl text-slate-400 hover:text-white"
+                              >
+                                <X className="w-4 h-4" />
+                              </Button>
+                            </div>
+                          </div>
+                        );
+                      }
+
+                      return (
+                        <div key={idx} className="flex items-center gap-3 p-3 bg-white/50 dark:bg-slate-950/50 rounded-2xl border border-slate-200 dark:border-slate-800 group/srv transition-colors hover:border-slate-300 dark:hover:border-slate-700">
+                           <div className="flex-1 min-w-0">
+                             <p className="text-xs font-bold uppercase truncate">{s.nome}</p>
+                             <div className="flex items-center gap-2 mt-0.5">
+                               <p className="text-[10px] text-primary font-black">{s.preco || 'Sob consulta'}</p>
+                               {s.descricao && (
+                                 <span className="text-[10px] text-slate-400 dark:text-slate-500 truncate max-w-[200px]">
+                                   • {s.descricao}
+                                 </span>
+                               )}
+                             </div>
+                           </div>
+                           <div className="flex items-center gap-1">
+                             <Button 
+                               type="button"
+                               variant="ghost" 
+                               size="icon" 
+                               onClick={() => {
+                                 setEditingServiceIdx(idx);
+                                 setEditServiceName(s.nome || '');
+                                 setEditServicePrice(s.preco || '');
+                                 setEditServiceDescription(s.descricao || '');
+                               }} 
+                               className="h-8 w-8 text-slate-400 hover:text-primary transition-colors rounded-xl"
+                               title="Editar Serviço"
+                             >
+                               <Pencil className="w-3.5 h-3.5" />
+                             </Button>
+                             <Button 
+                               type="button"
+                               variant="ghost" 
+                               size="icon" 
+                               onClick={() => {
+                                 const srv = formData.servicos || [];
+                                 handleChange('servicos', srv.filter((_, i) => i !== idx));
+                                 if (editingServiceIdx === idx) setEditingServiceIdx(null);
+                               }} 
+                               className="h-8 w-8 text-slate-400 hover:text-red-500 transition-colors rounded-xl"
+                               title="Excluir Serviço"
+                             >
+                               <X className="w-4 h-4 text-red-500" />
+                             </Button>
+                           </div>
+                        </div>
+                      );
+                    })}
                   </div>
                 </div>
               </div>
