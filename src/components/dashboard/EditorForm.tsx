@@ -443,6 +443,10 @@ export function EditorForm({ initialData, onSubmit, onChange, isPro = false, can
       toast.error('Erro ao enviar fotos: ' + error.message);
     } finally {
       setUploading(false);
+      if (portfolioImagesInputRef.current) portfolioImagesInputRef.current.value = '';
+    }
+  };
+
   const handleServiceImageUpload = async (e: React.ChangeEvent<HTMLInputElement>, isEdit = false) => {
     const file = e.target.files?.[0];
     if (!file) return;
