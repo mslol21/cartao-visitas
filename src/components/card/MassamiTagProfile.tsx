@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useEffect, useRef } from 'react';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import {
   Download,
   Share2,
@@ -19,12 +19,17 @@ import {
   Globe,
   ShoppingBag,
   ExternalLink,
-  Award
+  Award,
+  X,
+  ZoomIn
 } from 'lucide-react';
 import Image from 'next/image';
 import { toast } from 'sonner';
 import { NeonGradientCard } from '@/components/tag/NeonGradientCard';
-import { BrandCardBackground } from '@/components/tag/BrandCardBackground';
+import {
+  BrandCardBackground,
+  resolveProfessionBrand
+} from '@/components/tag/BrandCardBackground';
 import {
   ProjectsBottomSheet,
   type CatalogServiceItem
@@ -83,7 +88,135 @@ const MASSAMI_TECH_STACK = [
   { name: 'Google Cloud', category: 'Cloud' }
 ];
 
-function PortfolioAutoCarousel({ images }: { images: string[] }) {
+/**
+ * Mapa de imagens de capa representativas de alta definição para cada profissão/nicho
+ */
+const PROFESSION_COVER_MAP: Record<string, string> = {
+  chef_eventos:
+    'https://cdn.pixabay.com/photo/2017/06/01/18/46/cook-2364221_1280.jpg',
+  pizzaria:
+    'https://cdn.pixabay.com/photo/2017/12/09/08/18/pizza-3007395_1280.jpg',
+  cafeteria:
+    'https://cdn.pixabay.com/photo/2016/02/19/11/40/coffee-shop-1209863_1280.jpg',
+  quentinhas:
+    'https://cdn.pixabay.com/photo/2014/11/05/15/57/salmon-518032_1280.jpg',
+  food: 'https://cdn.pixabay.com/photo/2016/03/05/19/02/hamburger-1238246_1280.jpg',
+  artesao:
+    'https://cdn.pixabay.com/photo/2016/11/19/20/55/packages-1840742_1280.jpg',
+  guia_turistico:
+    'https://cdn.pixabay.com/photo/2016/01/09/18/27/journey-1130732_1280.jpg',
+  area_lazer:
+    'https://cdn.pixabay.com/photo/2017/01/20/00/30/maldives-1996256_1280.jpg',
+  manutencao_automotiva:
+    'https://cdn.pixabay.com/photo/2016/11/23/17/25/automobile-1853939_1280.jpg',
+  mecanico:
+    'https://cdn.pixabay.com/photo/2016/11/23/17/25/automobile-1853939_1280.jpg',
+  vistoria_veicular:
+    'https://cdn.pixabay.com/photo/2014/05/18/19/15/car-347410_1280.jpg',
+  estetica_automotiva:
+    'https://cdn.pixabay.com/photo/2014/05/18/19/15/car-347410_1280.jpg',
+  driver:
+    'https://cdn.pixabay.com/photo/2014/05/18/19/15/car-347410_1280.jpg',
+  frete:
+    'https://cdn.pixabay.com/photo/2016/11/23/17/25/automobile-1853939_1280.jpg',
+  van_escolar:
+    'https://cdn.pixabay.com/photo/2018/12/10/18/31/vw-bus-3867383_1280.jpg',
+  musico:
+    'https://cdn.pixabay.com/photo/2015/05/07/11/02/guitar-756326_1280.jpg',
+  streetup:
+    'https://cdn.pixabay.com/photo/2017/08/01/11/48/woman-2564660_1280.jpg',
+  loja_online:
+    'https://cdn.pixabay.com/photo/2016/11/19/20/55/packages-1840742_1280.jpg',
+  sales:
+    'https://cdn.pixabay.com/photo/2016/11/19/20/55/packages-1840742_1280.jpg',
+  barbearia:
+    'https://cdn.pixabay.com/photo/2020/05/21/11/35/barber-5200384_1280.jpg',
+  manicure:
+    'https://cdn.pixabay.com/photo/2016/11/29/01/34/manicure-1866571_1280.jpg',
+  cabeleireiro:
+    'https://cdn.pixabay.com/photo/2016/10/30/18/35/wellness-1783935_1280.jpg',
+  esteticista:
+    'https://cdn.pixabay.com/photo/2016/10/30/18/35/wellness-1783935_1280.jpg',
+  beauty:
+    'https://cdn.pixabay.com/photo/2016/10/30/18/35/wellness-1783935_1280.jpg',
+  petshop:
+    'https://cdn.pixabay.com/photo/2016/12/13/05/15/puppy-1903313_1280.jpg',
+  veterinario:
+    'https://cdn.pixabay.com/photo/2016/12/13/05/15/puppy-1903313_1280.jpg',
+  personal_trainer:
+    'https://cdn.pixabay.com/photo/2017/08/07/14/02/man-2604149_1280.jpg',
+  psicologo:
+    'https://cdn.pixabay.com/photo/2018/01/31/10/50/wellness-3120815_1280.jpg',
+  health:
+    'https://cdn.pixabay.com/photo/2017/01/29/21/16/nurse-2019420_1280.jpg',
+  advogado:
+    'https://cdn.pixabay.com/photo/2014/12/03/10/30/scales-of-justice-555314_1280.jpg',
+  pedreiro:
+    'https://cdn.pixabay.com/photo/2016/11/23/00/43/brick-wall-1851520_1280.jpg',
+  mestre_de_obras:
+    'https://cdn.pixabay.com/photo/2016/11/23/00/43/brick-wall-1851520_1280.jpg',
+  serralheiro:
+    'https://cdn.pixabay.com/photo/2016/01/19/18/12/welding-1150005_1280.jpg',
+  tech: '/hero-bg.png',
+  tecnico_informatica:
+    'https://cdn.pixabay.com/photo/2016/11/19/22/52/coding-1841550_1280.jpg'
+};
+
+const IGNORED_CUSTOM_FIELD_KEYS = new Set([
+  'portfolio_images',
+  'portfolio_video_url',
+  'imagem_fundo',
+  'link_cardapio',
+  'link_catalogo',
+  'catalogo_pdf',
+  'foto_local',
+  'chave_pix',
+  'tipo_chave_pix',
+  'cor_fundo',
+  'cor_texto',
+  'cor_botoes',
+  'cor_texto_botoes',
+  'cor_bio_fundo',
+  'cor_bio_texto',
+  'cor_servicos_fundo',
+  'cor_servicos_texto',
+  'cor_diferenciais_fundo',
+  'cor_diferenciais_texto',
+  'cor_info_fundo',
+  'cor_info_texto',
+  'cor_qr_fundo',
+  'cor_qr_pontos',
+  'cor_qr_cantos_quadrado',
+  'cor_qr_cantos_ponto',
+  'spotify_link',
+  'youtube_link'
+]);
+
+function formatBooleanFieldLabel(rawLabel: string): string {
+  return rawLabel
+    .replace(/\s*\(.*?\)\s*/g, '')
+    .replace(/\?+$/, '')
+    .replace(/^(Tem|Possui|Inclui)\s+/i, '')
+    .trim();
+}
+
+function isUrlLike(str: string): boolean {
+  const s = str.trim().toLowerCase();
+  return (
+    s.startsWith('http://') ||
+    s.startsWith('https://') ||
+    s.startsWith('/storage/') ||
+    s.includes('supabase.co')
+  );
+}
+
+function PortfolioAutoCarousel({
+  images,
+  onSelectImage
+}: {
+  images: string[];
+  onSelectImage: (img: string) => void;
+}) {
   const scrollRef = useRef<HTMLDivElement>(null);
   const [paused, setPaused] = useState(false);
 
@@ -93,12 +226,12 @@ function PortfolioAutoCarousel({ images }: { images: string[] }) {
       if (scrollRef.current) {
         const { scrollLeft, scrollWidth, clientWidth } = scrollRef.current;
         const scrollMax = scrollWidth - clientWidth;
-        const itemWidth = 220 + 10;
+        const itemWidth = 250 + 12;
         let next = scrollLeft + itemWidth;
         if (next >= scrollMax + itemWidth / 2) next = 0;
         scrollRef.current.scrollTo({ left: next, behavior: 'smooth' });
       }
-    }, 2600);
+    }, 2800);
     return () => clearInterval(interval);
   }, [images.length, paused]);
 
@@ -109,21 +242,31 @@ function PortfolioAutoCarousel({ images }: { images: string[] }) {
       onMouseLeave={() => setPaused(false)}
       onTouchStart={() => setPaused(true)}
       onTouchEnd={() => setPaused(false)}
-      className="flex gap-2.5 overflow-x-auto pb-2 scroll-hide snap-x snap-mandatory"
+      className="flex gap-3 overflow-x-auto pb-2 scroll-hide snap-x snap-mandatory"
     >
       {images.map((img, i) => (
-        <div
+        <button
           key={i}
-          className="relative flex-none w-[210px] aspect-[4/5] rounded-2xl overflow-hidden snap-center border border-zinc-800 bg-zinc-950"
+          type="button"
+          onClick={() => onSelectImage(img)}
+          className="group relative flex-none w-[250px] sm:w-[270px] h-44 rounded-2xl overflow-hidden snap-center border border-zinc-800 bg-zinc-950 focus:outline-none"
         >
-          <Image
+          {/* Fundo suavemente desfocado para preencher proporções variadas */}
+          <img
+            src={img}
+            alt=""
+            aria-hidden="true"
+            className="absolute inset-0 w-full h-full object-cover blur-lg opacity-35 scale-110 pointer-events-none"
+          />
+          <img
             src={img}
             alt={`Portfólio ${i + 1}`}
-            fill
-            unoptimized
-            className="object-cover"
+            className="relative z-10 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
           />
-        </div>
+          <div className="absolute bottom-2 right-2 z-20 flex h-7 w-7 items-center justify-center rounded-full bg-black/60 text-white opacity-0 group-hover:opacity-100 transition-opacity backdrop-blur-sm">
+            <ZoomIn className="h-3.5 w-3.5" />
+          </div>
+        </button>
       ))}
     </div>
   );
@@ -135,11 +278,22 @@ export function MassamiTagProfile({
 }: MassamiTagProfileProps) {
   const isMassami =
     profile?.username?.toLowerCase() === 'massami' ||
-    (!profile?.username && !profile?.name && !profile?.business_name && !isPreview);
+    (!profile?.username &&
+      !profile?.name &&
+      !profile?.business_name &&
+      !isPreview);
 
   const [selectedChipId, setSelectedChipId] = useState<string>('0');
   const [isProjectsSheetOpen, setIsProjectsSheetOpen] = useState<boolean>(false);
   const [pixCopied, setPixCopied] = useState<boolean>(false);
+  const [lightboxImage, setLightboxImage] = useState<string | null>(null);
+
+  const customFieldsObj = (profile?.custom_fields as any) || {};
+  const profKey = (
+    profile?.profession ||
+    profile?.category ||
+    'default'
+  ).toLowerCase();
 
   // Normalização de Serviços do Perfil
   const rawServices = profile?.servicos || profile?.services || [];
@@ -154,6 +308,19 @@ export function MassamiTagProfile({
       };
     })
     .filter((s) => s.name.trim() !== '');
+
+  // Portfólio de Imagens / Vídeo
+  const rawPortfolioImages = customFieldsObj.portfolio_images;
+  const portfolioImages: string[] = (
+    Array.isArray(rawPortfolioImages)
+      ? rawPortfolioImages
+      : typeof rawPortfolioImages === 'string'
+        ? rawPortfolioImages.split(/[,;]/).map((s: string) => s.trim())
+        : []
+  ).filter((s: string) => Boolean(s) && (s.startsWith('http') || s.startsWith('/')));
+
+  const portfolioVideoUrl: string | undefined =
+    customFieldsObj.portfolio_video_url;
 
   // Identidade e Informações do Perfil
   const displayName = isMassami
@@ -185,16 +352,37 @@ export function MassamiTagProfile({
     ? '/images/koi_hero.png'
     : profile?.photo_url || '/images/koi_hero.png';
 
-  const coverUrl = profile?.background_video_url || '/hero-bg.png';
+  // Resolução inteligente da Imagem/Vídeo de Capa Representativa
+  const firstServiceWithImage = normalizedServices.find((s) => s.image)?.image;
+  const customBgImage =
+    typeof customFieldsObj.imagem_fundo === 'string' &&
+    (customFieldsObj.imagem_fundo.startsWith('http') ||
+      customFieldsObj.imagem_fundo.startsWith('/'))
+      ? customFieldsObj.imagem_fundo
+      : undefined;
+
+  const coverUrl = isMassami
+    ? '/hero-bg.png'
+    : profile?.background_video_url ||
+      customBgImage ||
+      portfolioImages[0] ||
+      firstServiceWithImage ||
+      PROFESSION_COVER_MAP[profKey] ||
+      '/hero-bg.png';
+
   const isCoverVideo = /\.(mp4|webm|ogg|mov)$/i.test(coverUrl);
 
   const primaryNeonColor = isMassami
     ? '#38bdf8'
     : profile?.theme_color && profile.theme_color !== '#8c8c8c'
       ? profile.theme_color
-      : '#38bdf8';
+      : '#f59e0b';
 
   const secondaryNeonColor = isMassami ? '#f59e0b' : '#6366f1';
+
+  const professionWatermark = isMassami
+    ? 'code'
+    : resolveProfessionBrand(profKey);
 
   // Contatos e Chaves
   const rawPhone = (
@@ -213,7 +401,7 @@ export function MassamiTagProfile({
     : '';
 
   const pixKey =
-    (profile?.custom_fields as any)?.chave_pix ||
+    customFieldsObj.chave_pix ||
     (isMassami ? 'shitara.massami@gmail.com' : '');
 
   const locationText =
@@ -226,7 +414,7 @@ export function MassamiTagProfile({
 
   const hoursText = profile?.horario_funcionamento || '';
 
-  // Chips Rápidos Dinâmicos (Para Massami ou qualquer conta do sistema)
+  // Chips Rápidos Dinâmicos
   const dynamicChips: ServiceChip[] = isMassami
     ? MASSAMI_CHIPS
     : normalizedServices.length > 0
@@ -277,46 +465,52 @@ export function MassamiTagProfile({
       )}`
     : '#';
 
-  // Diferenciais / Tags de Especialidade para contas gerais
-  const customFieldsObj = (profile?.custom_fields as any) || {};
+  // Diferenciais / Tags de Especialidade Limpos (sem URLs de imagens)
   const activeProfessionBadges: string[] = [];
   if (!isMassami) {
     if (Array.isArray(profile?.diferenciais)) {
-      activeProfessionBadges.push(...profile.diferenciais.filter(Boolean));
-    }
-    if (professionConfig?.customFields) {
-      for (const field of professionConfig.customFields) {
-        const val = customFieldsObj[field.name];
-        if (field.type === 'boolean' && val === true) {
-          activeProfessionBadges.push(
-            field.label.replace(/\s*\(.*?\)\s*/g, '')
-          );
-        } else if (
-          field.type === 'array' &&
-          Array.isArray(val) &&
-          val.length > 0
-        ) {
-          activeProfessionBadges.push(...val.map(String));
+      for (const item of profile.diferenciais) {
+        if (item && typeof item === 'string' && !isUrlLike(item)) {
+          activeProfessionBadges.push(formatBooleanFieldLabel(item));
         }
       }
     }
-    if (profile?.tipo_atendimento) {
+    if (professionConfig?.customFields) {
+      for (const field of professionConfig.customFields) {
+        if (IGNORED_CUSTOM_FIELD_KEYS.has(field.name)) continue;
+        const val = customFieldsObj[field.name];
+        if (field.type === 'boolean' && val === true) {
+          activeProfessionBadges.push(formatBooleanFieldLabel(field.label));
+        } else if (field.type === 'array' && val) {
+          const arr = Array.isArray(val)
+            ? val
+            : typeof val === 'string'
+              ? val.split(/[,;]/)
+              : [];
+          for (const rawItem of arr) {
+            const strItem = String(rawItem).trim();
+            if (strItem && !isUrlLike(strItem)) {
+              activeProfessionBadges.push(strItem);
+            }
+          }
+        } else if (
+          field.type === 'text' &&
+          typeof val === 'string' &&
+          val.trim() &&
+          !isUrlLike(val) &&
+          val.trim().length <= 40
+        ) {
+          activeProfessionBadges.push(val.trim());
+        }
+      }
+    }
+    if (profile?.tipo_atendimento && !isUrlLike(profile.tipo_atendimento)) {
       activeProfessionBadges.push(profile.tipo_atendimento);
     }
   }
 
-  // Portfólio de Imagens / Vídeo
-  const rawPortfolioImages = customFieldsObj.portfolio_images;
-  const portfolioImages: string[] = Array.isArray(rawPortfolioImages)
-    ? rawPortfolioImages
-    : typeof rawPortfolioImages === 'string'
-      ? rawPortfolioImages
-          .split(/[,;]/)
-          .map((s: string) => s.trim())
-          .filter(Boolean)
-      : [];
-  const portfolioVideoUrl: string | undefined =
-    customFieldsObj.portfolio_video_url;
+  // Remover duplicados
+  const uniqueBadges = Array.from(new Set(activeProfessionBadges)).slice(0, 10);
 
   // Links Customizados
   const customLinks = profile?.custom_links || [];
@@ -379,7 +573,7 @@ export function MassamiTagProfile({
     });
   };
 
-  // 2. Partilha Nativa (Web Share API)
+  // 2. Partilha Nativa
   const handleShare = async () => {
     const shareData = {
       title: displayName,
@@ -394,7 +588,7 @@ export function MassamiTagProfile({
       try {
         await navigator.share(shareData);
       } catch {
-        // Cancelado pelo utilizador
+        // Cancelado
       }
     } else {
       try {
@@ -423,7 +617,6 @@ export function MassamiTagProfile({
     }
   };
 
-  // Ação ao escolher serviço ou projeto no sheet
   const handleSelectProjectForContact = (
     itemName: string,
     itemPrice?: string
@@ -439,22 +632,44 @@ export function MassamiTagProfile({
     window.open(targetUrl, '_blank', 'noopener,noreferrer');
   };
 
+  const previewServiceCols =
+    normalizedServices.length === 1
+      ? 'grid-cols-1'
+      : normalizedServices.length === 2
+        ? 'grid-cols-2'
+        : 'grid-cols-3';
+
   return (
     <div
-      className={`w-full ${
+      className={`relative w-full ${
         isPreview ? 'min-h-full' : 'min-h-screen'
-      } bg-black text-zinc-100 flex flex-col justify-between selection:bg-amber-500/30 selection:text-amber-200`}
+      } bg-zinc-950 text-zinc-100 flex flex-col justify-between selection:bg-amber-500/30 selection:text-amber-200 overflow-x-hidden`}
     >
+      {/* Atmosfera Representativa Global ao Fundo da Página */}
+      {!isCoverVideo && (
+        <div
+          aria-hidden="true"
+          className="fixed inset-0 pointer-events-none z-0 overflow-hidden"
+        >
+          <img
+            src={coverUrl}
+            alt=""
+            className="w-full h-full object-cover opacity-20 blur-2xl scale-110"
+          />
+          <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-zinc-950/90 to-zinc-950" />
+        </div>
+      )}
+
       {/* Container Mobile-First Centrado */}
       <main
-        className={`w-full max-w-md mx-auto ${
+        className={`relative z-10 w-full max-w-md mx-auto ${
           isPreview ? 'px-3 pt-8 pb-6' : 'px-4 py-6'
         } flex flex-col gap-4`}
       >
         {/* ====================================================================
          * 1. HEADER HERO (Cartão de Identidade 16:9)
          * ==================================================================== */}
-        <div className="relative w-full rounded-3xl overflow-hidden border border-zinc-800 bg-zinc-950 shadow-2xl">
+        <div className="relative w-full rounded-3xl overflow-hidden border border-zinc-800 bg-zinc-950/90 backdrop-blur-md shadow-2xl">
           {/* Imagem ou Vídeo de Fundo 16:9 com gradiente profundo */}
           <div className="relative aspect-[16/9] w-full overflow-hidden bg-zinc-900">
             {isCoverVideo ? (
@@ -464,23 +679,21 @@ export function MassamiTagProfile({
                 muted
                 loop
                 playsInline
-                className="absolute inset-0 w-full h-full object-cover opacity-50"
+                className="absolute inset-0 w-full h-full object-cover opacity-65"
               />
             ) : (
-              <Image
+              <img
                 src={coverUrl}
                 alt={displayName}
-                fill
-                priority
-                unoptimized={!coverUrl.startsWith('/')}
-                className="object-cover opacity-45 scale-105"
+                className="absolute inset-0 w-full h-full object-cover object-center opacity-65 transition-transform duration-700 hover:scale-105"
               />
             )}
-            <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-black/60 to-zinc-950/95" />
+            <div className="absolute inset-0 bg-gradient-to-b from-black/25 via-black/55 to-zinc-950/95" />
 
             {/* Ações Rápidas no Topo */}
             <div className="absolute top-3.5 right-3.5 flex items-center gap-2 z-20">
               <button
+                type="button"
                 onClick={handleDownloadVCard}
                 title="Salvar Contato na Agenda (.vcf)"
                 aria-label="Salvar Contato na Agenda"
@@ -490,6 +703,7 @@ export function MassamiTagProfile({
               </button>
 
               <button
+                type="button"
                 onClick={handleShare}
                 title="Compartilhar Perfil"
                 aria-label="Compartilhar Perfil"
@@ -501,22 +715,22 @@ export function MassamiTagProfile({
           </div>
 
           {/* Conteúdo do Hero Identidade */}
-          <div className="relative -mt-16 px-5 pb-6 flex flex-col items-center text-center z-10">
+          <div className="relative -mt-14 px-5 pb-6 flex flex-col items-center text-center z-10">
             {/* Avatar Circular com Anel Néon */}
-            <div className="relative mb-3.5 group">
+            <button
+              type="button"
+              onClick={() => setLightboxImage(avatarSrc)}
+              className="relative mb-3.5 group focus:outline-none"
+            >
               <div
                 aria-hidden="true"
                 className="absolute -inset-1 rounded-full bg-gradient-to-tr from-amber-500 via-sky-400 to-indigo-500 opacity-75 blur-sm group-hover:opacity-100 transition duration-500"
               />
-              <div className="relative h-24 w-24 rounded-full overflow-hidden border-2 border-zinc-900 bg-zinc-950 shadow-2xl p-0.5">
-                <Image
+              <div className="relative h-24 w-24 rounded-full overflow-hidden border-2 border-zinc-900 bg-zinc-950 shadow-2xl">
+                <img
                   src={avatarSrc}
                   alt={displayName}
-                  fill
-                  sizes="96px"
-                  priority
-                  unoptimized={!avatarSrc.startsWith('/')}
-                  className="object-cover rounded-full"
+                  className="w-full h-full object-cover object-center rounded-full"
                 />
               </div>
 
@@ -525,7 +739,7 @@ export function MassamiTagProfile({
                 title="Perfil Ativo"
                 className="absolute bottom-1 right-1 h-4 w-4 rounded-full bg-emerald-500 border-2 border-zinc-950 shadow-[0_0_8px_rgba(16,185,129,0.8)]"
               />
-            </div>
+            </button>
 
             {/* Badge Superior */}
             <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-zinc-900/90 border border-zinc-800 text-[10px] font-bold tracking-widest uppercase text-amber-400/90 mb-2 shadow-inner max-w-full truncate">
@@ -543,19 +757,19 @@ export function MassamiTagProfile({
               {bioText}
             </p>
 
-            {/* Localização e Horário (se preenchidos) */}
+            {/* Localização e Horário */}
             {(locationText || hoursText) && (
               <div className="mt-3.5 flex flex-wrap items-center justify-center gap-2">
                 {locationText && (
-                  <span className="inline-flex items-center gap-1 text-[11px] text-zinc-400 bg-zinc-900/90 border border-zinc-800/90 px-2.5 py-1 rounded-full">
+                  <span className="inline-flex items-center gap-1 text-[11px] text-zinc-300 bg-zinc-900/90 border border-zinc-800/90 px-2.5 py-1 rounded-full">
                     <MapPin className="h-3 w-3 text-amber-400 shrink-0" />
-                    <span className="truncate max-w-[200px]">{locationText}</span>
+                    <span className="truncate max-w-[220px]">{locationText}</span>
                   </span>
                 )}
                 {hoursText && (
-                  <span className="inline-flex items-center gap-1 text-[11px] text-zinc-400 bg-zinc-900/90 border border-zinc-800/90 px-2.5 py-1 rounded-full">
+                  <span className="inline-flex items-center gap-1 text-[11px] text-zinc-300 bg-zinc-900/90 border border-zinc-800/90 px-2.5 py-1 rounded-full">
                     <Clock className="h-3 w-3 text-sky-400 shrink-0" />
-                    <span className="truncate max-w-[200px]">{hoursText}</span>
+                    <span className="truncate max-w-[220px]">{hoursText}</span>
                   </span>
                 )}
               </div>
@@ -576,7 +790,7 @@ export function MassamiTagProfile({
           innerClassName="relative overflow-hidden p-5 bg-zinc-900/90 border border-zinc-800/80 backdrop-blur-md"
         >
           <BrandCardBackground
-            brand={isMassami ? 'code' : 'konnexy'}
+            brand={professionWatermark}
             size={140}
             opacity={0.14}
           />
@@ -614,27 +828,29 @@ export function MassamiTagProfile({
                     key={chip.id}
                     type="button"
                     onClick={() => setSelectedChipId(chip.id)}
-                    className={`relative flex flex-col items-start text-left p-3 rounded-xl border text-xs font-semibold transition-all duration-200 ${
+                    className={`relative flex flex-col justify-between items-start text-left p-3 rounded-xl border text-xs font-semibold transition-all duration-200 min-h-[68px] ${
                       isSelected
                         ? 'bg-zinc-800/95 border-sky-400/80 text-white shadow-[0_0_15px_rgba(56,189,248,0.25)] ring-1 ring-sky-400/40'
                         : 'bg-zinc-950/60 border-zinc-800/90 text-zinc-300 hover:bg-zinc-800/50 hover:text-white hover:border-zinc-700'
                     }`}
                   >
-                    <div className="flex items-center justify-between w-full mb-1">
-                      <span className="text-[10px] font-mono text-zinc-500 truncate max-w-[85%]">
-                        {chip.badge ? (
-                          <span className="text-[9px] uppercase tracking-wider font-bold text-amber-400 bg-amber-400/10 border border-amber-400/20 px-1.5 py-0.2 rounded">
-                            {chip.badge}
-                          </span>
-                        ) : (
-                          '•'
-                        )}
-                      </span>
+                    <div className="flex items-center justify-between w-full gap-1 mb-1">
+                      {chip.badge ? (
+                        <span className="inline-block max-w-[82%] truncate text-[9px] uppercase tracking-wider font-bold text-amber-400 bg-amber-400/10 border border-amber-400/20 px-1.5 py-0.5 rounded">
+                          {chip.badge}
+                        </span>
+                      ) : (
+                        <span className="text-[10px] font-mono text-zinc-500">
+                          •
+                        </span>
+                      )}
                       {isSelected && (
                         <Check className="h-3.5 w-3.5 text-sky-400 shrink-0" />
                       )}
                     </div>
-                    <span className="leading-tight line-clamp-2">{chip.label}</span>
+                    <span className="leading-snug line-clamp-2 w-full">
+                      {chip.label}
+                    </span>
                   </button>
                 );
               })}
@@ -775,10 +991,10 @@ export function MassamiTagProfile({
                     </p>
                   </div>
 
-                  {/* Micro-preview */}
+                  {/* Micro-preview responsivo */}
                   {isMassami ? (
                     <div className="grid grid-cols-3 gap-2 pt-1 border-t border-zinc-800/80">
-                      <div className="rounded-lg bg-zinc-950/70 border border-zinc-800 p-2">
+                      <div className="rounded-lg bg-zinc-950/70 border border-zinc-800 p-2.5">
                         <p className="text-[11px] font-bold text-zinc-200 truncate">
                           Konnexy Tag
                         </p>
@@ -786,7 +1002,7 @@ export function MassamiTagProfile({
                           SaaS Phygital
                         </p>
                       </div>
-                      <div className="rounded-lg bg-zinc-950/70 border border-zinc-800 p-2">
+                      <div className="rounded-lg bg-zinc-950/70 border border-zinc-800 p-2.5">
                         <p className="text-[11px] font-bold text-zinc-200 truncate">
                           Vitriniza
                         </p>
@@ -794,7 +1010,7 @@ export function MassamiTagProfile({
                           Marketplace
                         </p>
                       </div>
-                      <div className="rounded-lg bg-zinc-950/70 border border-zinc-800 p-2">
+                      <div className="rounded-lg bg-zinc-950/70 border border-zinc-800 p-2.5">
                         <p className="text-[11px] font-bold text-zinc-200 truncate">
                           Agenda &amp; Pet
                         </p>
@@ -804,27 +1020,27 @@ export function MassamiTagProfile({
                       </div>
                     </div>
                   ) : (
-                    <div className="grid grid-cols-3 gap-2 pt-1 border-t border-zinc-800/80">
+                    <div
+                      className={`grid ${previewServiceCols} gap-2.5 pt-2 border-t border-zinc-800/80`}
+                    >
                       {normalizedServices.slice(0, 3).map((srv, idx) => (
                         <div
                           key={idx}
-                          className="rounded-lg bg-zinc-950/70 border border-zinc-800 p-2 flex flex-col justify-between"
+                          className="rounded-xl bg-zinc-950/80 border border-zinc-800/90 p-2.5 flex flex-col justify-between gap-1.5"
                         >
                           {srv.image && (
-                            <div className="relative w-full h-12 rounded-md overflow-hidden mb-1.5 bg-zinc-900">
-                              <Image
+                            <div className="relative w-full h-20 rounded-lg overflow-hidden bg-zinc-900 border border-zinc-800/60">
+                              <img
                                 src={srv.image}
                                 alt={srv.name}
-                                fill
-                                unoptimized
-                                className="object-cover"
+                                className="w-full h-full object-cover object-center"
                               />
                             </div>
                           )}
-                          <p className="text-[11px] font-bold text-zinc-200 truncate">
+                          <p className="text-[11px] font-bold text-zinc-100 leading-snug line-clamp-2">
                             {srv.name}
                           </p>
-                          <p className="text-[9px] text-amber-400/90 font-semibold truncate">
+                          <p className="text-[10px] text-amber-400 font-semibold truncate">
                             {srv.price || 'Consultar'}
                           </p>
                         </div>
@@ -837,7 +1053,7 @@ export function MassamiTagProfile({
           )}
 
           {/* =================================================================
-           * Cartão Galeria / Vitrine Visual (Carrossel Automático se houver fotos/vídeo)
+           * Cartão Galeria / Vitrine Visual (Carrossel Automático + Lightbox)
            * ================================================================= */}
           {(portfolioImages.length > 0 || portfolioVideoUrl) && (
             <div className="col-span-2 rounded-2xl border border-zinc-800 bg-zinc-900/80 p-4 backdrop-blur-md space-y-3">
@@ -846,6 +1062,11 @@ export function MassamiTagProfile({
                   <Sparkles className="h-3.5 w-3.5 text-amber-400" />
                   Vitrine &amp; Portfólio
                 </span>
+                {portfolioImages.length > 0 && (
+                  <span className="text-[10px] text-zinc-500">
+                    Toque na foto para ampliar
+                  </span>
+                )}
               </div>
 
               {portfolioVideoUrl && (
@@ -860,7 +1081,10 @@ export function MassamiTagProfile({
               )}
 
               {portfolioImages.length > 0 && (
-                <PortfolioAutoCarousel images={portfolioImages} />
+                <PortfolioAutoCarousel
+                  images={portfolioImages}
+                  onSelectImage={(img) => setLightboxImage(img)}
+                />
               )}
             </div>
           )}
@@ -868,13 +1092,17 @@ export function MassamiTagProfile({
           {/* =================================================================
            * Cartão Tecnologias / Diferenciais & Especialidades
            * ================================================================= */}
-          {(isMassami || activeProfessionBadges.length > 0) && (
+          {(isMassami || uniqueBadges.length > 0) && (
             <div
               className={`${
                 pixKey ? 'col-span-1' : 'col-span-2'
               } rounded-2xl border border-zinc-800 bg-zinc-900/80 p-4 backdrop-blur-md relative overflow-hidden flex flex-col justify-between`}
             >
-              <BrandCardBackground brand="code" size={90} opacity={0.16} />
+              <BrandCardBackground
+                brand={professionWatermark}
+                size={90}
+                opacity={0.16}
+              />
 
               <div className="relative z-10">
                 <div className="flex items-center gap-1.5 mb-2">
@@ -899,17 +1127,18 @@ export function MassamiTagProfile({
                   ? MASSAMI_TECH_STACK.map((tech) => (
                       <span
                         key={tech.name}
-                        className="inline-flex items-center text-[10px] font-mono px-2 py-0.5 rounded-md bg-zinc-950/80 border border-zinc-800 text-zinc-300 font-medium"
+                        className="inline-flex items-center text-[10px] font-mono px-2.5 py-1 rounded-md bg-zinc-950/80 border border-zinc-800 text-zinc-300 font-medium"
                       >
                         {tech.name}
                       </span>
                     ))
-                  : activeProfessionBadges.slice(0, 8).map((badge, idx) => (
+                  : uniqueBadges.map((badge, idx) => (
                       <span
                         key={idx}
-                        className="inline-flex items-center text-[10px] font-medium px-2 py-0.5 rounded-md bg-zinc-950/80 border border-zinc-800 text-zinc-200"
+                        className="inline-flex items-center text-[11px] font-medium px-2.5 py-1 rounded-lg bg-zinc-950/85 border border-zinc-800 text-zinc-200"
                       >
-                        ✓ {badge}
+                        <span className="text-emerald-400 mr-1.5">✓</span>
+                        {badge}
                       </span>
                     ))}
               </div>
@@ -923,7 +1152,7 @@ export function MassamiTagProfile({
             <motion.div
               whileHover={{ y: -2 }}
               className={`${
-                isMassami || activeProfessionBadges.length > 0
+                isMassami || uniqueBadges.length > 0
                   ? 'col-span-1'
                   : 'col-span-2'
               } rounded-2xl border border-zinc-800 bg-zinc-900/80 p-4 backdrop-blur-md relative overflow-hidden flex flex-col justify-between`}
@@ -1211,6 +1440,33 @@ export function MassamiTagProfile({
           </p>
         </footer>
       </main>
+
+      {/* Lightbox para Ampliar Fotos em Proporção Original */}
+      <AnimatePresence>
+        {lightboxImage && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            onClick={() => setLightboxImage(null)}
+            className="fixed inset-0 z-50 flex items-center justify-center bg-black/90 backdrop-blur-md p-4"
+          >
+            <button
+              type="button"
+              onClick={() => setLightboxImage(null)}
+              aria-label="Fechar imagem"
+              className="absolute top-4 right-4 flex h-10 w-10 items-center justify-center rounded-full bg-zinc-800/80 text-zinc-200 hover:text-white"
+            >
+              <X className="h-5 w-5" />
+            </button>
+            <img
+              src={lightboxImage}
+              alt="Visualização ampliada"
+              className="max-h-[85vh] max-w-[92vw] object-contain rounded-2xl shadow-2xl border border-zinc-800"
+            />
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       {/* Gaveta / Bottom Sheet de Catálogo & Projetos */}
       <ProjectsBottomSheet

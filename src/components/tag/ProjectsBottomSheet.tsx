@@ -204,13 +204,18 @@ export function ProjectsBottomSheet({
                       className="rounded-2xl border border-zinc-800/90 bg-zinc-900/70 p-4 backdrop-blur-sm transition-all hover:border-zinc-700 flex flex-col gap-3"
                     >
                       {service.image && (
-                        <div className="relative w-full aspect-[16/10] rounded-xl overflow-hidden border border-zinc-800 bg-zinc-950">
-                          <Image
+                        <div className="relative w-full h-44 rounded-xl overflow-hidden border border-zinc-800 bg-zinc-950 flex items-center justify-center">
+                          {/* Fundo desfocado adaptativo para preencher qualquer proporção */}
+                          <img
+                            src={service.image}
+                            alt=""
+                            aria-hidden="true"
+                            className="absolute inset-0 w-full h-full object-cover blur-xl opacity-40 scale-110 pointer-events-none"
+                          />
+                          <img
                             src={service.image}
                             alt={service.name}
-                            fill
-                            unoptimized
-                            className="object-cover"
+                            className="relative z-10 max-h-full max-w-full object-contain rounded-lg"
                           />
                         </div>
                       )}

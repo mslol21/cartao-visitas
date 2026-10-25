@@ -10,13 +10,74 @@ export type BrandWatermarkType =
   | 'instagram'
   | 'linkedin'
   | 'github'
-  | 'google';
+  | 'google'
+  | 'food'
+  | 'auto'
+  | 'travel'
+  | 'craft'
+  | 'music'
+  | 'beauty'
+  | 'services';
 
 interface BrandCardBackgroundProps {
   brand: BrandWatermarkType;
   align?: 'right' | 'center' | 'top-right';
   size?: number;
   opacity?: number;
+}
+
+/**
+ * Resolve automaticamente a marca d'água temática para a profissão do perfil
+ */
+export function resolveProfessionBrand(profession?: string | null): BrandWatermarkType {
+  const p = (profession || '').toLowerCase();
+  if (
+    ['chef_eventos', 'pizzaria', 'cafeteria', 'quentinhas', 'food'].includes(p)
+  ) {
+    return 'food';
+  }
+  if (
+    [
+      'manutencao_automotiva',
+      'vistoria_veicular',
+      'estetica_automotiva',
+      'mecanico',
+      'driver',
+      'frete',
+      'van_escolar'
+    ].includes(p)
+  ) {
+    return 'auto';
+  }
+  if (['guia_turistico', 'area_lazer'].includes(p)) {
+    return 'travel';
+  }
+  if (['artesao', 'designer', 'fotografo', 'streetup', 'loja_online'].includes(p)) {
+    return 'craft';
+  }
+  if (['musico'].includes(p)) {
+    return 'music';
+  }
+  if (
+    [
+      'barbearia',
+      'manicure',
+      'cabeleireiro',
+      'esteticista',
+      'beauty',
+      'health',
+      'psicologo',
+      'personal_trainer',
+      'petshop',
+      'veterinario'
+    ].includes(p)
+  ) {
+    return 'beauty';
+  }
+  if (['tech', 'tecnico_informatica', 'assistencia_celular'].includes(p)) {
+    return 'code';
+  }
+  return 'services';
 }
 
 /**
@@ -44,7 +105,21 @@ export function BrandCardBackground({
     github:
       'radial-gradient(circle at 85% 40%, rgba(255,255,255,0.18), rgba(161,161,170,0.08) 65%, transparent 100%)',
     google:
-      'radial-gradient(circle at 85% 20%, rgba(66,133,244,0.22), rgba(234,67,53,0.16) 38%, rgba(251,188,5,0.14) 68%, rgba(52,168,83,0.12) 100%)'
+      'radial-gradient(circle at 85% 20%, rgba(66,133,244,0.22), rgba(234,67,53,0.16) 38%, rgba(251,188,5,0.14) 68%, rgba(52,168,83,0.12) 100%)',
+    food:
+      'radial-gradient(circle at 88% 35%, rgba(245,158,11,0.26), rgba(234,88,12,0.16) 55%, transparent 100%)',
+    auto:
+      'radial-gradient(circle at 88% 35%, rgba(59,130,246,0.24), rgba(245,158,11,0.14) 55%, transparent 100%)',
+    travel:
+      'radial-gradient(circle at 88% 35%, rgba(16,185,129,0.25), rgba(14,165,233,0.15) 55%, transparent 100%)',
+    craft:
+      'radial-gradient(circle at 88% 35%, rgba(217,119,6,0.25), rgba(236,72,153,0.14) 55%, transparent 100%)',
+    music:
+      'radial-gradient(circle at 88% 35%, rgba(168,85,247,0.26), rgba(59,130,246,0.15) 55%, transparent 100%)',
+    beauty:
+      'radial-gradient(circle at 88% 35%, rgba(244,63,94,0.24), rgba(168,85,247,0.14) 55%, transparent 100%)',
+    services:
+      'radial-gradient(circle at 88% 35%, rgba(245,158,11,0.22), rgba(99,102,241,0.14) 60%, transparent 100%)'
   };
 
   const posStyle: React.CSSProperties =
@@ -138,6 +213,58 @@ export function BrandCardBackground({
             <path d="M36 34V86M36 60L68 34M50 49L70 86" stroke="#FFFFFF" strokeWidth="9" strokeLinecap="round" strokeLinejoin="round" />
             <path d="M80 46C86 53 86 67 80 74" stroke="url(#brandKonnexyGrad)" strokeWidth="7" strokeLinecap="round" />
             <path d="M91 37C101 49 101 71 91 83" stroke="url(#brandKonnexyGrad)" strokeWidth="7" strokeLinecap="round" strokeOpacity="0.75" />
+          </svg>
+        )}
+
+        {brand === 'food' && (
+          <svg viewBox="0 0 48 48" className="h-full w-full" fill="none" stroke="#F59E0B" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M16 6v14a6 6 0 0 0 12 0V6" />
+            <line x1="22" y1="6" x2="22" y2="42" />
+            <path d="M36 6c-3 0-6 4-6 10v10h6v16" />
+          </svg>
+        )}
+
+        {brand === 'auto' && (
+          <svg viewBox="0 0 48 48" className="h-full w-full" fill="none" stroke="#38BDF8" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M10 28l4-10h20l4 10" />
+            <rect x="6" y="28" width="36" height="10" rx="3" />
+            <circle cx="14" cy="38" r="3" />
+            <circle cx="34" cy="38" r="3" />
+          </svg>
+        )}
+
+        {brand === 'travel' && (
+          <svg viewBox="0 0 48 48" className="h-full w-full" fill="none" stroke="#10B981" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
+            <circle cx="24" cy="24" r="18" />
+            <polygon points="30 18 21 21 18 30 27 27 30 18" />
+          </svg>
+        )}
+
+        {brand === 'craft' && (
+          <svg viewBox="0 0 48 48" className="h-full w-full" fill="none" stroke="#F59E0B" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M24 6l4.5 9.5L39 17l-7.5 7.3 1.8 10.4L24 29.8l-9.3 4.9 1.8-10.4L9 17l10.5-1.5L24 6z" />
+          </svg>
+        )}
+
+        {brand === 'music' && (
+          <svg viewBox="0 0 48 48" className="h-full w-full" fill="none" stroke="#A855F7" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M18 36V12l22-4v24" />
+            <circle cx="13" cy="36" r="5" />
+            <circle cx="35" cy="32" r="5" />
+          </svg>
+        )}
+
+        {brand === 'beauty' && (
+          <svg viewBox="0 0 48 48" className="h-full w-full" fill="none" stroke="#F43F5E" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M24 6l3 9 9 3-9 3-3 9-3-9-9-3 9-3 3-9z" />
+            <path d="M36 30l1.5 4.5L42 36l-4.5 1.5L36 42l-1.5-4.5L30 36l4.5-1.5L36 30z" />
+          </svg>
+        )}
+
+        {brand === 'services' && (
+          <svg viewBox="0 0 48 48" className="h-full w-full" fill="none" stroke="#F59E0B" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
+            <circle cx="24" cy="20" r="10" />
+            <path d="M17 28l-3 14 10-5 10 5-3-14" />
           </svg>
         )}
 
