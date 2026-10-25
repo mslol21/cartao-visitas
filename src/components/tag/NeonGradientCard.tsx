@@ -20,17 +20,17 @@ export interface NeonGradientCardProps extends React.HTMLAttributes<HTMLDivEleme
 
 /**
  * NeonGradientCard
- * Renderiza borda e aura neon animadas com isolamento de stacking context,
- * garantindo que o conteúdo interno esteja sempre 100% visível e nítido.
+ * Renderiza borda e aura neon intensas com isolamento de stacking context,
+ * garantindo que a borda luminosa envolva cada quadro com nitidez.
  */
 export const NeonGradientCard: React.FC<NeonGradientCardProps> = ({
   className,
   innerClassName,
   children,
-  borderSize = 1.5,
-  borderRadius = 24,
+  borderSize = 2,
+  borderRadius = 22,
   neonColors = {
-    firstColor: '#38bdf8',
+    firstColor: '#f59e0b',
     secondColor: '#6366f1'
   },
   style,
@@ -48,9 +48,10 @@ export const NeonGradientCard: React.FC<NeonGradientCardProps> = ({
         padding: `${borderSize}px`,
         backgroundImage: `linear-gradient(135deg, ${neonColors.firstColor}, ${neonColors.secondColor}, ${neonColors.firstColor})`,
         backgroundSize: '200% 200%',
+        boxShadow: `0 0 22px -4px ${neonColors.firstColor}55, 0 0 22px -4px ${neonColors.secondColor}55`,
         ...style
       }}
-      className={cn('relative w-full shadow-lg transition-all duration-300', className)}
+      className={cn('relative w-full transition-all duration-300', className)}
       {...props}
     >
       {/* Aura Neon Difusa Externa */}
@@ -58,20 +59,20 @@ export const NeonGradientCard: React.FC<NeonGradientCardProps> = ({
         aria-hidden="true"
         style={{
           position: 'absolute',
-          top: 0,
-          right: 0,
-          bottom: 0,
-          left: 0,
+          top: -2,
+          right: -2,
+          bottom: -2,
+          left: -2,
           zIndex: 0,
           pointerEvents: 'none',
-          borderRadius: `${borderRadius}px`,
+          borderRadius: `${borderRadius + 2}px`,
           backgroundImage: `linear-gradient(135deg, ${neonColors.firstColor}, ${neonColors.secondColor})`,
           filter: 'blur(16px)',
-          opacity: 0.32
+          opacity: 0.42
         }}
       />
 
-      {/* Superfície Interna com Glassmorphism */}
+      {/* Superfície Interna de Alto Contraste (sem borda interna para não cobrir o neon) */}
       <div
         style={{
           position: 'relative',
@@ -80,7 +81,7 @@ export const NeonGradientCard: React.FC<NeonGradientCardProps> = ({
           borderRadius: `${innerRadius}px`
         }}
         className={cn(
-          'relative w-full bg-zinc-900/90 text-zinc-100 p-5 backdrop-blur-md',
+          'relative w-full bg-zinc-900/95 text-zinc-100 p-5 backdrop-blur-md',
           innerClassName
         )}
       >
