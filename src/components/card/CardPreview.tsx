@@ -122,6 +122,7 @@ import { StandardProfessionalLayout } from './StandardProfessionalLayout';
 import { AutomotiveDetailingLayout } from './AutomotiveDetailingLayout';
 import { ChefEventosLayout } from './ChefEventosLayout';
 import { MontadorMoveisLayout } from './MontadorMoveisLayout';
+import { MassamiTagProfile } from './MassamiTagProfile';
 import { getProfessionConfig as getGlobalConfig } from '@/config/professions';
 
 interface CardPreviewProps {
@@ -953,6 +954,11 @@ END:VCARD`;
 
   return (
     <TooltipProvider>
+      {(data as any)?.theme_template !== 'legacy' ? (
+        <div id="digital-card-content" className="w-full max-w-[380px] mx-auto overflow-hidden rounded-[2rem] bg-black">
+          <MassamiTagProfile profile={data as Profile} isPreview={suppressTracking} />
+        </div>
+      ) : (
       <motion.div 
         initial={isPro ? { opacity: 0, y: 30, scale: 0.95 } : { opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0, scale: 1 }}
@@ -1233,6 +1239,7 @@ END:VCARD`;
         </div>
       )}
     </motion.div>
+      )}
   </TooltipProvider>
 );
 }

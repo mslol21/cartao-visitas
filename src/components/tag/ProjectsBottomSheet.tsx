@@ -2,7 +2,16 @@
 
 import React, { useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, ExternalLink, Sparkles, CheckCircle2, Layers, Cpu, ArrowUpRight } from 'lucide-react';
+import {
+  X,
+  Sparkles,
+  CheckCircle2,
+  Layers,
+  Cpu,
+  ArrowUpRight,
+  ShoppingBag,
+  MessageCircle
+} from 'lucide-react';
 import Image from 'next/image';
 
 export interface ProjectItem {
@@ -18,7 +27,14 @@ export interface ProjectItem {
   gradient: string;
 }
 
-const PROJECTS_DATA: ProjectItem[] = [
+export interface CatalogServiceItem {
+  name: string;
+  price?: string;
+  description?: string;
+  image?: string;
+}
+
+const KONNEXY_PROJECTS_DATA: ProjectItem[] = [
   {
     id: 'konnexy-tag',
     name: 'Konnexy Tag',
@@ -79,15 +95,20 @@ const PROJECTS_DATA: ProjectItem[] = [
 interface ProjectsBottomSheetProps {
   isOpen: boolean;
   onClose: () => void;
-  onSelectProjectForContact?: (projectName: string) => void;
+  isMassami?: boolean;
+  businessName?: string;
+  services?: CatalogServiceItem[];
+  onSelectProjectForContact?: (itemName: string, itemPrice?: string) => void;
 }
 
 export function ProjectsBottomSheet({
   isOpen,
   onClose,
+  isMassami = false,
+  businessName = 'Konnexy',
+  services = [],
   onSelectProjectForContact
 }: ProjectsBottomSheetProps) {
-  // Prevenir scroll do body quando aberto
   useEffect(() => {
     if (isOpen) {
       document.body.style.overflow = 'hidden';
@@ -99,7 +120,6 @@ export function ProjectsBottomSheet({
     };
   }, [isOpen]);
 
-  // Fechar com Escape
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === 'Escape') onClose();
@@ -109,6 +129,9 @@ export function ProjectsBottomSheet({
     }
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [isOpen, onClose]);
+
+  const showKonnexyEcosystem = isMassami;
+  const hasCustomServices = services.length > 0;
 
   return (
     <AnimatePresence>
@@ -141,14 +164,22 @@ export function ProjectsBottomSheet({
             <div className="flex items-center justify-between px-6 py-4 border-b border-zinc-800/80 bg-zinc-900/40">
               <div className="flex items-center gap-2.5">
                 <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-amber-500/10 border border-amber-500/30 text-amber-400">
-                  <Layers className="h-4 w-4" />
+                  {showKonnexyEcosystem ? (
+                    <Layers className="h-4 w-4" />
+                  ) : (
+                    <ShoppingBag className="h-4 w-4" />
+                  )}
                 </div>
                 <div>
                   <h3 className="text-base font-bold text-zinc-100">
-                    Sistemas & Projetos
+                    {showKonnexyEcosystem
+                      ? 'Sistemas & Soluções'
+                      : 'Catálogo de Serviços & Produtos'}
                   </h3>
                   <p className="text-xs text-zinc-400">
-                    Ecossistema Konnexy em produção
+                    {showKonnexyEcosystem
+                      ? 'Ecossistema Konnexy em produção'
+                      : businessName}
                   </p>
                 </div>
               </div>
@@ -162,98 +193,187 @@ export function ProjectsBottomSheet({
               </button>
             </div>
 
-            {/* Scrollable Project Cards */}
+            {/* Scrollable Content */}
             <div className="flex-1 overflow-y-auto px-6 py-5 space-y-5">
-              {PROJECTS_DATA.map((project) => (
-                <div
-                  key={project.id}
-                  className="rounded-2xl border border-zinc-800/90 bg-zinc-900/60 p-5 backdrop-blur-sm transition-all hover:border-zinc-700 relative overflow-hidden"
-                >
-                  {/* Subtle Gradient Atmosphere */}
+              {/* 1. Catálogo de Serviços / Produtos do Perfil (Para todas as contas) */}
+              {hasCustomServices && !showKonnexyEcosystem && (
+                <div className="space-y-4">
+                  {services.map((service, idx) => (
+                    <div
+                      key={idx}
+                      className="rounded-2xl border border-zinc-800/90 bg-zinc-900/70 p-4 backdrop-blur-sm transition-all hover:border-zinc-700 flex flex-col gap-3"
+                    >
+                      {service.image && (
+                        <div className="relative w-full aspect-[16/10] rounded-xl overflow-hidden border border-zinc-800 bg-zinc-950">
+                          <Image
+                            src={service.image}
+                            alt={service.name}
+                            fill
+                            unoptimized
+                            className="object-cover"
+                          />
+                        </div>
+                      )}
+
+                      <div className="flex items-start justify-between gap-3">
+                        <div>
+                          <h4 className="text-base font-bold text-white tracking-tight">
+                            {service.name}
+                          </h4>
+                          {service.description && (
+                            <p className="text-xs text-zinc-400 leading-relaxed mt-1">
+                              {service.description}
+                            </p>
+                          )}
+                        </div>
+                        {service.price && (
+                          <span className="shrink-0 inline-flex items-center px-2.5 py-1 rounded-full text-xs font-extrabold bg-emerald-500/15 text-emerald-400 border border-emerald-500/30">
+                            {service.price}
+                          </span>
+                        )}
+                      </div>
+
+                      {onSelectProjectForContact && (
+                        <button
+                          onClick={() => {
+                            onSelectProjectForContact(service.name, service.price);
+                            onClose();
+                          }}
+                          className="w-full flex items-center justify-center gap-2 py-2.5 px-3 rounded-xl bg-emerald-500/15 hover:bg-emerald-500/25 text-emerald-300 border border-emerald-500/30 text-xs font-bold transition"
+                        >
+                          <MessageCircle className="h-3.5 w-3.5" />
+                          <span>Solicitar pelo WhatsApp</span>
+                        </button>
+                      )}
+                    </div>
+                  ))}
+                </div>
+              )}
+
+              {/* 2. Ecossistema Konnexy (Projetos em destaque para Massami) */}
+              {showKonnexyEcosystem &&
+                KONNEXY_PROJECTS_DATA.map((project) => (
                   <div
-                    aria-hidden="true"
-                    className={`absolute -top-12 -right-12 h-36 w-36 rounded-full bg-gradient-to-br ${project.gradient} blur-2xl pointer-events-none opacity-60`}
-                  />
+                    key={project.id}
+                    className="rounded-2xl border border-zinc-800/90 bg-zinc-900/60 p-5 backdrop-blur-sm transition-all hover:border-zinc-700 relative overflow-hidden"
+                  >
+                    <div
+                      aria-hidden="true"
+                      className={`absolute -top-12 -right-12 h-36 w-36 rounded-full bg-gradient-to-br ${project.gradient} blur-2xl pointer-events-none opacity-60`}
+                    />
 
-                  {/* Badge & Title */}
-                  <div className="flex items-center justify-between gap-2 mb-2">
-                    <span className="inline-flex items-center gap-1.5 text-[10px] font-bold tracking-wider uppercase px-2.5 py-1 rounded-full bg-zinc-800/90 border border-zinc-700 text-amber-400">
-                      <Sparkles className="h-3 w-3" />
-                      {project.badge}
-                    </span>
+                    <div className="flex items-center justify-between gap-2 mb-2">
+                      <span className="inline-flex items-center gap-1.5 text-[10px] font-bold tracking-wider uppercase px-2.5 py-1 rounded-full bg-zinc-800/90 border border-zinc-700 text-amber-400">
+                        <Sparkles className="h-3 w-3" />
+                        {project.badge}
+                      </span>
 
-                    {project.demoUrl && (
-                      <a
-                        href={project.demoUrl}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="inline-flex items-center gap-1 text-xs font-semibold text-zinc-400 hover:text-white transition"
-                      >
-                        <span>Demo</span>
-                        <ArrowUpRight className="h-3.5 w-3.5" />
-                      </a>
+                      {project.demoUrl && (
+                        <a
+                          href={project.demoUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="inline-flex items-center gap-1 text-xs font-semibold text-zinc-400 hover:text-white transition"
+                        >
+                          <span>Demo</span>
+                          <ArrowUpRight className="h-3.5 w-3.5" />
+                        </a>
+                      )}
+                    </div>
+
+                    <h4 className="text-lg font-bold text-white tracking-tight">
+                      {project.name}
+                    </h4>
+                    <p className="text-xs text-zinc-400 font-medium mt-0.5">
+                      {project.subtitle}
+                    </p>
+
+                    <p className="text-xs text-zinc-300 leading-relaxed mt-3">
+                      {project.description}
+                    </p>
+
+                    <div className="mt-4 space-y-1.5 border-t border-zinc-800/60 pt-3">
+                      {project.features.map((feat, idx) => (
+                        <div
+                          key={idx}
+                          className="flex items-center gap-2 text-xs text-zinc-300"
+                        >
+                          <CheckCircle2 className="h-3.5 w-3.5 text-emerald-400 shrink-0" />
+                          <span>{feat}</span>
+                        </div>
+                      ))}
+                    </div>
+
+                    <div className="mt-4 flex flex-wrap gap-1.5 pt-2">
+                      {project.techStack.map((tech) => (
+                        <span
+                          key={tech}
+                          className="text-[10px] font-mono font-medium px-2 py-0.5 rounded-md bg-zinc-800/80 text-zinc-400 border border-zinc-700/60"
+                        >
+                          {tech}
+                        </span>
+                      ))}
+                    </div>
+
+                    {onSelectProjectForContact && (
+                      <div className="mt-4 pt-2">
+                        <button
+                          onClick={() => {
+                            onSelectProjectForContact(project.name);
+                            onClose();
+                          }}
+                          className="w-full flex items-center justify-center gap-2 py-2 px-3 rounded-xl bg-zinc-800 hover:bg-zinc-700 text-xs font-bold text-zinc-100 transition border border-zinc-700/70"
+                        >
+                          Solicitar Proposta para este Sistema →
+                        </button>
+                      </div>
                     )}
                   </div>
+                ))}
 
-                  <h4 className="text-lg font-bold text-white tracking-tight">
-                    {project.name}
+              {/* Caso Massami também tenha serviços adicionais cadastrados */}
+              {showKonnexyEcosystem && hasCustomServices && (
+                <div className="pt-2 space-y-3">
+                  <h4 className="text-xs font-bold uppercase tracking-wider text-zinc-400 px-1">
+                    Serviços Sob Medida
                   </h4>
-                  <p className="text-xs text-zinc-400 font-medium mt-0.5">
-                    {project.subtitle}
-                  </p>
-
-                  <p className="text-xs text-zinc-300 leading-relaxed mt-3">
-                    {project.description}
-                  </p>
-
-                  {/* Features List */}
-                  <div className="mt-4 space-y-1.5 border-t border-zinc-800/60 pt-3">
-                    {project.features.map((feat, idx) => (
-                      <div
-                        key={idx}
-                        className="flex items-center gap-2 text-xs text-zinc-300"
-                      >
-                        <CheckCircle2 className="h-3.5 w-3.5 text-emerald-400 shrink-0" />
-                        <span>{feat}</span>
+                  {services.map((service, idx) => (
+                    <div
+                      key={idx}
+                      className="rounded-2xl border border-zinc-800/90 bg-zinc-900/60 p-4 flex items-center justify-between gap-3"
+                    >
+                      <div>
+                        <h5 className="text-sm font-bold text-white">
+                          {service.name}
+                        </h5>
+                        {service.description && (
+                          <p className="text-xs text-zinc-400 mt-0.5">
+                            {service.description}
+                          </p>
+                        )}
                       </div>
-                    ))}
-                  </div>
-
-                  {/* Tech Badges */}
-                  <div className="mt-4 flex flex-wrap gap-1.5 pt-2">
-                    {project.techStack.map((tech) => (
-                      <span
-                        key={tech}
-                        className="text-[10px] font-mono font-medium px-2 py-0.5 rounded-md bg-zinc-800/80 text-zinc-400 border border-zinc-700/60"
-                      >
-                        {tech}
-                      </span>
-                    ))}
-                  </div>
-
-                  {/* Action Button */}
-                  {onSelectProjectForContact && (
-                    <div className="mt-4 pt-2">
-                      <button
-                        onClick={() => {
-                          onSelectProjectForContact(project.name);
-                          onClose();
-                        }}
-                        className="w-full flex items-center justify-center gap-2 py-2 px-3 rounded-xl bg-zinc-800 hover:bg-zinc-700 text-xs font-bold text-zinc-100 transition border border-zinc-700/70"
-                      >
-                        Solicitar Proposta para este Sistema →
-                      </button>
+                      {onSelectProjectForContact && (
+                        <button
+                          onClick={() => {
+                            onSelectProjectForContact(service.name, service.price);
+                            onClose();
+                          }}
+                          className="shrink-0 px-3 py-1.5 rounded-xl bg-zinc-800 hover:bg-zinc-700 text-xs font-bold text-amber-400 border border-zinc-700 transition"
+                        >
+                          Orçar →
+                        </button>
+                      )}
                     </div>
-                  )}
+                  ))}
                 </div>
-              ))}
+              )}
             </div>
 
             {/* Bottom Safe Area / Footer */}
             <div className="px-6 py-3 border-t border-zinc-800/80 bg-zinc-900/60 flex items-center justify-between text-xs text-zinc-500">
               <span className="flex items-center gap-1.5">
                 <Cpu className="h-3.5 w-3.5 text-zinc-400" />
-                Arquitetura Escalável & Segura
+                Konnexy Phygital Experience
               </span>
               <button
                 onClick={onClose}
