@@ -2,7 +2,6 @@
 
 import { ArrowRight, Sparkles, Smartphone, ShieldCheck, Zap } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import Link from 'next/link';
 import { motion } from 'framer-motion';
 
 export function Hero() {

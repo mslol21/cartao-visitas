@@ -10,7 +10,7 @@ import { createCheckoutSession } from '@/app/actions/checkout';
 
 export function UpgradeButton() {
   const router = useRouter();
-  const { user, session } = useAuth();
+  const { user } = useAuth();
   const [loading, setLoading] = useState(false);
 
   const handleUpgrade = async () => {
@@ -33,7 +33,7 @@ export function UpgradeButton() {
       } else {
         toast.error(result.error || 'Erro ao criar sessão de checkout');
       }
-    } catch (error: unknown) {
+    } catch {
       toast.error('Erro ao processar pagamento');
     } finally {
       setLoading(false);

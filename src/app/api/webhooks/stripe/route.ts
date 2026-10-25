@@ -34,6 +34,10 @@ export async function POST(request: Request) {
   console.log('🔔 Webhook recebido:', event.type);
 
   const supabase = createAdminClient();
+  if (!supabase) {
+    console.error('❌ Erro: Supabase admin client não configurado no webhook');
+    return NextResponse.json({ error: 'Database service unavailable' }, { status: 500 });
+  }
 
   // Handle the event
   switch (event.type) {
@@ -46,7 +50,10 @@ export async function POST(request: Request) {
       if (userId) {
         const { error } = await supabase
           .from('profiles')
-          .update({ plan: 'pro' })
+          .update({ 
+            plan: 'pro',
+            billing_type: 'stripe'
+          })
           .eq('user_id', userId);
         
         if (error) {
@@ -60,7 +67,22 @@ export async function POST(request: Request) {
       break;
     }
     
-    // Add more events if needed (customer.subscription.deleted, etc.)
+    case 'customer.subscription.deleted': {
+      const subscription = event.data.object as Stripe.Subscription;
+      const customerId = subscription.customer as string;
+      console.log('⚠️ Assinatura cancelada para customer:', customerId);
+      // Opcional: despromover perfil se userId estiver nos metadados
+      const userId = subscription.metadata?.userId;
+      if (userId) {
+        await supabase
+          .from('profiles')
+          .update({ plan: 'free', billing_type: 'stripe' })
+          .eq('user_id', userId);
+        console.log('ℹ️ Perfil despromovido para free:', userId);
+      }
+      break;
+    }
+
     default:
       console.log(`Unhandled event type ${event.type}`);
   }

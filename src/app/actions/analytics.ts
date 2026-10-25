@@ -63,6 +63,10 @@ export async function getProfileAnalytics(profileId: string): Promise<AnalyticsD
     }
 
     const admin = createAdminClient();
+    if (!admin) {
+      console.error('❌ getProfileAnalytics: Admin client unavailable');
+      return emptyResult;
+    }
 
     // 1. Verificar se o usuário é dono do perfil ou admin
     const { data: requesterProfile } = await admin

@@ -12,16 +12,17 @@ import QRCodeStyling, {
   CornerDotType
 } from "qr-code-styling";
 import { Button } from "@/components/ui/button";
-import { Download, Crown, Loader2, Share2, FileDown } from "lucide-react";
+import { Download, Crown, Loader2, FileDown } from "lucide-react";
 import { toast } from "sonner";
 import Link from "next/link";
+import { Profile, CustomFields } from "@/types/profile";
 
 interface StyledQRCodeProps {
   url: string;
   isPro?: boolean;
   username: string;
   photoUrl?: string;
-  customFields?: any;
+  customFields?: CustomFields;
 }
 
 export const StyledQRCode: React.FC<StyledQRCodeProps> = ({ url, isPro = false, username, photoUrl, customFields }) => {

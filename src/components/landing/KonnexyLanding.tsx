@@ -5,26 +5,19 @@ import { motion, AnimatePresence } from "framer-motion";
 import { 
   Check, 
   ChevronRight, 
-  ArrowRight, 
   Sparkles, 
   Smartphone, 
-  Instagram, 
   MessageCircle, 
   ShoppingCart, 
   Share2, 
-  Grid, 
   Tag, 
   Globe, 
   Zap, 
   BarChart3, 
-  CheckCircle2, 
   Store, 
   Scissors, 
   UtensilsCrossed, 
   Dog, 
-  LayoutDashboard, 
-  Clock, 
-  ThumbsUp, 
   ChevronDown, 
   Shield, 
   Award,
@@ -322,7 +315,7 @@ export function KonnexyLanding() {
             }
           }}
         >
-          {PRODUTOS.map((product, idx) => {
+          {PRODUTOS.map((product) => {
             const Icon = product.icon;
             return (
               <motion.div 

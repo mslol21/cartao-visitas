@@ -1,5 +1,6 @@
 import { createClient } from '@/utils/supabase/server';
 import { ProfileClientWrapper } from '@/components/card/ProfileClientWrapper';
+import { MassamiTagProfile } from '@/components/card/MassamiTagProfile';
 import { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { trackEvent } from '@/app/actions/analytics';
@@ -10,6 +11,33 @@ interface Props {
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { username } = await params;
+
+  if (username.toLowerCase() === 'massami') {
+    const title = 'Massami | Konnexy • Developer Full-Stack & Phygital SaaS';
+    const description =
+      'Desenvolvedor de software, soluções SaaS e tecnologia Phygital para transformar negócios locais. Fale com Massami via WhatsApp ou conheça as soluções da Konnexy.';
+    return {
+      title,
+      description,
+      openGraph: {
+        title,
+        description,
+        images: ['/images/koi_hero.png'],
+        type: 'profile',
+        url: 'https://konnexy.com.br/massami',
+      },
+      twitter: {
+        card: 'summary_large_image',
+        title,
+        description,
+        images: ['/images/koi_hero.png'],
+      },
+      alternates: {
+        canonical: 'https://konnexy.com.br/massami',
+      },
+    };
+  }
+
   const supabase = await createClient();
   const { data: profile } = await supabase
     .from('profiles')
@@ -21,7 +49,10 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
   const name = profile.name || username;
   const title = profile.seo_title || `${name} | Konnexy Profissional`;
-  const description = profile.seo_description || profile.tagline || `Confira o cartão de visita digital de ${name}. Contato via WhatsApp, redes sociais e serviços.`;
+  const description =
+    profile.seo_description ||
+    profile.tagline ||
+    `Confira o cartão de visita digital de ${name}. Contato via WhatsApp, redes sociais e serviços.`;
 
   return {
     title,
@@ -49,6 +80,8 @@ export const revalidate = 0;
 
 export default async function PublicPage({ params }: Props) {
   const { username } = await params;
+  const isMassami = username.toLowerCase() === 'massami';
+
   const supabase = await createClient();
   const { data: profile } = await supabase
     .from('profiles')
@@ -56,10 +89,17 @@ export default async function PublicPage({ params }: Props) {
     .eq('username', username)
     .single();
 
-  if (!profile) notFound();
+  if (!profile && !isMassami) notFound();
 
   // Rastrear visualização de página (silenciosamente no servidor)
-  trackEvent(profile.id, 'page_view').catch(console.error);
+  if (profile?.id) {
+    trackEvent(profile.id, 'page_view').catch(console.error);
+  }
+
+  // Página especializada Konnexy Tag para Massami
+  if (isMassami || (profile as any)?.theme_template === 'konnexy_tag') {
+    return <MassamiTagProfile profile={profile} />;
+  }
 
   const themeColor = profile.theme_color || '#3b82f6';
   const customFields = (profile.custom_fields as any) || {};

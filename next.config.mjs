@@ -19,7 +19,7 @@ const nextConfig = {
   },
   // Segurança: Mantendo headers, mas permitindo deploy com erros de lint legados
   typescript: {
-    ignoreBuildErrors: true,
+    ignoreBuildErrors: false,
   },
   eslint: {
     ignoreDuringBuilds: true,

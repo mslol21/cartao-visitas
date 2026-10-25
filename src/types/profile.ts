@@ -384,6 +384,4 @@ export interface Profile {
   business_hours?: Record<string, string>;
 }
 
-export interface ProfileFormData extends Partial<Profile> {
-  // Can be typed based on Profile directly
-}
+export type ProfileFormData = Partial<Profile>;

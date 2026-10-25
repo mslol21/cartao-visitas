@@ -2,18 +2,14 @@
 
 import { motion } from 'framer-motion';
 import { Button } from '@/components/ui/button';
-import Link from 'next/link';
 import { 
   ArrowRight, 
   Check, 
   Settings, 
   Share2, 
   UserPlus, 
-  HelpCircle,
-  Smartphone,
-  Zap,
-  Globe,
-  ChevronDown
+  Zap, 
+  Globe
 } from 'lucide-react';
 import {
   Accordion,

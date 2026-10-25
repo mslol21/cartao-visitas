@@ -2,7 +2,6 @@
 
 import { QRCodeCanvas } from 'qrcode.react';
 import { Button } from '@/components/ui/button';
-import { Label } from '@/components/ui/label';
 import { Download, QrCode, Loader2 } from 'lucide-react';
 import { Profile } from '@/types/profile';
 import { useRef, useState, useEffect } from 'react';

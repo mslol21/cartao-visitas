@@ -91,6 +91,9 @@ export async function verifyCheckoutSession(sessionId: string) {
       // 3. Atualizar o plano usando o admin client para garantir sucesso
       const { createAdminClient } = await import('@/utils/supabase/admin');
       const adminSupabase = createAdminClient();
+      if (!adminSupabase) {
+        return { error: 'Serviço administrativo não configurado.' };
+      }
       
       const { error: updateError } = await adminSupabase
         .from('profiles')
@@ -115,19 +118,26 @@ export async function forceSyncProPlan() {
     const supabase = await createClient();
     const { data: { user } } = await supabase.auth.getUser();
 
-    if (!user) return { error: 'Sessão não encontrada ou expirada. Faça login no Konnexy novamente.' };
+    if (!user || !user.email) return { error: 'Sessão não encontrada ou expirada. Faça login no Konnexy novamente.' };
 
-    // 1. Procurar sessões pagas deste usuário no Stripe
+    // 1. Procurar sessões pagas deste usuário no Stripe com correspondência de ID ou email
     const sessions = await stripe.checkout.sessions.list({
       limit: 5,
-      customer_details: { email: user.email! }
+      customer_details: { email: user.email }
     });
 
-    const hasPaidSession = sessions.data.some(s => s.payment_status === 'paid' || s.status === 'complete');
+    const hasValidPaidSession = sessions.data.some(s => {
+      const isPaid = s.payment_status === 'paid' || s.status === 'complete';
+      const isMatchingUser = !s.metadata?.userId || s.metadata.userId === user.id;
+      return isPaid && isMatchingUser;
+    });
 
-    if (hasPaidSession) {
+    if (hasValidPaidSession) {
       const { createAdminClient } = await import('@/utils/supabase/admin');
       const admin = createAdminClient();
+      if (!admin) {
+        return { error: 'Serviço administrativo não configurado.' };
+      }
       await admin.from('profiles').update({ plan: 'pro' }).eq('user_id', user.id);
       return { success: true };
     }

@@ -1,8 +1,7 @@
 "use client";
 
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef } from "react";
 import { motion } from "framer-motion";
-import { cn } from "@/lib/utils";
 import QRCodeStyling, {
   DrawType,
   TypeNumber,
@@ -13,6 +12,8 @@ import QRCodeStyling, {
   CornerDotType,
   Options
 } from "qr-code-styling";
+
+import { CustomFields } from "@/types/profile";
 
 interface AnimatedQRProps {
   /** A URL que o QR code vai abrir */
@@ -28,7 +29,7 @@ interface AnimatedQRProps {
   /** Está ativo (isPro) */
   active?: boolean;
   /** Custom fields from profile */
-  customFields?: any;
+  customFields?: CustomFields;
 }
 
 export function AnimatedQR({
@@ -40,7 +41,7 @@ export function AnimatedQR({
   active = true,
   customFields,
 }: AnimatedQRProps) {
-  const [qrCode, setQrCode] = useState<QRCodeStyling | null>(null);
+  const qrCodeRef = useRef<QRCodeStyling | null>(null);
   const ref = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -90,7 +91,7 @@ export function AnimatedQR({
     };
 
     const newQrCode = new QRCodeStyling(options);
-    setQrCode(newQrCode);
+    qrCodeRef.current = newQrCode;
 
     if (ref.current) {
       ref.current.innerHTML = "";

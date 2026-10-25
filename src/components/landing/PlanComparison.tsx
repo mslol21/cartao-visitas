@@ -1,10 +1,8 @@
 "use client";
 
 import { motion } from 'framer-motion';
-import { Play, Sparkles, Crown, Check, X, Info } from 'lucide-react';
-import { cn } from '@/lib/utils';
+import { Sparkles, Crown, Check, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import Link from 'next/link';
 
 const featuresList = [
   { name: 'Link personalizado (konnexy.com.br/seu-nome)', free: true, pro: true },

@@ -137,7 +137,7 @@ export function usePublicProfile(username: string) {
         }
 
         setProfile(data as Profile);
-      } catch (error) {
+      } catch {
         setNotFound(true);
       } finally {
         setLoading(false);

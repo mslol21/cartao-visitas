@@ -11,42 +11,34 @@ export default async function AdminLayout({
   const supabase = await createClient();
   
   let currentUser = null;
-  const allCookies = (await cookies()).getAll();
-  const cookieNames = allCookies.map(c => c.name).join(', ');
 
   try {
-    // Método 1: getSession() - lê JWT do cookie localmente sem chamada de rede
-    const { data: { session }, error: sessionError } = await supabase.auth.getSession();
-    if (!sessionError && session?.user) {
-      currentUser = session.user;
-    }
-    
-    // Método 2: Decodificação manual do JWT do cookie como fallback
-    if (!currentUser) {
+    // Validação criptográfica padrão via Supabase Auth
+    const { data: { user }, error: userError } = await supabase.auth.getUser();
+    if (!userError && user) {
+      currentUser = user;
+    } else {
+      // Fallback estrito: se houver token em cookie, validar assinatura criptográfica com Supabase
+      const allCookies = (await cookies()).getAll();
       const authCookie = allCookies.find(c => c.name.includes('auth-token'));
       if (authCookie?.value) {
+        let accessToken: string | undefined = undefined;
         try {
-          // Tenta decodificar o JWT diretamente (formato: header.payload.signature)
-          let payload = authCookie.value;
-          // Supabase SSR às vezes armazena em base64
-          if (!payload.includes('.')) {
-            payload = Buffer.from(payload, 'base64').toString('utf-8');
+          if (authCookie.value.startsWith('{')) {
+            accessToken = JSON.parse(authCookie.value)?.access_token;
+          } else {
+            const possibleJson = Buffer.from(authCookie.value, 'base64').toString('utf-8');
+            accessToken = JSON.parse(possibleJson)?.access_token;
           }
-          if (payload.startsWith('{')) {
-            const parsed = JSON.parse(payload);
-            if (parsed?.user?.id) {
-              currentUser = parsed.user;
-            } else if (parsed?.access_token) {
-              // Decode JWT payload
-              const jwtPayload = parsed.access_token.split('.')[1];
-              const decoded = JSON.parse(Buffer.from(jwtPayload, 'base64').toString('utf-8'));
-              if (decoded?.sub) {
-                currentUser = { id: decoded.sub, email: decoded.email } as any;
-              }
-            }
+        } catch {
+          // Cookie não é JSON
+        }
+
+        if (accessToken) {
+          const { data: verifiedData, error: verifyError } = await supabase.auth.getUser(accessToken);
+          if (!verifyError && verifiedData?.user) {
+            currentUser = verifiedData.user;
           }
-        } catch (parseErr) {
-          console.warn('SERVER ADMIN: Manual cookie parse failed', parseErr);
         }
       }
     }
@@ -54,28 +46,19 @@ export default async function AdminLayout({
     console.error('SERVER ADMIN: Session validation failed', err);
   }
 
-
-
-
-  
   if (!currentUser) {
-     return (
-       <div className="p-8 max-w-3xl mx-auto mt-20 bg-slate-900 text-white rounded-3xl shadow-2xl border border-red-500/30">
-         <h1 className="text-2xl font-black text-red-400 mb-4">Acesso Administrativo Bloqueado</h1>
-         <p className="text-sm text-slate-400 mb-6">Não foi possível validar sua sessão administrativa no servidor. Isso pode acontecer se o seu login expirou ou se os cookies não foram sincronizados.</p>
-         
-         <div className="space-y-4">
-           <div className="bg-black/50 p-4 rounded-xl font-mono text-[10px]">
-             <p className="text-amber-400 mb-2">Dica: Tente fazer logout e login novamente para atualizar suas credenciais.</p>
-             <p className="text-slate-500 break-all">Debug Cookies: {cookieNames || 'Nenhum cookie detectado'}</p>
-           </div>
-           <div className="flex gap-4">
-             <a href="/login" className="px-6 py-2 bg-white text-black rounded-xl font-bold text-xs uppercase">Ir para Login</a>
-             <a href="/admin" className="px-6 py-2 bg-slate-800 text-white rounded-xl font-bold text-xs uppercase">Tentar Novamente</a>
-           </div>
-         </div>
-       </div>
-     );
+    return (
+      <div className="p-8 max-w-3xl mx-auto mt-20 bg-slate-900 text-white rounded-3xl shadow-2xl border border-red-500/30">
+        <h1 className="text-2xl font-black text-red-400 mb-4">Acesso Administrativo Bloqueado</h1>
+        <p className="text-sm text-slate-400 mb-6">Sua sessão expirou ou não possui privilégios para acessar o painel administrativo.</p>
+        
+        <div className="space-y-4">
+          <div className="flex gap-4">
+            <a href="/login" className="px-6 py-2 bg-white text-black rounded-xl font-bold text-xs uppercase">Ir para Login</a>
+          </div>
+        </div>
+      </div>
+    );
   }
 
 

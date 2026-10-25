@@ -55,7 +55,7 @@ export function Footer() {
                 <li><a href="#segmentos" className="hover:text-white transition-colors">Segmentos</a></li>
                 <li><a href="#demonstracoes" className="hover:text-white transition-colors">Demonstrações</a></li>
                 <li><a href="#precos" className="hover:text-white transition-colors">Orçamento</a></li>
-                <li><a href="/login" className="hover:text-white transition-colors">Acessar Conta</a></li>
+                <li><Link href="/login" className="hover:text-white transition-colors">Acessar Conta</Link></li>
               </ul>
             </div>
 
