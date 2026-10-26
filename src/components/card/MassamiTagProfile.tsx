@@ -709,7 +709,14 @@ export function MassamiTagProfile({
                 className="absolute inset-0 w-full h-full object-cover object-center opacity-90 transition-transform duration-700 hover:scale-105"
               />
             )}
-            <div className="absolute inset-0 bg-gradient-to-b from-black/5 via-black/30 to-zinc-950/90" />
+            <div className="absolute inset-0 bg-gradient-to-b from-black/5 via-black/20 via-60% to-transparent" />
+            <div
+              aria-hidden="true"
+              className="absolute inset-x-0 bottom-0 h-28 z-10"
+              style={{
+                background: `linear-gradient(to bottom, transparent 0%, ${primaryNeonColor}10 38%, rgba(9,9,11,0.55) 72%, rgba(9,9,11,0.92) 100%)`
+              }}
+            />
 
             {/* Ações Rápidas no Topo */}
             <div className="absolute top-3.5 right-3.5 flex items-center gap-2 z-20">
@@ -736,7 +743,7 @@ export function MassamiTagProfile({
           </div>
 
           {/* Conteúdo do Hero Identidade — composição imersiva inspirada no mock aprovado */}
-          <div className="relative -mt-16 min-h-[250px] px-5 pb-6 pt-3 flex flex-col items-center text-center z-10 overflow-hidden bg-zinc-950">
+          <div className="relative -mt-24 min-h-[282px] px-5 pb-6 pt-12 flex flex-col items-center text-center z-10 overflow-hidden">
             {/* Continuidade real da capa por trás do conteúdo */}
             <div aria-hidden="true" className="pointer-events-none absolute inset-0 z-0 overflow-hidden">
               {isCoverVideo ? (
@@ -746,18 +753,24 @@ export function MassamiTagProfile({
                   muted
                   loop
                   playsInline
-                  className="absolute inset-0 h-full w-full object-cover scale-125 opacity-45 blur-2xl"
+                  className="absolute -inset-x-8 -top-20 bottom-0 h-[calc(100%+5rem)] w-[calc(100%+4rem)] object-cover scale-110 opacity-55 blur-xl"
                 />
               ) : (
                 <img
                   src={coverUrl}
                   alt=""
-                  className="absolute inset-0 h-full w-full object-cover scale-125 opacity-50 blur-2xl"
+                  className="absolute -inset-x-8 -top-20 bottom-0 h-[calc(100%+5rem)] w-[calc(100%+4rem)] object-cover object-center scale-110 opacity-60 blur-xl"
                 />
               )}
 
               {/* Profundidade e vinheta */}
-              <div className="absolute inset-0 bg-gradient-to-b from-zinc-950/5 via-zinc-950/65 to-zinc-950/95" />
+              <div className="absolute inset-0 bg-gradient-to-b from-transparent via-zinc-950/45 via-45% to-zinc-950/95" />
+              <div
+                className="absolute inset-x-[-12%] top-0 h-24 blur-2xl opacity-75"
+                style={{
+                  background: `linear-gradient(to bottom, ${primaryNeonColor}24, ${primaryNeonColor}0d 45%, transparent)`
+                }}
+              />
               <div
                 className="absolute inset-x-0 top-0 h-40 opacity-90"
                 style={{
