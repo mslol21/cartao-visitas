@@ -33,14 +33,14 @@ export function Navbar() {
       className={cn(
         "fixed top-0 left-0 right-0 z-[100] transition-all duration-300 w-full",
         scrolled
-          ? "bg-[#030712]/80 border-b border-white/5 py-4 shadow-2xl backdrop-blur-xl"
-          : "bg-transparent border-b border-transparent py-6"
+          ? "bg-[#070914]/90 border-b border-violet-400/15 py-3 shadow-2xl backdrop-blur-xl"
+          : "bg-[#070914]/70 border-b border-violet-400/10 py-4 backdrop-blur-xl"
       )}
     >
       <div className="max-w-7xl mx-auto px-6 flex items-center justify-between w-full">
         {/* Brand Logo */}
         <Link href="/" className="flex items-center group">
-          <Logo variant="horizontal" showTagline={false} />
+          <Logo variant="horizontal" showTagline={true} className="scale-110 origin-left" />
         </Link>
 
         {/* Nav Links - Desktop (Linear/Stripe inspired) */}
@@ -52,7 +52,7 @@ export function Navbar() {
               className="text-xs font-medium text-slate-400 hover:text-white transition-colors duration-200 relative py-2 group"
             >
               {link.name}
-              <span className="absolute bottom-0 left-0 w-0 h-[1.5px] bg-[#EADBB9] transition-all duration-300 group-hover:w-full" />
+              <span className="absolute bottom-0 left-0 w-0 h-[1.5px] bg-gradient-to-r from-cyan-400 via-violet-500 to-fuchsia-500 transition-all duration-300 group-hover:w-full" />
             </a>
           ))}
         </nav>
@@ -71,7 +71,7 @@ export function Navbar() {
               <Button asChild variant="ghost" className="rounded-xl font-medium text-xs h-10 text-slate-400 hover:text-white hover:bg-white/5 transition-colors">
                 <Link href="/login">Entrar</Link>
               </Button>
-              <Button asChild className="rounded-xl h-10 px-5 bg-gradient-to-r from-[#EADBB9] to-[#C5CAD2] hover:from-[#f3e7d3] hover:to-[#d2d6dd] text-white font-bold shadow-lg shadow-amber-500/5 transition-all hover:scale-[1.02] border border-[#EADBB9]/20">
+              <Button asChild className="rounded-xl h-10 px-5 bg-gradient-to-r from-cyan-400 to-emerald-300 hover:brightness-110 text-[#041014] font-bold shadow-lg shadow-cyan-500/10 transition-all hover:scale-[1.02] border border-[#EADBB9]/20">
                 <a href="https://wa.me/5516991551200?text=Olá,%20gostaria%20de%20solicitar%20uma%20demonstração%20das%20soluções%20da%20Konnexy" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2">
                   <span>Falar Conosco</span>
                   <ArrowRight className="w-3.5 h-3.5" />
