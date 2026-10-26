@@ -54,127 +54,12 @@ const SEGMENTOS = [
 ];
 
 const PRODUTOS = [
-  {
-    id: "pet",
-    title: "Konnexy Pet",
-    description: "Plataforma completa para Pet Shops.",
-    longDesc: "Gerencie banho e tosa, histórico de pets, vendas de produtos e a comunicação com os tutores de forma unificada.",
-    icon: Dog,
-    image: "/pet.png",
-    recursos: [
-      "Site profissional",
-      "Agendamento Online",
-      "CRM integrado",
-      "Cadastro de Clientes & Pets",
-      "Controle Financeiro",
-      "Controle de Estoque",
-      "Programa de Fidelidade",
-      "Área do Tutor",
-      "Marketing por WhatsApp",
-      "Dashboard Executivo"
-    ]
-  },
-  {
-    id: "catalogo",
-    title: "Konnexy Catálogo",
-    description: "Catálogo Digital integrado ao WhatsApp.",
-    longDesc: "Exiba seus produtos online, permita que clientes montem carrinhos e receba pedidos organizados diretamente no WhatsApp.",
-    icon: ShoppingCart,
-    image: "/catalogo.png",
-    idealFor: "Adegas, Lojas, Restaurantes, Hamburguerias, Docerias, Delivery",
-    recursos: [
-      "Exibição de Produtos",
-      "Carrinho de compras",
-      "Pagamento por PIX",
-      "Taxa de entrega automática",
-      "Organização por Categorias",
-      "Domínio próprio conectado"
-    ]
-  },
-  {
-    id: "link",
-    title: "Konnexy Link",
-    description: "Página profissional semelhante ao Linktree.",
-    longDesc: "Centralize seus canais de atendimento, redes sociais, músicas e portfólio em uma única URL premium de alta conversão.",
-    icon: Share2,
-    image: "/link.png",
-    idealFor: "Músicos, Bandas, Influenciadores, Empresas, Criadores de conteúdo",
-    recursos: [
-      "Redes sociais integradas",
-      "Widget Spotify",
-      "Vídeos do YouTube",
-      "Agenda de Shows/Eventos",
-      "Portfólio & Galeria",
-      "Botão flutuante WhatsApp",
-      "Galeria de Fotos"
-    ]
-  },
-  {
-    id: "vitrine",
-    title: "Konnexy Vitrine",
-    description: "Catálogo profissional para quem vende produtos personalizados.",
-    longDesc: "Mostre a essência dos seus produtos sob encomenda ou artesanais. Organize o fluxo de pedidos sem complicações.",
-    icon: Tag,
-    image: "/vitrine.png",
-    idealFor: "Artesanato, Decoração, Artistas plásticos, Papelaria, Produtos personalizados",
-    recursos: [
-      "Catálogo de Imagens",
-      "Galeria de inspirações",
-      "Pedido direto via WhatsApp",
-      "Filtro por Categorias",
-      "Produtos ilimitados"
-    ]
-  },
-  {
-    id: "sites",
-    title: "Konnexy Sites",
-    description: "Landing Pages profissionais.",
-    longDesc: "Destaque seus serviços e capte mais contatos qualificados através de páginas institucionais velozes e otimizadas.",
-    icon: Globe,
-    image: "/site.png",
-    idealFor: "Clínicas, Escritórios, Construtoras, Empresas, Eventos, Prestadores de serviço",
-    recursos: [
-      "Otimização SEO avançada",
-      "Formulários de captação",
-      "Integração com WhatsApp",
-      "Google Maps incorporado",
-      "Alta performance em celulares"
-    ]
-  },
-  {
-    id: "fabrica",
-    title: "Konnexy Fábrica",
-    description: "Gestão completa para linhas de produção.",
-    longDesc: "Acompanhe em tempo real a sua produção, identifique gargalos industriais e tenha controle absoluto sobre cada etapa operacional.",
-    icon: Factory,
-    image: "/fabrica.png",
-    idealFor: "Serralherias, Marcenarias, Confecções, Indústrias, Manufaturas",
-    recursos: [
-      "Painel de Operações",
-      "Kanban de Produção",
-      "Controle de Gargalos",
-      "Gestão de Estoque Crítico",
-      "Monitoramento em Tempo Real",
-      "Alertas Automáticos"
-    ]
-  },
-  {
-    id: "travel",
-    title: "Konnexy Travel",
-    description: "Plataforma avançada para agências de turismo e pacotes de viagens.",
-    longDesc: "Crie roteiros irresistíveis e venda pacotes de viagem diretamente pelo seu site com integração ao WhatsApp, simplificando a jornada do seu cliente.",
-    icon: Compass,
-    image: "/turismo.png",
-    idealFor: "Agências de Turismo, Guias, Ecoturismo, Intercâmbio, Excursões",
-    recursos: [
-      "Busca de Destinos Inteligente",
-      "Filtros por Tipos de Viagem",
-      "Gestão de Roteiros e Pacotes",
-      "Orçamentos via WhatsApp",
-      "Integração com IA",
-      "Design Aventureiro e Premium"
-    ]
-  }
+  { id:"google", title:"Presença no Google", description:"Perfil da Empresa no Google organizado e otimizado.", longDesc:"Melhore como seu negócio aparece nas buscas e no Maps, com informações, serviços, fotos e pontos de contato mais claros para quem já procura pelo que você oferece.", icon:MapPin, image:"/images/koi_hero.png", idealFor:"Comércios locais, clínicas, oficinas, salões, restaurantes e prestadores", recursos:["Configuração e otimização do perfil","Categorias e serviços organizados","Orientação para avaliações","Informações e contatos atualizados","Gestão contínua sob demanda"] },
+  { id:"sites", title:"Sites & Landing Pages", description:"Presença profissional focada em confiança e conversão.", longDesc:"Criamos páginas rápidas e responsivas para apresentar serviços, captar contatos, gerar orçamentos ou direcionar clientes ao WhatsApp.", icon:Globe, image:"/site.png", idealFor:"Empresas, profissionais, clínicas, cursos, eventos e serviços", recursos:["Design profissional e responsivo","Integração com WhatsApp","SEO técnico","Formulários e CTAs","Domínio próprio"] },
+  { id:"catalogo", title:"Catálogos & Cardápios", description:"Produtos e serviços organizados para vender pelo WhatsApp.", longDesc:"Transforme conversas repetitivas em uma vitrine digital organizada, com categorias, produtos, informações e pedidos enviados diretamente para o atendimento.", icon:ShoppingCart, image:"/catalogo.png", idealFor:"Lojas, delivery, adegas, moda, presentes, artesanato e alimentação", recursos:["Vitrine digital","Categorias e produtos","Carrinho ou pedido estruturado","Integração com WhatsApp","Painel de atualização"] },
+  { id:"tag", title:"Konnexy Tag — NFC & QR", description:"Aproxime, escaneie e conecte o cliente ao seu negócio.", longDesc:"Uma experiência física e digital para avaliações, contatos, redes sociais, cardápios, catálogos e páginas profissionais usando NFC e QR Code.", icon:QrCode, image:"/link.png", idealFor:"Balcões, recepções, lojas, profissionais, eventos e atendimento presencial", recursos:["NFC + QR Code","Página profissional","Atalhos para WhatsApp e redes","Avaliações no Google","Conteúdo atualizável"] },
+  { id:"trafego", title:"Tráfego Pago", description:"Anúncios para levar pessoas certas até sua oferta.", longDesc:"Planejamos e gerenciamos campanhas no Google e nas redes sociais conforme objetivo, região e orçamento, conectando anúncio, página e atendimento.", icon:Megaphone, image:"/images/koi_hero.png", idealFor:"Negócios com oferta clara que querem ampliar alcance e captação", recursos:["Google Ads","Meta Ads","Segmentação local","Acompanhamento de campanhas","Verba de mídia separada da gestão"] },
+  { id:"sistemas", title:"Sistemas Sob Medida", description:"Tecnologia para organizar processos do seu negócio.", longDesc:"Desenvolvemos soluções conforme a operação: agendamento, orçamento, ordem de serviço, PDV, estoque, painel administrativo e outros fluxos digitais.", icon:Settings2, image:"/fabrica.png", idealFor:"Negócios que precisam reduzir tarefas manuais e centralizar informações", recursos:["Painéis administrativos","Agendamentos e orçamentos","PDV e estoque","Fluxos personalizados","Integrações conforme o projeto"] }
 ];
 
 const DEMONSTRACOES = [
@@ -231,73 +116,52 @@ export function KonnexyLanding() {
       {/* Navbar */}
       <Navbar />
 
-      {/* ── HERO SECTION (Stripe/Vercel style) ── */}
-      <section className="relative pt-32 pb-24 md:pt-40 md:pb-36 flex flex-col justify-center items-center overflow-hidden border-b border-white/5">
-        {/* Glow Effects */}
-        <div className="absolute top-[-100px] left-1/2 -translate-x-1/2 w-[900px] h-[350px] rounded-full bg-[#EADBB9]/5 blur-[130px] pointer-events-none" />
-        <div className="absolute bottom-[10%] right-[-10%] w-[350px] h-[350px] rounded-full bg-[#C5CAD2]/5 blur-[120px] pointer-events-none" />
-
-        <div className="max-w-7xl mx-auto px-6 grid grid-cols-1 lg:grid-cols-12 gap-16 items-center relative z-10 w-full">
-          {/* Left Column (Text & CTAs) */}
-          <div className="lg:col-span-7 space-y-8 text-left">
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#EADBB9]/10 border border-[#EADBB9]/20 text-[#EADBB9] text-[10px] font-black uppercase tracking-widest">
-              <Sparkles className="w-3.5 h-3.5" />
-              Tecnologia & Desenvolvimento Premium
+      {/* ── HERO: proposta de valor ── */}
+      <section className="relative pt-32 pb-24 md:pt-40 md:pb-32 overflow-hidden border-b border-white/5">
+        <div className="absolute top-[-120px] left-1/2 -translate-x-1/2 w-[900px] h-[420px] rounded-full bg-[#EADBB9]/10 blur-[140px] pointer-events-none" />
+        <div className="absolute bottom-[-80px] right-[-5%] w-[420px] h-[420px] rounded-full bg-blue-500/10 blur-[140px] pointer-events-none" />
+        <div className="max-w-7xl mx-auto px-6 grid grid-cols-1 lg:grid-cols-12 gap-14 items-center relative z-10">
+          <div className="lg:col-span-7">
+            <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-[#EADBB9]/10 border border-[#EADBB9]/20 text-[#EADBB9] text-[10px] font-black uppercase tracking-widest mb-6"><Sparkles className="w-3.5 h-3.5" /> Soluções digitais para pequenos negócios</div>
+            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black text-white leading-[1.02] tracking-tight font-display">Seu negócio mais fácil de <span className="text-[#EADBB9]">encontrar, conhecer e comprar.</span></h1>
+            <p className="mt-6 text-slate-300 text-base sm:text-lg leading-relaxed max-w-2xl">A Konnexy conecta Google, WhatsApp, sites, catálogos, NFC/QR, anúncios e sistemas para melhorar sua presença digital e facilitar o caminho do cliente até o contato ou a compra.</p>
+            <div className="mt-8 flex flex-wrap gap-3 text-xs font-bold text-slate-300">{["Google & Maps","Sites","Catálogos","NFC + QR","Tráfego Pago","Sistemas"].map(item => <span key={item} className="px-3 py-2 rounded-full border border-white/10 bg-white/[0.04]">{item}</span>)}</div>
+            <div className="mt-9 flex flex-wrap gap-4">
+              <Button asChild className="h-14 px-7 rounded-2xl text-xs font-black uppercase tracking-widest bg-[#EADBB9] hover:bg-[#EADBB9]/90 text-[#030c1b]"><a href="https://wa.me/5516991551200?text=Olá,%20vi%20o%20site%20da%20Konnexy%20e%20quero%20uma%20análise%20do%20meu%20negócio." target="_blank" rel="noopener noreferrer">Quero uma análise inicial</a></Button>
+              <Button asChild variant="outline" className="h-14 px-7 rounded-2xl text-xs font-black uppercase tracking-widest border-white/15 text-white hover:bg-white/5"><a href="#produtos">Ver soluções</a></Button>
             </div>
-            
-            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-black text-white leading-[1.08] tracking-tight font-display">
-              O Brilho da Transformação Digital: Conheça a Nova Identidade da Konnexy
-            </h1>
-            
-            <div className="text-slate-400 text-sm sm:text-base leading-relaxed max-w-2xl space-y-4">
-              <p>A evolução é uma constante no universo da tecnologia, mas na Konnexy, acreditamos que evoluir também significa honrar o caminho de quem trabalha para crescer. Nossa nova identidade visual nasce do encontro entre a força da natureza e o infinito das soluções digitais.</p>
-              <p>Nosso mascote, o peixe Koi, é o símbolo milenar da persistência, da superação e da adaptabilidade. Assim como a carpa que nada contra a correnteza para alcançar o topo, os pequenos comércios e indústrias locais enfrentam desafios diários para prosperar. A Konnexy entra nessa jornada como a tecnologia que impulsiona esse movimento, transformando circuitos e linhas de código em caminhos de sucesso.</p>
-              <p>Para guiar essa nova fase, escolhemos as cores da lua cheia. A lua não tem luz própria; ela reflete o sol e ilumina a noite mais escura. Da mesma forma, nosso propósito não é apenas aparecer, mas ser o reflexo do potencial do seu negócio, iluminando sua presença digital através de sites, catálogos, links profissionais e sistemas integrados.</p>
-              <p className="font-bold text-[#EADBB9]">Konnexy: Conectando o seu esforço ao futuro da tecnologia.</p>
-            </div>
-
-            <div className="flex flex-wrap items-center gap-4">
-              <Button asChild className="h-14 px-8 rounded-2xl text-xs font-black uppercase tracking-widest bg-[#EADBB9] hover:bg-[#EADBB9]/90 text-[#030c1b] shadow-xl shadow-[#EADBB9]/5 transition-all hover:scale-[1.02] active:scale-95 border border-[#EADBB9]/20">
-                <a href="#produtos">
-                  Conhecer Soluções
-                </a>
-              </Button>
-              <Button asChild variant="outline" className="h-14 px-8 rounded-2xl text-xs font-black uppercase tracking-widest border border-[#C5CAD2]/10 hover:border-[#EADBB9]/30 hover:bg-[#030c1b]/60 text-white transition-all hover:scale-[1.02] backdrop-blur-md">
-                <a href="https://wa.me/5516991551200?text=Olá,%20gostaria%20de%20solicitar%20uma%20demonstração%20das%20soluções%20da%20Konnexy" target="_blank" rel="noopener noreferrer">
-                  Solicitar Demonstração
-                </a>
-              </Button>
-            </div>
+            <p className="mt-4 text-[11px] text-slate-500">Sem pacote obrigatório: primeiro entendemos o que faz sentido melhorar no seu negócio.</p>
           </div>
-
-          {/* Right Column (Mockups & Floating Stats) */}
-          <div className="lg:col-span-5 relative flex justify-center items-center mt-10 lg:mt-0">
-            {/* Lunar Glow Effect */}
-            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[120%] h-[120%] bg-[radial-gradient(circle_at_center,rgba(234,219,185,0.12),transparent_65%)] blur-3xl pointer-events-none" />
-
-            {/* Brand Identity Mockup */}
-            <div className="relative z-10 w-full max-w-[460px] aspect-[4/3] rounded-[2rem] overflow-hidden border border-[#C5CAD2]/10 shadow-2xl shadow-black/80">
-              <Image 
-                src="/images/koi_hero.png" 
-                alt="Konnexy Koi Brand Identity" 
-                fill
-                className="object-cover"
-                priority
-              />
+          <div className="lg:col-span-5">
+            <div className="relative rounded-[2rem] border border-[#EADBB9]/20 bg-white/[0.035] p-6 sm:p-8 shadow-2xl shadow-black/50 overflow-hidden">
+              <div className="absolute inset-0 bg-gradient-to-br from-[#EADBB9]/10 via-transparent to-blue-500/10" />
+              <div className="relative">
+                <span className="text-[10px] font-black uppercase tracking-[0.25em] text-[#EADBB9]">Diagnóstico → solução</span>
+                <h2 className="mt-3 text-2xl font-black text-white">Não vendemos tecnologia por vender.</h2>
+                <p className="mt-3 text-sm text-slate-400 leading-relaxed">Identificamos o gargalo e indicamos a solução adequada ao momento do negócio.</p>
+                <div className="mt-7 space-y-3">
+                  {[
+                    {icon:Search, problem:"Não aparece bem nas buscas", solution:"Google + presença local"},
+                    {icon:MessageCircle, problem:"Atendimento repetitivo", solution:"Catálogo, página ou automação"},
+                    {icon:Megaphone, problem:"Precisa alcançar mais pessoas", solution:"Tráfego pago + estrutura de conversão"},
+                    {icon:Settings2, problem:"Processo desorganizado", solution:"Sistema sob medida"}
+                  ].map(({icon:ItemIcon,problem,solution}) => <div key={problem} className="flex items-center gap-3 rounded-2xl border border-white/10 bg-[#030c1b]/70 p-3.5"><div className="w-9 h-9 rounded-xl bg-[#EADBB9]/10 text-[#EADBB9] flex items-center justify-center shrink-0"><ItemIcon className="w-4 h-4" /></div><div><p className="text-xs font-bold text-white">{problem}</p><p className="text-[10px] text-slate-500 mt-0.5">{solution}</p></div></div>)}
+                </div>
+              </div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* ── NOSSOS PRODUTOS SECTION ── */}
+      {/* ── SERVIÇOS SECTION ── */}
       <section id="produtos" className="py-24 max-w-7xl mx-auto px-6 relative border-b border-white/5">
         <div className="text-center max-w-3xl mx-auto mb-20">
-          <span className="text-xs font-black uppercase tracking-[0.3em] text-[#EADBB9] mb-3 block">Nossos Produtos</span>
+          <span className="text-xs font-black uppercase tracking-[0.3em] text-[#EADBB9] mb-3 block">Soluções Konnexy</span>
           <h2 className="text-4xl md:text-5xl font-black text-white leading-tight font-display mb-4">
-            Plataformas digitais desenhadas para o seu nicho.
+            O digital certo para o problema certo.
           </h2>
           <p className="text-slate-400 text-sm md:text-base max-w-xl mx-auto leading-relaxed">
-            Esqueça sistemas engessados. Desenvolvemos interfaces intuitivas integradas e prontas para uso.
+            Você não precisa contratar tudo. Combinamos apenas as soluções que ajudam seu negócio a ser encontrado, atender melhor e criar novas oportunidades.
           </p>
         </div>
 
@@ -332,7 +196,7 @@ export function KonnexyLanding() {
                     <div className="w-12 h-12 rounded-2xl bg-[#C5CAD2]/5 flex items-center justify-center text-[#EADBB9] group-hover:bg-[#EADBB9]/10 transition-colors">
                       <Icon className="w-6 h-6" />
                     </div>
-                    <span className="text-[9px] font-black uppercase tracking-widest text-slate-500">SaaS Premium</span>
+                    <span className="text-[9px] font-black uppercase tracking-widest text-slate-500">Solução profissional</span>
                   </div>
 
                   {/* Title & Description */}
@@ -343,7 +207,7 @@ export function KonnexyLanding() {
 
                   {/* Features / Benefits */}
                   <div className="space-y-4 mb-8">
-                    <h4 className="text-[9px] font-black uppercase tracking-widest text-slate-500">Recursos principais:</h4>
+                    <h4 className="text-[9px] font-black uppercase tracking-widest text-slate-500">O que pode incluir:</h4>
                     <ul className="space-y-2.5">
                       {product.recursos.slice(0, 5).map((rec, rIdx) => (
                         <li key={rIdx} className="flex items-center gap-2 text-[11px] text-slate-300 font-medium">
@@ -411,20 +275,20 @@ export function KonnexyLanding() {
         <div className="text-center max-w-3xl mx-auto mb-20">
           <span className="text-xs font-black uppercase tracking-[0.3em] text-[#EADBB9] mb-3 block">Fluxo de Entrega</span>
           <h2 className="text-4xl md:text-5xl font-black text-white leading-tight font-display mb-4">
-            Sua plataforma no ar em quatro etapas simples.
+            Da análise à solução, sem complicação.
           </h2>
           <p className="text-slate-400 text-sm md:text-base max-w-xl mx-auto leading-relaxed">
-            Cuidamos de toda a engenharia técnica e design para você focar no crescimento da sua marca.
+            Primeiro entendemos como seu negócio vende e atende. Depois indicamos e implantamos somente o que fizer sentido.
           </p>
         </div>
 
         {/* Steps Cards */}
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8 relative">
           {[
-            { num: "01", title: "Escolha a solução ideal", desc: "Selecione o produto base da Konnexy que melhor se encaixa no seu nicho de atuação." },
-            { num: "02", title: "Personalização completa", desc: "Nossa equipe adapta layouts, cores, recursos e integrações com o WhatsApp para sua marca." },
-            { num: "03", title: "Publicação no domínio", desc: "Configuramos os servidores, certificado SSL e publicamos a plataforma sob o seu domínio próprio." },
-            { num: "04", title: "Comece a utilizar", desc: "Sua plataforma digital pronta, validada e apta para receber pedidos e agendamentos imediatamente." }
+            { num: "01", title: "Análise inicial", desc: "Entendemos seus canais atuais, presença digital e principal dificuldade." },
+            { num: "02", title: "Prioridade e proposta", desc: "Mostramos o que melhorar primeiro e montamos uma proposta adequada ao momento do negócio." },
+            { num: "03", title: "Implantação", desc: "Configuramos a solução, conteúdo, integrações e canais necessários." },
+            { num: "04", title: "Acompanhamento", desc: "Entregamos a estrutura pronta e orientamos como usar, divulgar e evoluir a solução." }
           ].map((step, idx) => (
             <div key={idx} className="bg-[#081426]/50 border border-white/5 p-8 rounded-[2rem] relative flex flex-col justify-between min-h-[220px]">
               <div>
@@ -634,16 +498,16 @@ export function KonnexyLanding() {
 
         <div className="max-w-4xl mx-auto px-6 text-center relative z-10 space-y-8">
           <h2 className="text-4xl sm:text-5xl font-black text-white tracking-tight font-display leading-tight">
-            Pronto para modernizar seu negócio?
+            Quer descobrir o que faria mais diferença no seu negócio hoje?
           </h2>
           <p className="text-slate-400 text-sm leading-relaxed max-w-xl mx-auto font-medium">
-            Escolha uma das soluções da Konnexy e tenha uma plataforma profissional desenvolvida especialmente para sua empresa.
+            Mostre seu negócio para a Konnexy. Fazemos uma análise inicial e indicamos por onde começar, sem empurrar um pacote desnecessário.
           </p>
 
           <div className="flex flex-wrap justify-center items-center gap-4">
             <Button asChild className="h-14 px-8 rounded-2xl text-xs font-black uppercase tracking-widest bg-white text-black hover:bg-white/90 shadow-xl shadow-white/5 transition-all">
               <a href="https://wa.me/5516991551200?text=Olá,%20gostaria%20de%20solicitar%20uma%20demonstração%20das%20soluções%20da%20Konnexy" target="_blank" rel="noopener noreferrer">
-                Solicitar Demonstração
+                Solicitar análise
               </a>
             </Button>
             <Button asChild variant="outline" className="h-14 px-8 rounded-2xl text-xs font-black uppercase tracking-widest border border-[#EADBB9]/30 hover:border-[#EADBB9]/50 text-[#EADBB9] hover:bg-[#EADBB9]/5 transition-all">
