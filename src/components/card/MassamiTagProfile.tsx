@@ -637,20 +637,41 @@ export function MassamiTagProfile({
         isPreview ? 'min-h-full' : 'min-h-screen'
       } bg-zinc-950 text-zinc-100 flex flex-col justify-between selection:bg-amber-500/30 selection:text-amber-200 overflow-x-hidden`}
     >
-      {/* Atmosfera Representativa Global ao Fundo da Página */}
-      {!isCoverVideo && (
-        <div
-          aria-hidden="true"
-          className="fixed inset-0 pointer-events-none z-0 overflow-hidden"
-        >
+      {/* Atmosfera global padrão: a mídia do perfil também preenche o espaço externo */}
+      <div
+        aria-hidden="true"
+        className="fixed inset-0 pointer-events-none z-0 overflow-hidden bg-zinc-950"
+      >
+        {isCoverVideo ? (
+          <video
+            src={coverUrl}
+            autoPlay
+            muted
+            loop
+            playsInline
+            className="absolute inset-0 h-full w-full object-cover scale-110 opacity-45 blur-xl"
+          />
+        ) : (
           <img
             src={coverUrl}
             alt=""
-            className="w-full h-full object-cover opacity-20 blur-2xl scale-110"
+            className="absolute inset-0 h-full w-full object-cover scale-110 opacity-50 blur-xl"
           />
-          <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-zinc-950/90 to-zinc-950" />
-        </div>
-      )}
+        )}
+        <div
+          className="absolute inset-0"
+          style={{
+            background: `radial-gradient(circle at 50% 8%, ${primaryNeonColor}29 0%, transparent 42%)`
+          }}
+        />
+        <div className="absolute inset-0 bg-gradient-to-b from-black/35 via-zinc-950/60 to-zinc-950/95" />
+        <div
+          className="absolute inset-0 opacity-60"
+          style={{
+            background: `linear-gradient(115deg, transparent 0%, ${primaryNeonColor}14 38%, transparent 62%)`
+          }}
+        />
+      </div>
 
       {/* Container Mobile-First Centrado */}
       <main
@@ -679,16 +700,16 @@ export function MassamiTagProfile({
                 muted
                 loop
                 playsInline
-                className="absolute inset-0 w-full h-full object-cover opacity-65"
+                className="absolute inset-0 w-full h-full object-cover opacity-85"
               />
             ) : (
               <img
                 src={coverUrl}
                 alt={displayName}
-                className="absolute inset-0 w-full h-full object-cover object-center opacity-65 transition-transform duration-700 hover:scale-105"
+                className="absolute inset-0 w-full h-full object-cover object-center opacity-90 transition-transform duration-700 hover:scale-105"
               />
             )}
-            <div className="absolute inset-0 bg-gradient-to-b from-black/25 via-black/55 to-zinc-950/95" />
+            <div className="absolute inset-0 bg-gradient-to-b from-black/5 via-black/30 to-zinc-950/90" />
 
             {/* Ações Rápidas no Topo */}
             <div className="absolute top-3.5 right-3.5 flex items-center gap-2 z-20">
