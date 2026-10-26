@@ -735,35 +735,91 @@ export function MassamiTagProfile({
             </div>
           </div>
 
-          {/* Conteúdo do Hero Identidade — continuidade visual da capa, sem bloco preto chapado */}
-          <div
-            className="relative -mt-14 px-5 pb-6 pt-1 flex flex-col items-center text-center z-10 overflow-hidden"
-            style={{
-              background: `
-                radial-gradient(ellipse at 50% 0%, ${primaryNeonColor}38 0%, ${primaryNeonColor}12 34%, transparent 62%),
-                linear-gradient(to bottom, rgba(9,9,11,0.18) 0%, rgba(9,9,11,0.78) 42%, rgba(9,9,11,0.96) 100%)
-              `
-            }}
-          >
+          {/* Conteúdo do Hero Identidade — composição imersiva inspirada no mock aprovado */}
+          <div className="relative -mt-16 min-h-[250px] px-5 pb-6 pt-3 flex flex-col items-center text-center z-10 overflow-hidden bg-zinc-950">
+            {/* Continuidade real da capa por trás do conteúdo */}
             <div aria-hidden="true" className="pointer-events-none absolute inset-0 z-0 overflow-hidden">
+              {isCoverVideo ? (
+                <video
+                  src={coverUrl}
+                  autoPlay
+                  muted
+                  loop
+                  playsInline
+                  className="absolute inset-0 h-full w-full object-cover scale-125 opacity-45 blur-2xl"
+                />
+              ) : (
+                <img
+                  src={coverUrl}
+                  alt=""
+                  className="absolute inset-0 h-full w-full object-cover scale-125 opacity-50 blur-2xl"
+                />
+              )}
+
+              {/* Profundidade e vinheta */}
+              <div className="absolute inset-0 bg-gradient-to-b from-zinc-950/5 via-zinc-950/65 to-zinc-950/95" />
               <div
-                className="absolute -left-16 bottom-10 h-px w-[125%] rotate-[9deg] opacity-70"
+                className="absolute inset-x-0 top-0 h-40 opacity-90"
                 style={{
-                  background: `linear-gradient(90deg, transparent, ${primaryNeonColor}, transparent)`,
-                  boxShadow: `0 0 14px ${primaryNeonColor}99`
+                  background: `radial-gradient(ellipse at 50% 0%, ${primaryNeonColor}55 0%, ${primaryNeonColor}20 34%, transparent 70%)`
+                }}
+              />
+
+              {/* Feixes de luz do mock */}
+              <div
+                className="absolute -left-24 top-[44%] h-[2px] w-[145%] rotate-[10deg] opacity-80 blur-[0.2px]"
+                style={{
+                  background: `linear-gradient(90deg, transparent 0%, ${primaryNeonColor}55 20%, ${primaryNeonColor} 50%, ${secondaryNeonColor}bb 72%, transparent 100%)`,
+                  boxShadow: `0 0 12px ${primaryNeonColor}, 0 0 28px ${primaryNeonColor}77`
                 }}
               />
               <div
-                className="absolute -right-20 bottom-16 h-px w-[115%] -rotate-[8deg] opacity-45"
+                className="absolute -right-24 top-[62%] h-px w-[140%] -rotate-[9deg] opacity-65"
                 style={{
-                  background: `linear-gradient(90deg, transparent, ${secondaryNeonColor}, transparent)`,
-                  boxShadow: `0 0 12px ${secondaryNeonColor}88`
+                  background: `linear-gradient(90deg, transparent, ${secondaryNeonColor}, ${primaryNeonColor}aa, transparent)`,
+                  boxShadow: `0 0 10px ${secondaryNeonColor}, 0 0 24px ${secondaryNeonColor}66`
                 }}
               />
               <div
-                className="absolute left-1/2 top-2 h-28 w-64 -translate-x-1/2 rounded-full blur-3xl opacity-20"
+                className="absolute -left-20 bottom-6 h-px w-[130%] rotate-[5deg] opacity-35"
+                style={{ background: `linear-gradient(90deg, transparent, ${primaryNeonColor}, transparent)` }}
+              />
+
+              {/* Glows laterais e centrais */}
+              <div
+                className="absolute -left-16 top-14 h-40 w-40 rounded-full blur-3xl opacity-30"
                 style={{ backgroundColor: primaryNeonColor }}
               />
+              <div
+                className="absolute -right-16 bottom-4 h-44 w-44 rounded-full blur-3xl opacity-25"
+                style={{ backgroundColor: secondaryNeonColor }}
+              />
+              <div
+                className="absolute left-1/2 top-0 h-36 w-72 -translate-x-1/2 rounded-full blur-3xl opacity-25"
+                style={{ backgroundColor: primaryNeonColor }}
+              />
+
+              {/* Pontos luminosos discretos */}
+              {[
+                ['12%', '34%', primaryNeonColor],
+                ['88%', '28%', secondaryNeonColor],
+                ['18%', '78%', secondaryNeonColor],
+                ['82%', '72%', primaryNeonColor]
+              ].map(([left, top, color], index) => (
+                <span
+                  key={index}
+                  className="absolute h-1.5 w-1.5 rounded-full opacity-80"
+                  style={{
+                    left,
+                    top,
+                    backgroundColor: color,
+                    boxShadow: `0 0 7px ${color}, 0 0 14px ${color}`
+                  }}
+                />
+              ))}
+
+              {/* Vinheta final para manter leitura */}
+              <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_25%,rgba(9,9,11,0.22)_65%,rgba(9,9,11,0.72)_100%)]" />
             </div>
 
             {/* Avatar Circular com Anel Néon */}
