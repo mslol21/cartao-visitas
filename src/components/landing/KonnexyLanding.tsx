@@ -32,7 +32,8 @@ import {
   Search,
   QrCode,
   Megaphone,
-  Settings2
+  Settings2,
+  ArrowRight
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Navbar } from "./Navbar";
