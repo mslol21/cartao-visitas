@@ -637,20 +637,41 @@ export function MassamiTagProfile({
         isPreview ? 'min-h-full' : 'min-h-screen'
       } bg-zinc-950 text-zinc-100 flex flex-col justify-between selection:bg-amber-500/30 selection:text-amber-200 overflow-x-hidden`}
     >
-      {/* Atmosfera Representativa Global ao Fundo da Página */}
-      {!isCoverVideo && (
-        <div
-          aria-hidden="true"
-          className="fixed inset-0 pointer-events-none z-0 overflow-hidden"
-        >
+      {/* Atmosfera global: reaproveita a própria capa para eliminar o vazio preto no desktop */}
+      <div
+        aria-hidden="true"
+        className="fixed inset-0 pointer-events-none z-0 overflow-hidden bg-zinc-950"
+      >
+        {isCoverVideo ? (
+          <video
+            src={coverUrl}
+            autoPlay
+            muted
+            loop
+            playsInline
+            className={`absolute inset-0 h-full w-full object-cover scale-110 ${
+              profKey === 'chef_eventos' ? 'opacity-45 blur-xl' : 'opacity-20 blur-2xl'
+            }`}
+          />
+        ) : (
           <img
             src={coverUrl}
             alt=""
-            className="w-full h-full object-cover opacity-20 blur-2xl scale-110"
+            className={`absolute inset-0 h-full w-full object-cover scale-110 ${
+              profKey === 'chef_eventos' ? 'opacity-50 blur-xl' : 'opacity-20 blur-2xl'
+            }`}
           />
+        )}
+        {profKey === 'chef_eventos' ? (
+          <>
+            <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_8%,rgba(245,158,11,0.16),transparent_42%)]" />
+            <div className="absolute inset-0 bg-gradient-to-b from-black/35 via-zinc-950/60 to-zinc-950/95" />
+            <div className="absolute inset-0 opacity-60 bg-[linear-gradient(115deg,transparent_0%,rgba(245,158,11,0.08)_38%,transparent_62%)]" />
+          </>
+        ) : (
           <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-zinc-950/90 to-zinc-950" />
-        </div>
-      )}
+        )}
+      </div>
 
       {/* Container Mobile-First Centrado */}
       <main
@@ -679,16 +700,26 @@ export function MassamiTagProfile({
                 muted
                 loop
                 playsInline
-                className="absolute inset-0 w-full h-full object-cover opacity-65"
+                className={`absolute inset-0 w-full h-full object-cover ${
+                  profKey === 'chef_eventos' ? 'opacity-85' : 'opacity-65'
+                }`}
               />
             ) : (
               <img
                 src={coverUrl}
                 alt={displayName}
-                className="absolute inset-0 w-full h-full object-cover object-center opacity-65 transition-transform duration-700 hover:scale-105"
+                className={`absolute inset-0 w-full h-full object-cover transition-transform duration-700 hover:scale-105 ${
+                  profKey === 'chef_eventos' ? 'object-[center_38%] opacity-90' : 'object-center opacity-65'
+                }`}
               />
             )}
-            <div className="absolute inset-0 bg-gradient-to-b from-black/25 via-black/55 to-zinc-950/95" />
+            <div
+              className={`absolute inset-0 ${
+                profKey === 'chef_eventos'
+                  ? 'bg-gradient-to-b from-black/5 via-black/30 to-zinc-950/90'
+                  : 'bg-gradient-to-b from-black/25 via-black/55 to-zinc-950/95'
+              }`}
+            />
 
             {/* Ações Rápidas no Topo */}
             <div className="absolute top-3.5 right-3.5 flex items-center gap-2 z-20">
