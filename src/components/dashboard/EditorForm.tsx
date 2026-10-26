@@ -727,7 +727,7 @@ export function EditorForm({ initialData, onSubmit, onChange, isPro = false, can
             <div className="relative group/avatar w-32 h-32 mx-auto">
               <div className="w-full h-full rounded-3xl border-2 border-dashed border-muted-foreground/25 overflow-hidden bg-card flex items-center justify-center transition-all group-hover/avatar:border-primary/50">
                 {formData.photo_url ? (
-                  <img src={formData.photo_url} alt="Avatar" className="w-full h-full object-cover" />
+                  <img src={formData.photo_url} alt="Avatar" className="w-full h-full object-cover object-center" />
                 ) : (
                   <Camera className="w-8 h-8 text-muted-foreground/50" />
                 )}
@@ -2303,7 +2303,7 @@ export function EditorForm({ initialData, onSubmit, onChange, isPro = false, can
                 {!isPro && <span className="text-[10px] bg-primary/10 text-primary px-2 py-1 rounded-full font-black">PRO</span>}
               </div>
               
-              <div className={cn("grid grid-cols-2 gap-3", (!isPro && !canCustomizeTheme) && "opacity-40 pointer-events-none")}>
+              <div className={cn("grid grid-cols-2 gap-3", (!isPro && !canCustomizeTheme) && "opacity-60")}>
                 {['Inter', 'Outfit', 'Playfair Display', 'Sora', 'Plus Jakarta Sans', 'Bento'].map((font) => (
                   <button
                     key={font}
@@ -2347,8 +2347,8 @@ export function EditorForm({ initialData, onSubmit, onChange, isPro = false, can
                 {/* Active Preview / Main Upload Card */}
                 <div 
                   className={cn(
-                    "relative group/video rounded-[2.5rem] overflow-hidden border-2 transition-all bg-slate-100 dark:bg-slate-900",
-                    formData.background_video_url ? "border-primary/20 aspect-video" : "border-dashed border-slate-300 dark:border-slate-700 aspect-[21/9] hover:border-primary/50"
+                    "relative group/video rounded-[1.75rem] overflow-hidden border-2 transition-all bg-slate-100 dark:bg-slate-950 shadow-inner",
+                    formData.background_video_url ? "border-primary/30 aspect-video min-h-[220px] sm:min-h-[280px]" : "border-dashed border-slate-300 dark:border-slate-700 aspect-video min-h-[220px] hover:border-primary/50"
                   )}
                   onClick={() => !formData.background_video_url && videoInputRef.current?.click()}
                 >
@@ -2370,10 +2370,10 @@ export function EditorForm({ initialData, onSubmit, onChange, isPro = false, can
                           alt="Background"
                         />
                       )}
-                      <div className="absolute inset-0 bg-black/40 opacity-0 group-hover/video:opacity-100 transition-all flex items-center justify-center gap-3 backdrop-blur-sm">
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/55 via-black/5 to-transparent opacity-100 transition-all flex items-end justify-center gap-3 p-5">
                         <Button 
                           size="sm" 
-                          className="rounded-full font-black uppercase text-[10px] bg-white text-black hover:bg-white/90"
+                          className="rounded-full font-black uppercase text-[10px] bg-white/95 text-black hover:bg-white shadow-xl"
                           onClick={(e) => {
                             e.stopPropagation();
                             videoInputRef.current?.click();
