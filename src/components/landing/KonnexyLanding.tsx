@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { 
   Check, 
@@ -111,6 +111,28 @@ const FAQS = [
 export function KonnexyLanding() {
   const [openFaqIdx, setOpenFaqIdx] = useState<number | null>(null);
   const [selectedDemoImage, setSelectedDemoImage] = useState<string | null>(null);
+  const [showIntro, setShowIntro] = useState(true);
+
+  useEffect(() => {
+    const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (reduceMotion) {
+      setShowIntro(false);
+      return;
+    }
+
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    const timer = window.setTimeout(() => setShowIntro(false), 1750);
+
+    return () => {
+      window.clearTimeout(timer);
+      document.body.style.overflow = previousOverflow;
+    };
+  }, []);
+
+  useEffect(() => {
+    if (!showIntro) document.body.style.overflow = "";
+  }, [showIntro]);
 
   const toggleFaq = (idx: number) => {
     setOpenFaqIdx(openFaqIdx === idx ? null : idx);
@@ -118,7 +140,61 @@ export function KonnexyLanding() {
 
   return (
     <div className="bg-[#050711] text-slate-100 font-sans min-h-screen selection:bg-cyan-400/30 selection:text-white relative overflow-x-hidden">
-      
+      <AnimatePresence>
+        {showIntro && (
+          <motion.div
+            key="konnexy-intro"
+            initial={{ opacity: 1 }}
+            exit={{ opacity: 0, scale: 1.025 }}
+            transition={{ duration: 0.45, ease: [0.4, 0, 0.2, 1] }}
+            className="fixed inset-0 z-[999] flex items-center justify-center overflow-hidden bg-[#03040b]"
+          >
+            <motion.div
+              initial={{ opacity: 0, scale: 0.72, filter: "blur(12px)" }}
+              animate={{ opacity: 1, scale: 1, filter: "blur(0px)" }}
+              transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+              className="relative flex flex-col items-center"
+            >
+              <motion.div
+                aria-hidden="true"
+                initial={{ opacity: 0, scale: 0.55 }}
+                animate={{ opacity: [0, 0.9, 0.35], scale: [0.55, 1.15, 1.45] }}
+                transition={{ duration: 1.5, times: [0, 0.45, 1], ease: "easeOut" }}
+                className="absolute h-64 w-64 rounded-full bg-gradient-to-r from-cyan-400/30 via-violet-500/30 to-fuchsia-500/30 blur-3xl"
+              />
+              <motion.div
+                initial={{ rotate: -8 }}
+                animate={{ rotate: 0 }}
+                transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+                className="relative"
+              >
+                <div className="absolute -inset-6 rounded-[2rem] bg-gradient-to-r from-cyan-400/25 via-violet-500/25 to-fuchsia-500/25 blur-2xl" />
+                <div className="relative flex h-28 w-28 items-center justify-center rounded-[2rem] border border-white/10 bg-[#080b18]/90 p-4 shadow-[0_0_55px_rgba(124,58,237,0.28)] backdrop-blur-xl">
+                  <img src="/logo.png" alt="Konnexy" className="h-full w-full object-contain drop-shadow-[0_0_20px_rgba(34,211,238,0.35)]" />
+                </div>
+              </motion.div>
+              <motion.div
+                initial={{ opacity: 0, y: 14 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.35, duration: 0.5 }}
+                className="mt-6 text-center"
+              >
+                <div className="text-3xl font-black tracking-tight text-white">Konnexy</div>
+                <div className="mt-2 text-[10px] font-black uppercase tracking-[0.34em] text-transparent bg-clip-text bg-gradient-to-r from-cyan-300 via-violet-300 to-fuchsia-300">
+                  Conecta • Organiza • Vende
+                </div>
+              </motion.div>
+              <motion.div
+                initial={{ scaleX: 0, opacity: 0 }}
+                animate={{ scaleX: 1, opacity: 1 }}
+                transition={{ delay: 0.55, duration: 0.75, ease: "easeOut" }}
+                className="mt-6 h-px w-44 origin-center bg-gradient-to-r from-transparent via-cyan-300 to-transparent shadow-[0_0_12px_rgba(34,211,238,0.75)]"
+              />
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
       {/* Navbar */}
       <Navbar />
 
