@@ -1183,15 +1183,17 @@ END:VCARD`;
                     )}
                   </div>
 
-                  {/* Premium Dark Overlay */}
+                  {/* Overlay adaptativo: preserva a imagem e concentra contraste onde o conteúdo precisa */}
                   <div 
                     className="absolute inset-0 z-10"
                     style={{
-                      background: 'linear-gradient(to bottom, rgba(11,26,43,0.5), rgba(11,26,43,0.95))'
+                      background: data.profession === 'chef_eventos'
+                        ? 'linear-gradient(to bottom, rgba(7,7,7,0.08) 0%, rgba(7,7,7,0.22) 34%, rgba(7,7,7,0.72) 72%, rgba(7,7,7,0.94) 100%)'
+                        : 'linear-gradient(to bottom, rgba(11,26,43,0.22) 0%, rgba(11,26,43,0.58) 58%, rgba(11,26,43,0.92) 100%)'
                     }}
                   />
-                  {!isMusico && !((isPro || data.profession === 'esteticista' || data.profession === 'artesao' || data.profession === 'streetup') && (data.custom_fields as any)?.cor_fundo) && (
-                    <div className="absolute inset-0 bg-gradient-to-b from-slate-950/20 via-slate-950/60 to-slate-950" />
+                  {!isMusico && data.profession !== 'chef_eventos' && !((isPro || data.profession === 'esteticista' || data.profession === 'artesao' || data.profession === 'streetup') && (data.custom_fields as any)?.cor_fundo) && (
+                    <div className="absolute inset-0 bg-gradient-to-b from-slate-950/5 via-slate-950/25 to-slate-950/75" />
                   )}
                 </div>
               )}
