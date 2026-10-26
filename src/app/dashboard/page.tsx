@@ -268,10 +268,11 @@ function DashboardContent() {
           {activeTab === 'editor' && (
             <motion.div 
               key="editor"
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -10 }}
-              className="grid lg:grid-cols-[1fr,450px] gap-12 items-start"
+              initial={{ y: 10 }}
+              animate={{ y: 0 }}
+              exit={{ y: -10 }}
+              transition={{ duration: 0.2, ease: 'easeOut' }}
+              className="grid lg:grid-cols-[minmax(0,1fr),450px] gap-8 xl:gap-10 items-start opacity-100"
             >
               {/* LEFT: Management */}
               <div className="space-y-8">
@@ -303,7 +304,7 @@ function DashboardContent() {
                   )}
                 </div>
 
-                <div className="bg-white dark:bg-slate-900 rounded-[2.5rem] border border-slate-200/60 dark:border-slate-800/60 p-8 sm:p-10 shadow-2xl shadow-slate-200/50 dark:shadow-none">
+                <div className="relative z-10 bg-white/98 dark:bg-slate-900/98 rounded-[2rem] border border-slate-200/80 dark:border-slate-700/80 p-6 sm:p-8 shadow-xl shadow-slate-200/40 dark:shadow-black/20 isolate">
                   <EditorForm
                     initialData={currentData}
                     onSubmit={handleAutoSave}
@@ -338,7 +339,7 @@ function DashboardContent() {
 
               {/* RIGHT: Visual Reference */}
               <div className="lg:sticky lg:top-32 space-y-8">
-                <div className="bg-white dark:bg-slate-900 rounded-[2.5rem] border border-slate-200/60 dark:border-slate-800/60 p-10 shadow-2xl shadow-slate-200/50 dark:shadow-none relative overflow-hidden">
+                <div className="bg-white/98 dark:bg-slate-900/98 rounded-[2rem] border border-slate-200/80 dark:border-slate-700/80 p-6 shadow-xl shadow-slate-200/40 dark:shadow-black/20 relative overflow-hidden isolate">
                   <div className="absolute top-0 right-0 p-8 opacity-5">
                     <LayoutDashboard className="w-40 h-40" />
                   </div>
