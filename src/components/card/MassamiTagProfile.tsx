@@ -735,13 +735,42 @@ export function MassamiTagProfile({
             </div>
           </div>
 
-          {/* Conteúdo do Hero Identidade */}
-          <div className="relative -mt-14 px-5 pb-6 flex flex-col items-center text-center z-10">
+          {/* Conteúdo do Hero Identidade — continuidade visual da capa, sem bloco preto chapado */}
+          <div
+            className="relative -mt-14 px-5 pb-6 pt-1 flex flex-col items-center text-center z-10 overflow-hidden"
+            style={{
+              background: `
+                radial-gradient(ellipse at 50% 0%, ${primaryNeonColor}38 0%, ${primaryNeonColor}12 34%, transparent 62%),
+                linear-gradient(to bottom, rgba(9,9,11,0.18) 0%, rgba(9,9,11,0.78) 42%, rgba(9,9,11,0.96) 100%)
+              `
+            }}
+          >
+            <div aria-hidden="true" className="pointer-events-none absolute inset-0 z-0 overflow-hidden">
+              <div
+                className="absolute -left-16 bottom-10 h-px w-[125%] rotate-[9deg] opacity-70"
+                style={{
+                  background: `linear-gradient(90deg, transparent, ${primaryNeonColor}, transparent)`,
+                  boxShadow: `0 0 14px ${primaryNeonColor}99`
+                }}
+              />
+              <div
+                className="absolute -right-20 bottom-16 h-px w-[115%] -rotate-[8deg] opacity-45"
+                style={{
+                  background: `linear-gradient(90deg, transparent, ${secondaryNeonColor}, transparent)`,
+                  boxShadow: `0 0 12px ${secondaryNeonColor}88`
+                }}
+              />
+              <div
+                className="absolute left-1/2 top-2 h-28 w-64 -translate-x-1/2 rounded-full blur-3xl opacity-20"
+                style={{ backgroundColor: primaryNeonColor }}
+              />
+            </div>
+
             {/* Avatar Circular com Anel Néon */}
             <button
               type="button"
               onClick={() => setLightboxImage(avatarSrc)}
-              className="relative mb-3.5 group focus:outline-none"
+              className="relative z-10 mb-3.5 group focus:outline-none"
             >
               <div
                 aria-hidden="true"
@@ -762,24 +791,24 @@ export function MassamiTagProfile({
             </button>
 
             {/* Badge Superior */}
-            <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-zinc-900/90 border border-zinc-800 text-[10px] font-bold tracking-widest uppercase text-amber-400/90 mb-2 shadow-inner max-w-full truncate">
+            <span className="relative z-10 inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-zinc-900/85 backdrop-blur-md border border-zinc-800 text-[10px] font-bold tracking-widest uppercase text-amber-400/90 mb-2 shadow-inner max-w-full truncate">
               <Sparkles className="h-3 w-3 text-amber-400 shrink-0" />
               <span className="truncate">{topBadge}</span>
             </span>
 
             {/* Título Principal */}
-            <h1 className="text-2xl font-extrabold tracking-tight text-white">
+            <h1 className="relative z-10 text-2xl font-extrabold tracking-tight text-white drop-shadow-lg">
               {displayName}
             </h1>
 
             {/* Subtítulo / Bio */}
-            <p className="mt-2 text-xs sm:text-sm text-zinc-400 leading-relaxed max-w-sm whitespace-pre-line">
+            <p className="relative z-10 mt-2 text-xs sm:text-sm text-zinc-300 leading-relaxed max-w-sm whitespace-pre-line">
               {bioText}
             </p>
 
             {/* Localização e Horário */}
             {(locationText || hoursText) && (
-              <div className="mt-3.5 flex flex-wrap items-center justify-center gap-2">
+              <div className="relative z-10 mt-3.5 flex flex-wrap items-center justify-center gap-2">
                 {locationText && (
                   <span className="inline-flex items-center gap-1 text-[11px] text-zinc-300 bg-zinc-900/90 border border-zinc-800/90 px-2.5 py-1 rounded-full">
                     <MapPin className="h-3 w-3 text-amber-400 shrink-0" />
