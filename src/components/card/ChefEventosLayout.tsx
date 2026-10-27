@@ -140,8 +140,9 @@ export function ChefEventosLayout({ data, isPro }: ChefEventosLayoutProps) {
       : [];
 
   // Imagem de fundo estática
-  const bgImage: string | undefined = (isPro && data.background_video_url) || cf.imagem_fundo || cf.cor_fundo;
-  const hasBgImage = bgImage && (bgImage.startsWith('http') || bgImage.startsWith('/'));
+  const bgImage: string | undefined = (isPro && data.background_video_url) || cf.imagem_fundo;
+  const hasBgImage = Boolean(bgImage && (bgImage.startsWith('http') || bgImage.startsWith('/')));
+  const isBgVideo = Boolean(bgImage && /\.(mp4|webm|ogg|mov)(\?.*)?$/i.test(bgImage));
 
   // Services
   const rawServices = data.servicos || data.services || [];
@@ -180,63 +181,106 @@ export function ChefEventosLayout({ data, isPro }: ChefEventosLayoutProps) {
     <div
       className="w-full min-h-full flex flex-col overflow-x-hidden relative"
       style={{
-        backgroundColor: hasBgImage ? 'transparent' : (cf.cor_fundo || '#0a0a0a'),
+        backgroundColor: cf.cor_fundo || '#0a0a0a',
         color: textColor || '#ffffff',
         fontFamily: data.font_family || 'inherit',
       }}
     >
-      {/* ── IMAGEM DE FUNDO GLOBAL (quando definida localmente sem background_video_url) ── */}
-      {hasBgImage && !(isPro && data.background_video_url) && (
-        <>
-          <div
-            className="absolute inset-0 w-full h-full z-0"
-            style={{
-              backgroundImage: `url('${bgImage}')`,
-              backgroundSize: 'cover',
-              backgroundPosition: 'center',
-            }}
-          />
-          {/* Overlay escuro para garantir legibilidade */}
-          <div className="absolute inset-0 z-0" style={{ background: 'linear-gradient(to bottom, rgba(10,10,10,0.7) 0%, rgba(10,10,10,0.92) 100%)' }} />
-        </>
-      )}
-
-      {/* Todo o conteúdo fica acima do fundo */}
       <div className="relative z-10 flex flex-col w-full">
 
-        {/* ── HEADER IDENTIDADE DO PROFISSIONAL (Estática no topo) ── */}
-        <motion.div
-          custom={0} initial="hidden" animate="visible" variants={fadeUp}
-          className="px-5 pt-8 pb-4 flex flex-col items-center text-center relative"
-        >
-          {/* Avatar com borda premium */}
-          <div
-            className="relative w-28 h-28 rounded-full overflow-hidden shadow-2xl border-4 mb-4 transition-transform hover:scale-105 duration-500"
-            style={{ borderColor: themeHex }}
-          >
-            {data.photo_url ? (
-              <img src={data.photo_url} alt={data.business_name || ''} className="w-full h-full object-cover" />
-            ) : (
-              <div className="w-full h-full flex items-center justify-center text-4xl font-black" style={{ background: themeHex + '20', color: themeHex }}>
-                {(data.business_name || 'C')[0].toUpperCase()}
-              </div>
-            )}
-          </div>
-
-          {/* Nome + profissão */}
-          <div className="flex flex-col items-center w-full">
-            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[9px] font-black uppercase tracking-[0.2em] mb-3" style={{ backgroundColor: themeHex + '18', color: themeHex }}>
-              <Utensils className="w-3.5 h-3.5" />
-              Chef de Eventos
+        {/* ── HERO / CAPA DO PERFIL ── */}
+        <section className="relative min-h-[390px] overflow-hidden border-b border-white/5">
+          {hasBgImage ? (
+            <div className="absolute inset-0">
+              {isBgVideo ? (
+                <video
+                  src={bgImage}
+                  autoPlay
+                  muted
+                  loop
+                  playsInline
+                  className="h-full w-full object-cover"
+                  style={{ objectPosition: 'center 28%' }}
+                />
+              ) : (
+                <div
+                  className="h-full w-full bg-cover bg-no-repeat"
+                  style={{
+                    backgroundImage: `url('${bgImage}')`,
+                    backgroundPosition: 'center 28%',
+                  }}
+                />
+              )}
+              <div
+                className="absolute inset-0"
+                style={{
+                  background:
+                    'linear-gradient(to bottom, rgba(8,8,8,0.04) 0%, rgba(8,8,8,0.12) 34%, rgba(8,8,8,0.58) 66%, #0a0a0a 100%)'
+                }}
+              />
+              <div
+                className="absolute inset-0"
+                style={{
+                  background:
+                    `radial-gradient(circle at 50% 64%, ${themeHex}18 0%, transparent 38%)`
+                }}
+              />
             </div>
-            <h1 className="text-[28px] font-black tracking-tight leading-none uppercase text-white drop-shadow-lg mb-2">
-              {data.business_name || 'Chef'}
-            </h1>
-            {(data.subtitle || data.tagline) && (
-              <p className="text-[12px] text-white/50 font-medium tracking-wide max-w-[90%]">{data.subtitle || data.tagline}</p>
-            )}
-          </div>
-        </motion.div>
+          ) : (
+            <div
+              className="absolute inset-0"
+              style={{
+                background: `radial-gradient(circle at 50% 20%, ${themeHex}24 0%, transparent 42%), linear-gradient(180deg, #18110b 0%, #0a0a0a 100%)`
+              }}
+            />
+          )}
+
+          <motion.div
+            custom={0}
+            initial="hidden"
+            animate="visible"
+            variants={fadeUp}
+            className="relative z-10 min-h-[390px] px-5 pt-44 pb-7 flex flex-col items-center justify-end text-center"
+          >
+            <div
+              className="relative w-28 h-28 rounded-full overflow-hidden shadow-2xl border-[3px] mb-4 bg-black/70"
+              style={{
+                borderColor: themeHex,
+                boxShadow: `0 0 0 5px rgba(0,0,0,.55), 0 0 28px ${themeHex}55`
+              }}
+            >
+              {data.photo_url ? (
+                <img src={data.photo_url} alt={data.business_name || ''} className="w-full h-full object-cover" />
+              ) : (
+                <div className="w-full h-full flex items-center justify-center text-4xl font-black" style={{ background: themeHex + '20', color: themeHex }}>
+                  {(data.business_name || 'C')[0].toUpperCase()}
+                </div>
+              )}
+            </div>
+
+            <div className="flex flex-col items-center w-full">
+              <div
+                className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-[9px] font-black uppercase tracking-[0.2em] mb-3 border backdrop-blur-md"
+                style={{
+                  backgroundColor: 'rgba(10,10,10,.66)',
+                  borderColor: themeHex + '45',
+                  color: themeHex
+                }}
+              >
+                <Utensils className="w-3.5 h-3.5" />
+                Chef Particular de Eventos
+              </div>
+              <h1 className="text-[30px] font-black tracking-tight leading-none text-white drop-shadow-[0_3px_18px_rgba(0,0,0,.9)] mb-2">
+                {data.business_name || 'Chef'}
+              </h1>
+              {(data.subtitle || data.tagline) && (
+                <p className="text-[12px] text-white/80 font-medium tracking-wide max-w-[90%] drop-shadow-md">
+                  {data.subtitle || data.tagline}
+                </p>
+              )}
+            </div>
+          </motion.div>
+        </section>
 
         {/* ── TAGS: ESPECIALIDADE + CAPACIDADE ── */}
         {(cf.cozinha_especialidade || cf.capacidade_minima_pessoas || cf.capacidade_maxima_pessoas || tiposEventos.length > 0) && (

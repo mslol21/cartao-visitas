@@ -1157,7 +1157,7 @@ END:VCARD`;
                   )}
                </div>
 
-               {data.background_video_url && (isPro || isMusico || data.profession === 'area_lazer') && (
+               {data.background_video_url && data.profession !== 'chef_eventos' && (isPro || isMusico || data.profession === 'area_lazer') && (
                 <div className="absolute inset-0 overflow-hidden pointer-events-none transition-all z-0 flex flex-col items-center justify-start">
                   {/* Background Image/Video (Cover, Top Aligned) */}
                   <div className="absolute inset-0 w-full h-full z-0">
