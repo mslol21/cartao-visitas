@@ -92,12 +92,12 @@ export function KonnexyPageIntro({
                   initial={{ scale: 0.84, rotate: -4 }}
                   animate={{ scale: [0.84, 1.03, 1], rotate: [-4, 1, 0] }}
                   transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
-                  className="relative h-32 w-32 overflow-hidden rounded-[2.25rem] border border-cyan-300/25 bg-[#061529] shadow-[0_0_55px_rgba(34,211,238,.22)] sm:h-36 sm:w-36"
+                  className="relative w-[280px] max-w-[78vw] overflow-hidden rounded-[2rem] border border-cyan-300/20 bg-[#061529]/60 p-2 shadow-[0_0_55px_rgba(34,211,238,.20)] sm:w-[340px]"
                 >
                   <img
-                    src="/images/koi_hero.png"
+                    src="/logo.png"
                     alt="Konnexy"
-                    className="h-full w-full scale-110 object-cover object-center"
+                    className="h-auto w-full object-contain"
                   />
                   <div className="pointer-events-none absolute inset-0 bg-gradient-to-tr from-cyan-400/10 via-transparent to-amber-300/10" />
                 </motion.div>
