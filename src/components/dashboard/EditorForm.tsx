@@ -635,7 +635,7 @@ export function EditorForm({ initialData, onSubmit, onChange, isPro = false, can
   const maxServices = isPro ? 20 : 1;
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 text-slate-900 dark:text-slate-100">
       <div className="flex items-center justify-between">
         <h2 className="text-sm font-black uppercase tracking-widest text-muted-foreground flex items-center gap-2">
           <Layout className="w-4 h-4" />
@@ -678,7 +678,7 @@ export function EditorForm({ initialData, onSubmit, onChange, isPro = false, can
       </div>
 
       <Tabs defaultValue="basic" className="w-full">
-        <TabsList className="grid w-full grid-cols-2 sm:grid-cols-5 h-auto p-1.5 gap-2 bg-slate-100 dark:bg-slate-900/50 rounded-2xl border border-slate-200 dark:border-slate-800">
+        <TabsList className="grid w-full grid-cols-2 sm:grid-cols-5 h-auto p-1.5 gap-2 bg-slate-100 dark:bg-slate-800/90 rounded-2xl border border-slate-200 dark:border-slate-700">
           <TabsTrigger 
             value="basic" 
             className="data-[state=active]:bg-primary data-[state=active]:text-white data-[state=active]:shadow-lg transition-all duration-300 rounded-xl py-3 text-xs font-black uppercase tracking-wider flex items-center justify-center gap-2 hover:bg-white dark:hover:bg-slate-800"
@@ -743,7 +743,7 @@ export function EditorForm({ initialData, onSubmit, onChange, isPro = false, can
 
             <div className="grid gap-6">
               {/* 1. PADRONIZAÇÃO GLOBAL */}
-              <div className="p-6 rounded-3xl bg-slate-50 dark:bg-slate-900/50 border border-slate-200 dark:border-slate-800 space-y-4">
+              <div className="p-6 rounded-3xl bg-slate-50 dark:bg-slate-800/70 border border-slate-200 dark:border-slate-800 space-y-4">
                 <div className="flex items-center gap-2 mb-2">
                    <div className="p-2 bg-primary/10 rounded-lg">
                       <Globe className="w-4 h-4 text-primary" />
@@ -798,7 +798,7 @@ export function EditorForm({ initialData, onSubmit, onChange, isPro = false, can
                            if (onChange) onChange(updated);
                          }}
                      >
-                       <SelectTrigger className="rounded-2xl h-12 bg-white dark:bg-slate-950">
+                       <SelectTrigger className="rounded-2xl h-12 bg-white dark:bg-slate-900">
                          <SelectValue placeholder="Selecione sua profissão" />
                        </SelectTrigger>
                        <SelectContent className="rounded-2xl">
@@ -960,7 +960,7 @@ export function EditorForm({ initialData, onSubmit, onChange, isPro = false, can
                   </div>
                 </div>
 
-                <div className="flex items-center gap-3 p-4 bg-white/50 dark:bg-slate-950/50 rounded-2xl border border-slate-200 dark:border-slate-800">
+                <div className="flex items-center gap-3 p-4 bg-white/50 dark:bg-slate-900/50 rounded-2xl border border-slate-200 dark:border-slate-800">
                    <Checkbox 
                      id="has_loc" 
                      checked={formData.has_physical_location} 
@@ -1305,7 +1305,7 @@ export function EditorForm({ initialData, onSubmit, onChange, isPro = false, can
                                 {/* Grid de Imagens do Portfólio Atuais */}
                                 {Array.isArray((formData.custom_fields as any)?.[field.name]) && 
                                  ((formData.custom_fields as any)[field.name] as string[]).filter(Boolean).length > 0 && (
-                                  <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 p-3 rounded-2xl bg-white dark:bg-slate-900/50 border border-slate-200 dark:border-slate-800">
+                                  <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 p-3 rounded-2xl bg-white dark:bg-slate-800/70 border border-slate-200 dark:border-slate-800">
                                     {((formData.custom_fields as any)[field.name] as string[]).filter(Boolean).map((imgUrl, imgIdx) => (
                                       <div key={imgIdx} className="relative aspect-video rounded-xl overflow-hidden group border border-slate-200 dark:border-slate-700 bg-black">
                                         <img src={imgUrl} alt={`Foto ${imgIdx + 1}`} className="w-full h-full object-cover" />
@@ -1379,7 +1379,7 @@ export function EditorForm({ initialData, onSubmit, onChange, isPro = false, can
               )}
 
               {/* 3. BIO E DIFERENCIAIS */}
-              <div className="p-6 rounded-3xl bg-slate-50 dark:bg-slate-900/50 border border-slate-200 dark:border-slate-800 space-y-4">
+              <div className="p-6 rounded-3xl bg-slate-50 dark:bg-slate-800/70 border border-slate-200 dark:border-slate-800 space-y-4">
                 <div className="flex items-center gap-2 mb-2">
                    <div className="p-2 bg-primary/10 rounded-lg">
                       <FileText className="w-4 h-4 text-primary" />
@@ -1396,7 +1396,7 @@ export function EditorForm({ initialData, onSubmit, onChange, isPro = false, can
                       value={formData.bio_profissional || ''}
                       onChange={(e) => handleChange('bio_profissional', e.target.value)}
                       placeholder="Conte sobre sua trajetória, valores e especialidades..."
-                      className="rounded-2xl min-h-[120px] bg-white dark:bg-slate-950"
+                      className="rounded-2xl min-h-[120px] bg-white dark:bg-slate-900"
                     />
                     <p className="text-[10px] text-muted-foreground italic">Uma bio bem escrita ajuda a transmitir profissionalismo e confiança.</p>
                   </div>
@@ -1407,14 +1407,14 @@ export function EditorForm({ initialData, onSubmit, onChange, isPro = false, can
                       value={formData.diferenciais?.join('\n') || ''}
                       onChange={(e) => handleChange('diferenciais', e.target.value.split('\n').filter(l => l.trim()))}
                       placeholder="Ex: 5 anos de experiência&#10;Atendimento Premium&#10;Produtos de alta qualidade"
-                      className="rounded-2xl min-h-[100px] bg-white dark:bg-slate-950"
+                      className="rounded-2xl min-h-[100px] bg-white dark:bg-slate-900"
                     />
                   </div>
                 </div>
               </div>
 
               {/* Carousel Photos Section */}
-              <div className="p-6 rounded-3xl bg-slate-50 dark:bg-slate-900/50 border border-slate-200 dark:border-slate-800 space-y-4">
+              <div className="p-6 rounded-3xl bg-slate-50 dark:bg-slate-800/70 border border-slate-200 dark:border-slate-800 space-y-4">
                 <div className="flex items-center gap-2 mb-2">
                    <div className="p-2 bg-primary/10 rounded-lg">
                       <ImageIcon className="w-4 h-4 text-primary" />
@@ -1428,7 +1428,7 @@ export function EditorForm({ initialData, onSubmit, onChange, isPro = false, can
                   {/* Grid de Imagens do Portfólio Atuais */}
                   {Array.isArray((formData.custom_fields as any)?.portfolio_images) && 
                    ((formData.custom_fields as any).portfolio_images as string[]).filter(Boolean).length > 0 && (
-                    <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 p-3 rounded-2xl bg-white dark:bg-slate-900/50 border border-slate-200 dark:border-slate-800">
+                    <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 p-3 rounded-2xl bg-white dark:bg-slate-800/70 border border-slate-200 dark:border-slate-800">
                       {((formData.custom_fields as any).portfolio_images as string[]).filter(Boolean).map((imgUrl, imgIdx) => (
                         <div key={imgIdx} className="relative aspect-video rounded-xl overflow-hidden group border border-slate-200 dark:border-slate-700 bg-black">
                           <img src={imgUrl} alt={`Foto ${imgIdx + 1}`} className="w-full h-full object-cover" />
@@ -1485,7 +1485,7 @@ export function EditorForm({ initialData, onSubmit, onChange, isPro = false, can
               </div>
 
               {/* 4. SERVIÇOS (Mínimo 1) */}
-              <div className="p-6 rounded-3xl bg-slate-50 dark:bg-slate-900/50 border border-slate-200 dark:border-slate-800 space-y-4">
+              <div className="p-6 rounded-3xl bg-slate-50 dark:bg-slate-800/70 border border-slate-200 dark:border-slate-800 space-y-4">
                 <div className="flex items-center gap-2 mb-2">
                    <div className="p-2 bg-primary/10 rounded-lg">
                       <Tag className="w-4 h-4 text-primary" />
@@ -1568,7 +1568,7 @@ export function EditorForm({ initialData, onSubmit, onChange, isPro = false, can
                   </div>
 
                   {newServiceImage && (
-                    <div className="flex items-center gap-2 p-1.5 px-3 rounded-xl bg-white/50 dark:bg-slate-950/50 border border-slate-200 dark:border-slate-800 w-fit">
+                    <div className="flex items-center gap-2 p-1.5 px-3 rounded-xl bg-white/50 dark:bg-slate-900/50 border border-slate-200 dark:border-slate-800 w-fit">
                       <img src={newServiceImage} alt="Preview" className="w-7 h-7 rounded-lg object-cover" />
                       <span className="text-[10px] text-slate-500 max-w-[180px] truncate">{newServiceImage}</span>
                       <Button 
@@ -1679,7 +1679,7 @@ export function EditorForm({ initialData, onSubmit, onChange, isPro = false, can
                             </div>
 
                             {editServiceImage && (
-                              <div className="flex items-center gap-2 p-1.5 px-3 rounded-xl bg-white/50 dark:bg-slate-950/50 border border-slate-200 dark:border-slate-800 w-fit">
+                              <div className="flex items-center gap-2 p-1.5 px-3 rounded-xl bg-white/50 dark:bg-slate-900/50 border border-slate-200 dark:border-slate-800 w-fit">
                                 <img src={editServiceImage} alt="Preview" className="w-7 h-7 rounded-lg object-cover" />
                                 <span className="text-[10px] text-slate-500 max-w-[180px] truncate">{editServiceImage}</span>
                                 <Button 
@@ -1698,7 +1698,7 @@ export function EditorForm({ initialData, onSubmit, onChange, isPro = false, can
                       }
 
                       return (
-                        <div key={idx} className="flex items-center gap-3 p-3 bg-white/50 dark:bg-slate-950/50 rounded-2xl border border-slate-200 dark:border-slate-800 group/srv transition-colors hover:border-slate-300 dark:hover:border-slate-700">
+                        <div key={idx} className="flex items-center gap-3 p-3 bg-white/50 dark:bg-slate-900/50 rounded-2xl border border-slate-200 dark:border-slate-800 group/srv transition-colors hover:border-slate-300 dark:hover:border-slate-700">
                            {s.imagem ? (
                              <img src={s.imagem} alt={s.nome} className="w-10 h-10 rounded-xl object-cover border border-slate-200 dark:border-slate-800 flex-none" />
                            ) : null}
@@ -1753,7 +1753,7 @@ export function EditorForm({ initialData, onSubmit, onChange, isPro = false, can
               </div>
 
               {/* URL PERMANENTE */}
-              <div className="p-6 rounded-3xl bg-slate-50 dark:bg-slate-900/50 border border-slate-200 dark:border-slate-800 space-y-4">
+              <div className="p-6 rounded-3xl bg-slate-50 dark:bg-slate-800/70 border border-slate-200 dark:border-slate-800 space-y-4">
                 <Label className="text-xs font-bold uppercase tracking-wider opacity-60">Seu Link Exclusivo (URL)</Label>
                 <div className="relative">
                   <Input
@@ -2022,7 +2022,7 @@ export function EditorForm({ initialData, onSubmit, onChange, isPro = false, can
             </div>
 
             {/* Granular Section Colors */}
-            <div className="mt-4 p-4 rounded-3xl bg-slate-50 dark:bg-slate-900/50 border border-slate-200 dark:border-slate-800 space-y-4">
+            <div className="mt-4 p-4 rounded-3xl bg-slate-50 dark:bg-slate-800/70 border border-slate-200 dark:border-slate-800 space-y-4">
                 <div className="space-y-2">
                   <Label className="text-xs font-bold uppercase tracking-wider opacity-60">Cor do Fundo</Label>
                   <div className="flex gap-2 items-center">
@@ -2121,7 +2121,7 @@ export function EditorForm({ initialData, onSubmit, onChange, isPro = false, can
                 </div>
               </div>
               <div className="h-px bg-border/50 my-6" />
-              <div className="mt-4 p-4 rounded-3xl bg-slate-50 dark:bg-slate-900/50 border border-slate-200 dark:border-slate-800 space-y-4">
+              <div className="mt-4 p-4 rounded-3xl bg-slate-50 dark:bg-slate-800/70 border border-slate-200 dark:border-slate-800 space-y-4">
                 <div className="flex items-center gap-2 mb-1">
                   <div className="p-2 bg-primary/10 rounded-lg">
                     <Palette className="w-4 h-4 text-primary" />
@@ -2136,7 +2136,7 @@ export function EditorForm({ initialData, onSubmit, onChange, isPro = false, can
                   { label: 'Diferenciais', fundoKey: 'cor_diferenciais_fundo', textoKey: 'cor_diferenciais_texto', defaultFundo: '#ffffff', defaultTexto: '#0f172a' },
                   { label: 'Info / Destaques', fundoKey: 'cor_info_fundo', textoKey: 'cor_info_texto', defaultFundo: '#ffffff', defaultTexto: '#0f172a' },
                 ] as const).map(({ label, fundoKey, textoKey, defaultFundo, defaultTexto }) => (
-                  <div key={fundoKey} className="p-3 rounded-2xl bg-white dark:bg-slate-950 border border-slate-100 dark:border-slate-800 space-y-2">
+                  <div key={fundoKey} className="p-3 rounded-2xl bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 space-y-2">
                     <span className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">{label}</span>
                     <div className="grid grid-cols-2 gap-3">
                       <div className="space-y-1">
@@ -2347,7 +2347,7 @@ export function EditorForm({ initialData, onSubmit, onChange, isPro = false, can
                 {/* Active Preview / Main Upload Card */}
                 <div 
                   className={cn(
-                    "relative group/video rounded-[1.75rem] overflow-hidden border-2 transition-all bg-slate-100 dark:bg-slate-950 shadow-inner",
+                    "relative group/video rounded-[1.75rem] overflow-hidden border-2 transition-all bg-slate-100 dark:bg-slate-900 shadow-inner",
                     formData.background_video_url ? "border-primary/30 aspect-video min-h-[220px] sm:min-h-[280px]" : "border-dashed border-slate-300 dark:border-slate-700 aspect-video min-h-[220px] hover:border-primary/50"
                   )}
                   onClick={() => !formData.background_video_url && videoInputRef.current?.click()}
@@ -2521,7 +2521,7 @@ export function EditorForm({ initialData, onSubmit, onChange, isPro = false, can
               </div>
             ) : (
               <div className="max-w-md mx-auto space-y-8">
-                <div className="p-6 rounded-3xl bg-slate-100 dark:bg-slate-900/50 border border-slate-200 dark:border-slate-800">
+                <div className="p-6 rounded-3xl bg-slate-100 dark:bg-slate-800/70 border border-slate-200 dark:border-slate-800">
                   <StyledQRCode 
                     url={`${typeof window !== 'undefined' ? window.location.origin : ''}/${formData.username}`} 
                     isPro={isPro} 
@@ -2540,7 +2540,7 @@ export function EditorForm({ initialData, onSubmit, onChange, isPro = false, can
                   </div>
 
                   <div className="grid grid-cols-1 gap-4">
-                    <div className="flex items-center justify-between p-3 rounded-2xl bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-800 transition-all hover:border-primary/30 group">
+                    <div className="flex items-center justify-between p-3 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 transition-all hover:border-primary/30 group">
                       <div className="flex flex-col">
                         <Label className="text-[10px] font-black uppercase tracking-widest opacity-60">Cor dos Pontos</Label>
                         <span className="text-[11px] font-bold">Padrão: Azul Konnexy</span>
@@ -2556,7 +2556,7 @@ export function EditorForm({ initialData, onSubmit, onChange, isPro = false, can
                       </div>
                     </div>
 
-                    <div className="flex items-center justify-between p-3 rounded-2xl bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-800 transition-all hover:border-primary/30">
+                    <div className="flex items-center justify-between p-3 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 transition-all hover:border-primary/30">
                       <div className="flex flex-col">
                         <Label className="text-[10px] font-black uppercase tracking-widest opacity-60">Cantos (Quadrado)</Label>
                         <span className="text-[11px] font-bold">Padrão: Azul Konnexy</span>
@@ -2572,7 +2572,7 @@ export function EditorForm({ initialData, onSubmit, onChange, isPro = false, can
                       </div>
                     </div>
 
-                    <div className="flex items-center justify-between p-3 rounded-2xl bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-800 transition-all hover:border-primary/30">
+                    <div className="flex items-center justify-between p-3 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 transition-all hover:border-primary/30">
                       <div className="flex flex-col">
                         <Label className="text-[10px] font-black uppercase tracking-widest opacity-60">Cantos (Ponto Interno)</Label>
                         <span className="text-[11px] font-bold">Padrão: Verde Konnexy</span>
@@ -2588,7 +2588,7 @@ export function EditorForm({ initialData, onSubmit, onChange, isPro = false, can
                       </div>
                     </div>
 
-                    <div className="flex items-center justify-between p-3 rounded-2xl bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-800 transition-all hover:border-primary/30">
+                    <div className="flex items-center justify-between p-3 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 transition-all hover:border-primary/30">
                       <div className="flex flex-col">
                         <Label className="text-[10px] font-black uppercase tracking-widest opacity-60">Fundo do QR Code</Label>
                         <span className="text-[11px] font-bold">Padrão: Transparente</span>
