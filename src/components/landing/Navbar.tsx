@@ -31,16 +31,16 @@ export function Navbar() {
   return (
     <header
       className={cn(
-        "fixed top-0 left-0 right-0 z-[100] transition-all duration-300 w-full",
+        "fixed top-0 left-0 right-0 z-[100] w-full transition-all duration-300",
         scrolled
-          ? "bg-[#070914]/90 border-b border-violet-400/15 py-3 shadow-2xl backdrop-blur-xl"
-          : "bg-[#070914]/70 border-b border-violet-400/10 py-4 backdrop-blur-xl"
+          ? "bg-[#070914]/92 border-b border-violet-400/15 py-2.5 sm:py-3 shadow-2xl backdrop-blur-xl"
+          : "bg-[#070914]/82 border-b border-violet-400/10 py-2.5 sm:py-4 backdrop-blur-xl"
       )}
     >
-      <div className="max-w-7xl mx-auto px-6 flex items-center justify-between w-full">
+      <div className="mx-auto flex w-full max-w-7xl items-center justify-between gap-3 px-4 sm:px-6">
         {/* Brand Logo */}
-        <Link href="/" className="flex items-center group">
-          <Logo variant="horizontal" showTagline={true} className="scale-110 origin-left" />
+        <Link href="/" className="flex min-w-0 items-center">
+          <Logo variant="horizontal" showTagline={true} />
         </Link>
 
         {/* Nav Links - Desktop (Linear/Stripe inspired) */}
@@ -84,7 +84,7 @@ export function Navbar() {
         {/* Mobile Toggle */}
         <button
           onClick={() => setIsOpen(!isOpen)}
-          className="md:hidden w-10 h-10 rounded-xl bg-slate-900/80 border border-white/5 flex items-center justify-center transition-all active:scale-95 text-slate-350 hover:text-white"
+          className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl border border-white/10 bg-slate-900/80 text-slate-300 transition-all active:scale-95 md:hidden sm:h-10 sm:w-10"
           aria-label="Menu"
         >
           {isOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
@@ -99,7 +99,7 @@ export function Navbar() {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
             transition={{ duration: 0.2 }}
-            className="md:hidden absolute top-full left-0 right-0 bg-[#030c1b]/98 border-b border-white/5 backdrop-blur-xl shadow-2xl z-50 px-6 py-8"
+            className="absolute left-0 right-0 top-full z-50 border-b border-white/5 bg-[#030c1b]/98 px-4 py-6 shadow-2xl backdrop-blur-xl sm:px-6 sm:py-8 md:hidden"
           >
             <nav className="flex flex-col gap-4 mb-6">
               {navLinks.map((link) => (
