@@ -177,10 +177,10 @@ function DashboardContent() {
       <div className="min-h-screen bg-slate-50 dark:bg-slate-950">
       {/* Premium Header */}
       <header className="bg-white/70 dark:bg-slate-900/70 backdrop-blur-xl border-b border-slate-200/50 dark:border-slate-800/50 sticky top-0 z-50">
-        <div className="max-w-[1400px] mx-auto px-6 h-20 flex items-center justify-between">
-          <div className="flex items-center gap-4">
-            <Link href="/" className="flex items-center">
-              <Logo variant="horizontal" showTagline={false} className="scale-[0.65] sm:scale-75 origin-left" />
+        <div className="mx-auto flex h-16 max-w-[1400px] items-center justify-between gap-3 px-4 sm:h-20 sm:px-6">
+          <div className="flex min-w-0 items-center gap-3 sm:gap-4">
+            <Link href="/" className="flex min-w-0 items-center">
+              <Logo variant="horizontal" showTagline={false} />
             </Link>
             <nav className="hidden lg:flex items-center gap-1 bg-slate-100 dark:bg-slate-800 p-1 rounded-2xl">
                <button 
@@ -213,7 +213,7 @@ function DashboardContent() {
             </nav>
           </div>
 
-          <div className="flex items-center gap-3">
+          <div className="flex shrink-0 items-center gap-2 sm:gap-3">
             <AnimatePresence>
               {isPro ? (
                 <motion.div 
