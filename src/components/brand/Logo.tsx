@@ -25,9 +25,9 @@ export function Logo({ className, variant = 'horizontal', showTagline = true }: 
 
         <div className="relative z-10 h-9 w-10 overflow-hidden rounded-xl border border-cyan-300/20 bg-[#061529] shadow-[0_0_18px_rgba(0,174,255,0.14)] sm:h-11 sm:w-12 md:h-12 md:w-14">
           <img
-            src="/logo-konnexy-koi.jpg"
+            src="/images/koi_hero.png"
             alt="Konnexy"
-            className="h-full w-full object-cover object-center scale-[1.04]"
+            className="h-full w-full object-cover object-center scale-[1.10]"
           />
         </div>
       </div>

@@ -28,9 +28,9 @@ export const metadata: Metadata = {
   authors: [{ name: "Konnexy Team" }],
   creator: "Konnexy",
   icons: {
-    icon: "/logo-konnexy-koi.jpg",
-    shortcut: "/logo-konnexy-koi.jpg",
-    apple: "/logo-konnexy-koi.jpg",
+    icon: "/images/koi_hero.png",
+    shortcut: "/images/koi_hero.png",
+    apple: "/images/koi_hero.png",
   },
   openGraph: {
     type: "website",

@@ -568,13 +568,15 @@ export function MassamiTagProfile({
   };
 
   const handleShare = async () => {
+    const publicUsername = profile?.username || (isMassami ? 'massami' : '');
+    const publicUrl = publicUsername
+      ? `${typeof window !== 'undefined' ? window.location.origin : 'https://konnexy.com.br'}/${encodeURIComponent(publicUsername)}`
+      : 'https://konnexy.com.br';
+
     const shareData = {
       title: displayName,
       text: bioText,
-      url:
-        typeof window !== 'undefined'
-          ? window.location.href
-          : `https://konnexy.com.br/${profile?.username || ''}`
+      url: publicUrl
     };
 
     if (navigator.share && navigator.canShare && navigator.canShare(shareData)) {
