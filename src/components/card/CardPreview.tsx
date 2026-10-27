@@ -244,6 +244,10 @@ export function CardPreview({
   const previewArea = data.area_atendimento || data.service_area;
   const previewHours = data.horario_funcionamento || '';
 
+  const publicProfileUrl = data.username
+    ? `${typeof window !== 'undefined' ? window.location.origin : 'https://konnexy.com.br'}/${encodeURIComponent(data.username)}`
+    : (typeof window !== 'undefined' ? window.location.href : 'https://konnexy.com.br');
+
   const handleTrackClick = async (type: AnalyticsEventType) => {
     if (suppressTracking || !data.id || isDownloadMode) return;
     await trackEvent(data.id, type);
@@ -326,7 +330,7 @@ VERSION:3.0
 FN:${data.business_name || data.name || 'Contato'}
 ORG:${data.subtitle || data.tagline || ''}
 TEL;TYPE=CELL:${formattedWhatsapp}
-URL:${typeof window !== 'undefined' ? window.location.href : ''}
+URL:${publicProfileUrl}
 END:VCARD`;
 
     const blob = new Blob([vcard], { type: 'text/vcard' });
@@ -432,7 +436,7 @@ END:VCARD`;
       navigator.share({
         title: data.business_name || data.name || 'Konnexy',
         text: data.subtitle || data.tagline || 'Confira meu perfil profissional',
-        url: typeof window !== 'undefined' ? window.location.href : '',
+        url: publicProfileUrl,
       });
     }
   };
