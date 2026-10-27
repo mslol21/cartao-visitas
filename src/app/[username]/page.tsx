@@ -1,5 +1,6 @@
 import { createClient } from '@/utils/supabase/server';
 import { MassamiTagProfile } from '@/components/card/MassamiTagProfile';
+import { KonnexyPageIntro } from '@/components/brand/KonnexyPageIntro';
 import { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { trackEvent } from '@/app/actions/analytics';
@@ -97,5 +98,9 @@ export default async function PublicPage({ params }: Props) {
   }
 
   // Renderiza o layout Konnexy Tag em todo o sistema e todas as contas
-  return <MassamiTagProfile profile={profile} />;
+  return (
+    <KonnexyPageIntro>
+      <MassamiTagProfile profile={profile} />
+    </KonnexyPageIntro>
+  );
 }
