@@ -4,11 +4,11 @@ export default function ProfileLoading() {
       <div className="flex flex-col items-center text-center">
         <div className="relative mb-6">
           <div className="absolute -inset-8 rounded-full bg-cyan-400/10 blur-3xl" />
-          <div className="relative h-28 w-28 overflow-hidden rounded-[2rem] border border-cyan-300/20 bg-[#061529] shadow-[0_0_45px_rgba(56,189,248,0.18)]">
+          <div className="relative w-[260px] max-w-[76vw] overflow-hidden rounded-[2rem] border border-cyan-300/20 bg-[#061529]/60 p-2 shadow-[0_0_45px_rgba(56,189,248,0.18)]">
             <img
-              src="/images/koi_hero.png"
+              src="/logo.png"
               alt="Konnexy"
-              className="h-full w-full object-cover object-center scale-110"
+              className="h-auto w-full object-contain"
             />
           </div>
         </div>
