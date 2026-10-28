@@ -19,7 +19,7 @@ export function KonnexyPageIntro({ children }: KonnexyPageIntroProps) {
       return () => window.clearTimeout(reducedTimer);
     }
 
-    const fallbackTimer = window.setTimeout(() => setVisible(false), 5000);
+    const fallbackTimer = window.setTimeout(() => setVisible(false), 8000);
 
     const video = videoRef.current;
     if (video) {
@@ -51,13 +51,13 @@ export function KonnexyPageIntro({ children }: KonnexyPageIntroProps) {
           >
             <video
               ref={videoRef}
-              src="/videos/konnexy-intro.mp4"
+              src="/videos/gemini_generated_video_060b81f8.mp4"
               autoPlay
               muted
               playsInline
               preload="auto"
               onEnded={() => setVisible(false)}
-              className="absolute inset-0 h-full w-full object-cover"
+              className="absolute inset-0 h-full w-full object-contain"
             />
 
             <div
