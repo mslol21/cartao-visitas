@@ -7,6 +7,10 @@ interface KonnexyPageIntroProps {
   children: ReactNode;
 }
 
+const INTRO_TOTAL_MS = 5000;
+const EXIT_TRANSITION_MS = 250;
+const VIDEO_PLAY_TIME_SECONDS = (INTRO_TOTAL_MS - EXIT_TRANSITION_MS) / 1000;
+
 export function KonnexyPageIntro({ children }: KonnexyPageIntroProps) {
   const [visible, setVisible] = useState(true);
   const videoRef = useRef<HTMLVideoElement>(null);
@@ -19,7 +23,11 @@ export function KonnexyPageIntro({ children }: KonnexyPageIntroProps) {
       return () => window.clearTimeout(reducedTimer);
     }
 
-    const fallbackTimer = window.setTimeout(() => setVisible(false), 8000);
+    // Fecha a abertura a tempo de concluir a transição em aproximadamente 5s.
+    const fallbackTimer = window.setTimeout(
+      () => setVisible(false),
+      INTRO_TOTAL_MS - EXIT_TRANSITION_MS,
+    );
 
     const video = videoRef.current;
     if (video) {
@@ -34,6 +42,14 @@ export function KonnexyPageIntro({ children }: KonnexyPageIntroProps) {
     return () => window.clearTimeout(fallbackTimer);
   }, []);
 
+  const handleLoadedMetadata = () => {
+    const video = videoRef.current;
+    if (!video || !Number.isFinite(video.duration) || video.duration <= 0) return;
+
+    // Acelera apenas quando necessário para o vídeo caber na abertura de 5s.
+    video.playbackRate = Math.max(1, video.duration / VIDEO_PLAY_TIME_SECONDS);
+  };
+
   return (
     <>
       {children}
@@ -44,7 +60,7 @@ export function KonnexyPageIntro({ children }: KonnexyPageIntroProps) {
             key="konnexy-video-intro"
             initial={{ opacity: 1 }}
             exit={{ opacity: 0, scale: 1.015, filter: 'blur(6px)' }}
-            transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
+            transition={{ duration: EXIT_TRANSITION_MS / 1000, ease: [0.22, 1, 0.36, 1] }}
             className="fixed inset-0 z-[9999] overflow-hidden bg-[#020914]"
             role="status"
             aria-label="Abrindo Konnexy"
@@ -56,6 +72,7 @@ export function KonnexyPageIntro({ children }: KonnexyPageIntroProps) {
               muted
               playsInline
               preload="auto"
+              onLoadedMetadata={handleLoadedMetadata}
               onEnded={() => setVisible(false)}
               className="absolute inset-0 h-full w-full object-contain"
             />
