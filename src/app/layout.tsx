@@ -44,9 +44,6 @@ export const metadata: Metadata = {
   authors: [{ name: "Konnexy" }],
   creator: "Konnexy",
   publisher: "Konnexy",
-  alternates: {
-    canonical: "/"
-  },
   icons: {
     icon: "/images/koi_hero.png",
     shortcut: "/images/koi_hero.png",
