@@ -2,19 +2,37 @@ export function generateOrganizationSchema() {
   return {
     '@context': 'https://schema.org',
     '@type': 'Organization',
+    '@id': 'https://konnexy.com.br/#organization',
     name: 'Konnexy',
     url: 'https://konnexy.com.br',
     logo: 'https://konnexy.com.br/logo.png',
-    description: 'Plataforma de catálogo digital e organização de pedidos pelo WhatsApp para pequenos varejistas',
+    image: 'https://konnexy.com.br/images/koi_hero.png',
+    description: 'Soluções digitais para empresas: criação de sites, otimização do Perfil da Empresa no Google, tráfego pago, catálogos, NFC e QR Code e sistemas web sob medida.',
+    telephone: '+55 16 99155-1200',
+    areaServed: [
+      { '@type': 'City', name: 'São Paulo' },
+      { '@type': 'Country', name: 'Brasil' },
+    ],
+    knowsAbout: [
+      'Criação de sites',
+      'SEO local',
+      'Perfil da Empresa no Google',
+      'Google Ads',
+      'Tráfego pago',
+      'Desenvolvimento de sistemas web',
+      'Catálogo digital',
+      'NFC',
+      'QR Code',
+    ],
     contactPoint: {
       '@type': 'ContactPoint',
-      contactType: 'Customer Service',
+      telephone: '+55 16 99155-1200',
+      contactType: 'customer service',
       availableLanguage: ['Portuguese'],
+      areaServed: 'BR',
     },
     sameAs: [
-      // Adicione aqui as redes sociais da empresa quando disponíveis
-      // 'https://www.instagram.com/konnexy',
-      // 'https://www.facebook.com/konnexy',
+      'https://www.instagram.com/konnexy.web',
     ],
   }
 }
