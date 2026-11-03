@@ -6,9 +6,10 @@ export default function robots(): MetadataRoute.Robots {
       {
         userAgent: '*',
         allow: '/',
-        disallow: ['/api/', '/dashboard/'],
+        disallow: ['/api/', '/dashboard/', '/login', '/signup'],
       },
     ],
     sitemap: 'https://konnexy.com.br/sitemap.xml',
+    host: 'https://konnexy.com.br',
   }
 }
