@@ -91,7 +91,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   return {
     title: service.metaTitle,
     description: service.description,
-    keywords: service.keywords,
+    keywords: [...service.keywords],
     alternates: { canonical: url },
     openGraph: {
       type: "website",
