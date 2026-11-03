@@ -60,12 +60,12 @@ const SEGMENTOS = [
 ];
 
 const PRODUTOS = [
-  { id:"google", title:"Presença no Google", description:"Perfil da Empresa no Google organizado e otimizado.", longDesc:"Melhore como seu negócio aparece nas buscas e no Maps, com informações, serviços, fotos e pontos de contato mais claros para quem já procura pelo que você oferece.", icon:MapPin, image:"/images/koi_hero.png", idealFor:"Comércios locais, clínicas, oficinas, salões, restaurantes e prestadores", recursos:["Configuração e otimização do perfil","Categorias e serviços organizados","Orientação para avaliações","Informações e contatos atualizados","Gestão contínua sob demanda"] },
-  { id:"sites", title:"Sites & Landing Pages", description:"Presença profissional focada em confiança e conversão.", longDesc:"Criamos páginas rápidas e responsivas para apresentar serviços, captar contatos, gerar orçamentos ou direcionar clientes ao WhatsApp.", icon:Globe, image:"/site.png", idealFor:"Empresas, profissionais, clínicas, cursos, eventos e serviços", recursos:["Design profissional e responsivo","Integração com WhatsApp","SEO técnico","Formulários e CTAs","Domínio próprio"] },
-  { id:"catalogo", title:"Catálogos & Cardápios", description:"Produtos e serviços organizados para vender pelo WhatsApp.", longDesc:"Transforme conversas repetitivas em uma vitrine digital organizada, com categorias, produtos, informações e pedidos enviados diretamente para o atendimento.", icon:ShoppingCart, image:"/catalogo.png", idealFor:"Lojas, delivery, adegas, moda, presentes, artesanato e alimentação", recursos:["Vitrine digital","Categorias e produtos","Carrinho ou pedido estruturado","Integração com WhatsApp","Painel de atualização"] },
-  { id:"tag", title:"Konnexy Tag — NFC & QR", description:"Aproxime, escaneie e conecte o cliente ao seu negócio.", longDesc:"Uma experiência física e digital para avaliações, contatos, redes sociais, cardápios, catálogos e páginas profissionais usando NFC e QR Code.", icon:QrCode, image:"/link.png", idealFor:"Balcões, recepções, lojas, profissionais, eventos e atendimento presencial", recursos:["NFC + QR Code","Página profissional","Atalhos para WhatsApp e redes","Avaliações no Google","Conteúdo atualizável"] },
-  { id:"trafego", title:"Tráfego Pago", description:"Anúncios para levar pessoas certas até sua oferta.", longDesc:"Planejamos e gerenciamos campanhas no Google e nas redes sociais conforme objetivo, região e orçamento, conectando anúncio, página e atendimento.", icon:Megaphone, image:"/images/koi_hero.png", idealFor:"Negócios com oferta clara que querem ampliar alcance e captação", recursos:["Google Ads","Meta Ads","Segmentação local","Acompanhamento de campanhas","Verba de mídia separada da gestão"] },
-  { id:"sistemas", title:"Sistemas Sob Medida", description:"Tecnologia para organizar processos do seu negócio.", longDesc:"Desenvolvemos soluções conforme a operação: agendamento, orçamento, ordem de serviço, PDV, estoque, painel administrativo e outros fluxos digitais.", icon:Settings2, image:"/fabrica.png", idealFor:"Negócios que precisam reduzir tarefas manuais e centralizar informações", recursos:["Painéis administrativos","Agendamentos e orçamentos","PDV e estoque","Fluxos personalizados","Integrações conforme o projeto"] }
+  { id:"google", href:"/servicos/otimizacao-perfil-google", title:"Presença no Google", description:"Perfil da Empresa no Google organizado e otimizado.", longDesc:"Melhore como seu negócio aparece nas buscas e no Maps, com informações, serviços, fotos e pontos de contato mais claros para quem já procura pelo que você oferece.", icon:MapPin, image:"/images/koi_hero.png", idealFor:"Comércios locais, clínicas, oficinas, salões, restaurantes e prestadores", recursos:["Configuração e otimização do perfil","Categorias e serviços organizados","Orientação para avaliações","Informações e contatos atualizados","Gestão contínua sob demanda"] },
+  { id:"sites", href:"/servicos/criacao-de-sites", title:"Sites & Landing Pages", description:"Presença profissional focada em confiança e conversão.", longDesc:"Criamos páginas rápidas e responsivas para apresentar serviços, captar contatos, gerar orçamentos ou direcionar clientes ao WhatsApp.", icon:Globe, image:"/site.png", idealFor:"Empresas, profissionais, clínicas, cursos, eventos e serviços", recursos:["Design profissional e responsivo","Integração com WhatsApp","SEO técnico","Formulários e CTAs","Domínio próprio"] },
+  { id:"catalogo", href:"/servicos/catalogo-cardapio-digital", title:"Catálogos & Cardápios", description:"Produtos e serviços organizados para vender pelo WhatsApp.", longDesc:"Transforme conversas repetitivas em uma vitrine digital organizada, com categorias, produtos, informações e pedidos enviados diretamente para o atendimento.", icon:ShoppingCart, image:"/catalogo.png", idealFor:"Lojas, delivery, adegas, moda, presentes, artesanato e alimentação", recursos:["Vitrine digital","Categorias e produtos","Carrinho ou pedido estruturado","Integração com WhatsApp","Painel de atualização"] },
+  { id:"tag", href:"/servicos/nfc-qr-code", title:"Konnexy Tag — NFC & QR", description:"Aproxime, escaneie e conecte o cliente ao seu negócio.", longDesc:"Uma experiência física e digital para avaliações, contatos, redes sociais, cardápios, catálogos e páginas profissionais usando NFC e QR Code.", icon:QrCode, image:"/link.png", idealFor:"Balcões, recepções, lojas, profissionais, eventos e atendimento presencial", recursos:["NFC + QR Code","Página profissional","Atalhos para WhatsApp e redes","Avaliações no Google","Conteúdo atualizável"] },
+  { id:"trafego", href:"/servicos/trafego-pago", title:"Tráfego Pago", description:"Anúncios para levar pessoas certas até sua oferta.", longDesc:"Planejamos e gerenciamos campanhas no Google e nas redes sociais conforme objetivo, região e orçamento, conectando anúncio, página e atendimento.", icon:Megaphone, image:"/images/koi_hero.png", idealFor:"Negócios com oferta clara que querem ampliar alcance e captação", recursos:["Google Ads","Meta Ads","Segmentação local","Acompanhamento de campanhas","Verba de mídia separada da gestão"] },
+  { id:"sistemas", href:"/servicos/sistemas-web", title:"Sistemas Sob Medida", description:"Tecnologia para organizar processos do seu negócio.", longDesc:"Desenvolvemos soluções conforme a operação: agendamento, orçamento, ordem de serviço, PDV, estoque, painel administrativo e outros fluxos digitais.", icon:Settings2, image:"/fabrica.png", idealFor:"Negócios que precisam reduzir tarefas manuais e centralizar informações", recursos:["Painéis administrativos","Agendamentos e orçamentos","PDV e estoque","Fluxos personalizados","Integrações conforme o projeto"] }
 ];
 
 const DEMONSTRACOES = [
@@ -313,12 +313,17 @@ export function KonnexyLanding() {
                 </div>
 
                 {/* Demonstration Button */}
-                <Button 
-                  onClick={() => setSelectedDemoImage(product.image)}
-                  className="w-full h-12 rounded-xl text-xs font-black uppercase tracking-wider bg-[#090b18]/70 hover:bg-violet-500/10 text-white border border-[#C5CAD2]/10 transition-all"
-                >
-                  Ver Demonstração
-                </Button>
+                <div className="grid grid-cols-2 gap-3">
+                  <Button 
+                    onClick={() => setSelectedDemoImage(product.image)}
+                    className="h-12 rounded-xl text-[10px] font-black uppercase tracking-wider bg-[#090b18]/70 hover:bg-violet-500/10 text-white border border-[#C5CAD2]/10 transition-all"
+                  >
+                    Ver demonstração
+                  </Button>
+                  <Button asChild className="h-12 rounded-xl text-[10px] font-black uppercase tracking-wider bg-cyan-300 text-slate-950 hover:bg-cyan-200">
+                    <a href={product.href}>Saiba mais</a>
+                  </Button>
+                </div>
               </motion.div>
             );
           })}
