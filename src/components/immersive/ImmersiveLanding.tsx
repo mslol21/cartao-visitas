@@ -217,6 +217,8 @@ function Hero() {
             </Button>
           </div>
         </div>
+          </div>
+        </div>
       </div>
     </section>
   );
@@ -262,7 +264,7 @@ function Manifesto() {
     <section id="sobre" ref={ref} className={`${sectionY} bg-[#f4f3ef] text-[#07111f]`}>
       <div className={shell}>
         <Eyebrow light>Mais do que presença digital</Eyebrow>
-        <p className="mt-7 max-w-5xl text-[clamp(1.9rem,4.6vw,4.5rem)] font-black leading-[1.04] tracking-[-0.04em]">
+        <p className="mt-7 max-w-4xl text-[clamp(1.75rem,4vw,3.9rem)] font-black leading-[1.06] tracking-[-0.035em]">
           {words.map((word, index) => (
             <span key={`${word}-${index}`} data-word className="mr-[0.22em] inline-block will-change-[opacity]">
               {word}
@@ -286,7 +288,7 @@ function Products() {
     const mm = gsap.matchMedia();
     const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-    mm.add("(min-width: 1024px)", () => {
+    mm.add("(min-width: 1280px)", () => {
       if (reduced || !pinRef.current || !viewportRef.current || !trackRef.current) return;
 
       const getDistance = () => Math.max(0, trackRef.current!.scrollWidth - viewportRef.current!.clientWidth);
@@ -297,7 +299,7 @@ function Products() {
         scrollTrigger: {
           trigger: pinRef.current,
           start: "top top",
-          end: () => `+=${Math.max(getDistance(), window.innerHeight * 1.25)}`,
+          end: () => `+=${Math.max(getDistance() * 0.9, window.innerHeight)}`,
           scrub: 1,
           pin: true,
           anticipatePin: 1,
@@ -343,20 +345,19 @@ function Products() {
         </div>
       </div>
 
-      <div ref={pinRef} className="lg:min-h-[78vh]">
-        <div ref={viewportRef} className="overflow-hidden lg:flex lg:min-h-[78vh] lg:items-center">
+      <div ref={pinRef} className="xl:min-h-[72vh]">
+        <div ref={viewportRef} className="overflow-hidden xl:flex xl:min-h-[72vh] xl:items-center">
           <div
             ref={trackRef}
-            data-lenis-prevent
-            className="flex gap-4 overflow-x-auto px-5 pb-16 pt-2 [scroll-snap-type:x_mandatory] sm:gap-6 sm:px-6 lg:w-max lg:gap-8 lg:overflow-visible lg:px-[max(2rem,calc((100vw-80rem)/2+2rem))] lg:pb-0 lg:pt-0"
+            className="flex gap-4 overflow-x-auto px-5 pb-16 pt-2 [scroll-snap-type:x_mandatory] sm:gap-6 sm:px-6 xl:w-max xl:gap-7 xl:overflow-visible xl:px-[max(2rem,calc((100vw-72rem)/2+2rem))] xl:pb-0 xl:pt-0"
           >
             {products.map((product, index) => (
               <article
                 key={product.name}
-                className="group relative min-w-[88vw] max-w-[88vw] snap-center overflow-hidden rounded-[24px] border border-white/10 bg-[#0a0d17] shadow-xl shadow-black/20 sm:min-w-[68vw] sm:max-w-[68vw] lg:min-w-[52vw] lg:max-w-[52vw]"
+                className="group relative min-w-[88vw] max-w-[88vw] snap-center overflow-hidden rounded-[24px] border border-white/10 bg-[#0a0d17] shadow-xl shadow-black/20 sm:min-w-[68vw] sm:max-w-[68vw] xl:min-w-[46vw] xl:max-w-[46vw]"
               >
-                <div className="grid lg:grid-cols-[1.15fr_.85fr]">
-                  <div className="relative min-h-[250px] overflow-hidden sm:min-h-[320px] lg:min-h-[420px]">
+                <div className="grid xl:grid-cols-[1.1fr_.9fr]">
+                  <div className="relative min-h-[250px] overflow-hidden sm:min-h-[320px] xl:min-h-[380px]">
                     <div data-product-media className="absolute -inset-[4%] will-change-transform">
                       <Image
                         src={product.image}
@@ -373,7 +374,7 @@ function Products() {
                     </div>
                   </div>
 
-                  <div className="flex flex-col justify-between p-5 sm:p-6 lg:p-7">
+                  <div className="flex flex-col justify-between p-5 sm:p-6 xl:p-7">
                     <div>
                       <div className="flex flex-wrap items-center gap-2">
                         <span className="text-[11px] font-black uppercase tracking-[0.18em] text-cyan-300">{product.name}</span>
@@ -464,8 +465,9 @@ function BrandStatement() {
   }, []);
 
   return (
-    <section ref={ref} className="relative min-h-[92vh] overflow-hidden bg-[#03050d] text-white">
-      <div ref={imageRef} className="sticky top-0 h-[88vh] will-change-transform">
+    <section ref={ref} className="relative overflow-hidden bg-[#03050d] py-20 text-white sm:py-24 lg:py-28">
+      <div className={shell}>
+        <div ref={imageRef} className="relative h-[62vh] min-h-[460px] max-h-[720px] overflow-hidden rounded-[28px] will-change-transform">
         <Image
           src="/images/koi_hero.png"
           alt="Identidade visual Konnexy"
@@ -474,10 +476,8 @@ function BrandStatement() {
           loading="lazy"
           className="object-cover object-center opacity-45"
         />
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_45%,rgba(37,99,235,.12),transparent_30%),linear-gradient(180deg,rgba(3,5,13,.2),#03050d_90%)]" />
-      </div>
-
-      <div ref={copyRef} className={`${shell} pointer-events-none absolute inset-x-0 bottom-12 z-10 will-change-transform sm:bottom-14 lg:bottom-16`}>
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_45%,rgba(37,99,235,.12),transparent_30%),linear-gradient(180deg,rgba(3,5,13,.12),rgba(3,5,13,.9)_92%)]" />
+          <div ref={copyRef} className="absolute inset-x-0 bottom-0 z-10 p-6 will-change-transform sm:p-8 lg:p-10">
         <Eyebrow>Ecossistema conectado</Eyebrow>
         <h2 className="mt-4 max-w-4xl text-[clamp(2.55rem,5.4vw,5.2rem)] font-black leading-[0.95] tracking-[-0.045em]">
           Do físico ao digital. Do clique ao cliente.
@@ -528,7 +528,7 @@ function Numbers() {
   }, []);
 
   return (
-    <section ref={ref} className={`${sectionY} bg-[#f4f3ef] text-[#07111f]`}>
+    <section ref={ref} className={`${sectionY} border-y border-black/5 bg-[#f4f3ef] text-[#07111f]`}>
       <div className={shell}>
         <Eyebrow light>Estrutura Konnexy</Eyebrow>
         <div className="mt-10 grid gap-10 lg:grid-cols-3 lg:gap-12">
@@ -551,7 +551,7 @@ function Services() {
   useGsapReveal(ref, { selector: "[data-service-card]", y: 32, stagger: 0.07, start: "top 80%" });
 
   return (
-    <section ref={ref} id="servicos" className={`${sectionY} bg-[#050711] text-white`}>
+    <section ref={ref} id="servicos" className={`${sectionY} border-t border-white/10 bg-[#050711] text-white`}>
       <div className={shell}>
         <div className="grid gap-6 lg:grid-cols-[1.15fr_.85fr] lg:items-end">
           <div>
@@ -596,7 +596,7 @@ function FinalCTA() {
   useGsapReveal(ref, { selector: "[data-final]", y: 36, stagger: 0.1, start: "top 78%" });
 
   return (
-    <section ref={ref} className={`${sectionY} relative overflow-hidden bg-[#d6b45a] text-[#07111f]`}>
+    <section ref={ref} className={`${sectionY} relative overflow-hidden bg-[#c9a95d] text-[#07111f]`}>
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_80%_20%,rgba(255,255,255,.28),transparent_32%)]" />
       <div className={`${shell} relative`}>
         <div data-final className="opacity-0"><Eyebrow light>Próximo passo</Eyebrow></div>
@@ -651,6 +651,37 @@ function Footer() {
   );
 }
 
+
+function QuickNav() {
+  return (
+    <nav className="fixed bottom-5 left-1/2 z-40 hidden -translate-x-1/2 rounded-full border border-white/10 bg-[#050711]/85 px-2 py-2 shadow-2xl shadow-black/30 backdrop-blur-xl lg:flex">
+      {[
+        ["Início", "#"],
+        ["Sobre", "#sobre"],
+        ["Produtos", "#produtos"],
+        ["Serviços", "#servicos"],
+      ].map(([label, href]) => (
+        <a
+          key={label}
+          href={href}
+          className="rounded-full px-4 py-2 text-[11px] font-bold text-slate-400 transition hover:bg-white/5 hover:text-white"
+        >
+          {label}
+        </a>
+      ))}
+      <a
+        href="https://wa.me/5516991551200"
+        target="_blank"
+        rel="noopener noreferrer"
+        className="ml-1 inline-flex items-center gap-2 rounded-full bg-white px-4 py-2 text-[11px] font-black text-[#07111f]"
+      >
+        <MessageCircle className="h-3.5 w-3.5" />
+        Contato
+      </a>
+    </nav>
+  );
+}
+
 function RefreshAfterImages() {
   useEffect(() => {
     const { ScrollTrigger } = ensureGsapRegistered();
@@ -697,6 +728,7 @@ export function ImmersiveLanding() {
         <Services />
         <FinalCTA />
         <Footer />
+        <QuickNav />
       </div>
     </SmoothScrollProvider>
   );
