@@ -1,10 +1,9 @@
 import type { Metadata } from "next";
 import { ImmersiveLanding } from "@/components/immersive/ImmersiveLanding";
-import { KonnexyPageIntro } from "@/components/brand/KonnexyPageIntro";
 
 export const metadata: Metadata = {
   title: "Konnexy | Sites, Google, Tráfego Pago e Sistemas Web",
-  description: "Soluções digitais para empresas: criação de sites, otimização do Perfil da Empresa no Google, tráfego pago, catálogos, NFC/QR Code e sistemas web sob medida.",
+  description: "Sites, presença no Google e soluções digitais para pequenos negócios em São Paulo e atendimento online.",
   alternates: {
     canonical: "https://konnexy.com.br"
   }
@@ -12,10 +11,8 @@ export const metadata: Metadata = {
 
 export default function LandingPage() {
   return (
-    <KonnexyPageIntro>
-      <main className="min-h-screen">
-        <ImmersiveLanding />
-      </main>
-    </KonnexyPageIntro>
+    <main className="min-h-screen">
+      <ImmersiveLanding />
+    </main>
   );
 }
