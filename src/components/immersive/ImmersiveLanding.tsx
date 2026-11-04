@@ -8,7 +8,6 @@ import {
   CheckCircle2,
   ExternalLink,
   MessageCircle,
-  Sparkles,
 } from "lucide-react";
 import { useEffect, useMemo, useRef } from "react";
 import { Button } from "@/components/ui/button";
@@ -16,8 +15,8 @@ import { SmoothScrollProvider } from "@/components/immersive/SmoothScrollProvide
 import { useGsapReveal } from "@/hooks/useGsapReveal";
 import { ensureGsapRegistered } from "@/lib/motion/gsap";
 
-const shell = "mx-auto w-full max-w-7xl px-5 sm:px-6 lg:px-8";
-const sectionY = "py-20 sm:py-24 lg:py-32";
+const shell = "mx-auto w-full max-w-6xl px-5 sm:px-6 lg:px-8";
+const sectionY = "py-16 sm:py-20 lg:py-24";
 
 const manifesto =
   "Seu cliente procura compara entra em contato e decide em poucos segundos. A Konnexy conecta presença digital tecnologia e conversão para transformar atenção em oportunidade real.";
@@ -163,14 +162,14 @@ function Hero() {
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_75%_30%,rgba(37,99,235,.2),transparent_32%),radial-gradient(circle_at_18%_18%,rgba(34,211,238,.08),transparent_26%),linear-gradient(180deg,#03050d_0%,#050916_100%)]" />
       <div className="absolute inset-0 opacity-[0.04] [background-image:radial-gradient(#fff_1px,transparent_1px)] [background-size:28px_28px]" />
 
-      <div ref={visualRef} className="pointer-events-none absolute right-[-8%] top-[13%] h-[64%] w-[70%] max-w-[880px] will-change-transform sm:right-[2%]">
+      <div ref={visualRef} className="pointer-events-none absolute right-[-6%] top-[16%] h-[58%] w-[64%] max-w-[760px] will-change-transform sm:right-[3%]">
         <div className="absolute inset-0 rounded-full bg-blue-500/10 blur-[110px]" />
         <Image
           src="/images/koi_hero.png"
           alt=""
           fill
           priority
-          sizes="(max-width: 768px) 80vw, 880px"
+          sizes="(max-width: 768px) 76vw, 760px"
           className="object-contain opacity-30 mix-blend-screen"
         />
       </div>
@@ -193,13 +192,13 @@ function Hero() {
         </Button>
       </header>
 
-      <div className={`${shell} relative z-10 flex min-h-[calc(100svh-84px)] items-end pb-14 pt-16 sm:pb-20 lg:pb-24`}>
+      <div className={`${shell} relative z-10 flex min-h-[calc(100svh-84px)] items-end pb-12 pt-12 sm:pb-16 lg:pb-18`}>
         <div className="w-full max-w-5xl">
           <div data-hero-support>
             <Eyebrow>Conecta • Organiza • Vende</Eyebrow>
           </div>
 
-          <h1 className="mt-6 text-[clamp(3.35rem,8.5vw,7.8rem)] font-black leading-[0.9] tracking-[-0.055em]">
+          <h1 className="mt-5 text-[clamp(2.9rem,7vw,6.2rem)] font-black leading-[0.94] tracking-[-0.045em]">
             <span className="block overflow-hidden pb-[0.08em]"><span data-hero-line className="block will-change-transform">Tecnologia</span></span>
             <span className="block overflow-hidden pb-[0.08em]"><span data-hero-line className="block will-change-transform">que conecta</span></span>
             <span className="block overflow-hidden pb-[0.08em]">
@@ -209,7 +208,7 @@ function Hero() {
             </span>
           </h1>
 
-          <div data-hero-support className="mt-8 grid gap-6 border-t border-white/10 pt-6 lg:grid-cols-[1fr_auto] lg:items-end">
+          <div data-hero-support className="mt-6 grid gap-5 border-t border-white/10 pt-5 lg:grid-cols-[1fr_auto] lg:items-end">
             <p className="max-w-2xl text-sm leading-7 text-slate-300 sm:text-base">
               Produtos próprios e serviços digitais em um único ecossistema: Menu, Tag, Agenda, PDV, sites, presença no Google, tráfego pago e soluções sob medida.
             </p>
@@ -263,7 +262,7 @@ function Manifesto() {
     <section id="sobre" ref={ref} className={`${sectionY} bg-[#f4f3ef] text-[#07111f]`}>
       <div className={shell}>
         <Eyebrow light>Mais do que presença digital</Eyebrow>
-        <p className="mt-8 max-w-6xl text-[clamp(2.15rem,5.7vw,5.8rem)] font-black leading-[1.01] tracking-[-0.045em]">
+        <p className="mt-7 max-w-5xl text-[clamp(1.9rem,4.6vw,4.5rem)] font-black leading-[1.04] tracking-[-0.04em]">
           {words.map((word, index) => (
             <span key={`${word}-${index}`} data-word className="mr-[0.22em] inline-block will-change-[opacity]">
               {word}
@@ -335,7 +334,7 @@ function Products() {
       <div className={`${shell} ${sectionY} pb-10 sm:pb-12 lg:pb-14`}>
         <Eyebrow>Produtos Konnexy</Eyebrow>
         <div className="mt-5 grid gap-6 lg:grid-cols-[1.35fr_.65fr] lg:items-end">
-          <h2 className="max-w-4xl text-[clamp(2.6rem,5.8vw,5.6rem)] font-black leading-[0.95] tracking-[-0.05em]">
+          <h2 className="max-w-3xl text-[clamp(2.25rem,4.6vw,4.35rem)] font-black leading-[0.98] tracking-[-0.045em]">
             Um ecossistema para organizar, atender e vender melhor.
           </h2>
           <p className="max-w-xl text-sm leading-7 text-slate-400 lg:justify-self-end">
@@ -344,8 +343,8 @@ function Products() {
         </div>
       </div>
 
-      <div ref={pinRef} className="lg:min-h-screen">
-        <div ref={viewportRef} className="overflow-hidden lg:flex lg:min-h-screen lg:items-center">
+      <div ref={pinRef} className="lg:min-h-[78vh]">
+        <div ref={viewportRef} className="overflow-hidden lg:flex lg:min-h-[78vh] lg:items-center">
           <div
             ref={trackRef}
             data-lenis-prevent
@@ -354,10 +353,10 @@ function Products() {
             {products.map((product, index) => (
               <article
                 key={product.name}
-                className="group relative min-w-[88vw] max-w-[88vw] snap-center overflow-hidden rounded-[28px] border border-white/10 bg-[#0a0d17] shadow-2xl shadow-black/20 sm:min-w-[72vw] sm:max-w-[72vw] lg:min-w-[62vw] lg:max-w-[62vw]"
+                className="group relative min-w-[88vw] max-w-[88vw] snap-center overflow-hidden rounded-[24px] border border-white/10 bg-[#0a0d17] shadow-xl shadow-black/20 sm:min-w-[68vw] sm:max-w-[68vw] lg:min-w-[52vw] lg:max-w-[52vw]"
               >
                 <div className="grid lg:grid-cols-[1.15fr_.85fr]">
-                  <div className="relative min-h-[300px] overflow-hidden sm:min-h-[380px] lg:min-h-[560px]">
+                  <div className="relative min-h-[250px] overflow-hidden sm:min-h-[320px] lg:min-h-[420px]">
                     <div data-product-media className="absolute -inset-[4%] will-change-transform">
                       <Image
                         src={product.image}
@@ -374,7 +373,7 @@ function Products() {
                     </div>
                   </div>
 
-                  <div className="flex flex-col justify-between p-6 sm:p-8 lg:p-10">
+                  <div className="flex flex-col justify-between p-5 sm:p-6 lg:p-7">
                     <div>
                       <div className="flex flex-wrap items-center gap-2">
                         <span className="text-[11px] font-black uppercase tracking-[0.18em] text-cyan-300">{product.name}</span>
@@ -383,10 +382,10 @@ function Products() {
                         </span>
                       </div>
 
-                      <h3 className="mt-5 text-3xl font-black leading-[1.02] tracking-[-0.035em] sm:text-4xl">{product.title}</h3>
-                      <p className="mt-4 text-sm leading-7 text-slate-400">{product.description}</p>
+                      <h3 className="mt-4 text-2xl font-black leading-[1.06] tracking-[-0.03em] sm:text-3xl">{product.title}</h3>
+                      <p className="mt-3 text-sm leading-6 text-slate-400">{product.description}</p>
 
-                      <div className="mt-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-1 xl:grid-cols-2">
+                      <div className="mt-5 grid gap-2.5 sm:grid-cols-2 lg:grid-cols-1 xl:grid-cols-2">
                         {product.features.map((feature) => (
                           <div key={feature} className="flex items-center gap-2 text-xs font-semibold text-slate-300">
                             <CheckCircle2 className="h-4 w-4 shrink-0 text-cyan-300" />
@@ -396,7 +395,7 @@ function Products() {
                       </div>
                     </div>
 
-                    <div className="mt-8 border-t border-white/10 pt-6">
+                    <div className="mt-6 border-t border-white/10 pt-5">
                       <div className="mb-4 font-mono text-[11px] text-slate-500">{product.domain}</div>
                       <Button asChild className="h-11 rounded-full bg-white px-5 text-xs font-black text-[#07111f] hover:bg-cyan-100">
                         <a href={product.href} target="_blank" rel="noopener noreferrer">
@@ -465,8 +464,8 @@ function BrandStatement() {
   }, []);
 
   return (
-    <section ref={ref} className="relative min-h-[115vh] overflow-hidden bg-[#03050d] text-white">
-      <div ref={imageRef} className="sticky top-0 h-screen will-change-transform">
+    <section ref={ref} className="relative min-h-[92vh] overflow-hidden bg-[#03050d] text-white">
+      <div ref={imageRef} className="sticky top-0 h-[88vh] will-change-transform">
         <Image
           src="/images/koi_hero.png"
           alt="Identidade visual Konnexy"
@@ -478,9 +477,9 @@ function BrandStatement() {
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_45%,rgba(37,99,235,.12),transparent_30%),linear-gradient(180deg,rgba(3,5,13,.2),#03050d_90%)]" />
       </div>
 
-      <div ref={copyRef} className={`${shell} pointer-events-none absolute inset-x-0 bottom-16 z-10 will-change-transform sm:bottom-20 lg:bottom-24`}>
+      <div ref={copyRef} className={`${shell} pointer-events-none absolute inset-x-0 bottom-12 z-10 will-change-transform sm:bottom-14 lg:bottom-16`}>
         <Eyebrow>Ecossistema conectado</Eyebrow>
-        <h2 className="mt-5 max-w-5xl text-[clamp(3.1rem,7vw,7rem)] font-black leading-[0.9] tracking-[-0.055em]">
+        <h2 className="mt-4 max-w-4xl text-[clamp(2.55rem,5.4vw,5.2rem)] font-black leading-[0.95] tracking-[-0.045em]">
           Do físico ao digital. Do clique ao cliente.
         </h2>
         <p className="mt-6 max-w-xl text-sm leading-7 text-slate-300 sm:text-base">
@@ -535,7 +534,7 @@ function Numbers() {
         <div className="mt-10 grid gap-10 lg:grid-cols-3 lg:gap-12">
           {values.map((item) => (
             <div key={item.label} className="border-t border-slate-300 pt-5">
-              <div className="text-[clamp(4.4rem,8vw,7.5rem)] font-black leading-none tracking-[-0.06em]">
+              <div className="text-[clamp(3.6rem,6.5vw,6rem)] font-black leading-none tracking-[-0.05em]">
                 <span data-counter={item.value}>0</span>{item.suffix}
               </div>
               <p className="mt-4 max-w-xs text-sm font-semibold leading-6 text-slate-600">{item.label}</p>
@@ -557,7 +556,7 @@ function Services() {
         <div className="grid gap-6 lg:grid-cols-[1.15fr_.85fr] lg:items-end">
           <div>
             <Eyebrow>Serviços</Eyebrow>
-            <h2 className="mt-5 max-w-4xl text-[clamp(2.6rem,5.5vw,5.3rem)] font-black leading-[0.95] tracking-[-0.05em]">
+            <h2 className="mt-4 max-w-3xl text-[clamp(2.2rem,4.4vw,4.2rem)] font-black leading-[0.98] tracking-[-0.045em]">
               Tecnologia com função comercial.
             </h2>
           </div>
@@ -572,7 +571,7 @@ function Services() {
               data-service-card
               key={service.title}
               href={service.href}
-              className="group min-h-[250px] rounded-[24px] border border-white/10 bg-[#0a0d17] p-6 opacity-0 transition hover:-translate-y-1 hover:border-cyan-300/30 hover:bg-[#0d1220] sm:p-7"
+              className="group min-h-[210px] rounded-[22px] border border-white/10 bg-[#0a0d17] p-5 opacity-0 transition hover:-translate-y-1 hover:border-cyan-300/30 hover:bg-[#0d1220] sm:p-6"
             >
               <div className="flex h-full flex-col justify-between">
                 <div className="flex items-start justify-between">
@@ -580,7 +579,7 @@ function Services() {
                   <ArrowRight className="h-5 w-5 text-slate-600 transition group-hover:translate-x-1 group-hover:text-cyan-300" />
                 </div>
                 <div>
-                  <h3 className="text-2xl font-black tracking-tight">{service.title}</h3>
+                  <h3 className="text-xl font-black tracking-tight">{service.title}</h3>
                   <p className="mt-3 text-sm leading-6 text-slate-400">{service.description}</p>
                 </div>
               </div>
@@ -601,14 +600,14 @@ function FinalCTA() {
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_80%_20%,rgba(255,255,255,.28),transparent_32%)]" />
       <div className={`${shell} relative`}>
         <div data-final className="opacity-0"><Eyebrow light>Próximo passo</Eyebrow></div>
-        <h2 data-final className="mt-5 max-w-5xl text-[clamp(3.1rem,7vw,7rem)] font-black leading-[0.9] tracking-[-0.055em] opacity-0">
+        <h2 data-final className="mt-4 max-w-4xl text-[clamp(2.6rem,5.2vw,5.2rem)] font-black leading-[0.95] tracking-[-0.045em] opacity-0">
           Seu negócio já existe. Agora faça ele ser encontrado.
         </h2>
-        <p data-final className="mt-6 max-w-xl text-sm font-medium leading-7 text-[#07111f]/70 opacity-0 sm:text-base">
+        <p data-final className="mt-5 max-w-xl text-sm font-medium leading-6 text-[#07111f]/70 opacity-0 sm:text-base">
           Conte como seu negócio funciona hoje. A Konnexy identifica os principais pontos de atrito e indica uma solução sem empurrar um pacote genérico.
         </p>
 
-        <div data-final className="mt-9 flex flex-wrap gap-3 opacity-0">
+        <div data-final className="mt-7 flex flex-wrap gap-3 opacity-0">
           <Button asChild className="h-12 rounded-full bg-[#07111f] px-6 text-sm font-black text-white hover:bg-[#0d1b2a]">
             <a href="https://wa.me/5516991551200?text=Olá,%20quero%20uma%20análise%20do%20meu%20negócio." target="_blank" rel="noopener noreferrer">
               <MessageCircle className="mr-2 h-4 w-4" />
