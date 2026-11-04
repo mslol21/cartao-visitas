@@ -112,7 +112,7 @@ function Hero() {
           ease: "none",
           scrollTrigger: {
             trigger: sectionRef.current,
-            start: "top top",
+            start: "top top+=1",
             end: "bottom top",
             scrub: 1,
           },
@@ -126,7 +126,7 @@ function Hero() {
   return (
     <section ref={sectionRef} className="relative min-h-[100svh] overflow-hidden border-b border-white/10 bg-[#03050d]">
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_70%_30%,rgba(37,99,235,0.18),transparent_34%),radial-gradient(circle_at_20%_15%,rgba(34,211,238,0.09),transparent_25%),linear-gradient(180deg,#02040b_0%,#050913_100%)]" />
-      <div ref={visualRef} className="absolute inset-x-0 top-[10%] mx-auto h-[72%] max-w-[980px] will-change-transform">
+      <div ref={visualRef} className="absolute inset-x-0 top-[12%] mx-auto h-[68%] max-w-[900px] will-change-transform">
         <div className="absolute inset-0 rounded-[50%] bg-cyan-300/10 blur-[100px]" />
         <Image
           src="/images/koi_hero.png"
@@ -159,7 +159,7 @@ function Hero() {
             Conecta • Organiza • Vende
           </span>
 
-          <h1 className="max-w-5xl text-[clamp(3.4rem,9vw,8.8rem)] font-black leading-[0.86] tracking-[-0.065em] text-white">
+          <h1 className="max-w-5xl text-[clamp(3.25rem,8vw,7.6rem)] font-black leading-[0.9] tracking-[-0.055em] text-white">
             <span className="block overflow-hidden pb-[0.08em]"><span data-hero-line className="block will-change-transform">Tecnologia</span></span>
             <span className="block overflow-hidden pb-[0.08em]"><span data-hero-line className="block will-change-transform">que conecta</span></span>
             <span className="block overflow-hidden pb-[0.08em]"><span data-hero-line className="block bg-gradient-to-r from-cyan-300 via-blue-400 to-[#d6b45a] bg-clip-text text-transparent will-change-transform">negócios ao digital.</span></span>
@@ -291,8 +291,8 @@ function HorizontalShowcase() {
   }, []);
 
   return (
-    <section ref={sectionRef} id="solucoes" className="overflow-hidden bg-[#050711] py-24 text-white md:min-h-screen md:py-0">
-      <div className="mx-auto max-w-7xl px-6 pb-10 md:absolute md:left-1/2 md:top-12 md:z-20 md:w-full md:-translate-x-1/2">
+    <section ref={sectionRef} id="solucoes" className="relative overflow-hidden bg-[#050711] py-24 text-white md:min-h-screen md:py-20">
+      <div className="relative z-20 mx-auto max-w-7xl px-6 pb-10 md:pb-8">
         <span className="text-[10px] font-black uppercase tracking-[0.26em] text-cyan-300">Produtos Konnexy</span>
         <h2 className="mt-3 max-w-4xl text-[clamp(2.2rem,5vw,4.8rem)] font-black leading-[0.96] tracking-[-0.045em]">
           Um ecossistema de produtos para organizar, atender e vender melhor.
@@ -304,7 +304,7 @@ function HorizontalShowcase() {
 
       <div
         ref={trackRef}
-        className="flex gap-5 overflow-x-auto px-6 pb-5 pt-3 [scroll-snap-type:x_mandatory] md:w-max md:items-center md:gap-8 md:overflow-visible md:px-[8vw] md:pb-0 md:pt-44"
+        className="flex gap-5 overflow-x-auto px-6 pb-5 pt-3 [scroll-snap-type:x_mandatory] md:w-max md:items-center md:gap-8 md:overflow-visible md:px-[8vw] md:pb-0 md:pt-8"
       >
         {showcase.map((item) => (
           <article
