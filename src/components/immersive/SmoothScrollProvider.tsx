@@ -11,17 +11,16 @@ export function SmoothScrollProvider({ children }: { children: ReactNode }) {
 
     const { gsap, ScrollTrigger } = ensureGsapRegistered();
     const lenis = new Lenis({
-      duration: 1.05,
+      lerp: 0.08,
       smoothWheel: true,
       touchMultiplier: 1,
+      autoRaf: false,
     });
 
     const onScroll = () => ScrollTrigger.update();
     lenis.on("scroll", onScroll);
 
-    const raf = (time: number) => {
-      lenis.raf(time * 1000);
-    };
+    const raf = (time: number) => lenis.raf(time * 1000);
 
     gsap.ticker.add(raf);
     gsap.ticker.lagSmoothing(0);
