@@ -1,107 +1,84 @@
-# Konnexy — Landing Imersiva
+# Konnexy — Landing Comercial
 
-A home da Konnexy usa **GSAP + ScrollTrigger + Lenis** com foco em motion guiado por scroll, performance e acessibilidade.
+A home da Konnexy foi reorganizada para priorizar **clareza, projetos reais e conversão pelo WhatsApp**.
 
 ## Arquivos principais
 
-- `src/components/immersive/ImmersiveLanding.tsx` — composição das seções e timelines.
-- `src/components/immersive/SmoothScrollProvider.tsx` — Lenis integrado ao ticker do GSAP.
-- `src/hooks/useGsapReveal.ts` — hook reutilizável para reveals.
+- `src/components/immersive/ImmersiveLanding.tsx` — conteúdo, seções e animações discretas.
+- `src/hooks/useGsapReveal.ts` — reveal reutilizável com GSAP.
 - `src/lib/motion/gsap.ts` — registro centralizado do ScrollTrigger.
-- `src/app/globals.css` — integração Lenis e fallback de reduced motion.
+- `src/app/page.tsx` — metadata e entrada da home.
 
 ## Seções
 
-1. Hero com reveal por linha e parallax.
-2. Manifesto com palavras reveladas via scrub.
-3. Galeria horizontal pinned no desktop.
-4. Galeria nativa com scroll-snap no mobile.
-5. Imagem de impacto com scale + clip-path.
-6. Contadores acionados por viewport.
-7. Cards de serviços com stagger.
-8. CTA final e footer.
+1. Header com navegação e menu mobile.
+2. Hero com proposta de valor e CTAs.
+3. Soluções organizadas por necessidade.
+4. Projetos reais da Konnexy.
+5. Como funciona em três etapas.
+6. Diferenciais da Konnexy.
+7. Perguntas frequentes.
+8. CTA final.
+9. Footer.
 
-## Ajustar velocidade das animações
+## Editar conteúdo
 
-### Scrub
+Os textos, projetos, soluções e FAQ ficam no próprio arquivo:
 
-Procure por:
+`src/components/immersive/ImmersiveLanding.tsx`
 
-```ts
-scrub: 1
-```
+Procure pelos arrays:
 
-Valores maiores tornam a animação mais “pesada” e atrasada em relação ao scroll. Para resposta mais direta, use algo entre `0.5` e `0.8`.
+- `solutions`
+- `projects`
+- `faq`
 
-### Hero reveal
+## Editar contatos
 
-Em `Hero()`, ajuste:
-
-```ts
-duration: 1.1
-stagger: 0.12
-```
-
-### Manifesto
-
-A progressão das palavras usa:
+O link principal do WhatsApp fica na constante:
 
 ```ts
-stagger: 0.045
-start: "top 72%"
-end: "bottom 45%"
+const whatsappHref = "https://wa.me/..."
 ```
 
-### Galeria horizontal
+O Instagram está no footer.
 
-O pin é criado somente acima de 768px:
+## Editar imagens
+
+Os projetos usam imagens existentes em `public/`.
+
+Troque apenas o valor de `image` no array `projects`, preservando proporções adequadas e textos alternativos.
+
+## Motion
+
+A landing utiliza apenas reveals curtos com o hook `useGsapReveal`.
+
+Para deixar a entrada mais rápida ou mais lenta, ajuste:
 
 ```ts
-mm.add("(min-width: 768px)", ...)
+y: 20
+stagger: 0.06
+start: "top 84%"
 ```
 
-Para alterar o comprimento do pin, ajuste o `end` no ScrollTrigger da track.
+- `y`: deslocamento vertical inicial.
+- `stagger`: intervalo entre elementos.
+- `start`: ponto da viewport em que a animação começa.
 
-### Zoom
-
-A imagem usa apenas `scale` e `clipPath`:
-
-```ts
-scale: 0.82
-clipPath: "inset(10% 8% 10% 8% round 2.5rem)"
-```
-
-## Mobile
-
-Abaixo de 768px não existe pin horizontal. Os cards usam:
-
-- `overflow-x-auto`
-- `scroll-snap-type: x mandatory`
-- cards com `snap-center`
+Não há pin horizontal, scroll artificial obrigatório ou animações longas.
 
 ## Acessibilidade
 
-Quando `prefers-reduced-motion: reduce` estiver ativo:
-
-- Lenis não é iniciado.
-- parallax e pin são desativados.
-- reveals ficam em estado estático ou fade simples.
-- a navegação continua funcional.
-
-## Imagens e ScrollTrigger
-
-Após o carregamento das imagens é chamado:
-
-```ts
-ScrollTrigger.refresh()
-```
-
-Isso evita offsets incorretos quando o layout muda depois do carregamento.
+- menu mobile usa botão com `aria-expanded`;
+- navegação funciona com âncoras;
+- FAQ usa `details/summary` nativos;
+- conteúdo essencial permanece visível sem depender de hover;
+- `prefers-reduced-motion` continua respeitado pelo hook de motion.
 
 ## Performance
 
-- Hero usa `priority`.
-- Demais imagens usam lazy loading.
-- Elementos animados usam `will-change` de forma pontual.
-- Motion prioriza `transform` e `opacity`; `clip-path` é usado apenas na seção de zoom.
-- O layout mobile evita pinning para reduzir custo de renderização.
+- imagem principal usa prioridade;
+- imagens abaixo da dobra usam lazy loading;
+- não há vídeo obrigatório antes do conteúdo;
+- não há animações contínuas pesadas;
+- a home usa componentes e bibliotecas já existentes no projeto.
