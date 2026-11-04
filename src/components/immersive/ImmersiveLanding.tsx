@@ -111,7 +111,7 @@ function Preloader() {
       },
     });
 
-    return () => tween.kill();
+    return () => {\n      tween.kill();\n    };
   }, []);
 
   if (!visible) return null;
