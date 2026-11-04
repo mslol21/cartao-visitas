@@ -192,7 +192,7 @@ function Hero() {
         </Button>
       </header>
 
-      <div className={`${shell} relative z-10 flex min-h-[calc(100svh-84px)] items-end pb-12 pt-12 sm:pb-16 lg:pb-18`}>
+      <div className={`${shell} relative z-10 flex min-h-[calc(100svh-84px)] items-end pb-12 pt-12 sm:pb-16 lg:pb-16`}>
         <div className="w-full max-w-5xl">
           <div data-hero-support>
             <Eyebrow>Conecta • Organiza • Vende</Eyebrow>
@@ -217,7 +217,6 @@ function Hero() {
             </Button>
           </div>
         </div>
-          </div>
         </div>
       </div>
     </section>
@@ -485,6 +484,8 @@ function BrandStatement() {
         <p className="mt-6 max-w-xl text-sm leading-7 text-slate-300 sm:text-base">
           A Konnexy conecta presença, atendimento e operação para reduzir atrito entre o negócio e quem quer comprar.
         </p>
+          </div>
+        </div>
       </div>
     </section>
   );
