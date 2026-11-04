@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { KonnexyLanding } from "@/components/landing/KonnexyLanding";
+import { ImmersiveLanding } from "@/components/immersive/ImmersiveLanding";
 import { KonnexyPageIntro } from "@/components/brand/KonnexyPageIntro";
 
 export const metadata: Metadata = {
@@ -14,7 +14,7 @@ export default function LandingPage() {
   return (
     <KonnexyPageIntro>
       <main className="min-h-screen">
-        <KonnexyLanding />
+        <ImmersiveLanding />
       </main>
     </KonnexyPageIntro>
   );
