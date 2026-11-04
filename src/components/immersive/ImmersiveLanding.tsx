@@ -13,39 +13,44 @@ const manifesto =
 
 const showcase = [
   {
-    eyebrow: "Sites & Landing Pages",
-    title: "Presença que transmite confiança antes do primeiro contato.",
-    copy: "Experiências rápidas, responsivas e preparadas para gerar ação.",
-    image: "/site.png",
-    href: "/servicos/criacao-de-sites",
-  },
-  {
-    eyebrow: "Presença no Google",
-    title: "Seja encontrado quando a intenção de compra já existe.",
-    copy: "Perfil organizado, serviços claros e caminhos diretos para contato.",
-    image: "/images/landing/demo_clinica.png",
-    href: "/servicos/otimizacao-perfil-google",
+    eyebrow: "Konnexy Menu",
+    title: "Cardápio digital com operação de verdade por trás.",
+    copy: "Cardápio, pedidos, retirada e delivery com fluxo pensado para restaurantes, lanchonetes e operações de alimentação.",
+    image: "/catalogo.png",
+    href: "https://menu.konnexy.com.br",
+    domain: "menu.konnexy.com.br",
+    tag: "Food & Delivery",
+    features: ["Cardápio digital", "Pedidos via WhatsApp", "KDS / operação", "Delivery e retirada"],
   },
   {
     eyebrow: "Konnexy Tag",
-    title: "Do balcão para o digital em um toque.",
-    copy: "NFC e QR Code conectando avaliações, WhatsApp, portfólio e serviços.",
+    title: "Aproxime. Escaneie. Conecte o cliente ao seu negócio.",
+    copy: "NFC e QR Code para avaliações no Google, WhatsApp, redes sociais, links profissionais e experiências phygital.",
     image: "/link.png",
-    href: "/servicos/nfc-qr-code",
+    href: "https://tag.konnexy.com.br",
+    domain: "tag.konnexy.com.br",
+    tag: "NFC & QR",
+    features: ["NFC", "QR Code", "Avaliações Google", "Link profissional"],
   },
   {
-    eyebrow: "Catálogos & Cardápios",
-    title: "Produtos organizados para facilitar a decisão do cliente.",
-    copy: "Vitrines digitais com navegação simples e pedidos direcionados ao WhatsApp.",
-    image: "/catalogo.png",
-    href: "/servicos/catalogo-cardapio-digital",
+    eyebrow: "Konnexy Agenda",
+    title: "Agendamento simples para quem atende por horário.",
+    copy: "Uma experiência de agendamento pensada para salões, barbearias, clínicas, pet shops e prestadores de serviço.",
+    image: "/pet.png",
+    href: "https://agenda.konnexy.com.br",
+    domain: "agenda.konnexy.com.br",
+    tag: "Agenda & Booking",
+    features: ["Agenda online", "Horários disponíveis", "Gestão de serviços", "Atendimento organizado"],
   },
   {
-    eyebrow: "Sistemas Web",
-    title: "Tecnologia que acompanha a operação do seu negócio.",
-    copy: "Agenda, estoque, PDV, orçamento, OS e fluxos sob medida.",
+    eyebrow: "Konnexy PDV",
+    title: "Venda, estoque e caixa em uma operação integrada.",
+    copy: "PDV para pequenos negócios com estoque, caixa, relatórios, operadores e operação offline com sincronização.",
     image: "/fabrica.png",
-    href: "/servicos/sistemas-web",
+    href: "https://pdv.konnexy.com.br",
+    domain: "pdv.konnexy.com.br",
+    tag: "PDV & Gestão",
+    features: ["PDV", "Estoque", "Caixa", "Offline + sincronização"],
   },
 ];
 
@@ -162,7 +167,7 @@ function Hero() {
 
           <div data-hero-support className="mt-8 grid gap-6 border-t border-white/10 pt-6 sm:grid-cols-[1fr_auto] sm:items-end">
             <p className="max-w-2xl text-sm leading-7 text-slate-300 sm:text-base">
-              Sites, Google, tráfego pago, sistemas web e experiências phygital construídos para tornar seu negócio mais fácil de encontrar, entender e escolher.
+              Produtos próprios e serviços digitais conectados em um mesmo ecossistema: Menu, Tag, Agenda, PDV, sites, Google, tráfego pago e soluções sob medida.
             </p>
             <a
               href="#manifesto"
@@ -288,10 +293,13 @@ function HorizontalShowcase() {
   return (
     <section ref={sectionRef} id="solucoes" className="overflow-hidden bg-[#050711] py-24 text-white md:min-h-screen md:py-0">
       <div className="mx-auto max-w-7xl px-6 pb-10 md:absolute md:left-1/2 md:top-12 md:z-20 md:w-full md:-translate-x-1/2">
-        <span className="text-[10px] font-black uppercase tracking-[0.26em] text-cyan-300">Ecossistema Konnexy</span>
-        <h2 className="mt-3 max-w-3xl text-[clamp(2.2rem,5vw,4.8rem)] font-black leading-[0.96] tracking-[-0.045em]">
-          Uma solução para cada ponto de atrito do negócio.
+        <span className="text-[10px] font-black uppercase tracking-[0.26em] text-cyan-300">Produtos Konnexy</span>
+        <h2 className="mt-3 max-w-4xl text-[clamp(2.2rem,5vw,4.8rem)] font-black leading-[0.96] tracking-[-0.045em]">
+          Um ecossistema de produtos para organizar, atender e vender melhor.
         </h2>
+        <p className="mt-4 max-w-2xl text-sm leading-6 text-slate-400">
+          Cada produto possui seu próprio subdomínio oficial, mas todos fazem parte da mesma estrutura Konnexy.
+        </p>
       </div>
 
       <div
@@ -318,13 +326,24 @@ function HorizontalShowcase() {
             </div>
             <div className="relative grid gap-5 p-6 sm:p-8 md:grid-cols-[1fr_auto] md:items-end">
               <div>
-                <span className="text-[10px] font-black uppercase tracking-[0.22em] text-cyan-300">{item.eyebrow}</span>
+                <div className="flex flex-wrap items-center gap-2">
+                  <span className="text-[10px] font-black uppercase tracking-[0.22em] text-cyan-300">{item.eyebrow}</span>
+                  <span className="rounded-full border border-white/10 bg-white/[0.04] px-2.5 py-1 text-[9px] font-black uppercase tracking-[0.14em] text-slate-400">{item.tag}</span>
+                </div>
                 <h3 className="mt-3 max-w-3xl text-2xl font-black leading-tight sm:text-4xl">{item.title}</h3>
                 <p className="mt-3 max-w-2xl text-sm leading-6 text-slate-400">{item.copy}</p>
+                <div className="mt-5 flex flex-wrap gap-2">
+                  {item.features.map((feature) => (
+                    <span key={feature} className="rounded-full border border-white/10 bg-black/30 px-3 py-1.5 text-[10px] font-bold text-slate-300">
+                      {feature}
+                    </span>
+                  ))}
+                </div>
+                <div className="mt-5 font-mono text-[11px] text-slate-500">{item.domain}</div>
               </div>
-              <Link href={item.href} className="inline-flex items-center gap-2 text-xs font-black uppercase tracking-[0.14em] text-white">
-                Saiba mais <ArrowRight className="h-4 w-4" />
-              </Link>
+              <a href={item.href} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 text-xs font-black uppercase tracking-[0.14em] text-white">
+                Acessar produto <ExternalLink className="h-4 w-4" />
+              </a>
             </div>
           </article>
         ))}
