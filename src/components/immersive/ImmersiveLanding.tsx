@@ -3,541 +3,381 @@
 import Image from "next/image";
 import Link from "next/link";
 import {
-  ArrowDown,
   ArrowRight,
   CheckCircle2,
+  ChevronDown,
   ExternalLink,
+  MapPin,
+  Menu,
   MessageCircle,
+  Search,
+  Smartphone,
+  Store,
+  X,
+  Zap,
 } from "lucide-react";
-import { useEffect, useMemo, useRef } from "react";
+import { useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
-import { SmoothScrollProvider } from "@/components/immersive/SmoothScrollProvider";
 import { useGsapReveal } from "@/hooks/useGsapReveal";
-import { ensureGsapRegistered } from "@/lib/motion/gsap";
 
 const shell = "mx-auto w-full max-w-6xl px-5 sm:px-6 lg:px-8";
-const sectionY = "py-16 sm:py-20 lg:py-24";
+const sectionY = "py-12 sm:py-16 lg:py-20";
 
-const manifesto =
-  "Seu cliente procura compara entra em contato e decide em poucos segundos. A Konnexy conecta presença digital tecnologia e conversão para transformar atenção em oportunidade real.";
+const whatsappHref =
+  "https://wa.me/5516991551200?text=Olá,%20quero%20conhecer%20as%20soluções%20da%20Konnexy%20para%20meu%20negócio.";
 
-const products = [
+const solutions = [
+  {
+    icon: Search,
+    title: "Ser encontrado",
+    need: "Para quem precisa aparecer melhor quando o cliente já está procurando.",
+    benefit: "Organizamos sua presença para facilitar descoberta, confiança e contato.",
+    items: ["Perfil da Empresa no Google", "Google Ads", "Meta Ads"],
+  },
+  {
+    icon: Store,
+    title: "Apresentar melhor o negócio",
+    need: "Para quem quer explicar melhor o que vende, como trabalha e como entrar em contato.",
+    benefit: "Criamos uma apresentação mais profissional e fácil de compartilhar.",
+    items: ["Sites profissionais", "Landing pages", "Link profissional"],
+  },
+  {
+    icon: Zap,
+    title: "Facilitar atendimento e operação",
+    need: "Para quem quer reduzir tarefas manuais e deixar o atendimento mais simples.",
+    benefit: "Conectamos ferramentas digitais ao dia a dia do negócio.",
+    items: ["Catálogos e cardápios", "NFC e QR Code", "Sistemas web"],
+  },
+] as const;
+
+const projects = [
   {
     name: "Konnexy Menu",
-    category: "Food & Delivery",
-    title: "Cardápio digital com operação de verdade por trás.",
-    description:
-      "Cardápio, pedidos, retirada e delivery com um fluxo pensado para restaurantes, lanchonetes e operações de alimentação.",
+    segment: "Alimentação",
+    description: "Cardápio digital com pedidos, retirada, delivery e apoio à operação.",
     image: "/catalogo.png",
     href: "https://menu.konnexy.com.br",
-    domain: "menu.konnexy.com.br",
-    features: ["Cardápio digital", "Pedidos", "KDS", "Delivery e retirada"],
   },
   {
     name: "Konnexy Tag",
-    category: "NFC & QR",
-    title: "Do atendimento físico para o digital em um toque.",
-    description:
-      "NFC e QR Code para avaliações no Google, WhatsApp, redes sociais, links profissionais e experiências phygital.",
+    segment: "NFC & QR Code",
+    description: "Experiências por aproximação e QR para avaliações, links e contatos.",
     image: "/link.png",
     href: "https://tag.konnexy.com.br",
-    domain: "tag.konnexy.com.br",
-    features: ["NFC", "QR Code", "Google", "Link profissional"],
   },
   {
     name: "Konnexy Agenda",
-    category: "Agenda & Booking",
-    title: "Agendamento simples para quem atende por horário.",
-    description:
-      "Uma experiência de agendamento para salões, barbearias, clínicas, pet shops e prestadores de serviço.",
+    segment: "Agendamento",
+    description: "Agenda online para negócios que trabalham com horários e serviços.",
     image: "/pet.png",
     href: "https://agenda.konnexy.com.br",
-    domain: "agenda.konnexy.com.br",
-    features: ["Agenda online", "Horários", "Serviços", "Atendimento"],
   },
   {
     name: "Konnexy PDV",
-    category: "PDV & Gestão",
-    title: "Venda, estoque e caixa em uma operação integrada.",
-    description:
-      "PDV para pequenos negócios com estoque, caixa, relatórios, operadores e operação offline com sincronização.",
+    segment: "Gestão",
+    description: "PDV com caixa, estoque e operação pensada para pequenos negócios.",
     image: "/fabrica.png",
     href: "https://pdv.konnexy.com.br",
-    domain: "pdv.konnexy.com.br",
-    features: ["PDV", "Estoque", "Caixa", "Offline + sync"],
   },
 ] as const;
 
-const services = [
+const faq = [
   {
-    title: "Criação de sites",
-    description: "Sites e landing pages profissionais, responsivos e preparados para conversão.",
-    href: "/servicos/criacao-de-sites",
+    question: "Já tenho Instagram. Como um site pode ajudar?",
+    answer:
+      "O Instagram ajuda na divulgação, mas o site organiza informações, serviços, contatos e pode servir como ponto central para Google, anúncios e WhatsApp.",
   },
   {
-    title: "Google & SEO local",
-    description: "Estrutura para melhorar presença nas buscas locais e no Google Maps.",
-    href: "/servicos/otimizacao-perfil-google",
+    question: "Preciso saber mexer com tecnologia?",
+    answer:
+      "Não. A proposta é deixar a solução simples para o uso do dia a dia e orientar o que realmente precisa ser feito.",
   },
   {
-    title: "Tráfego pago",
-    description: "Campanhas conectadas à oferta, página de destino e atendimento.",
-    href: "/servicos/trafego-pago",
+    question: "Qual solução faz sentido para meu negócio?",
+    answer:
+      "Depende do objetivo atual. Primeiro entendemos sua necessidade e indicamos uma opção adequada ao momento do negócio.",
   },
   {
-    title: "Sistemas web",
-    description: "Soluções personalizadas para organizar processos e operação.",
-    href: "/servicos/sistemas-web",
+    question: "Como funciona o orçamento?",
+    answer:
+      "O orçamento é montado conforme a solução e o nível de personalização necessário. Você recebe uma proposta antes de qualquer contratação.",
   },
   {
-    title: "Link profissional",
-    description: "WhatsApp, localização, redes e portfólio em um único endereço.",
-    href: "/servicos/link-profissional",
-  },
-  {
-    title: "NFC & QR Code",
-    description: "Experiências phygital para avaliações, contatos e acessos rápidos.",
-    href: "/servicos/nfc-qr-code",
+    question: "Existem serviços com mensalidade?",
+    answer:
+      "Sim, alguns serviços e sistemas podem ter mensalidade. Isso varia conforme a solução escolhida e é informado na proposta.",
   },
 ] as const;
 
-function Eyebrow({ children, light = false }: { children: React.ReactNode; light?: boolean }) {
+function Eyebrow({ children }: { children: React.ReactNode }) {
   return (
-    <div className={`inline-flex items-center gap-2 text-[11px] font-black uppercase tracking-[0.22em] ${light ? "text-slate-500" : "text-cyan-300"}`}>
-      <span className={`h-1.5 w-1.5 rounded-full ${light ? "bg-blue-600" : "bg-cyan-300"}`} />
+    <div className="inline-flex items-center gap-2 text-[11px] font-black uppercase tracking-[0.18em] text-cyan-300">
+      <span className="h-1.5 w-1.5 rounded-full bg-cyan-300" />
       {children}
     </div>
   );
 }
 
-function Hero() {
-  const sectionRef = useRef<HTMLElement>(null);
-  const visualRef = useRef<HTMLDivElement>(null);
+function SectionHeading({
+  eyebrow,
+  title,
+  text,
+}: {
+  eyebrow: string;
+  title: string;
+  text?: string;
+}) {
+  return (
+    <div className="max-w-3xl">
+      <Eyebrow>{eyebrow}</Eyebrow>
+      <h2 className="mt-3 text-[clamp(1.8rem,3.4vw,2.6rem)] font-black leading-[1.05] tracking-[-0.03em] text-white">
+        {title}
+      </h2>
+      {text ? <p className="mt-4 max-w-2xl text-base leading-7 text-slate-400">{text}</p> : null}
+    </div>
+  );
+}
 
-  useEffect(() => {
-    if (!sectionRef.current) return;
-    const { gsap } = ensureGsapRegistered();
-    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+function Header() {
+  const [open, setOpen] = useState(false);
 
-    const ctx = gsap.context(() => {
-      const lines = gsap.utils.toArray<HTMLElement>("[data-hero-line]");
-      const supporting = gsap.utils.toArray<HTMLElement>("[data-hero-support]");
-
-      if (reduced) {
-        gsap.set([...lines, ...supporting], { opacity: 1, y: 0, yPercent: 0 });
-        return;
-      }
-
-      gsap.fromTo(
-        lines,
-        { yPercent: 110, opacity: 0 },
-        { yPercent: 0, opacity: 1, duration: 0.95, stagger: 0.1, ease: "power3.out" },
-      );
-
-      gsap.fromTo(
-        supporting,
-        { y: 20, opacity: 0 },
-        { y: 0, opacity: 1, duration: 0.75, stagger: 0.07, delay: 0.3, ease: "power3.out" },
-      );
-
-      if (visualRef.current) {
-        gsap.to(visualRef.current, {
-          yPercent: 8,
-          ease: "none",
-          scrollTrigger: {
-            trigger: sectionRef.current,
-            start: "top top",
-            end: "bottom top",
-            scrub: 1,
-          },
-        });
-      }
-    }, sectionRef);
-
-    return () => ctx.revert();
-  }, []);
+  const links = [
+    ["Soluções", "#solucoes"],
+    ["Projetos", "#projetos"],
+    ["Como funciona", "#como-funciona"],
+    ["Contato", "#contato"],
+  ];
 
   return (
-    <section ref={sectionRef} className="relative min-h-[100svh] overflow-hidden bg-[#03050d] text-white">
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_75%_30%,rgba(37,99,235,.2),transparent_32%),radial-gradient(circle_at_18%_18%,rgba(34,211,238,.08),transparent_26%),linear-gradient(180deg,#03050d_0%,#050916_100%)]" />
-      <div className="absolute inset-0 opacity-[0.04] [background-image:radial-gradient(#fff_1px,transparent_1px)] [background-size:28px_28px]" />
-
-      <div ref={visualRef} className="pointer-events-none absolute right-[-6%] top-[16%] h-[58%] w-[64%] max-w-[760px] will-change-transform sm:right-[3%]">
-        <div className="absolute inset-0 rounded-full bg-blue-500/10 blur-[110px]" />
-        <Image
-          src="/images/koi_hero.png"
-          alt=""
-          fill
-          priority
-          sizes="(max-width: 768px) 76vw, 760px"
-          className="object-contain opacity-30 mix-blend-screen"
-        />
-      </div>
-
-      <header className={`${shell} relative z-20 flex items-center justify-between py-5 sm:py-6`}>
+    <header className="sticky top-0 z-50 border-b border-white/10 bg-[#050711]/90 backdrop-blur-xl">
+      <div className={`${shell} flex h-16 items-center justify-between`}>
         <Link href="/" className="flex items-center gap-3" aria-label="Konnexy - página inicial">
-          <Image src="/logo.png" alt="Konnexy" width={44} height={44} priority className="h-10 w-10 object-contain sm:h-11 sm:w-11" />
-          <div className="leading-none">
-            <div className="text-base font-black tracking-tight sm:text-lg">Konnexy</div>
-            <div className="mt-1 hidden text-[9px] font-bold uppercase tracking-[0.2em] text-slate-500 sm:block">Soluções web & tecnologia</div>
+          <Image src="/logo.png" alt="Konnexy" width={40} height={40} priority className="h-9 w-9 object-contain" />
+          <div>
+            <div className="text-sm font-black text-white sm:text-base">Konnexy</div>
+            <div className="hidden text-[9px] font-bold uppercase tracking-[0.16em] text-slate-500 sm:block">Soluções web & tecnologia</div>
           </div>
         </Link>
 
-        <Button asChild variant="outline" className="h-10 rounded-full border-white/15 bg-white/[0.04] px-4 text-xs font-bold text-white hover:bg-white/[0.08] hover:text-white">
-          <a href="https://wa.me/5516991551200" target="_blank" rel="noopener noreferrer">
-            <MessageCircle className="mr-2 h-4 w-4" />
-            <span className="hidden sm:inline">Falar no WhatsApp</span>
-            <span className="sm:hidden">WhatsApp</span>
-          </a>
-        </Button>
-      </header>
+        <nav className="hidden items-center gap-6 lg:flex" aria-label="Navegação principal">
+          {links.map(([label, href]) => (
+            <a key={label} href={href} className="text-sm font-semibold text-slate-300 transition hover:text-white">
+              {label}
+            </a>
+          ))}
+        </nav>
 
-      <div className={`${shell} relative z-10 flex min-h-[calc(100svh-84px)] items-end pb-12 pt-12 sm:pb-16 lg:pb-16`}>
-        <div className="w-full max-w-5xl">
-          <div data-hero-support>
-            <Eyebrow>Conecta • Organiza • Vende</Eyebrow>
+        <div className="hidden lg:block">
+          <Button asChild variant="whatsapp" className="h-11 rounded-full px-5 text-sm">
+            <a href={whatsappHref} target="_blank" rel="noopener noreferrer">
+              <MessageCircle className="h-4 w-4" />
+              Conversar pelo WhatsApp
+            </a>
+          </Button>
+        </div>
+
+        <button
+          type="button"
+          onClick={() => setOpen((value) => !value)}
+          className="inline-flex h-10 w-10 items-center justify-center rounded-xl border border-white/10 text-white lg:hidden"
+          aria-label={open ? "Fechar menu" : "Abrir menu"}
+          aria-expanded={open}
+        >
+          {open ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+        </button>
+      </div>
+
+      {open ? (
+        <div className="border-t border-white/10 bg-[#050711] lg:hidden">
+          <nav className={`${shell} flex flex-col gap-1 py-4`} aria-label="Navegação mobile">
+            {links.map(([label, href]) => (
+              <a
+                key={label}
+                href={href}
+                onClick={() => setOpen(false)}
+                className="rounded-xl px-3 py-3 text-sm font-semibold text-slate-200 hover:bg-white/5"
+              >
+                {label}
+              </a>
+            ))}
+            <Button asChild variant="whatsapp" className="mt-2 h-11 rounded-xl">
+              <a href={whatsappHref} target="_blank" rel="noopener noreferrer">
+                <MessageCircle className="h-4 w-4" />
+                Conversar pelo WhatsApp
+              </a>
+            </Button>
+          </nav>
+        </div>
+      ) : null}
+    </header>
+  );
+}
+
+function Hero() {
+  const ref = useRef<HTMLElement>(null);
+  useGsapReveal(ref, { selector: "[data-hero]", y: 24, stagger: 0.08, start: "top 92%" });
+
+  return (
+    <section ref={ref} className="relative overflow-hidden bg-[#050711] text-white">
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_75%_20%,rgba(37,99,235,.15),transparent_28%)]" />
+      <div className={`${shell} relative grid items-center gap-10 py-14 sm:py-16 lg:grid-cols-[1.05fr_.95fr] lg:py-20`}>
+        <div>
+          <div data-hero className="opacity-0">
+            <Eyebrow>Soluções digitais para pequenos negócios</Eyebrow>
           </div>
-
-          <h1 className="mt-5 text-[clamp(2.9rem,7vw,6.2rem)] font-black leading-[0.94] tracking-[-0.045em]">
-            <span className="block overflow-hidden pb-[0.08em]"><span data-hero-line className="block will-change-transform">Tecnologia</span></span>
-            <span className="block overflow-hidden pb-[0.08em]"><span data-hero-line className="block will-change-transform">que conecta</span></span>
-            <span className="block overflow-hidden pb-[0.08em]">
-              <span data-hero-line className="block bg-gradient-to-r from-cyan-300 via-blue-400 to-[#d6b45a] bg-clip-text text-transparent will-change-transform">
-                negócios ao digital.
-              </span>
-            </span>
+          <h1 data-hero className="mt-4 max-w-3xl text-[clamp(2.15rem,4.2vw,3.5rem)] font-black leading-[1.04] tracking-[-0.035em] opacity-0">
+            Seu negócio mais fácil de encontrar, conhecer e chamar.
           </h1>
+          <p data-hero className="mt-5 max-w-2xl text-base leading-7 text-slate-300 opacity-0 sm:text-lg">
+            Sites, presença no Google e soluções digitais para apresentar seu trabalho e facilitar o contato com seus clientes.
+          </p>
 
-          <div data-hero-support className="mt-6 grid gap-5 border-t border-white/10 pt-5 lg:grid-cols-[1fr_auto] lg:items-end">
-            <p className="max-w-2xl text-sm leading-7 text-slate-300 sm:text-base">
-              Produtos próprios e serviços digitais em um único ecossistema: Menu, Tag, Agenda, PDV, sites, presença no Google, tráfego pago e soluções sob medida.
-            </p>
-            <Button asChild variant="ghost" className="h-auto w-fit p-0 text-xs font-black uppercase tracking-[0.16em] text-white hover:bg-transparent hover:text-cyan-300">
-              <a href="#sobre">Explorar <ArrowDown className="ml-2 h-4 w-4" /></a>
+          <div data-hero className="mt-7 flex flex-col gap-3 opacity-0 sm:flex-row">
+            <Button asChild variant="whatsapp" className="h-12 rounded-xl px-5 text-sm">
+              <a href={whatsappHref} target="_blank" rel="noopener noreferrer">
+                <MessageCircle className="h-4 w-4" />
+                Conversar pelo WhatsApp
+              </a>
+            </Button>
+            <Button asChild variant="outline" className="h-12 rounded-xl border-white/15 bg-white/[0.03] px-5 text-sm font-bold text-white hover:bg-white/[0.06] hover:text-white">
+              <a href="#projetos">
+                Ver projetos <ArrowRight className="h-4 w-4" />
+              </a>
             </Button>
           </div>
+
+          <div data-hero className="mt-7 flex flex-wrap gap-x-5 gap-y-2 text-sm text-slate-400 opacity-0">
+            <span className="inline-flex items-center gap-2"><MapPin className="h-4 w-4 text-cyan-300" /> São Paulo e atendimento online</span>
+            <span className="inline-flex items-center gap-2"><Smartphone className="h-4 w-4 text-cyan-300" /> Soluções fáceis de usar</span>
+          </div>
+        </div>
+
+        <div data-hero className="relative opacity-0">
+          <div className="grid grid-cols-2 gap-3 rounded-[24px] border border-white/10 bg-white/[0.03] p-3 shadow-2xl shadow-black/20">
+            <div className="relative aspect-[4/3] overflow-hidden rounded-[18px]">
+              <Image src="/site.png" alt="Exemplo de site profissional desenvolvido pela Konnexy" fill priority sizes="(max-width: 1024px) 45vw, 280px" className="object-cover" />
+            </div>
+            <div className="relative aspect-[4/3] overflow-hidden rounded-[18px]">
+              <Image src="/catalogo.png" alt="Exemplo de catálogo digital Konnexy" fill sizes="(max-width: 1024px) 45vw, 280px" className="object-cover" />
+            </div>
+            <div className="relative aspect-[4/3] overflow-hidden rounded-[18px]">
+              <Image src="/link.png" alt="Exemplo de link profissional Konnexy" fill sizes="(max-width: 1024px) 45vw, 280px" className="object-cover" />
+            </div>
+            <div className="relative aspect-[4/3] overflow-hidden rounded-[18px]">
+              <Image src="/fabrica.png" alt="Exemplo de sistema web desenvolvido pela Konnexy" fill sizes="(max-width: 1024px) 45vw, 280px" className="object-cover" />
+            </div>
+          </div>
         </div>
       </div>
     </section>
   );
 }
 
-function Manifesto() {
+function Solutions() {
   const ref = useRef<HTMLElement>(null);
-  const words = useMemo(() => manifesto.split(" "), []);
-
-  useEffect(() => {
-    if (!ref.current) return;
-    const { gsap } = ensureGsapRegistered();
-    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-
-    const ctx = gsap.context(() => {
-      const targets = gsap.utils.toArray<HTMLElement>("[data-word]");
-      if (reduced) {
-        gsap.set(targets, { opacity: 1 });
-        return;
-      }
-
-      gsap.fromTo(
-        targets,
-        { opacity: 0.16 },
-        {
-          opacity: 1,
-          stagger: 0.04,
-          ease: "none",
-          scrollTrigger: {
-            trigger: ref.current,
-            start: "top 72%",
-            end: "bottom 48%",
-            scrub: 1,
-          },
-        },
-      );
-    }, ref);
-
-    return () => ctx.revert();
-  }, []);
+  useGsapReveal(ref, { selector: "[data-solution]", y: 22, stagger: 0.07, start: "top 82%" });
 
   return (
-    <section id="sobre" ref={ref} className={`${sectionY} bg-[#f4f3ef] text-[#07111f]`}>
+    <section id="solucoes" ref={ref} className={`${sectionY} scroll-mt-20 bg-[#0a0d17] text-white`}>
       <div className={shell}>
-        <Eyebrow light>Mais do que presença digital</Eyebrow>
-        <p className="mt-7 max-w-4xl text-[clamp(1.75rem,4vw,3.9rem)] font-black leading-[1.06] tracking-[-0.035em]">
-          {words.map((word, index) => (
-            <span key={`${word}-${index}`} data-word className="mr-[0.22em] inline-block will-change-[opacity]">
-              {word}
-            </span>
-          ))}
-        </p>
+        <SectionHeading
+          eyebrow="Soluções"
+          title="Comece pela necessidade do seu negócio."
+          text="Em vez de apresentar uma lista técnica, organizamos as soluções pelo problema que você quer resolver agora."
+        />
+
+        <div className="mt-9 grid gap-4 lg:grid-cols-3">
+          {solutions.map((solution) => {
+            const Icon = solution.icon;
+            return (
+              <article data-solution key={solution.title} className="rounded-[22px] border border-white/10 bg-[#0d1220] p-6 opacity-0">
+                <div className="inline-flex h-11 w-11 items-center justify-center rounded-xl border border-cyan-300/20 bg-cyan-300/10 text-cyan-300">
+                  <Icon className="h-5 w-5" />
+                </div>
+                <h3 className="mt-5 text-xl font-black">{solution.title}</h3>
+                <p className="mt-3 text-sm leading-6 text-slate-400">{solution.need}</p>
+                <p className="mt-4 text-sm font-semibold leading-6 text-slate-200">{solution.benefit}</p>
+
+                <div className="mt-5 space-y-2">
+                  {solution.items.map((item) => (
+                    <div key={item} className="flex items-center gap-2 text-sm text-slate-300">
+                      <CheckCircle2 className="h-4 w-4 shrink-0 text-cyan-300" />
+                      {item}
+                    </div>
+                  ))}
+                </div>
+
+                <a href={whatsappHref} target="_blank" rel="noopener noreferrer" className="mt-6 inline-flex items-center gap-2 text-sm font-bold text-cyan-300 hover:text-cyan-200">
+                  Conversar sobre esta solução <ArrowRight className="h-4 w-4" />
+                </a>
+              </article>
+            );
+          })}
+        </div>
       </div>
     </section>
   );
 }
 
-function Products() {
-  const sectionRef = useRef<HTMLElement>(null);
-  const pinRef = useRef<HTMLDivElement>(null);
-  const viewportRef = useRef<HTMLDivElement>(null);
-  const trackRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    if (!sectionRef.current || !pinRef.current || !viewportRef.current || !trackRef.current) return;
-    const { gsap, ScrollTrigger } = ensureGsapRegistered();
-    const mm = gsap.matchMedia();
-    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-
-    mm.add("(min-width: 1280px)", () => {
-      if (reduced || !pinRef.current || !viewportRef.current || !trackRef.current) return;
-
-      const getDistance = () => Math.max(0, trackRef.current!.scrollWidth - viewportRef.current!.clientWidth);
-
-      const tween = gsap.to(trackRef.current, {
-        x: () => -getDistance(),
-        ease: "none",
-        scrollTrigger: {
-          trigger: pinRef.current,
-          start: "top top",
-          end: () => `+=${Math.max(getDistance() * 0.9, window.innerHeight)}`,
-          scrub: 1,
-          pin: true,
-          anticipatePin: 1,
-          invalidateOnRefresh: true,
-        },
-      });
-
-      gsap.utils.toArray<HTMLElement>("[data-product-media]", trackRef.current).forEach((media) => {
-        gsap.fromTo(
-          media,
-          { xPercent: -3 },
-          {
-            xPercent: 3,
-            ease: "none",
-            scrollTrigger: {
-              trigger: media,
-              containerAnimation: tween,
-              start: "left right",
-              end: "right left",
-              scrub: 1,
-            },
-          },
-        );
-      });
-
-      requestAnimationFrame(() => ScrollTrigger.refresh());
-    });
-
-    return () => mm.revert();
-  }, []);
+function Projects() {
+  const ref = useRef<HTMLElement>(null);
+  useGsapReveal(ref, { selector: "[data-project]", y: 20, stagger: 0.06, start: "top 84%" });
 
   return (
-    <section ref={sectionRef} id="produtos" className="bg-[#050711] text-white">
-      <div className={`${shell} ${sectionY} pb-10 sm:pb-12 lg:pb-14`}>
-        <Eyebrow>Produtos Konnexy</Eyebrow>
-        <div className="mt-5 grid gap-6 lg:grid-cols-[1.35fr_.65fr] lg:items-end">
-          <h2 className="max-w-3xl text-[clamp(2.25rem,4.6vw,4.35rem)] font-black leading-[0.98] tracking-[-0.045em]">
-            Um ecossistema para organizar, atender e vender melhor.
+    <section id="projetos" ref={ref} className={`${sectionY} scroll-mt-20 bg-[#f5f4ef] text-[#07111f]`}>
+      <div className={shell}>
+        <div className="max-w-3xl">
+          <div className="text-[11px] font-black uppercase tracking-[0.18em] text-blue-700">Projetos reais</div>
+          <h2 className="mt-3 text-[clamp(1.8rem,3.4vw,2.6rem)] font-black leading-[1.05] tracking-[-0.03em]">
+            Veja algumas soluções Konnexy funcionando.
           </h2>
-          <p className="max-w-xl text-sm leading-7 text-slate-400 lg:justify-self-end">
-            Menu, Tag, Agenda e PDV têm seus próprios subdomínios, mas compartilham a mesma marca, linguagem e proposta de simplificar a rotina de pequenos negócios.
+          <p className="mt-4 text-base leading-7 text-slate-600">
+            Uma seleção enxuta de produtos e projetos com acesso direto para você entender a proposta na prática.
           </p>
         </div>
-      </div>
 
-      <div ref={pinRef} className="xl:min-h-[72vh]">
-        <div ref={viewportRef} className="overflow-hidden xl:flex xl:min-h-[72vh] xl:items-center">
-          <div
-            ref={trackRef}
-            className="flex gap-4 overflow-x-auto px-5 pb-16 pt-2 [scroll-snap-type:x_mandatory] sm:gap-6 sm:px-6 xl:w-max xl:gap-7 xl:overflow-visible xl:px-[max(2rem,calc((100vw-72rem)/2+2rem))] xl:pb-0 xl:pt-0"
-          >
-            {products.map((product, index) => (
-              <article
-                key={product.name}
-                className="group relative min-w-[88vw] max-w-[88vw] snap-center overflow-hidden rounded-[24px] border border-white/10 bg-[#0a0d17] shadow-xl shadow-black/20 sm:min-w-[68vw] sm:max-w-[68vw] xl:min-w-[46vw] xl:max-w-[46vw]"
-              >
-                <div className="grid xl:grid-cols-[1.1fr_.9fr]">
-                  <div className="relative min-h-[250px] overflow-hidden sm:min-h-[320px] xl:min-h-[380px]">
-                    <div data-product-media className="absolute -inset-[4%] will-change-transform">
-                      <Image
-                        src={product.image}
-                        alt={product.name}
-                        fill
-                        sizes="(max-width: 1023px) 88vw, 40vw"
-                        loading="lazy"
-                        className="object-cover"
-                      />
-                    </div>
-                    <div className="absolute inset-0 bg-gradient-to-t from-[#0a0d17] via-black/10 to-transparent lg:bg-gradient-to-r lg:from-transparent lg:via-transparent lg:to-[#0a0d17]/70" />
-                    <div className="absolute left-5 top-5 rounded-full border border-white/15 bg-black/45 px-3 py-1.5 text-[10px] font-black uppercase tracking-[0.16em] text-white backdrop-blur-md">
-                      0{index + 1}
-                    </div>
-                  </div>
-
-                  <div className="flex flex-col justify-between p-5 sm:p-6 xl:p-7">
-                    <div>
-                      <div className="flex flex-wrap items-center gap-2">
-                        <span className="text-[11px] font-black uppercase tracking-[0.18em] text-cyan-300">{product.name}</span>
-                        <span className="rounded-full border border-white/10 bg-white/[0.04] px-2.5 py-1 text-[9px] font-black uppercase tracking-[0.12em] text-slate-400">
-                          {product.category}
-                        </span>
-                      </div>
-
-                      <h3 className="mt-4 text-2xl font-black leading-[1.06] tracking-[-0.03em] sm:text-3xl">{product.title}</h3>
-                      <p className="mt-3 text-sm leading-6 text-slate-400">{product.description}</p>
-
-                      <div className="mt-5 grid gap-2.5 sm:grid-cols-2 lg:grid-cols-1 xl:grid-cols-2">
-                        {product.features.map((feature) => (
-                          <div key={feature} className="flex items-center gap-2 text-xs font-semibold text-slate-300">
-                            <CheckCircle2 className="h-4 w-4 shrink-0 text-cyan-300" />
-                            {feature}
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-
-                    <div className="mt-6 border-t border-white/10 pt-5">
-                      <div className="mb-4 font-mono text-[11px] text-slate-500">{product.domain}</div>
-                      <Button asChild className="h-11 rounded-full bg-white px-5 text-xs font-black text-[#07111f] hover:bg-cyan-100">
-                        <a href={product.href} target="_blank" rel="noopener noreferrer">
-                          Acessar produto <ExternalLink className="ml-2 h-4 w-4" />
-                        </a>
-                      </Button>
-                    </div>
-                  </div>
-                </div>
-              </article>
-            ))}
-          </div>
+        <div className="mt-9 grid gap-5 md:grid-cols-2">
+          {projects.map((project) => (
+            <article data-project key={project.name} className="overflow-hidden rounded-[22px] border border-slate-200 bg-white opacity-0 shadow-sm">
+              <div className="relative aspect-[16/9] overflow-hidden bg-slate-100">
+                <Image src={project.image} alt={project.name} fill sizes="(max-width: 768px) 100vw, 560px" loading="lazy" className="object-cover transition duration-500 hover:scale-[1.02]" />
+              </div>
+              <div className="p-5 sm:p-6">
+                <div className="text-[10px] font-black uppercase tracking-[0.16em] text-blue-700">{project.segment}</div>
+                <h3 className="mt-2 text-xl font-black">{project.name}</h3>
+                <p className="mt-2 text-sm leading-6 text-slate-600">{project.description}</p>
+                <a href={project.href} target="_blank" rel="noopener noreferrer" className="mt-5 inline-flex items-center gap-2 text-sm font-bold text-[#07111f] hover:text-blue-700">
+                  Ver projeto <ExternalLink className="h-4 w-4" />
+                </a>
+              </div>
+            </article>
+          ))}
         </div>
       </div>
     </section>
   );
 }
 
-function BrandStatement() {
+function HowItWorks() {
   const ref = useRef<HTMLElement>(null);
-  const imageRef = useRef<HTMLDivElement>(null);
-  const copyRef = useRef<HTMLDivElement>(null);
+  useGsapReveal(ref, { selector: "[data-step]", y: 18, stagger: 0.07, start: "top 82%" });
 
-  useEffect(() => {
-    if (!ref.current || !imageRef.current || !copyRef.current) return;
-    const { gsap } = ensureGsapRegistered();
-    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-
-    const ctx = gsap.context(() => {
-      if (reduced) return;
-
-      gsap.fromTo(
-        imageRef.current,
-        { scale: 0.9, clipPath: "inset(7% 5% 7% 5% round 32px)" },
-        {
-          scale: 1,
-          clipPath: "inset(0% 0% 0% 0% round 0px)",
-          ease: "none",
-          scrollTrigger: {
-            trigger: ref.current,
-            start: "top 80%",
-            end: "bottom 40%",
-            scrub: 1,
-          },
-        },
-      );
-
-      gsap.fromTo(
-        copyRef.current,
-        { opacity: 0, y: 36 },
-        {
-          opacity: 1,
-          y: 0,
-          ease: "power3.out",
-          scrollTrigger: {
-            trigger: ref.current,
-            start: "top 62%",
-            end: "top 38%",
-            scrub: 1,
-          },
-        },
-      );
-    }, ref);
-
-    return () => ctx.revert();
-  }, []);
-
-  return (
-    <section ref={ref} className="relative overflow-hidden bg-[#03050d] py-20 text-white sm:py-24 lg:py-28">
-      <div className={shell}>
-        <div ref={imageRef} className="relative h-[62vh] min-h-[460px] max-h-[720px] overflow-hidden rounded-[28px] will-change-transform">
-        <Image
-          src="/images/koi_hero.png"
-          alt="Identidade visual Konnexy"
-          fill
-          sizes="100vw"
-          loading="lazy"
-          className="object-cover object-center opacity-45"
-        />
-          <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_45%,rgba(37,99,235,.12),transparent_30%),linear-gradient(180deg,rgba(3,5,13,.12),rgba(3,5,13,.9)_92%)]" />
-          <div ref={copyRef} className="absolute inset-x-0 bottom-0 z-10 p-6 will-change-transform sm:p-8 lg:p-10">
-        <Eyebrow>Ecossistema conectado</Eyebrow>
-        <h2 className="mt-4 max-w-4xl text-[clamp(2.55rem,5.4vw,5.2rem)] font-black leading-[0.95] tracking-[-0.045em]">
-          Do físico ao digital. Do clique ao cliente.
-        </h2>
-        <p className="mt-6 max-w-xl text-sm leading-7 text-slate-300 sm:text-base">
-          A Konnexy conecta presença, atendimento e operação para reduzir atrito entre o negócio e quem quer comprar.
-        </p>
-          </div>
-        </div>
-      </div>
-    </section>
-  );
-}
-
-function Numbers() {
-  const ref = useRef<HTMLElement>(null);
-  const values = [
-    { value: 4, suffix: "", label: "produtos próprios no ecossistema Konnexy" },
-    { value: 6, suffix: "+", label: "frentes de serviço para presença, aquisição e operação" },
-    { value: 1, suffix: "", label: "marca conectando tecnologia e negócio" },
+  const steps = [
+    ["01", "Entendemos seu negócio", "Você explica o que vende, como atende e qual dificuldade quer resolver."],
+    ["02", "Indicamos a solução", "Mostramos uma opção adequada e explicamos de forma simples como ela pode ajudar."],
+    ["03", "Colocamos em funcionamento", "Configuramos o projeto aprovado e orientamos o uso do que foi contratado."],
   ];
 
-  useEffect(() => {
-    if (!ref.current) return;
-    const { gsap } = ensureGsapRegistered();
-    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-
-    const ctx = gsap.context(() => {
-      gsap.utils.toArray<HTMLElement>("[data-counter]").forEach((el) => {
-        const target = Number(el.dataset.counter || "0");
-        if (reduced) {
-          el.textContent = String(target);
-          return;
-        }
-
-        const state = { value: 0 };
-        gsap.to(state, {
-          value: target,
-          duration: 1.25,
-          ease: "power3.out",
-          scrollTrigger: { trigger: el, start: "top 88%", once: true },
-          onUpdate: () => {
-            el.textContent = String(Math.round(state.value));
-          },
-        });
-      });
-    }, ref);
-
-    return () => ctx.revert();
-  }, []);
-
   return (
-    <section ref={ref} className={`${sectionY} border-y border-black/5 bg-[#f4f3ef] text-[#07111f]`}>
+    <section id="como-funciona" ref={ref} className={`${sectionY} scroll-mt-20 bg-[#050711] text-white`}>
       <div className={shell}>
-        <Eyebrow light>Estrutura Konnexy</Eyebrow>
-        <div className="mt-10 grid gap-10 lg:grid-cols-3 lg:gap-12">
-          {values.map((item) => (
-            <div key={item.label} className="border-t border-slate-300 pt-5">
-              <div className="text-[clamp(3.6rem,6.5vw,6rem)] font-black leading-none tracking-[-0.05em]">
-                <span data-counter={item.value}>0</span>{item.suffix}
-              </div>
-              <p className="mt-4 max-w-xs text-sm font-semibold leading-6 text-slate-600">{item.label}</p>
+        <SectionHeading eyebrow="Como funciona" title="Um processo simples, sem complicar o que não precisa." />
+        <div className="mt-9 grid gap-4 lg:grid-cols-3">
+          {steps.map(([number, title, text]) => (
+            <div data-step key={number} className="rounded-[20px] border border-white/10 bg-white/[0.03] p-6 opacity-0">
+              <div className="text-sm font-black text-cyan-300">{number}</div>
+              <h3 className="mt-4 text-xl font-black">{title}</h3>
+              <p className="mt-3 text-sm leading-6 text-slate-400">{text}</p>
             </div>
           ))}
         </div>
@@ -546,44 +386,60 @@ function Numbers() {
   );
 }
 
-function Services() {
+function WhyKonnexy() {
   const ref = useRef<HTMLElement>(null);
-  useGsapReveal(ref, { selector: "[data-service-card]", y: 32, stagger: 0.07, start: "top 80%" });
+  useGsapReveal(ref, { selector: "[data-why]", y: 16, stagger: 0.06, start: "top 84%" });
+
+  const items = [
+    "Atendimento direto, sem linguagem complicada.",
+    "Soluções adequadas ao momento do negócio.",
+    "Experiência próxima de comércios e serviços locais.",
+    "Integração entre presença digital, contato e operação.",
+  ];
 
   return (
-    <section ref={ref} id="servicos" className={`${sectionY} border-t border-white/10 bg-[#050711] text-white`}>
+    <section ref={ref} className={`${sectionY} bg-[#0a0d17] text-white`}>
+      <div className={`${shell} grid gap-8 lg:grid-cols-[.9fr_1.1fr] lg:items-center`}>
+        <div>
+          <SectionHeading
+            eyebrow="Por que a Konnexy"
+            title="Tecnologia explicada de um jeito que faça sentido para o negócio."
+            text="O foco não é vender a ferramenta mais complexa. É encontrar uma solução útil, clara e compatível com a sua realidade."
+          />
+        </div>
+        <div className="grid gap-3 sm:grid-cols-2">
+          {items.map((item) => (
+            <div data-why key={item} className="flex gap-3 rounded-[18px] border border-white/10 bg-[#0d1220] p-5 opacity-0">
+              <CheckCircle2 className="mt-0.5 h-5 w-5 shrink-0 text-cyan-300" />
+              <p className="text-sm font-semibold leading-6 text-slate-200">{item}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function FAQ() {
+  return (
+    <section className={`${sectionY} bg-[#f5f4ef] text-[#07111f]`}>
       <div className={shell}>
-        <div className="grid gap-6 lg:grid-cols-[1.15fr_.85fr] lg:items-end">
-          <div>
-            <Eyebrow>Serviços</Eyebrow>
-            <h2 className="mt-4 max-w-3xl text-[clamp(2.2rem,4.4vw,4.2rem)] font-black leading-[0.98] tracking-[-0.045em]">
-              Tecnologia com função comercial.
-            </h2>
-          </div>
-          <p className="max-w-xl text-sm leading-7 text-slate-400 lg:justify-self-end">
-            O serviço começa pela necessidade do negócio. A partir disso, conectamos apenas o que faz sentido para presença, aquisição, atendimento ou operação.
-          </p>
+        <div className="max-w-3xl">
+          <div className="text-[11px] font-black uppercase tracking-[0.18em] text-blue-700">Perguntas frequentes</div>
+          <h2 className="mt-3 text-[clamp(1.8rem,3.4vw,2.6rem)] font-black leading-[1.05] tracking-[-0.03em]">
+            Dúvidas comuns antes de começar.
+          </h2>
         </div>
 
-        <div className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {services.map((service, index) => (
-            <Link
-              data-service-card
-              key={service.title}
-              href={service.href}
-              className="group min-h-[210px] rounded-[22px] border border-white/10 bg-[#0a0d17] p-5 opacity-0 transition hover:-translate-y-1 hover:border-cyan-300/30 hover:bg-[#0d1220] sm:p-6"
-            >
-              <div className="flex h-full flex-col justify-between">
-                <div className="flex items-start justify-between">
-                  <span className="text-xs font-black text-slate-600">0{index + 1}</span>
-                  <ArrowRight className="h-5 w-5 text-slate-600 transition group-hover:translate-x-1 group-hover:text-cyan-300" />
-                </div>
-                <div>
-                  <h3 className="text-xl font-black tracking-tight">{service.title}</h3>
-                  <p className="mt-3 text-sm leading-6 text-slate-400">{service.description}</p>
-                </div>
-              </div>
-            </Link>
+        <div className="mt-8 divide-y divide-slate-200 rounded-[20px] border border-slate-200 bg-white">
+          {faq.map((item) => (
+            <details key={item.question} className="group px-5 py-1 sm:px-6">
+              <summary className="flex cursor-pointer list-none items-center justify-between gap-4 py-5 text-left font-bold">
+                <span>{item.question}</span>
+                <ChevronDown className="h-5 w-5 shrink-0 text-slate-500 transition group-open:rotate-180" />
+              </summary>
+              <p className="max-w-3xl pb-5 text-sm leading-6 text-slate-600">{item.answer}</p>
+            </details>
           ))}
         </div>
       </div>
@@ -593,30 +449,29 @@ function Services() {
 
 function FinalCTA() {
   const ref = useRef<HTMLElement>(null);
-  useGsapReveal(ref, { selector: "[data-final]", y: 36, stagger: 0.1, start: "top 78%" });
+  useGsapReveal(ref, { selector: "[data-cta]", y: 20, stagger: 0.07, start: "top 86%" });
 
   return (
-    <section ref={ref} className={`${sectionY} relative overflow-hidden bg-[#c9a95d] text-[#07111f]`}>
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_80%_20%,rgba(255,255,255,.28),transparent_32%)]" />
-      <div className={`${shell} relative`}>
-        <div data-final className="opacity-0"><Eyebrow light>Próximo passo</Eyebrow></div>
-        <h2 data-final className="mt-4 max-w-4xl text-[clamp(2.6rem,5.2vw,5.2rem)] font-black leading-[0.95] tracking-[-0.045em] opacity-0">
-          Seu negócio já existe. Agora faça ele ser encontrado.
-        </h2>
-        <p data-final className="mt-5 max-w-xl text-sm font-medium leading-6 text-[#07111f]/70 opacity-0 sm:text-base">
-          Conte como seu negócio funciona hoje. A Konnexy identifica os principais pontos de atrito e indica uma solução sem empurrar um pacote genérico.
-        </p>
-
-        <div data-final className="mt-7 flex flex-wrap gap-3 opacity-0">
-          <Button asChild className="h-12 rounded-full bg-[#07111f] px-6 text-sm font-black text-white hover:bg-[#0d1b2a]">
-            <a href="https://wa.me/5516991551200?text=Olá,%20quero%20uma%20análise%20do%20meu%20negócio." target="_blank" rel="noopener noreferrer">
-              <MessageCircle className="mr-2 h-4 w-4" />
-              Quero uma análise
-            </a>
-          </Button>
-          <Button asChild variant="outline" className="h-12 rounded-full border-[#07111f]/25 bg-transparent px-6 text-sm font-black text-[#07111f] hover:bg-black/5">
-            <Link href="/servicos">Ver todos os serviços <ArrowRight className="ml-2 h-4 w-4" /></Link>
-          </Button>
+    <section id="contato" ref={ref} className={`${sectionY} scroll-mt-20 bg-[#d2b66f] text-[#07111f]`}>
+      <div className={shell}>
+        <div className="max-w-3xl">
+          <div data-cta className="opacity-0">
+            <div className="text-[11px] font-black uppercase tracking-[0.18em] text-[#07111f]/60">Próximo passo</div>
+          </div>
+          <h2 data-cta className="mt-3 text-[clamp(2rem,4vw,3rem)] font-black leading-[1.04] tracking-[-0.03em] opacity-0">
+            Vamos encontrar uma solução para o seu negócio?
+          </h2>
+          <p data-cta className="mt-4 max-w-2xl text-base leading-7 text-[#07111f]/75 opacity-0">
+            Conte o que você vende ou qual serviço oferece. A Konnexy mostra uma opção na prática e prepara uma proposta conforme sua necessidade.
+          </p>
+          <div data-cta className="mt-7 opacity-0">
+            <Button asChild className="h-12 rounded-xl bg-[#07111f] px-5 text-sm font-black text-white hover:bg-[#0d1b2a]">
+              <a href={whatsappHref} target="_blank" rel="noopener noreferrer">
+                <MessageCircle className="h-4 w-4" />
+                Conversar pelo WhatsApp
+              </a>
+            </Button>
+          </div>
         </div>
       </div>
     </section>
@@ -625,111 +480,45 @@ function FinalCTA() {
 
 function Footer() {
   return (
-    <footer className="border-t border-white/10 bg-[#03050d] py-10 text-white sm:py-12">
-      <div className={`${shell} grid gap-8 sm:grid-cols-[1fr_auto] sm:items-end`}>
+    <footer className="border-t border-white/10 bg-[#03050d] py-10 text-white">
+      <div className={`${shell} grid gap-8 md:grid-cols-[1fr_auto] md:items-end`}>
         <div>
           <div className="flex items-center gap-3">
-            <Image src="/logo.png" alt="Konnexy" width={42} height={42} className="h-10 w-10 object-contain" />
+            <Image src="/logo.png" alt="Konnexy" width={40} height={40} className="h-9 w-9 object-contain" />
             <div>
-              <div className="text-lg font-black">Konnexy</div>
-              <div className="text-[9px] font-bold uppercase tracking-[0.2em] text-slate-600">Conecta • Organiza • Vende</div>
+              <div className="font-black">Konnexy</div>
+              <div className="text-[9px] font-bold uppercase tracking-[0.16em] text-slate-600">Conecta • Organiza • Vende</div>
             </div>
           </div>
           <p className="mt-4 max-w-md text-sm leading-6 text-slate-500">
-            Produtos e soluções digitais para pequenos negócios conectarem presença, atendimento e operação.
+            Soluções digitais para pequenos negócios, com atendimento em São Paulo e online.
           </p>
         </div>
-        <div className="flex flex-wrap gap-5 text-xs font-semibold text-slate-500">
-          <Link href="/servicos" className="transition hover:text-white">Serviços</Link>
-          <a href="https://menu.konnexy.com.br" target="_blank" rel="noopener noreferrer" className="transition hover:text-white">Menu</a>
-          <a href="https://tag.konnexy.com.br" target="_blank" rel="noopener noreferrer" className="transition hover:text-white">Tag</a>
-          <a href="https://agenda.konnexy.com.br" target="_blank" rel="noopener noreferrer" className="transition hover:text-white">Agenda</a>
-          <a href="https://pdv.konnexy.com.br" target="_blank" rel="noopener noreferrer" className="transition hover:text-white">PDV</a>
+
+        <div className="flex flex-wrap gap-x-5 gap-y-3 text-sm font-semibold text-slate-500">
+          <Link href="/servicos" className="hover:text-white">Serviços</Link>
+          <a href="https://www.instagram.com/konnexy.web" target="_blank" rel="noopener noreferrer" className="hover:text-white">Instagram</a>
+          <a href={whatsappHref} target="_blank" rel="noopener noreferrer" className="hover:text-white">WhatsApp</a>
         </div>
       </div>
     </footer>
   );
 }
 
-
-function QuickNav() {
-  return (
-    <nav className="fixed bottom-5 left-1/2 z-40 hidden -translate-x-1/2 rounded-full border border-white/10 bg-[#050711]/85 px-2 py-2 shadow-2xl shadow-black/30 backdrop-blur-xl lg:flex">
-      {[
-        ["Início", "#"],
-        ["Sobre", "#sobre"],
-        ["Produtos", "#produtos"],
-        ["Serviços", "#servicos"],
-      ].map(([label, href]) => (
-        <a
-          key={label}
-          href={href}
-          className="rounded-full px-4 py-2 text-[11px] font-bold text-slate-400 transition hover:bg-white/5 hover:text-white"
-        >
-          {label}
-        </a>
-      ))}
-      <a
-        href="https://wa.me/5516991551200"
-        target="_blank"
-        rel="noopener noreferrer"
-        className="ml-1 inline-flex items-center gap-2 rounded-full bg-white px-4 py-2 text-[11px] font-black text-[#07111f]"
-      >
-        <MessageCircle className="h-3.5 w-3.5" />
-        Contato
-      </a>
-    </nav>
-  );
-}
-
-function RefreshAfterImages() {
-  useEffect(() => {
-    const { ScrollTrigger } = ensureGsapRegistered();
-    const images = Array.from(document.images);
-    const pending = images.filter((image) => !image.complete);
-
-    if (!pending.length) {
-      requestAnimationFrame(() => ScrollTrigger.refresh());
-      return;
-    }
-
-    let remaining = pending.length;
-    const done = () => {
-      remaining -= 1;
-      if (remaining <= 0) requestAnimationFrame(() => ScrollTrigger.refresh());
-    };
-
-    pending.forEach((image) => {
-      image.addEventListener("load", done, { once: true });
-      image.addEventListener("error", done, { once: true });
-    });
-
-    return () => {
-      pending.forEach((image) => {
-        image.removeEventListener("load", done);
-        image.removeEventListener("error", done);
-      });
-    };
-  }, []);
-
-  return null;
-}
-
 export function ImmersiveLanding() {
   return (
-    <SmoothScrollProvider>
-      <RefreshAfterImages />
-      <div className="overflow-x-clip bg-[#03050d] font-sans selection:bg-cyan-300/30">
+    <div className="overflow-x-clip bg-[#050711] font-sans selection:bg-cyan-300/30">
+      <Header />
+      <main>
         <Hero />
-        <Manifesto />
-        <Products />
-        <BrandStatement />
-        <Numbers />
-        <Services />
+        <Solutions />
+        <Projects />
+        <HowItWorks />
+        <WhyKonnexy />
+        <FAQ />
         <FinalCTA />
-        <Footer />
-        <QuickNav />
-      </div>
-    </SmoothScrollProvider>
+      </main>
+      <Footer />
+    </div>
   );
 }
