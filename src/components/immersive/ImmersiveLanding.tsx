@@ -276,67 +276,15 @@ function Manifesto() {
 }
 
 function Products() {
-  const sectionRef = useRef<HTMLElement>(null);
-  const pinRef = useRef<HTMLDivElement>(null);
-  const viewportRef = useRef<HTMLDivElement>(null);
-  const trackRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    if (!sectionRef.current || !pinRef.current || !viewportRef.current || !trackRef.current) return;
-    const { gsap, ScrollTrigger } = ensureGsapRegistered();
-    const mm = gsap.matchMedia();
-    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-
-    mm.add("(min-width: 1280px)", () => {
-      if (reduced || !pinRef.current || !viewportRef.current || !trackRef.current) return;
-
-      const getDistance = () => Math.max(0, trackRef.current!.scrollWidth - viewportRef.current!.clientWidth);
-
-      const tween = gsap.to(trackRef.current, {
-        x: () => -getDistance(),
-        ease: "none",
-        scrollTrigger: {
-          trigger: pinRef.current,
-          start: "top top",
-          end: () => `+=${Math.max(getDistance() * 0.9, window.innerHeight)}`,
-          scrub: 1,
-          pin: true,
-          anticipatePin: 1,
-          invalidateOnRefresh: true,
-        },
-      });
-
-      gsap.utils.toArray<HTMLElement>("[data-product-media]", trackRef.current).forEach((media) => {
-        gsap.fromTo(
-          media,
-          { xPercent: -3 },
-          {
-            xPercent: 3,
-            ease: "none",
-            scrollTrigger: {
-              trigger: media,
-              containerAnimation: tween,
-              start: "left right",
-              end: "right left",
-              scrub: 1,
-            },
-          },
-        );
-      });
-
-      requestAnimationFrame(() => ScrollTrigger.refresh());
-    });
-
-    return () => mm.revert();
-  }, []);
-
   return (
-    <section ref={sectionRef} id="produtos" className="relative overflow-hidden bg-[#050711] text-white">
+    <section id="produtos" className="relative overflow-hidden bg-[#050711] text-white">
       <div className="pointer-events-none absolute -left-32 top-24 h-80 w-80 rounded-full bg-cyan-500/10 blur-[110px]" />
       <div className="pointer-events-none absolute -right-24 bottom-20 h-96 w-96 rounded-full bg-fuchsia-500/[0.08] blur-[130px]" />
-      <div className={`${shell} ${sectionY} relative pb-10 sm:pb-12 lg:pb-14`}>
+
+      <div className={`${shell} ${sectionY} relative`}>
         <Eyebrow>Produtos Konnexy</Eyebrow>
-        <div className="mt-5 grid gap-6 lg:grid-cols-[1.35fr_.65fr] lg:items-end">
+
+        <div className="mt-5 grid gap-6 lg:grid-cols-[1.25fr_.75fr] lg:items-end">
           <h2 className="max-w-3xl text-[clamp(2.1rem,4.1vw,3.8rem)] font-black leading-[0.98] tracking-[-0.045em]">
             Um ecossistema para organizar, atender e vender melhor.
           </h2>
@@ -344,73 +292,80 @@ function Products() {
             Menu, Tag, Agenda e PDV têm seus próprios subdomínios, mas compartilham a mesma marca, linguagem e proposta de simplificar a rotina de pequenos negócios.
           </p>
         </div>
-      </div>
 
-      <div ref={pinRef} className="xl:min-h-[72vh]">
-        <div ref={viewportRef} className="overflow-hidden xl:flex xl:min-h-[72vh] xl:items-center">
-          <div
-            ref={trackRef}
-            className="flex gap-4 overflow-x-auto px-5 pb-16 pt-2 [scroll-snap-type:x_mandatory] sm:gap-6 sm:px-6 xl:w-max xl:gap-7 xl:overflow-visible xl:px-[max(2rem,calc((100vw-72rem)/2+2rem))] xl:pb-0 xl:pt-0"
-          >
-            {products.map((product, index) => (
-              <article
-                key={product.name}
-                className="group relative my-5 min-w-[88vw] max-w-[88vw] snap-center overflow-hidden rounded-[24px] border border-cyan-300/20 bg-[#0a0d17]/95 shadow-[0_0_0_1px_rgba(59,130,246,.08),0_0_38px_rgba(34,211,238,.10),0_22px_55px_rgba(0,0,0,.38)] transition duration-500 hover:border-cyan-300/45 hover:shadow-[0_0_0_1px_rgba(34,211,238,.16),0_0_50px_rgba(34,211,238,.18),0_25px_60px_rgba(0,0,0,.42)] sm:min-w-[68vw] sm:max-w-[68vw] xl:min-w-[46vw] xl:max-w-[46vw]"
-              >
-                <div className="grid xl:grid-cols-[1.1fr_.9fr]">
-                  <div className="relative min-h-[250px] overflow-hidden sm:min-h-[320px] xl:min-h-[380px]">
-                    <div data-product-media className="absolute -inset-[4%] will-change-transform">
-                      <Image
-                        src={product.image}
-                        alt={product.name}
-                        fill
-                        sizes="(max-width: 1023px) 88vw, 40vw"
-                        loading="lazy"
-                        className="object-cover"
-                      />
-                    </div>
-                    <div className="absolute inset-0 bg-gradient-to-t from-[#0a0d17] via-black/10 to-transparent lg:bg-gradient-to-r lg:from-transparent lg:via-transparent lg:to-[#0a0d17]/70" />
-                    <div className="absolute left-5 top-5 rounded-full border border-white/15 bg-black/45 px-3 py-1.5 text-[10px] font-black uppercase tracking-[0.16em] text-white backdrop-blur-md">
-                      0{index + 1}
-                    </div>
-                  </div>
-
-                  <div className="flex flex-col justify-between p-5 sm:p-6 xl:p-7">
-                    <div>
-                      <div className="flex flex-wrap items-center gap-2">
-                        <span className="text-[11px] font-black uppercase tracking-[0.18em] text-cyan-300">{product.name}</span>
-                        <span className="rounded-full border border-white/10 bg-white/[0.04] px-2.5 py-1 text-[9px] font-black uppercase tracking-[0.12em] text-slate-400">
-                          {product.category}
-                        </span>
-                      </div>
-
-                      <h3 className="mt-4 text-2xl font-black leading-[1.06] tracking-[-0.03em] sm:text-3xl">{product.title}</h3>
-                      <p className="mt-3 text-sm leading-6 text-slate-400">{product.description}</p>
-
-                      <div className="mt-5 grid gap-2.5 sm:grid-cols-2 lg:grid-cols-1 xl:grid-cols-2">
-                        {product.features.map((feature) => (
-                          <div key={feature} className="flex items-center gap-2 text-xs font-semibold text-slate-300">
-                            <CheckCircle2 className="h-4 w-4 shrink-0 text-cyan-300" />
-                            {feature}
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-
-                    <div className="mt-6 border-t border-white/10 pt-5">
-                      <div className="mb-4 font-mono text-[11px] text-slate-500">{product.domain}</div>
-                      <Button asChild className="h-11 rounded-full border border-cyan-200/40 bg-cyan-300 px-5 text-xs font-black text-[#04111b] shadow-[0_0_24px_rgba(34,211,238,.18)] transition hover:bg-cyan-200 hover:shadow-[0_0_34px_rgba(34,211,238,.28)]">
-                        <a href={product.href} target="_blank" rel="noopener noreferrer">
-                          Acessar produto <ExternalLink className="ml-2 h-4 w-4" />
-                        </a>
-                      </Button>
-                    </div>
+        <div className="mt-10 flex gap-4 overflow-x-auto pb-5 pr-5 [scroll-snap-type:x_mandatory] sm:gap-5 lg:grid lg:grid-cols-2 lg:gap-6 lg:overflow-visible lg:pb-2 lg:pr-0">
+          {products.map((product, index) => (
+            <article
+              key={product.name}
+              className="group relative min-w-[86vw] max-w-[86vw] snap-center overflow-hidden rounded-[24px] border border-cyan-300/20 bg-[#0a0d17]/95 shadow-[0_0_0_1px_rgba(59,130,246,.08),0_0_38px_rgba(34,211,238,.10),0_22px_55px_rgba(0,0,0,.38)] transition duration-500 hover:border-cyan-300/45 hover:shadow-[0_0_0_1px_rgba(34,211,238,.16),0_0_50px_rgba(34,211,238,.18),0_25px_60px_rgba(0,0,0,.42)] sm:min-w-[64vw] sm:max-w-[64vw] lg:min-w-0 lg:max-w-none"
+            >
+              <div className="grid h-full md:grid-cols-[.95fr_1.05fr] lg:grid-cols-1 xl:grid-cols-[.92fr_1.08fr]">
+                <div className="relative min-h-[230px] overflow-hidden sm:min-h-[270px] lg:min-h-[260px] xl:min-h-[330px]">
+                  <Image
+                    src={product.image}
+                    alt={product.name}
+                    fill
+                    sizes="(max-width: 1023px) 86vw, (max-width: 1279px) 50vw, 30vw"
+                    loading="lazy"
+                    className="object-cover transition duration-700 group-hover:scale-[1.035]"
+                  />
+                  <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-[#0a0d17] via-transparent to-transparent md:bg-gradient-to-r md:from-transparent md:via-transparent md:to-[#0a0d17]/80 lg:bg-gradient-to-t lg:from-[#0a0d17] lg:via-transparent lg:to-transparent xl:bg-gradient-to-r xl:from-transparent xl:via-transparent xl:to-[#0a0d17]/80" />
+                  <div className="absolute left-4 top-4 rounded-full border border-cyan-200/25 bg-[#050711]/75 px-3 py-1.5 text-[10px] font-black uppercase tracking-[0.16em] text-white backdrop-blur-md">
+                    0{index + 1}
                   </div>
                 </div>
-              </article>
-            ))}
-          </div>
+
+                <div className="flex min-w-0 flex-col justify-between p-5 sm:p-6">
+                  <div>
+                    <div className="flex flex-wrap items-center gap-2">
+                      <span className="text-[11px] font-black uppercase tracking-[0.18em] text-cyan-300">
+                        {product.name}
+                      </span>
+                      <span className="rounded-full border border-violet-300/15 bg-violet-300/[0.05] px-2.5 py-1 text-[9px] font-black uppercase tracking-[0.12em] text-slate-400">
+                        {product.category}
+                      </span>
+                    </div>
+
+                    <h3 className="mt-4 text-[clamp(1.35rem,2vw,1.8rem)] font-black leading-[1.08] tracking-[-0.03em]">
+                      {product.title}
+                    </h3>
+
+                    <p className="mt-3 text-sm leading-6 text-slate-400">
+                      {product.description}
+                    </p>
+
+                    <div className="mt-5 grid gap-2.5 sm:grid-cols-2">
+                      {product.features.map((feature) => (
+                        <div key={feature} className="flex items-center gap-2 text-xs font-semibold text-slate-300">
+                          <CheckCircle2 className="h-4 w-4 shrink-0 text-cyan-300" />
+                          {feature}
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+
+                  <div className="mt-6 border-t border-white/10 pt-5">
+                    <div className="mb-4 truncate font-mono text-[11px] text-slate-500">
+                      {product.domain}
+                    </div>
+                    <Button
+                      asChild
+                      className="h-11 w-full rounded-full border border-cyan-200/40 bg-cyan-300 px-5 text-xs font-black text-[#04111b] shadow-[0_0_24px_rgba(34,211,238,.18)] transition hover:bg-cyan-200 hover:shadow-[0_0_34px_rgba(34,211,238,.28)] sm:w-auto"
+                    >
+                      <a href={product.href} target="_blank" rel="noopener noreferrer">
+                        Acessar produto <ExternalLink className="ml-2 h-4 w-4" />
+                      </a>
+                    </Button>
+                  </div>
+                </div>
+              </div>
+            </article>
+          ))}
         </div>
+
+        <p className="mt-4 text-center text-[11px] font-semibold text-slate-500 lg:hidden">
+          Arraste para o lado para ver os 4 produtos
+        </p>
       </div>
     </section>
   );
