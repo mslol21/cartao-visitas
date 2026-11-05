@@ -66,7 +66,7 @@ const products: Product[] = [
     id: "auto", name: "Konnexy OS Auto", category: "Vendas e gestão", audience: "Oficinas e serviços automotivos",
     title: "Orçamentos e ordens de serviço com acompanhamento digital.",
     description: "Organize clientes, veículos e serviços e facilite a apresentação do orçamento ao cliente.",
-    image: "/images/landing/demo_admin.png",
+    image: "/images/landing/demo_admin.png", href: "https://osauto.konnexy.com.br/",
     features: ["Orçamentos", "Ordens de serviço", "Histórico de veículos", "Acompanhamento digital"],
     steps: ["Cadastre o cliente, o veículo e os serviços do orçamento.", "Compartilhe o orçamento por um link para o cliente.", "Acompanhe a ordem de serviço e o histórico do veículo."],
   },
@@ -392,12 +392,14 @@ function Ecosystem() {
 
 function Portfolio() {
   const projects = [
+    { name: "Bella Nails Atelier", category: "Demonstração · Beleza e agendamentos", image: "/vitrine.png", href: "https://beleza.konnexy.com.br/" },
+    { name: "SD Eventos", category: "Buffet e eventos", image: "/site.png", href: "https://evento.konnexy.com.br/" },
     { name: "AmarTea", category: "Saúde e atendimento", image: "/images/landing/demo_clinica.png", href: "https://www.amartea.com.br/" },
     { name: "Milton Barros", category: "Consultoria e palestras", image: "/images/landing/demo_miltonbarros.png", href: "https://miltonbarros.com.br/" },
     { name: "L.A. Pharmatec", category: "Biotecnologia e pesquisa", image: "/images/landing/demo_lapharmatec.png", href: "https://www.lapharmatec.com.br/" },
   ];
   return <section id="projetos" className={`${sectionY} bg-[#050711] text-white`}><div className={shell}>
-    <Eyebrow>Projetos realizados</Eyebrow><h2 className="mt-4 text-3xl font-black tracking-tight sm:text-4xl">Veja a Konnexy na prática.</h2><p className="mt-4 max-w-2xl text-sm leading-7 text-slate-300">Explore sites desenvolvidos para diferentes negócios e conheça possibilidades para apresentar a sua empresa.</p>
+    <Eyebrow>Projetos e demonstrações</Eyebrow><h2 className="mt-4 text-3xl font-black tracking-tight sm:text-4xl">Veja a Konnexy na prática.</h2><p className="mt-4 max-w-2xl text-sm leading-7 text-slate-300">Explore projetos e páginas demonstrativas para diferentes segmentos e conheça possibilidades para apresentar a sua empresa.</p>
     <div className="mt-8 grid gap-5 md:grid-cols-3">{projects.map(project => <a key={project.name} href={project.href} target="_blank" rel="noopener noreferrer" className="group overflow-hidden rounded-3xl border border-white/15 bg-white/[0.02] transition hover:border-cyan-300/40"><div className="relative aspect-[4/3]"><Image src={project.image} alt={`Apresentação do projeto ${project.name}`} fill sizes="(max-width: 767px) 100vw, 33vw" className="object-cover" /></div><div className="p-5"><p className="text-xs text-cyan-300">{project.category}</p><h3 className="mt-2 text-xl font-bold">{project.name}</h3><span className="mt-3 inline-flex min-h-11 items-center gap-2 text-sm font-semibold text-slate-300">Visitar projeto <ExternalLink className="h-4 w-4" /></span></div></a>)}</div>
   </div></section>;
 }
