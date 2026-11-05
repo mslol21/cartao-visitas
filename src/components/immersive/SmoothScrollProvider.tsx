@@ -1,34 +1,62 @@
 "use client";
 
 import { ReactNode, useEffect } from "react";
-import Lenis from "lenis";
-import { ensureGsapRegistered } from "@/lib/motion/gsap";
 
 export function SmoothScrollProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    if (reducedMotion) return;
+    const desktopFinePointer = window.matchMedia("(min-width: 1024px) and (pointer: fine)").matches;
+    if (reducedMotion || !desktopFinePointer) return;
 
-    const { gsap, ScrollTrigger } = ensureGsapRegistered();
-    const lenis = new Lenis({
-      lerp: 0.08,
-      smoothWheel: true,
-      touchMultiplier: 1,
-      autoRaf: false,
-    });
+    let cancelled = false;
+    let cleanup: (() => void) | undefined;
 
-    const onScroll = () => ScrollTrigger.update();
-    lenis.on("scroll", onScroll);
+    const activate = async () => {
+      const [{ default: Lenis }, { ensureGsapRegistered }] = await Promise.all([
+        import("lenis"),
+        import("@/lib/motion/gsap"),
+      ]);
+      if (cancelled) return;
 
-    const raf = (time: number) => lenis.raf(time * 1000);
+      const { gsap, ScrollTrigger } = ensureGsapRegistered();
+      const lenis = new Lenis({
+        lerp: 0.08,
+        smoothWheel: true,
+        touchMultiplier: 1,
+        autoRaf: false,
+      });
 
-    gsap.ticker.add(raf);
-    gsap.ticker.lagSmoothing(0);
+      const onScroll = () => ScrollTrigger.update();
+      lenis.on("scroll", onScroll);
+
+      const raf = (time: number) => lenis.raf(time * 1000);
+      gsap.ticker.add(raf);
+      gsap.ticker.lagSmoothing(0);
+
+      cleanup = () => {
+        lenis.off("scroll", onScroll);
+        gsap.ticker.remove(raf);
+        lenis.destroy();
+      };
+    };
+
+    const startOnce = () => {
+      window.removeEventListener("wheel", startOnce);
+      window.removeEventListener("pointerdown", startOnce);
+      window.removeEventListener("keydown", startOnce);
+      void activate();
+    };
+
+    window.addEventListener("wheel", startOnce, { passive: true, once: true });
+    window.addEventListener("pointerdown", startOnce, { once: true });
+    window.addEventListener("keydown", startOnce, { once: true });
 
     return () => {
-      lenis.off("scroll", onScroll);
-      gsap.ticker.remove(raf);
-      lenis.destroy();
+      cancelled = true;
+      window.removeEventListener("wheel", startOnce);
+      window.removeEventListener("pointerdown", startOnce);
+      window.removeEventListener("keydown", startOnce);
+      cleanup?.();
     };
   }, []);
 
