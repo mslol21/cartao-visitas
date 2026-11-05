@@ -296,7 +296,7 @@ function ProductPresentation({ product }: { product: Product }) {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button aria-label={`Ver apresentação: ${product.name}`} className="h-11 w-full rounded-full bg-cyan-300 px-5 font-bold text-[#04111b] shadow-[0_0_24px_rgba(34,211,238,.18)] hover:bg-cyan-200">
+        <Button variant="outline" aria-label={`Ver apresentação: ${product.name}`} className="h-11 w-full rounded-full border-cyan-300/25 bg-cyan-300/5 px-5 font-bold text-cyan-200 hover:bg-cyan-300/10 hover:text-white">
           Ver apresentação <ArrowRight className="ml-2 h-4 w-4" />
         </Button>
       </DialogTrigger>
@@ -317,7 +317,7 @@ function ProductPresentation({ product }: { product: Product }) {
           {product.features.map(feature => <li key={feature} className="flex items-center gap-2 text-sm text-slate-300"><CheckCircle2 className="h-4 w-4 shrink-0 text-cyan-300" />{feature}</li>)}
         </ul>
         <div className="mt-3 flex flex-col gap-3 border-t border-white/10 pt-5 sm:flex-row">
-          {product.href && <Button asChild className="h-12 rounded-full bg-cyan-300 font-bold text-[#04111b] hover:bg-cyan-200"><a href={product.href} target="_blank" rel="noopener noreferrer">Abrir site do produto <ExternalLink className="ml-2 h-4 w-4" /></a></Button>}
+          {product.href && <Button asChild className="h-12 rounded-full bg-cyan-300 font-bold text-[#04111b] hover:bg-cyan-200"><a href={product.href} target="_blank" rel="noopener noreferrer">Visualizar projeto <ExternalLink className="ml-2 h-4 w-4" /></a></Button>}
           <Button asChild variant="outline" className="h-12 rounded-full border-emerald-300/30 bg-emerald-300/5 font-bold text-emerald-200 hover:bg-emerald-300/10 hover:text-white"><a href={whatsapp(product.name)} target="_blank" rel="noopener noreferrer"><MessageCircle className="mr-2 h-4 w-4" />Solicitar demonstração</a></Button>
         </div>
       </DialogContent>
@@ -365,7 +365,10 @@ function Products() {
                 <ul className="my-5 grid gap-2">
                   {product.features.map(feature => <li key={feature} className="flex items-center gap-2 text-sm text-slate-300"><CheckCircle2 className="h-4 w-4 shrink-0 text-cyan-300" />{feature}</li>)}
                 </ul>
-                <div className="mt-auto border-t border-white/10 pt-5"><ProductPresentation product={product} /><a href={whatsapp(product.name)} target="_blank" rel="noopener noreferrer" className="mt-2 flex min-h-11 items-center justify-center gap-2 text-sm font-semibold text-slate-300 hover:text-cyan-200"><MessageCircle className="h-4 w-4" />Conversar sobre esta solução</a></div>
+                <div className="mt-auto border-t border-white/10 pt-5">
+                  {product.href && <Button asChild className="mb-3 h-12 w-full rounded-full bg-cyan-300 px-5 font-bold text-[#04111b] shadow-[0_0_24px_rgba(34,211,238,.18)] hover:bg-cyan-200"><a href={product.href} target="_blank" rel="noopener noreferrer" aria-label={`Visualizar projeto: ${product.name}`}>Visualizar projeto <ExternalLink className="ml-2 h-4 w-4" /></a></Button>}
+                  {!product.href && <p className="mb-3 rounded-xl border border-white/10 px-3 py-2 text-center text-xs text-slate-400">Visualização online temporariamente indisponível</p>}
+                  <ProductPresentation product={product} /><a href={whatsapp(product.name)} target="_blank" rel="noopener noreferrer" className="mt-2 flex min-h-11 items-center justify-center gap-2 text-sm font-semibold text-slate-300 hover:text-cyan-200"><MessageCircle className="h-4 w-4" />Conversar sobre esta solução</a></div>
               </div>
             </article>
           ))}
@@ -377,13 +380,13 @@ function Products() {
 
 function Ecosystem() {
   const platforms = [
-    { name: "Vitriniza", label: "Comércio local", description: "Uma vitrine para aproximar comércios e serviços dos moradores da região.", href: "https://vitriniza.vercel.app/" },
-    { name: "KonnexyFé", label: "Comunidades", description: "Descoberta de comunidades de fé, com mapa, eventos e horários.", href: whatsapp("a plataforma KonnexyFé") },
+    { name: "Vitriniza", label: "Comércio local", description: "Uma vitrine para aproximar comércios e serviços dos moradores da região.", href: "https://vitriniza.konnexy.com.br/" },
+    { name: "KonnexyFé", label: "Comunidades", description: "Descoberta de comunidades de fé, com mapa, eventos e horários.", href: "https://konnexyfe.vercel.app" },
     { name: "Feito de Nós", label: "Convites e presentes", description: "Convites digitais e presentes interativos para compartilhar histórias e momentos especiais.", href: "https://feitos-de-nos.vercel.app" },
   ];
   return <section id="ecossistema" className={`${sectionY} border-t border-white/10 bg-[#08091a] text-white`}><div className={shell}>
     <Eyebrow>Outras conexões</Eyebrow><h2 className="mt-4 text-3xl font-black tracking-tight sm:text-4xl">Conheça também nosso ecossistema.</h2>
-    <div className="mt-8 grid gap-4 md:grid-cols-3">{platforms.map(platform => <a key={platform.name} href={platform.href} target="_blank" rel="noopener noreferrer" className="group rounded-3xl border border-violet-300/20 bg-white/[0.03] p-6 transition hover:border-violet-300/50 hover:shadow-[0_0_32px_rgba(167,139,250,.10)]"><p className="text-xs font-semibold text-violet-300">{platform.label}</p><h3 className="mt-3 text-xl font-bold">{platform.name}</h3><p className="mt-3 text-sm leading-6 text-slate-300">{platform.description}</p><span className="mt-5 inline-flex min-h-11 items-center gap-2 text-sm font-bold text-violet-200">Conhecer <ArrowRight className="h-4 w-4" /></span></a>)}</div>
+    <div className="mt-8 grid gap-4 md:grid-cols-3">{platforms.map(platform => <a key={platform.name} href={platform.href} target="_blank" rel="noopener noreferrer" className="group rounded-3xl border border-violet-300/20 bg-white/[0.03] p-6 transition hover:border-violet-300/50 hover:shadow-[0_0_32px_rgba(167,139,250,.10)]"><p className="text-xs font-semibold text-violet-300">{platform.label}</p><h3 className="mt-3 text-xl font-bold">{platform.name}</h3><p className="mt-3 text-sm leading-6 text-slate-300">{platform.description}</p><span className="mt-5 inline-flex min-h-11 items-center gap-2 text-sm font-bold text-violet-200">Visualizar projeto <ExternalLink className="h-4 w-4" /></span></a>)}</div>
   </div></section>;
 }
 
