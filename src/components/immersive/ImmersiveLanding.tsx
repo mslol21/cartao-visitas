@@ -14,7 +14,6 @@ import { Button } from "@/components/ui/button";
 import { SmoothScrollProvider } from "@/components/immersive/SmoothScrollProvider";
 import { DeferredProductPresentation } from "@/components/immersive/DeferredProductPresentation";
 import { useGsapReveal } from "@/hooks/useGsapReveal";
-import { ensureGsapRegistered } from "@/lib/motion/gsap";
 
 const shell = "mx-auto w-full max-w-6xl px-5 sm:px-6 lg:px-8";
 const sectionY = "py-14 sm:py-16 lg:py-20";
@@ -132,46 +131,33 @@ function Hero() {
   const visualRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    if (!sectionRef.current) return;
-    const { gsap } = ensureGsapRegistered();
+    const section = sectionRef.current;
+    const visual = visualRef.current;
+    if (!section || !visual) return;
+
     const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (reduced) return;
 
-    const ctx = gsap.context(() => {
-      const lines = gsap.utils.toArray<HTMLElement>("[data-hero-line]");
-      const supporting = gsap.utils.toArray<HTMLElement>("[data-hero-support]");
+    let frame = 0;
+    const update = () => {
+      frame = 0;
+      const rect = section.getBoundingClientRect();
+      const progress = Math.min(1, Math.max(0, -rect.top / Math.max(rect.height, 1)));
+      visual.style.transform = `translate3d(0, ${progress * 8}%, 0)`;
+    };
 
-      if (reduced) {
-        gsap.set([...lines, ...supporting], { opacity: 1, y: 0, yPercent: 0 });
-        return;
-      }
+    const onScroll = () => {
+      if (!frame) frame = requestAnimationFrame(update);
+    };
 
-      gsap.fromTo(
-        lines,
-        { yPercent: 110, opacity: 0 },
-        { yPercent: 0, opacity: 1, duration: 0.95, stagger: 0.1, ease: "power3.out" },
-      );
+    update();
+    window.addEventListener("scroll", onScroll, { passive: true });
 
-      gsap.fromTo(
-        supporting,
-        { y: 20, opacity: 0 },
-        { y: 0, opacity: 1, duration: 0.75, stagger: 0.07, delay: 0.3, ease: "power3.out" },
-      );
-
-      if (visualRef.current) {
-        gsap.to(visualRef.current, {
-          yPercent: 8,
-          ease: "none",
-          scrollTrigger: {
-            trigger: sectionRef.current,
-            start: "top top",
-            end: "bottom top",
-            scrub: 1,
-          },
-        });
-      }
-    }, sectionRef);
-
-    return () => ctx.revert();
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      if (frame) cancelAnimationFrame(frame);
+      visual.style.transform = "";
+    };
   }, []);
 
   return (
@@ -246,35 +232,60 @@ function Manifesto() {
   const words = useMemo(() => manifesto.split(" "), []);
 
   useEffect(() => {
-    if (!ref.current) return;
-    const { gsap } = ensureGsapRegistered();
-    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const root = ref.current;
+    if (!root) return;
 
-    const ctx = gsap.context(() => {
-      const targets = gsap.utils.toArray<HTMLElement>("[data-word]");
-      if (reduced) {
-        gsap.set(targets, { opacity: 1 });
-        return;
-      }
+    let cancelled = false;
+    let ctx: { revert: () => void } | undefined;
 
-      gsap.fromTo(
-        targets,
-        { opacity: 0.16 },
-        {
-          opacity: 1,
-          stagger: 0.04,
-          ease: "none",
-          scrollTrigger: {
-            trigger: ref.current,
-            start: "top 72%",
-            end: "bottom 48%",
-            scrub: 1,
+    const run = async () => {
+      const { ensureGsapRegistered } = await import("@/lib/motion/gsap");
+      if (cancelled) return;
+
+      const { gsap } = ensureGsapRegistered();
+      const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+      ctx = gsap.context(() => {
+        const targets = gsap.utils.toArray<HTMLElement>("[data-word]", root);
+        if (reduced) {
+          gsap.set(targets, { opacity: 1 });
+          return;
+        }
+
+        gsap.fromTo(
+          targets,
+          { opacity: 0.16 },
+          {
+            opacity: 1,
+            stagger: 0.04,
+            ease: "none",
+            scrollTrigger: {
+              trigger: root,
+              start: "top 72%",
+              end: "bottom 48%",
+              scrub: 1,
+            },
           },
-        },
-      );
-    }, ref);
+        );
+      }, root);
+    };
 
-    return () => ctx.revert();
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (!entries.some((entry) => entry.isIntersecting)) return;
+        observer.disconnect();
+        void run();
+      },
+      { rootMargin: "260px 0px" },
+    );
+
+    observer.observe(root);
+
+    return () => {
+      cancelled = true;
+      observer.disconnect();
+      ctx?.revert();
+    };
   }, []);
 
   return (
@@ -299,9 +310,25 @@ function Products() {
   const filters = ["Todas", "Pedidos", "Agendamentos", "Vendas e gestão", "Presença digital"];
   const visible = products.filter(product => filter === "Todas" || product.category === filter);
 
+  const filterMounted = useRef(false);
+
   useEffect(() => {
-    const frame = requestAnimationFrame(() => ensureGsapRegistered().ScrollTrigger.refresh());
-    return () => cancelAnimationFrame(frame);
+    if (!filterMounted.current) {
+      filterMounted.current = true;
+      return;
+    }
+
+    let cancelled = false;
+    const frame = requestAnimationFrame(() => {
+      void import("@/lib/motion/gsap").then(({ ensureGsapRegistered }) => {
+        if (!cancelled) ensureGsapRegistered().ScrollTrigger.refresh();
+      });
+    });
+
+    return () => {
+      cancelled = true;
+      cancelAnimationFrame(frame);
+    };
   }, [filter]);
 
   return (
@@ -384,47 +411,73 @@ function BrandStatement() {
   const copyRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    if (!ref.current || !imageRef.current || !copyRef.current) return;
-    const { gsap } = ensureGsapRegistered();
-    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const root = ref.current;
+    const image = imageRef.current;
+    const copy = copyRef.current;
+    if (!root || !image || !copy) return;
 
-    const ctx = gsap.context(() => {
+    let cancelled = false;
+    let ctx: { revert: () => void } | undefined;
+
+    const run = async () => {
+      const { ensureGsapRegistered } = await import("@/lib/motion/gsap");
+      if (cancelled) return;
+
+      const { gsap } = ensureGsapRegistered();
+      const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
       if (reduced) return;
 
-      gsap.fromTo(
-        imageRef.current,
-        { scale: 0.9, clipPath: "inset(7% 5% 7% 5% round 32px)" },
-        {
-          scale: 1,
-          clipPath: "inset(0% 0% 0% 0% round 0px)",
-          ease: "none",
-          scrollTrigger: {
-            trigger: ref.current,
-            start: "top 80%",
-            end: "bottom 40%",
-            scrub: 1,
+      ctx = gsap.context(() => {
+        gsap.fromTo(
+          image,
+          { scale: 0.9, clipPath: "inset(7% 5% 7% 5% round 32px)" },
+          {
+            scale: 1,
+            clipPath: "inset(0% 0% 0% 0% round 0px)",
+            ease: "none",
+            scrollTrigger: {
+              trigger: root,
+              start: "top 80%",
+              end: "bottom 40%",
+              scrub: 1,
+            },
           },
-        },
-      );
+        );
 
-      gsap.fromTo(
-        copyRef.current,
-        { opacity: 0, y: 36 },
-        {
-          opacity: 1,
-          y: 0,
-          ease: "power3.out",
-          scrollTrigger: {
-            trigger: ref.current,
-            start: "top 62%",
-            end: "top 38%",
-            scrub: 1,
+        gsap.fromTo(
+          copy,
+          { opacity: 0, y: 36 },
+          {
+            opacity: 1,
+            y: 0,
+            ease: "power3.out",
+            scrollTrigger: {
+              trigger: root,
+              start: "top 62%",
+              end: "top 38%",
+              scrub: 1,
+            },
           },
-        },
-      );
-    }, ref);
+        );
+      }, root);
+    };
 
-    return () => ctx.revert();
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (!entries.some((entry) => entry.isIntersecting)) return;
+        observer.disconnect();
+        void run();
+      },
+      { rootMargin: "260px 0px" },
+    );
+
+    observer.observe(root);
+
+    return () => {
+      cancelled = true;
+      observer.disconnect();
+      ctx?.revert();
+    };
   }, []);
 
   return (
@@ -464,32 +517,58 @@ function Numbers() {
   ];
 
   useEffect(() => {
-    if (!ref.current) return;
-    const { gsap } = ensureGsapRegistered();
-    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const root = ref.current;
+    if (!root) return;
 
-    const ctx = gsap.context(() => {
-      gsap.utils.toArray<HTMLElement>("[data-counter]").forEach((el) => {
-        const target = Number(el.dataset.counter || "0");
-        if (reduced) {
-          el.textContent = String(target);
-          return;
-        }
+    let cancelled = false;
+    let ctx: { revert: () => void } | undefined;
 
-        const state = { value: 0 };
-        gsap.to(state, {
-          value: target,
-          duration: 1.25,
-          ease: "power3.out",
-          scrollTrigger: { trigger: el, start: "top 88%", once: true },
-          onUpdate: () => {
-            el.textContent = String(Math.round(state.value));
-          },
+    const run = async () => {
+      const { ensureGsapRegistered } = await import("@/lib/motion/gsap");
+      if (cancelled) return;
+
+      const { gsap } = ensureGsapRegistered();
+      const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+      ctx = gsap.context(() => {
+        gsap.utils.toArray<HTMLElement>("[data-counter]", root).forEach((el) => {
+          const target = Number(el.dataset.counter || "0");
+          if (reduced) {
+            el.textContent = String(target);
+            return;
+          }
+
+          el.textContent = "0";
+          const state = { value: 0 };
+          gsap.to(state, {
+            value: target,
+            duration: 1.25,
+            ease: "power3.out",
+            scrollTrigger: { trigger: el, start: "top 88%", once: true },
+            onUpdate: () => {
+              el.textContent = String(Math.round(state.value));
+            },
+          });
         });
-      });
-    }, ref);
+      }, root);
+    };
 
-    return () => ctx.revert();
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (!entries.some((entry) => entry.isIntersecting)) return;
+        observer.disconnect();
+        void run();
+      },
+      { rootMargin: "220px 0px" },
+    );
+
+    observer.observe(root);
+
+    return () => {
+      cancelled = true;
+      observer.disconnect();
+      ctx?.revert();
+    };
   }, []);
 
   return (
@@ -500,7 +579,7 @@ function Numbers() {
           {values.map((item) => (
             <div key={item.label} className="border-t border-cyan-300/20 pt-5">
               <div className="text-[clamp(3.1rem,5.6vw,5.2rem)] font-black leading-none tracking-[-0.05em]">
-                <span data-counter={item.value}>0</span>{item.suffix}
+                <span data-counter={item.value}>{item.value}</span>{item.suffix}
               </div>
               <p className="mt-4 max-w-xs text-sm font-semibold leading-6 text-slate-400">{item.label}</p>
             </div>
@@ -564,15 +643,15 @@ function FinalCTA() {
     <section ref={ref} className={`${sectionY} relative overflow-hidden border-y border-fuchsia-400/15 bg-[#080817] text-white`}>
       <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_18%_25%,rgba(34,211,238,.16),transparent_28%),radial-gradient(circle_at_80%_22%,rgba(217,70,239,.16),transparent_28%),radial-gradient(circle_at_62%_100%,rgba(245,158,11,.08),transparent_30%)]" />
       <div className={`${shell} relative`}>
-        <div data-final className="opacity-0"><Eyebrow>Próximo passo</Eyebrow></div>
-        <h2 data-final className="mt-4 max-w-4xl text-[clamp(2.35rem,4.7vw,4.5rem)] font-black leading-[0.95] tracking-[-0.045em] opacity-0">
+        <div data-final><Eyebrow>Próximo passo</Eyebrow></div>
+        <h2 data-final className="mt-4 max-w-4xl text-[clamp(2.35rem,4.7vw,4.5rem)] font-black leading-[0.95] tracking-[-0.045em]">
           Vamos encontrar a solução para o seu negócio?
         </h2>
-        <p data-final className="mt-5 max-w-xl text-sm font-medium leading-6 text-slate-300 opacity-0 sm:text-base">
+        <p data-final className="mt-5 max-w-xl text-sm font-medium leading-6 text-slate-300 sm:text-base">
           Conte o que você vende e o que deseja facilitar. Apresentamos as opções e mostramos como a solução pode funcionar na sua rotina.
         </p>
 
-        <div data-final className="mt-7 flex flex-wrap gap-3 opacity-0">
+        <div data-final className="mt-7 flex flex-wrap gap-3">
           <Button asChild className="h-12 rounded-full border border-emerald-300/30 bg-[#25D366] px-6 text-sm font-black text-[#04110a] shadow-[0_0_28px_rgba(37,211,102,.18)] transition hover:bg-[#34df76] hover:shadow-[0_0_38px_rgba(37,211,102,.28)]">
             <a href="https://wa.me/5516991551200?text=Olá,%20quero%20conhecer%20as%20soluções%20da%20Konnexy%20e%20agendar%20uma%20demonstração." target="_blank" rel="noopener noreferrer">
               <MessageCircle className="mr-2 h-4 w-4" />
@@ -647,43 +726,9 @@ function QuickNav() {
   );
 }
 
-function RefreshAfterImages() {
-  useEffect(() => {
-    const { ScrollTrigger } = ensureGsapRegistered();
-    const images = Array.from(document.images);
-    const pending = images.filter((image) => !image.complete);
-
-    if (!pending.length) {
-      requestAnimationFrame(() => ScrollTrigger.refresh());
-      return;
-    }
-
-    let remaining = pending.length;
-    const done = () => {
-      remaining -= 1;
-      if (remaining <= 0) requestAnimationFrame(() => ScrollTrigger.refresh());
-    };
-
-    pending.forEach((image) => {
-      image.addEventListener("load", done, { once: true });
-      image.addEventListener("error", done, { once: true });
-    });
-
-    return () => {
-      pending.forEach((image) => {
-        image.removeEventListener("load", done);
-        image.removeEventListener("error", done);
-      });
-    };
-  }, []);
-
-  return null;
-}
-
 export function ImmersiveLanding() {
   return (
     <SmoothScrollProvider>
-      <RefreshAfterImages />
       <div className="overflow-x-clip bg-[#03050d] font-sans text-white selection:bg-cyan-300/30">
         <Hero />
         <Products />
