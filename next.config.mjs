@@ -8,6 +8,7 @@ const __dirname = path.dirname(__filename);
 const nextConfig = {
   outputFileTracingRoot: __dirname,
   images: {
+    imageSizes: [16, 32, 48, 64, 96, 128, 256, 384, 480, 512],
     remotePatterns: [
       {
         protocol: 'https',
