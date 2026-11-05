@@ -9,8 +9,9 @@ import {
   ExternalLink,
   MessageCircle,
 } from "lucide-react";
-import { useEffect, useMemo, useRef } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
+import { Dialog, DialogContent, DialogTitle, DialogDescription, DialogTrigger } from "@/components/ui/dialog";
 import { SmoothScrollProvider } from "@/components/immersive/SmoothScrollProvider";
 import { useGsapReveal } from "@/hooks/useGsapReveal";
 import { ensureGsapRegistered } from "@/lib/motion/gsap";
@@ -21,54 +22,70 @@ const sectionY = "py-14 sm:py-16 lg:py-20";
 const manifesto =
   "Seu cliente procura compara entra em contato e decide em poucos segundos. A Konnexy conecta presença digital tecnologia e conversão para transformar atenção em oportunidade real.";
 
-const products = [
+type Product = {
+  id: string; name: string; category: string; audience: string; title: string;
+  description: string; image: string; href?: string; features: string[]; steps: string[];
+};
+
+const whatsapp = (subject: string) => `https://wa.me/5516991551200?text=${encodeURIComponent(`Olá, quero conhecer ${subject}. Podemos agendar uma demonstração?`)}`;
+
+const products: Product[] = [
   {
-    name: "Konnexy Menu",
-    category: "Food & Delivery",
-    title: "Cardápio digital com operação de verdade por trás.",
-    description:
-      "Cardápio, pedidos, retirada e delivery com um fluxo pensado para restaurantes, lanchonetes e operações de alimentação.",
-    image: "/catalogo.png",
-    href: "https://menu.konnexy.com.br",
-    domain: "menu.konnexy.com.br",
-    features: ["Cardápio digital", "Pedidos", "KDS", "Delivery e retirada"],
+    id: "menu", name: "Konnexy Menu", category: "Pedidos", audience: "Restaurantes, lanchonetes e delivery",
+    title: "Seu cardápio na mão do cliente. Seus pedidos organizados.",
+    description: "Apresente pratos, facilite a escolha e organize pedidos para delivery e retirada.",
+    image: "/catalogo.png", href: "https://menu.konnexy.com.br",
+    features: ["Cardápio digital", "Pedidos", "Painel de cozinha (KDS)", "Delivery e retirada"],
+    steps: ["O cliente consulta o cardápio e escolhe os itens.", "O estabelecimento recebe e acompanha o pedido.", "A equipe organiza o preparo e a entrega ou retirada."],
   },
   {
-    name: "Konnexy Tag",
-    category: "NFC & QR",
-    title: "Do atendimento físico para o digital em um toque.",
-    description:
-      "NFC e QR Code para avaliações no Google, WhatsApp, redes sociais, links profissionais e experiências phygital.",
-    image: "/link.png",
-    href: "https://tag.konnexy.com.br",
-    domain: "tag.konnexy.com.br",
-    features: ["NFC", "QR Code", "Google", "Link profissional"],
+    id: "agenda", name: "Konnexy Agenda", category: "Agendamentos", audience: "Salões, barbearias e profissionais de beleza",
+    title: "Uma agenda organizada para cada atendimento.",
+    description: "Reúna serviços, profissionais e horários para facilitar a rotina de quem atende com hora marcada.",
+    image: "/images/landing/demo_admin.png", href: "https://agenda.konnexy.com.br",
+    features: ["Agenda online", "Serviços", "Profissionais", "Gestão de horários"],
+    steps: ["Cadastre os serviços e profissionais do negócio.", "Organize os horários e agendamentos na agenda.", "Acompanhe os atendimentos do dia em um só lugar."],
   },
   {
-    name: "Konnexy Agenda",
-    category: "Agenda & Booking",
-    title: "Agendamento simples para quem atende por horário.",
-    description:
-      "Uma experiência de agendamento para salões, barbearias, clínicas, pet shops e prestadores de serviço.",
+    id: "pdv", name: "Konnexy PDV", category: "Vendas e gestão", audience: "Lojas e pequenos comércios",
+    title: "Da venda ao fechamento do caixa, tudo conectado.",
+    description: "Centralize vendas, produtos, estoque e caixa, com operação offline e sincronização.",
+    image: "/fabrica.png", href: "https://pdv.konnexy.com.br",
+    features: ["Frente de caixa", "Controle de estoque", "Relatórios", "Offline e sincronização"],
+    steps: ["Abra o caixa e selecione os produtos da venda.", "Registre o pagamento e a movimentação do estoque.", "Acompanhe os resultados e faça o fechamento do caixa."],
+  },
+  {
+    id: "pet", name: "Konnexy Pet", category: "Agendamentos", audience: "Pet shops e prestadores de serviços pet",
+    title: "Mais facilidade para o tutor. Mais organização para o pet shop.",
+    description: "Apresente serviços e produtos e ofereça uma experiência de agendamento com a identidade do seu negócio.",
     image: "/pet.png",
-    href: "https://agenda.konnexy.com.br",
-    domain: "agenda.konnexy.com.br",
-    features: ["Agenda online", "Horários", "Serviços", "Atendimento"],
+    features: ["Agendamento", "Serviços pet", "Vitrine de produtos", "Página personalizada"],
+    steps: ["O tutor conhece os serviços na página do pet shop.", "Acessa o agendamento para escolher o atendimento.", "O negócio acompanha os serviços e organiza sua rotina."],
   },
   {
-    name: "Konnexy PDV",
-    category: "PDV & Gestão",
-    title: "Venda, estoque e caixa em uma operação integrada.",
-    description:
-      "PDV para pequenos negócios com estoque, caixa, relatórios, operadores e operação offline com sincronização.",
-    image: "/fabrica.png",
-    href: "https://pdv.konnexy.com.br",
-    domain: "pdv.konnexy.com.br",
-    features: ["PDV", "Estoque", "Caixa", "Offline + sync"],
+    id: "auto", name: "Konnexy OS Auto", category: "Vendas e gestão", audience: "Oficinas e serviços automotivos",
+    title: "Orçamentos e ordens de serviço com acompanhamento digital.",
+    description: "Organize clientes, veículos e serviços e facilite a apresentação do orçamento ao cliente.",
+    image: "/images/landing/demo_admin.png",
+    features: ["Orçamentos", "Ordens de serviço", "Histórico de veículos", "Acompanhamento digital"],
+    steps: ["Cadastre o cliente, o veículo e os serviços do orçamento.", "Compartilhe o orçamento por um link para o cliente.", "Acompanhe a ordem de serviço e o histórico do veículo."],
   },
-] as const;
+  {
+    id: "tag", name: "Konnexy Tag", category: "Presença digital", audience: "Comércios, recepções e profissionais",
+    title: "Aproxime o celular. Conecte o cliente ao seu negócio.",
+    description: "Use NFC e QR Code para levar o cliente à sua página, contatos e avaliações no Google.",
+    image: "/link.png", href: "https://tag.konnexy.com.br",
+    features: ["Placas NFC", "QR Code", "Avaliações no Google", "Contatos e links"],
+    steps: ["A placa fica disponível no balcão ou na recepção.", "O cliente aproxima o celular ou lê o QR Code.", "Acessa a página do estabelecimento e escolhe o próximo passo."],
+  },
+];
 
 const services = [
+  {
+    title: "Catálogos e vitrines digitais",
+    description: "Seus produtos organizados por categorias, com fotos e pedidos pelo WhatsApp.",
+    href: "/servicos/catalogo-cardapio-digital",
+  },
   {
     title: "Criação de sites",
     description: "Sites e landing pages profissionais, responsivos e preparados para conversão.",
@@ -210,10 +227,10 @@ function Hero() {
 
           <div data-hero-support className="mt-6 grid gap-5 border-t border-white/10 pt-5 lg:grid-cols-[1fr_auto] lg:items-end">
             <p className="max-w-2xl text-sm leading-7 text-slate-300 sm:text-base">
-              Produtos próprios e serviços digitais em um único ecossistema: Menu, Tag, Agenda, PDV, sites, presença no Google, tráfego pago e soluções sob medida.
+              Sites, presença no Google e sistemas para facilitar suas vendas e seu atendimento. Conheça as soluções e veja qual combina com o seu negócio.
             </p>
             <Button asChild variant="ghost" className="h-auto w-fit p-0 text-xs font-black uppercase tracking-[0.16em] text-white hover:bg-transparent hover:text-cyan-300">
-              <a href="#sobre">Explorar <ArrowDown className="ml-2 h-4 w-4" /></a>
+              <a href="#produtos">Ver soluções e apresentações <ArrowDown className="ml-2 h-4 w-4" /></a>
             </Button>
           </div>
         </div>
@@ -275,100 +292,111 @@ function Manifesto() {
   );
 }
 
-function Products() {
+function ProductPresentation({ product }: { product: Product }) {
   return (
-    <section id="produtos" className="relative overflow-hidden bg-[#050711] text-white">
+    <Dialog>
+      <DialogTrigger asChild>
+        <Button aria-label={`Ver apresentação: ${product.name}`} className="h-11 w-full rounded-full bg-cyan-300 px-5 font-bold text-[#04111b] shadow-[0_0_24px_rgba(34,211,238,.18)] hover:bg-cyan-200">
+          Ver apresentação <ArrowRight className="ml-2 h-4 w-4" />
+        </Button>
+      </DialogTrigger>
+      <DialogContent data-lenis-prevent className="max-h-[90svh] w-[calc(100%-2rem)] max-w-3xl overflow-y-auto rounded-3xl border-cyan-300/25 bg-[#080d1c] p-6 text-white shadow-[0_0_70px_rgba(34,211,238,.12)] sm:p-8">
+        <span className="pr-6 text-xs font-bold uppercase tracking-widest text-cyan-300">Conheça a solução</span>
+        <DialogTitle className="text-3xl font-black tracking-tight sm:text-4xl">{product.name}</DialogTitle>
+        <DialogDescription className="text-base leading-7 text-slate-300">{product.description}</DialogDescription>
+        <p className="rounded-xl border border-white/10 bg-white/[0.03] p-3 text-sm text-slate-300"><strong className="text-white">Ideal para:</strong> {product.audience}.</p>
+        <h3 className="mt-2 text-lg font-bold">Como funciona na prática</h3>
+        <ol className="grid gap-3">
+          {product.steps.map((step, index) => (
+            <li key={step} className="flex items-start gap-3 rounded-2xl border border-cyan-300/10 bg-cyan-300/[0.03] p-4 text-sm leading-6 text-slate-200">
+              <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-cyan-300/10 font-bold text-cyan-300">{index + 1}</span>{step}
+            </li>
+          ))}
+        </ol>
+        <ul className="grid gap-2 sm:grid-cols-2">
+          {product.features.map(feature => <li key={feature} className="flex items-center gap-2 text-sm text-slate-300"><CheckCircle2 className="h-4 w-4 shrink-0 text-cyan-300" />{feature}</li>)}
+        </ul>
+        <div className="mt-3 flex flex-col gap-3 border-t border-white/10 pt-5 sm:flex-row">
+          {product.href && <Button asChild className="h-12 rounded-full bg-cyan-300 font-bold text-[#04111b] hover:bg-cyan-200"><a href={product.href} target="_blank" rel="noopener noreferrer">Abrir site do produto <ExternalLink className="ml-2 h-4 w-4" /></a></Button>}
+          <Button asChild variant="outline" className="h-12 rounded-full border-emerald-300/30 bg-emerald-300/5 font-bold text-emerald-200 hover:bg-emerald-300/10 hover:text-white"><a href={whatsapp(product.name)} target="_blank" rel="noopener noreferrer"><MessageCircle className="mr-2 h-4 w-4" />Solicitar demonstração</a></Button>
+        </div>
+      </DialogContent>
+    </Dialog>
+  );
+}
+
+function Products() {
+  const [filter, setFilter] = useState("Todas");
+  const filters = ["Todas", "Pedidos", "Agendamentos", "Vendas e gestão", "Presença digital"];
+  const visible = products.filter(product => filter === "Todas" || product.category === filter);
+
+  useEffect(() => {
+    const frame = requestAnimationFrame(() => ensureGsapRegistered().ScrollTrigger.refresh());
+    return () => cancelAnimationFrame(frame);
+  }, [filter]);
+
+  return (
+    <section id="produtos" aria-labelledby="products-title" className="relative scroll-mt-6 overflow-hidden bg-[#050711] text-white">
       <div className="pointer-events-none absolute -left-32 top-24 h-80 w-80 rounded-full bg-cyan-500/10 blur-[110px]" />
       <div className="pointer-events-none absolute -right-24 bottom-20 h-96 w-96 rounded-full bg-fuchsia-500/[0.08] blur-[130px]" />
-
       <div className={`${shell} ${sectionY} relative`}>
-        <Eyebrow>Produtos Konnexy</Eyebrow>
-
-        <div className="mt-5 grid gap-6 lg:grid-cols-[1.25fr_.75fr] lg:items-end">
-          <h2 className="max-w-3xl text-[clamp(2.1rem,4.1vw,3.8rem)] font-black leading-[0.98] tracking-[-0.045em]">
-            Um ecossistema para organizar, atender e vender melhor.
-          </h2>
-          <p className="max-w-xl text-sm leading-7 text-slate-400 lg:justify-self-end">
-            Menu, Tag, Agenda e PDV têm seus próprios subdomínios, mas compartilham a mesma marca, linguagem e proposta de simplificar a rotina de pequenos negócios.
-          </p>
+        <Eyebrow>Sistemas para o seu negócio</Eyebrow>
+        <div className="mt-5 grid gap-5 lg:grid-cols-[1.25fr_.75fr] lg:items-end">
+          <h2 id="products-title" className="max-w-3xl text-[clamp(2rem,4.1vw,3.8rem)] font-black leading-[1.05] tracking-[-0.045em]">Escolha o que você quer facilitar no seu dia a dia.</h2>
+          <p className="max-w-xl text-sm leading-7 text-slate-300">Veja para quem cada solução foi criada, entenda o fluxo de uso e solicite uma demonstração para o seu negócio.</p>
         </div>
-
-        <div className="mt-10 flex gap-4 overflow-x-auto pb-5 pr-5 [scroll-snap-type:x_mandatory] sm:gap-5 lg:grid lg:grid-cols-2 lg:gap-6 lg:overflow-visible lg:pb-2 lg:pr-0">
-          {products.map((product, index) => (
-            <article
-              key={product.name}
-              className="group relative min-w-[86vw] max-w-[86vw] snap-center overflow-hidden rounded-[24px] border border-cyan-300/20 bg-[#0a0d17]/95 shadow-[0_0_0_1px_rgba(59,130,246,.08),0_0_38px_rgba(34,211,238,.10),0_22px_55px_rgba(0,0,0,.38)] transition duration-500 hover:border-cyan-300/45 hover:shadow-[0_0_0_1px_rgba(34,211,238,.16),0_0_50px_rgba(34,211,238,.18),0_25px_60px_rgba(0,0,0,.42)] sm:min-w-[64vw] sm:max-w-[64vw] lg:min-w-0 lg:max-w-none"
-            >
-              <div className="grid h-full md:grid-cols-[.95fr_1.05fr] lg:grid-cols-1 xl:grid-cols-[.92fr_1.08fr]">
-                <div className="relative min-h-[230px] overflow-hidden sm:min-h-[270px] lg:min-h-[260px] xl:min-h-[330px]">
-                  <Image
-                    src={product.image}
-                    alt={product.name}
-                    fill
-                    sizes="(max-width: 1023px) 86vw, (max-width: 1279px) 50vw, 30vw"
-                    loading="lazy"
-                    className="object-cover transition duration-700 group-hover:scale-[1.035]"
-                  />
-                  <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-[#0a0d17] via-transparent to-transparent md:bg-gradient-to-r md:from-transparent md:via-transparent md:to-[#0a0d17]/80 lg:bg-gradient-to-t lg:from-[#0a0d17] lg:via-transparent lg:to-transparent xl:bg-gradient-to-r xl:from-transparent xl:via-transparent xl:to-[#0a0d17]/80" />
-                  <div className="absolute left-4 top-4 rounded-full border border-cyan-200/25 bg-[#050711]/75 px-3 py-1.5 text-[10px] font-black uppercase tracking-[0.16em] text-white backdrop-blur-md">
-                    0{index + 1}
-                  </div>
-                </div>
-
-                <div className="flex min-w-0 flex-col justify-between p-5 sm:p-6">
-                  <div>
-                    <div className="flex flex-wrap items-center gap-2">
-                      <span className="text-[11px] font-black uppercase tracking-[0.18em] text-cyan-300">
-                        {product.name}
-                      </span>
-                      <span className="rounded-full border border-violet-300/15 bg-violet-300/[0.05] px-2.5 py-1 text-[9px] font-black uppercase tracking-[0.12em] text-slate-400">
-                        {product.category}
-                      </span>
-                    </div>
-
-                    <h3 className="mt-4 text-[clamp(1.35rem,2vw,1.8rem)] font-black leading-[1.08] tracking-[-0.03em]">
-                      {product.title}
-                    </h3>
-
-                    <p className="mt-3 text-sm leading-6 text-slate-400">
-                      {product.description}
-                    </p>
-
-                    <div className="mt-5 grid gap-2.5 sm:grid-cols-2">
-                      {product.features.map((feature) => (
-                        <div key={feature} className="flex items-center gap-2 text-xs font-semibold text-slate-300">
-                          <CheckCircle2 className="h-4 w-4 shrink-0 text-cyan-300" />
-                          {feature}
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-
-                  <div className="mt-6 border-t border-white/10 pt-5">
-                    <div className="mb-4 truncate font-mono text-[11px] text-slate-500">
-                      {product.domain}
-                    </div>
-                    <Button
-                      asChild
-                      className="h-11 w-full rounded-full border border-cyan-200/40 bg-cyan-300 px-5 text-xs font-black text-[#04111b] shadow-[0_0_24px_rgba(34,211,238,.18)] transition hover:bg-cyan-200 hover:shadow-[0_0_34px_rgba(34,211,238,.28)] sm:w-auto"
-                    >
-                      <a href={product.href} target="_blank" rel="noopener noreferrer">
-                        Acessar produto <ExternalLink className="ml-2 h-4 w-4" />
-                      </a>
-                    </Button>
-                  </div>
-                </div>
+        <div role="group" aria-label="Filtrar soluções por necessidade" className="mt-8 flex flex-wrap gap-2">
+          {filters.map(item => <button key={item} type="button" aria-pressed={filter === item} onClick={() => setFilter(item)} className={`min-h-11 rounded-full border px-4 py-2 text-sm font-semibold transition focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-cyan-300 ${filter === item ? "border-cyan-200/60 bg-cyan-300 text-[#04111b] shadow-[0_0_24px_rgba(34,211,238,.18)]" : "border-white/15 bg-white/[0.03] text-slate-300 hover:border-cyan-300/50 hover:text-white"}`}>{item}</button>)}
+        </div>
+        <p role="status" className="mt-4 text-xs text-slate-400">{visible.length} {visible.length === 1 ? "solução disponível nesta seleção" : "soluções nesta seleção"}</p>
+        <div className="mt-5 grid gap-5 md:grid-cols-2 xl:grid-cols-3">
+          {visible.map(product => (
+            <article id={`produto-${product.id}`} key={product.id} className="group flex min-w-0 scroll-mt-8 flex-col overflow-hidden rounded-3xl border border-cyan-300/20 bg-[#0a0d17]/95 shadow-[0_0_35px_rgba(34,211,238,.07)] transition duration-300 hover:border-cyan-300/45 hover:shadow-[0_0_45px_rgba(34,211,238,.13)]">
+              <div className="relative aspect-[16/9] overflow-hidden">
+                <Image src={product.image} alt={`Ilustração da solução ${product.name}`} fill sizes="(max-width: 767px) 100vw, (max-width: 1279px) 50vw, 33vw" className="object-cover transition duration-500 group-hover:scale-[1.03] motion-reduce:transform-none" />
+                <div className="absolute inset-0 bg-gradient-to-t from-[#0a0d17] via-transparent to-transparent" />
+                <span className="absolute left-4 top-4 rounded-full border border-white/20 bg-[#03050d]/90 px-3 py-1.5 text-xs font-semibold text-cyan-200">{product.category}</span>
+              </div>
+              <div className="flex flex-1 flex-col p-5 sm:p-6">
+                <p className="text-xs font-semibold text-cyan-300">{product.audience}</p>
+                <h3 className="mt-3 text-2xl font-black tracking-tight">{product.name}</h3>
+                <p className="mt-2 text-base font-semibold leading-6 text-white">{product.title}</p>
+                <p className="mt-3 text-sm leading-6 text-slate-400">{product.description}</p>
+                <ul className="my-5 grid gap-2">
+                  {product.features.map(feature => <li key={feature} className="flex items-center gap-2 text-sm text-slate-300"><CheckCircle2 className="h-4 w-4 shrink-0 text-cyan-300" />{feature}</li>)}
+                </ul>
+                <div className="mt-auto border-t border-white/10 pt-5"><ProductPresentation product={product} /><a href={whatsapp(product.name)} target="_blank" rel="noopener noreferrer" className="mt-2 flex min-h-11 items-center justify-center gap-2 text-sm font-semibold text-slate-300 hover:text-cyan-200"><MessageCircle className="h-4 w-4" />Conversar sobre esta solução</a></div>
               </div>
             </article>
           ))}
         </div>
-
-        <p className="mt-4 text-center text-[11px] font-semibold text-slate-500 lg:hidden">
-          Arraste para o lado para ver os 4 produtos
-        </p>
       </div>
     </section>
   );
+}
+
+function Ecosystem() {
+  const platforms = [
+    { name: "Vitriniza", label: "Comércio local", description: "Uma vitrine para aproximar comércios e serviços dos moradores da região.", href: "https://vitriniza.vercel.app/" },
+    { name: "KonnexyFé", label: "Comunidades", description: "Descoberta de comunidades de fé, com mapa, eventos e horários.", href: whatsapp("a plataforma KonnexyFé") },
+    { name: "Feito de Nós", label: "Convites e presentes", description: "Convites digitais e presentes interativos para compartilhar histórias e momentos especiais.", href: "https://feitos-de-nos.vercel.app" },
+  ];
+  return <section id="ecossistema" className={`${sectionY} border-t border-white/10 bg-[#08091a] text-white`}><div className={shell}>
+    <Eyebrow>Outras conexões</Eyebrow><h2 className="mt-4 text-3xl font-black tracking-tight sm:text-4xl">Conheça também nosso ecossistema.</h2>
+    <div className="mt-8 grid gap-4 md:grid-cols-3">{platforms.map(platform => <a key={platform.name} href={platform.href} target="_blank" rel="noopener noreferrer" className="group rounded-3xl border border-violet-300/20 bg-white/[0.03] p-6 transition hover:border-violet-300/50 hover:shadow-[0_0_32px_rgba(167,139,250,.10)]"><p className="text-xs font-semibold text-violet-300">{platform.label}</p><h3 className="mt-3 text-xl font-bold">{platform.name}</h3><p className="mt-3 text-sm leading-6 text-slate-300">{platform.description}</p><span className="mt-5 inline-flex min-h-11 items-center gap-2 text-sm font-bold text-violet-200">Conhecer <ArrowRight className="h-4 w-4" /></span></a>)}</div>
+  </div></section>;
+}
+
+function Portfolio() {
+  const projects = [
+    { name: "AmarTea", category: "Saúde e atendimento", image: "/images/landing/demo_clinica.png", href: "https://www.amartea.com.br/" },
+    { name: "Milton Barros", category: "Consultoria e palestras", image: "/images/landing/demo_miltonbarros.png", href: "https://miltonbarros.com.br/" },
+    { name: "L.A. Pharmatec", category: "Biotecnologia e pesquisa", image: "/images/landing/demo_lapharmatec.png", href: "https://www.lapharmatec.com.br/" },
+  ];
+  return <section id="projetos" className={`${sectionY} bg-[#050711] text-white`}><div className={shell}>
+    <Eyebrow>Projetos realizados</Eyebrow><h2 className="mt-4 text-3xl font-black tracking-tight sm:text-4xl">Veja a Konnexy na prática.</h2><p className="mt-4 max-w-2xl text-sm leading-7 text-slate-300">Explore sites desenvolvidos para diferentes negócios e conheça possibilidades para apresentar a sua empresa.</p>
+    <div className="mt-8 grid gap-5 md:grid-cols-3">{projects.map(project => <a key={project.name} href={project.href} target="_blank" rel="noopener noreferrer" className="group overflow-hidden rounded-3xl border border-white/15 bg-white/[0.02] transition hover:border-cyan-300/40"><div className="relative aspect-[4/3]"><Image src={project.image} alt={`Apresentação do projeto ${project.name}`} fill sizes="(max-width: 767px) 100vw, 33vw" className="object-cover" /></div><div className="p-5"><p className="text-xs text-cyan-300">{project.category}</p><h3 className="mt-2 text-xl font-bold">{project.name}</h3><span className="mt-3 inline-flex min-h-11 items-center gap-2 text-sm font-semibold text-slate-300">Visitar projeto <ExternalLink className="h-4 w-4" /></span></div></a>)}</div>
+  </div></section>;
 }
 
 function BrandStatement() {
@@ -451,8 +479,8 @@ function BrandStatement() {
 function Numbers() {
   const ref = useRef<HTMLElement>(null);
   const values = [
-    { value: 4, suffix: "", label: "produtos próprios no ecossistema Konnexy" },
-    { value: 6, suffix: "+", label: "frentes de serviço para presença, aquisição e operação" },
+    { value: products.length, suffix: "", label: "sistemas para vendas, atendimento e gestão" },
+    { value: services.length, suffix: "", label: "serviços para presença digital e operação" },
     { value: 1, suffix: "", label: "marca conectando tecnologia e negócio" },
   ];
 
@@ -515,11 +543,11 @@ function Services() {
           <div>
             <Eyebrow>Serviços</Eyebrow>
             <h2 className="mt-4 max-w-3xl text-[clamp(2.05rem,4vw,3.7rem)] font-black leading-[0.98] tracking-[-0.045em]">
-              Tecnologia com função comercial.
+              Serviços para sua empresa ser encontrada e escolhida.
             </h2>
           </div>
           <p className="max-w-xl text-sm leading-7 text-slate-400 lg:justify-self-end">
-            O serviço começa pela necessidade do negócio. A partir disso, conectamos apenas o que faz sentido para presença, aquisição, atendimento ou operação.
+            Da criação do site à divulgação: escolha o apoio que seu negócio precisa e conheça o que está incluído em cada serviço.
           </p>
         </div>
 
@@ -529,7 +557,7 @@ function Services() {
               data-service-card
               key={service.title}
               href={service.href}
-              className="group min-h-[190px] rounded-[22px] border border-white/10 bg-[linear-gradient(145deg,rgba(13,18,32,.96),rgba(8,10,25,.94))] p-5 opacity-0 shadow-[0_0_26px_rgba(37,99,235,.06)] transition duration-300 hover:-translate-y-1 hover:border-cyan-300/35 hover:shadow-[0_0_34px_rgba(34,211,238,.13),0_0_48px_rgba(124,58,237,.08)] sm:p-6"
+              className="group min-h-[190px] rounded-[22px] border border-white/10 bg-[linear-gradient(145deg,rgba(13,18,32,.96),rgba(8,10,25,.94))] p-5 shadow-[0_0_26px_rgba(37,99,235,.06)] transition duration-300 hover:-translate-y-1 hover:border-cyan-300/35 hover:shadow-[0_0_34px_rgba(34,211,238,.13),0_0_48px_rgba(124,58,237,.08)] sm:p-6"
             >
               <div className="flex h-full flex-col justify-between">
                 <div className="flex items-start justify-between">
@@ -559,17 +587,17 @@ function FinalCTA() {
       <div className={`${shell} relative`}>
         <div data-final className="opacity-0"><Eyebrow>Próximo passo</Eyebrow></div>
         <h2 data-final className="mt-4 max-w-4xl text-[clamp(2.35rem,4.7vw,4.5rem)] font-black leading-[0.95] tracking-[-0.045em] opacity-0">
-          Seu negócio já existe. Agora faça ele ser encontrado.
+          Vamos encontrar a solução para o seu negócio?
         </h2>
         <p data-final className="mt-5 max-w-xl text-sm font-medium leading-6 text-slate-300 opacity-0 sm:text-base">
-          Conte como seu negócio funciona hoje. A Konnexy identifica os principais pontos de atrito e indica uma solução sem empurrar um pacote genérico.
+          Conte o que você vende e o que deseja facilitar. Apresentamos as opções e mostramos como a solução pode funcionar na sua rotina.
         </p>
 
         <div data-final className="mt-7 flex flex-wrap gap-3 opacity-0">
           <Button asChild className="h-12 rounded-full border border-emerald-300/30 bg-[#25D366] px-6 text-sm font-black text-[#04110a] shadow-[0_0_28px_rgba(37,211,102,.18)] transition hover:bg-[#34df76] hover:shadow-[0_0_38px_rgba(37,211,102,.28)]">
-            <a href="https://wa.me/5516991551200?text=Olá,%20quero%20uma%20análise%20do%20meu%20negócio." target="_blank" rel="noopener noreferrer">
+            <a href="https://wa.me/5516991551200?text=Olá,%20quero%20conhecer%20as%20soluções%20da%20Konnexy%20e%20agendar%20uma%20demonstração." target="_blank" rel="noopener noreferrer">
               <MessageCircle className="mr-2 h-4 w-4" />
-              Quero uma análise
+              Quero uma demonstração
             </a>
           </Button>
           <Button asChild variant="outline" className="h-12 rounded-full border-cyan-300/25 bg-cyan-300/[0.04] px-6 text-sm font-black text-white hover:border-cyan-300/45 hover:bg-cyan-300/[0.09] hover:text-white">
@@ -583,7 +611,7 @@ function FinalCTA() {
 
 function Footer() {
   return (
-    <footer className="border-t border-white/10 bg-[#03050d] py-10 text-white sm:py-12">
+    <footer className="border-t border-white/10 bg-[#03050d] pb-28 pt-10 text-white sm:pt-12">
       <div className={`${shell} grid gap-8 sm:grid-cols-[1fr_auto] sm:items-end`}>
         <div>
           <div className="flex items-center gap-3">
@@ -612,17 +640,17 @@ function Footer() {
 
 function QuickNav() {
   return (
-    <nav className="fixed bottom-5 left-1/2 z-40 hidden -translate-x-1/2 rounded-full border border-cyan-300/20 bg-[#050711]/88 px-2 py-2 shadow-[0_0_34px_rgba(34,211,238,.12),0_18px_48px_rgba(0,0,0,.42)] backdrop-blur-xl lg:flex">
+    <nav aria-label="Navegação da apresentação" className="fixed bottom-5 left-1/2 z-40 flex w-[calc(100%-2rem)] max-w-lg -translate-x-1/2 justify-between rounded-full border border-cyan-300/20 bg-[#050711]/88 px-2 py-2 shadow-[0_0_34px_rgba(34,211,238,.12),0_18px_48px_rgba(0,0,0,.42)] backdrop-blur-xl">
       {[
         ["Início", "#"],
-        ["Sobre", "#sobre"],
-        ["Produtos", "#produtos"],
+        ["Projetos", "#projetos"],
+        ["Soluções", "#produtos"],
         ["Serviços", "#servicos"],
       ].map(([label, href]) => (
         <a
           key={label}
           href={href}
-          className="rounded-full px-4 py-2 text-[11px] font-bold text-slate-400 transition hover:bg-white/5 hover:text-white"
+          className={`${label === "Início" ? "hidden sm:inline-flex" : "inline-flex"} min-h-11 items-center rounded-full px-2 py-2 text-[11px] font-bold text-slate-300 transition hover:bg-white/5 hover:text-white sm:px-4`}
         >
           {label}
         </a>
@@ -631,7 +659,7 @@ function QuickNav() {
         href="https://wa.me/5516991551200"
         target="_blank"
         rel="noopener noreferrer"
-        className="ml-1 inline-flex items-center gap-2 rounded-full bg-cyan-300 px-4 py-2 text-[11px] font-black text-[#04111b] shadow-[0_0_20px_rgba(34,211,238,.16)]"
+        className="ml-1 inline-flex items-center gap-2 rounded-full bg-cyan-300 min-h-11 px-3 py-2 text-[11px] font-black text-[#04111b] shadow-[0_0_20px_rgba(34,211,238,.16)]"
       >
         <MessageCircle className="h-3.5 w-3.5" />
         Contato
@@ -679,11 +707,13 @@ export function ImmersiveLanding() {
       <RefreshAfterImages />
       <div className="overflow-x-clip bg-[#03050d] font-sans text-white selection:bg-cyan-300/30">
         <Hero />
-        <Manifesto />
         <Products />
+        <Services />
+        <Portfolio />
+        <Ecosystem />
+        <Manifesto />
         <BrandStatement />
         <Numbers />
-        <Services />
         <FinalCTA />
         <Footer />
         <QuickNav />
