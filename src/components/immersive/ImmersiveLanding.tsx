@@ -173,8 +173,8 @@ function Hero() {
           fill
           priority
           fetchPriority="high"
-          quality={50}
-          sizes="(max-width: 640px) 64vw, (max-width: 1024px) 58vw, 520px"
+          quality={40}
+          sizes="(max-width: 640px) 58vw, (max-width: 1024px) 52vw, 484px"
           className="object-contain opacity-30 mix-blend-screen"
         />
       </div>
@@ -349,7 +349,7 @@ function Products() {
           {visible.map(product => (
             <article id={`produto-${product.id}`} key={product.id} className="group flex min-w-0 scroll-mt-8 flex-col overflow-hidden rounded-3xl border border-cyan-300/20 bg-[#0a0d17]/95 shadow-[0_0_35px_rgba(34,211,238,.07)] transition duration-300 hover:border-cyan-300/45 hover:shadow-[0_0_45px_rgba(34,211,238,.13)]">
               <div className="relative aspect-[16/9] overflow-hidden">
-                <Image src={product.image} alt={`Ilustração da solução ${product.name}`} fill sizes="(max-width: 767px) 100vw, (max-width: 1279px) 50vw, 33vw" className="object-cover transition duration-500 group-hover:scale-[1.03] motion-reduce:transform-none" />
+                <Image src={product.image} alt={`Ilustração da solução ${product.name}`} fill quality={58} sizes="(max-width: 767px) calc(100vw - 40px), (max-width: 1279px) calc(50vw - 36px), 358px" className="object-cover transition duration-500 group-hover:scale-[1.03] motion-reduce:transform-none" />
                 <div className="absolute inset-0 bg-gradient-to-t from-[#0a0d17] via-transparent to-transparent" />
                 <span className="absolute left-4 top-4 rounded-full border border-white/20 bg-[#03050d]/90 px-3 py-1.5 text-xs font-semibold text-cyan-200">{product.category}</span>
               </div>
@@ -676,14 +676,14 @@ function Footer() {
             <Image src="/logo.png" alt="Konnexy" width={42} height={42} className="h-10 w-10 object-contain" />
             <div>
               <div className="text-lg font-black">Konnexy</div>
-              <div className="text-[9px] font-bold uppercase tracking-[0.2em] text-slate-600">Conecta • Organiza • Vende</div>
+              <div className="text-[9px] font-bold uppercase tracking-[0.2em] text-slate-400">Conecta • Organiza • Vende</div>
             </div>
           </div>
-          <p className="mt-4 max-w-md text-sm leading-6 text-slate-500">
+          <p className="mt-4 max-w-md text-sm leading-6 text-slate-300">
             Produtos e soluções digitais para pequenos negócios conectarem presença, atendimento e operação.
           </p>
         </div>
-        <div className="flex flex-wrap gap-5 text-xs font-semibold text-slate-500">
+        <div className="flex flex-wrap gap-5 text-xs font-semibold text-slate-300">
           <Link href="/servicos" className="transition hover:text-white">Serviços</Link>
           <a href="https://menu.konnexy.com.br" target="_blank" rel="noopener noreferrer" className="transition hover:text-white">Menu</a>
           <a href="https://tag.konnexy.com.br" target="_blank" rel="noopener noreferrer" className="transition hover:text-white">Tag</a>
