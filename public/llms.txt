@@ -1,0 +1,42 @@
+# Konnexy
+
+A Konnexy desenvolve produtos e serviços digitais para pequenos negócios, com foco em presença online, atendimento, vendas e organização da operação.
+
+## Site oficial
+
+- [Konnexy](https://www.konnexy.com.br/)
+- [Serviços Konnexy](https://www.konnexy.com.br/servicos)
+- [Perfil profissional de Massami](https://www.konnexy.com.br/massami)
+
+## Serviços
+
+- [Criação de sites e landing pages](https://www.konnexy.com.br/servicos/criacao-de-sites)
+- [Otimização do Perfil da Empresa no Google e SEO local](https://www.konnexy.com.br/servicos/otimizacao-perfil-google)
+- [Tráfego pago](https://www.konnexy.com.br/servicos/trafego-pago)
+- [Catálogo e cardápio digital](https://www.konnexy.com.br/servicos/catalogo-cardapio-digital)
+- [Sistemas web](https://www.konnexy.com.br/servicos/sistemas-web)
+- [Link profissional](https://www.konnexy.com.br/servicos/link-profissional)
+- [NFC e QR Code](https://www.konnexy.com.br/servicos/nfc-qr-code)
+
+## Produtos Konnexy
+
+- [Konnexy Menu](https://menu.konnexy.com.br/) — cardápio digital, pedidos, retirada, delivery e operação para alimentação.
+- [Konnexy Tag](https://tag.konnexy.com.br/) — NFC, QR Code, avaliações no Google, contatos e links.
+- [Konnexy Agenda](https://agenda.konnexy.com.br/) — agendamentos, serviços, profissionais e gestão de horários.
+- [Konnexy PDV](https://pdv.konnexy.com.br/) — vendas, caixa, estoque, relatórios, operação offline e sincronização.
+- [Konnexy OS Auto](https://osauto.konnexy.com.br/) — orçamentos e ordens de serviço para oficinas e serviços automotivos.
+
+## Outros projetos e demonstrações
+
+- [Advocacia Premium](https://advogado.konnexy.com.br/)
+- [Ateliê Entre Santos](https://entresantos.konnexy.com.br/)
+- [Imobiliária](https://imobiliaria.konnexy.com.br/)
+- [GP Motors](https://motors.konnexy.com.br/)
+- [Adega do Vado](https://adegavado.konnexy.com.br/)
+- [Beleza](https://beleza.konnexy.com.br/)
+- [Eventos](https://evento.konnexy.com.br/)
+
+## Contato
+
+- [WhatsApp](https://wa.me/5516991551200)
+- [Instagram](https://www.instagram.com/konnexy.web)
