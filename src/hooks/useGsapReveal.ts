@@ -1,7 +1,6 @@
 "use client";
 
 import { RefObject, useEffect } from "react";
-import { ensureGsapRegistered } from "@/lib/motion/gsap";
 
 type RevealOptions = {
   selector?: string;
@@ -25,37 +24,61 @@ export function useGsapReveal(
     const root = scope.current;
     if (!root) return;
 
-    const { gsap, ScrollTrigger } = ensureGsapRegistered();
-    const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    let cancelled = false;
+    let ctx: { revert: () => void } | undefined;
 
-    const ctx = gsap.context(() => {
-      const targets = gsap.utils.toArray<HTMLElement>(selector, root);
-      if (!targets.length) return;
+    const run = async () => {
+      const { ensureGsapRegistered } = await import("@/lib/motion/gsap");
+      if (cancelled) return;
 
-      if (reducedMotion) {
-        gsap.set(targets, { opacity: 1, y: 0 });
-        return;
-      }
+      const { gsap, ScrollTrigger } = ensureGsapRegistered();
+      const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-      gsap.fromTo(
-        targets,
-        { opacity: 0, y },
-        {
-          opacity: 1,
-          y: 0,
-          duration,
-          stagger,
-          ease: "power3.out",
-          scrollTrigger: {
-            trigger: root,
-            start,
-            once: true,
+      ctx = gsap.context(() => {
+        const targets = gsap.utils.toArray<HTMLElement>(selector, root);
+        if (!targets.length) return;
+
+        if (reducedMotion) {
+          gsap.set(targets, { opacity: 1, y: 0 });
+          return;
+        }
+
+        gsap.fromTo(
+          targets,
+          { opacity: 0, y },
+          {
+            opacity: 1,
+            y: 0,
+            duration,
+            stagger,
+            ease: "power3.out",
+            scrollTrigger: {
+              trigger: root,
+              start,
+              once: true,
+            },
           },
-        },
-      );
-    }, root);
+        );
+      }, root);
 
-    ScrollTrigger.refresh();
-    return () => ctx.revert();
+      ScrollTrigger.refresh();
+    };
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (!entries.some((entry) => entry.isIntersecting)) return;
+        observer.disconnect();
+        void run();
+      },
+      { rootMargin: "240px 0px" },
+    );
+
+    observer.observe(root);
+
+    return () => {
+      cancelled = true;
+      observer.disconnect();
+      ctx?.revert();
+    };
   }, [duration, scope, selector, stagger, start, y]);
 }
