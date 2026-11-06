@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import { KONNEXY_PORTFOLIO } from "@/config/konnexy-projects";
 import Link from "next/link";
 import {
   ArrowDown,
@@ -387,18 +388,7 @@ function Ecosystem() {
 }
 
 function Portfolio() {
-  const projects = [
-    { name: "Advocacia Premium", category: "Advocacia e serviços jurídicos", image: null, href: "https://advogado.konnexy.com.br/" },
-    { name: "Ateliê Entre Santos", category: "Artesanato católico e presentes", image: null, href: "https://entresantos.konnexy.com.br/" },
-    { name: "S&A Gestora Imobiliária", category: "Imóveis · Compra e locação", image: null, href: "https://imobiliaria.konnexy.com.br/" },
-    { name: "GP Motors", category: "Veículos · Compra e venda", image: null, href: "https://motors.konnexy.com.br/" },
-    { name: "Adega do Vado", category: "Bebidas e tabacaria", image: null, href: "https://adegavado.konnexy.com.br/" },
-    { name: "Bella Nails Atelier", category: "Demonstração · Beleza e agendamentos", image: "/vitrine.png", href: "https://beleza.konnexy.com.br/" },
-    { name: "SD Eventos", category: "Buffet e eventos", image: "/site.png", href: "https://evento.konnexy.com.br/" },
-    { name: "AmarTea", category: "Saúde e atendimento", image: "/images/landing/demo_clinica.png", href: "https://www.amartea.com.br/" },
-    { name: "Milton Barros", category: "Consultoria e palestras", image: "/images/landing/demo_miltonbarros.png", href: "https://miltonbarros.com.br/" },
-    { name: "L.A. Pharmatec", category: "Biotecnologia e pesquisa", image: "/images/landing/demo_lapharmatec.png", href: "https://www.lapharmatec.com.br/" },
-  ];
+  const projects = KONNEXY_PORTFOLIO;
   return <section id="projetos" className={`${sectionY} bg-[#050711] text-white`}><div className={shell}>
     <Eyebrow>Projetos e demonstrações</Eyebrow><h2 className="mt-4 text-3xl font-black tracking-tight sm:text-4xl">Veja a Konnexy na prática.</h2><p className="mt-4 max-w-2xl text-sm leading-7 text-slate-300">Explore projetos e páginas demonstrativas para diferentes segmentos e conheça possibilidades para apresentar a sua empresa.</p>
     <div className="mt-8 grid gap-5 md:grid-cols-3">{projects.map(project => <a key={project.name} href={project.href} target="_blank" rel="noopener noreferrer" className="group overflow-hidden rounded-3xl border border-white/15 bg-white/[0.02] transition hover:border-cyan-300/40"><div className="relative aspect-[4/3]">{project.image ? <Image src={project.image} alt={`Apresentação do projeto ${project.name}`} fill sizes="(max-width: 767px) 100vw, 33vw" className="object-cover" /> : <div className="flex h-full flex-col justify-between bg-[radial-gradient(ellipse_at_top_right,rgba(34,211,238,.15),transparent_65%),linear-gradient(135deg,#101a30,#080d1c)] p-6"><span className="text-xs font-semibold uppercase tracking-widest text-cyan-300">{project.category}</span><span className="max-w-xs text-3xl font-black tracking-tight text-white">{project.name}</span><span className="flex items-center gap-2 text-xs text-slate-300">Abrir site <ExternalLink className="h-4 w-4" /></span></div>}</div><div className="p-5"><p className="text-xs text-cyan-300">{project.category}</p><h3 className="mt-2 text-xl font-bold">{project.name}</h3><span className="mt-3 inline-flex min-h-11 items-center gap-2 text-sm font-semibold text-slate-300">Visitar projeto <ExternalLink className="h-4 w-4" /></span></div></a>)}</div>

@@ -50,7 +50,7 @@ const KONNEXY_PROJECTS_DATA: ProjectItem[] = [
       'Telemetria de acessos físicos em tempo real'
     ],
     techStack: ['Next.js 15', 'NFC NTAG213', 'Tailwind CSS', 'Supabase', 'IoT'],
-    demoUrl: 'https://konnexy.com.br',
+    demoUrl: 'https://tag.konnexy.com.br',
     image: '/images/koi_hero.png',
     gradient: 'from-amber-500/20 via-orange-500/10 to-indigo-500/20'
   },
@@ -68,7 +68,7 @@ const KONNEXY_PROJECTS_DATA: ProjectItem[] = [
       'Painel de gestão intuitivo para os lojistas'
     ],
     techStack: ['Next.js', 'React', 'Tailwind CSS', 'Supabase', 'WhatsApp API'],
-    demoUrl: 'https://vitriniza.vercel.app/',
+    demoUrl: 'https://vitriniza.konnexy.com.br/',
     image: '/images/landing/demo_vitrine.png',
     gradient: 'from-emerald-500/20 via-teal-500/10 to-cyan-500/20'
   },
@@ -86,7 +86,7 @@ const KONNEXY_PROJECTS_DATA: ProjectItem[] = [
       'Histórico de atendimentos e gestão financeira'
     ],
     techStack: ['Next.js', 'React', 'PostgreSQL', 'Framer Motion', 'Tailwind'],
-    demoUrl: 'https://konnexy.com.br',
+    demoUrl: 'https://agenda.konnexy.com.br',
     image: '/images/landing/demo_petshop.png',
     gradient: 'from-purple-500/20 via-pink-500/10 to-blue-500/20'
   }
@@ -196,7 +196,7 @@ export function ProjectsBottomSheet({
             {/* Scrollable Content */}
             <div className="flex-1 overflow-y-auto px-6 py-5 space-y-5">
               {/* 1. Catálogo de Serviços / Produtos do Perfil (Para todas as contas) */}
-              {hasCustomServices && !showKonnexyEcosystem && (
+              {hasCustomServices && (
                 <div className="space-y-4">
                   {services.map((service, idx) => (
                     <div
@@ -336,42 +336,7 @@ export function ProjectsBottomSheet({
                   </div>
                 ))}
 
-              {/* Caso Massami também tenha serviços adicionais cadastrados */}
-              {showKonnexyEcosystem && hasCustomServices && (
-                <div className="pt-2 space-y-3">
-                  <h4 className="text-xs font-bold uppercase tracking-wider text-zinc-400 px-1">
-                    Serviços Sob Medida
-                  </h4>
-                  {services.map((service, idx) => (
-                    <div
-                      key={idx}
-                      className="rounded-2xl border border-zinc-800/90 bg-zinc-900/60 p-4 flex items-center justify-between gap-3"
-                    >
-                      <div>
-                        <h5 className="text-sm font-bold text-white">
-                          {service.name}
-                        </h5>
-                        {service.description && (
-                          <p className="text-xs text-zinc-400 mt-0.5">
-                            {service.description}
-                          </p>
-                        )}
-                      </div>
-                      {onSelectProjectForContact && (
-                        <button
-                          onClick={() => {
-                            onSelectProjectForContact(service.name, service.price);
-                            onClose();
-                          }}
-                          className="shrink-0 px-3 py-1.5 rounded-xl bg-zinc-800 hover:bg-zinc-700 text-xs font-bold text-amber-400 border border-zinc-700 transition"
-                        >
-                          Orçar →
-                        </button>
-                      )}
-                    </div>
-                  ))}
-                </div>
-              )}
+
             </div>
 
             {/* Bottom Safe Area / Footer */}

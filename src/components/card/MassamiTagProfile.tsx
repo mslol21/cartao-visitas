@@ -24,6 +24,7 @@ import {
   ZoomIn
 } from 'lucide-react';
 import Image from 'next/image';
+import { PublicProfileDetails } from './PublicProfileDetails';
 import { toast } from 'sonner';
 import { NeonGradientCard } from '@/components/tag/NeonGradientCard';
 import {
@@ -292,7 +293,7 @@ export function MassamiTagProfile({
   ).toLowerCase();
 
   // Normalização de Serviços do Perfil
-  const rawServices = profile?.servicos || profile?.services || [];
+  const rawServices = profile?.servicos?.length ? profile.servicos : profile?.services || [];
   const normalizedServices: CatalogServiceItem[] = rawServices
     .map((s) => {
       if (typeof s === 'string') return { name: s };
@@ -321,9 +322,7 @@ export function MassamiTagProfile({
     customFieldsObj.portfolio_video_url;
 
   // Identidade e Informações do Perfil
-  const displayName = isMassami
-    ? 'Massami | Konnexy'
-    : profile?.business_name || profile?.name || profile?.username || 'Seu Nome';
+  const displayName = profile?.business_name || profile?.name || (isMassami ? 'Massami | Konnexy' : profile?.username || 'Seu Nome');
 
   const professionConfig = getProfessionConfig(
     profile?.profession || profile?.category
@@ -339,16 +338,9 @@ export function MassamiTagProfile({
         'PROFISSIONAL VERIFICADO'
       ).toUpperCase();
 
-  const bioText = isMassami
-    ? 'Desenvolvedor de software, soluções SaaS e tecnologia Phygital para transformar negócios locais.'
-    : profile?.subtitle ||
-      profile?.bio_profissional ||
-      profile?.tagline ||
-      'Atendimento de excelência e soluções pensadas para você.';
+  const bioText = profile?.subtitle || profile?.bio_profissional || profile?.tagline || (isMassami ? 'Desenvolvedor de software, soluções SaaS e tecnologia Phygital para transformar negócios locais.' : 'Atendimento de excelência e soluções pensadas para você.');
 
-  const avatarSrc = isMassami
-    ? '/images/koi_hero.png'
-    : profile?.photo_url || '/images/koi_hero.png';
+  const avatarSrc = profile?.photo_url || '/images/koi_hero.png';
 
   // Resolução inteligente da Imagem/Vídeo de Capa Representativa
   const firstServiceWithImage = normalizedServices.find((s) => s.image)?.image;
@@ -495,8 +487,7 @@ export function MassamiTagProfile({
           field.type === 'text' &&
           typeof val === 'string' &&
           val.trim() &&
-          !isUrlLike(val) &&
-          val.trim().length <= 40
+          !isUrlLike(val)
         ) {
           activeProfessionBadges.push(val.trim());
         }
@@ -507,7 +498,7 @@ export function MassamiTagProfile({
     }
   }
 
-  const uniqueBadges = Array.from(new Set(activeProfessionBadges)).slice(0, 10);
+  const uniqueBadges = Array.from(new Set(activeProfessionBadges));
   const customLinks = profile?.custom_links || [];
 
   // Redes Sociais
@@ -1005,6 +996,7 @@ export function MassamiTagProfile({
         {/* ====================================================================
          * 3. BENTO GRID MODULAR (Todos os Quadros com Borda Néon)
          * ==================================================================== */}
+        <PublicProfileDetails profile={profile} isMassami={isMassami} />
         <div className="grid grid-cols-2 gap-4">
           {/* =================================================================
            * Cartão WhatsApp Direto (Span 2 - Borda Néon Verde Oficial)
@@ -1341,7 +1333,7 @@ export function MassamiTagProfile({
           {/* =================================================================
            * Cartão Links Customizados / Portfólio Externo (Borda Néon)
            * ================================================================= */}
-          {!isMassami && customLinks.length > 0 && (
+          {customLinks.length > 0 && (
             <div className="col-span-2">
               <NeonGradientCard
                 borderSize={2}
@@ -1550,7 +1542,7 @@ export function MassamiTagProfile({
                     )}
 
                     {/* Website */}
-                    {!isMassami && websiteUrl && (
+                    {websiteUrl && (
                       <a
                         href={
                           websiteUrl.startsWith('http')
