@@ -6,6 +6,8 @@ const __dirname = path.dirname(__filename);
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  // Resolve dynamic profile metadata before streaming so missing profiles return HTTP 404.
+  htmlLimitedBots: /.*/,
   outputFileTracingRoot: __dirname,
   images: {
     imageSizes: [16, 32, 48, 64, 96, 128, 256, 384, 480, 512],
