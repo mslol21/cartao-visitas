@@ -59,7 +59,7 @@ export function PublicProfileDetails({ profile, isMassami, neonColors }: { profi
       <div className="mt-4 grid gap-3 sm:grid-cols-2">{projects.map(project => <a key={project.href} href={project.href} target="_blank" rel="noopener noreferrer" className="min-w-0 rounded-xl border border-zinc-700 bg-zinc-950/60 p-4 text-white transition hover:border-cyan-300 focus-visible:outline focus-visible:outline-cyan-300"><span className="block text-xs text-cyan-200">{project.category}</span><span className="mt-1 block font-semibold">{project.name}</span><span className="mt-3 block text-sm text-zinc-300">Visualizar projeto ↗</span></a>)}</div>
     </section>
     </NeonGradientCard>}
-    {(details.length > 0 || hours.length > 0 || secondaryPhone || profile?.twitter) && <NeonGradientCard borderRadius={24} borderSize={2} neonColors={neonColors}>
+    {!isMassami && (details.length > 0 || hours.length > 0 || secondaryPhone || profile?.twitter) && <NeonGradientCard borderRadius={24} borderSize={2} neonColors={neonColors}>
       <section aria-label="Informações do perfil">
       <h2 className="text-lg font-bold text-white">Sobre e atendimento</h2>
       <dl className="mt-4 space-y-4">{details.map((item, index) => <div key={`${item.label}-${index}`} className="min-w-0"><dt className="text-xs font-semibold text-cyan-200">{item.label}</dt><dd className="mt-1 whitespace-pre-wrap break-words text-sm text-zinc-200">{item.value && /^https?:\/\//i.test(item.value) && safeUrl(item.value) ? <a className="underline" href={safeUrl(item.value)} target="_blank" rel="noopener noreferrer">{item.value}</a> : item.value}</dd></div>)}</dl>
