@@ -1,5 +1,6 @@
 'use client';
 
+import { NeonGradientCard, type NeonColorsProps } from '@/components/tag/NeonGradientCard';
 import type { Profile } from '@/types/profile';
 import { getProfessionConfig } from '@/config/professions';
 import { KONNEXY_PORTFOLIO } from '@/config/konnexy-projects';
@@ -12,7 +13,7 @@ function safeUrl(value: string): string | undefined {
   } catch { return undefined; }
 }
 
-export function PublicProfileDetails({ profile, isMassami }: { profile?: Profile | null; isMassami: boolean }) {
+export function PublicProfileDetails({ profile, isMassami, neonColors }: { profile?: Profile | null; isMassami: boolean; neonColors: NeonColorsProps }) {
   const config = getProfessionConfig(profile?.profession || profile?.category);
   const custom = profile?.custom_fields || {};
   // Only fields explicitly defined in the public editor belong on the public page.
@@ -51,17 +52,21 @@ export function PublicProfileDetails({ profile, isMassami }: { profile?: Profile
     ...KONNEXY_PORTFOLIO,
   ] : [];
   return <>
-    {projects.length > 0 && <section aria-label="Portfólio de projetos" className="rounded-3xl border border-cyan-300/30 bg-zinc-900/95 p-5 shadow-[0_0_25px_rgba(34,211,238,.10)]">
+    {projects.length > 0 && <NeonGradientCard borderRadius={24} borderSize={2} neonColors={neonColors}>
+      <section aria-label="Portfólio de projetos">
       <h2 className="text-lg font-bold text-white">Portfólio de projetos</h2>
       <p className="mt-2 text-sm text-zinc-300">Conheça os projetos e demonstrações da Konnexy.</p>
       <div className="mt-4 grid gap-3 sm:grid-cols-2">{projects.map(project => <a key={project.href} href={project.href} target="_blank" rel="noopener noreferrer" className="min-w-0 rounded-xl border border-zinc-700 bg-zinc-950/60 p-4 text-white transition hover:border-cyan-300 focus-visible:outline focus-visible:outline-cyan-300"><span className="block text-xs text-cyan-200">{project.category}</span><span className="mt-1 block font-semibold">{project.name}</span><span className="mt-3 block text-sm text-zinc-300">Visualizar projeto ↗</span></a>)}</div>
-    </section>}
-    {(details.length > 0 || hours.length > 0 || secondaryPhone || profile?.twitter) && <section aria-label="Informações do perfil" className="rounded-3xl border border-cyan-300/20 bg-zinc-900/95 p-5">
+    </section>
+    </NeonGradientCard>}
+    {(details.length > 0 || hours.length > 0 || secondaryPhone || profile?.twitter) && <NeonGradientCard borderRadius={24} borderSize={2} neonColors={neonColors}>
+      <section aria-label="Informações do perfil">
       <h2 className="text-lg font-bold text-white">Sobre e atendimento</h2>
       <dl className="mt-4 space-y-4">{details.map((item, index) => <div key={`${item.label}-${index}`} className="min-w-0"><dt className="text-xs font-semibold text-cyan-200">{item.label}</dt><dd className="mt-1 whitespace-pre-wrap break-words text-sm text-zinc-200">{item.value && /^https?:\/\//i.test(item.value) && safeUrl(item.value) ? <a className="underline" href={safeUrl(item.value)} target="_blank" rel="noopener noreferrer">{item.value}</a> : item.value}</dd></div>)}</dl>
       {hours.length > 0 && <div className="mt-5"><h3 className="text-sm font-semibold text-white">Horários por dia</h3><dl className="mt-2 space-y-2">{hours.map(([day, value]) => <div key={day} className="flex flex-wrap justify-between gap-2 text-sm text-zinc-200"><dt>{day}</dt><dd>{value}</dd></div>)}</dl></div>}
       {secondaryPhone && <a className="mt-4 flex min-h-11 items-center text-sm font-semibold text-emerald-200 underline" href={`https://wa.me/${secondaryPhone}?text=${encodeURIComponent(profile?.whatsapp_secondary_message || '')}`} target="_blank" rel="noopener noreferrer">WhatsApp adicional: {profile?.whatsapp_secondary}</a>}
       {profile?.twitter && safeUrl(profile.twitter.startsWith('http') ? profile.twitter : `https://x.com/${profile.twitter.replace('@', '')}`) && <a className="mt-3 block text-sm text-cyan-200 underline" href={safeUrl(profile.twitter.startsWith('http') ? profile.twitter : `https://x.com/${profile.twitter.replace('@', '')}`)} target="_blank" rel="noopener noreferrer">X / Twitter</a>}
-    </section>}
+    </section>
+    </NeonGradientCard>}
   </>;
 }

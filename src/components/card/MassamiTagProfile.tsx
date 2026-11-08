@@ -997,7 +997,7 @@ export function MassamiTagProfile({
         {/* ====================================================================
          * 3. BENTO GRID MODULAR (Todos os Quadros com Borda Néon)
          * ==================================================================== */}
-        <PublicProfileDetails profile={profile} isMassami={isMassami} />
+        <PublicProfileDetails profile={profile} isMassami={isMassami} neonColors={{ firstColor: primaryNeonColor, secondColor: secondaryNeonColor }} />
         <div className="grid grid-cols-2 gap-4">
           {/* =================================================================
            * Cartão WhatsApp Direto (Span 2 - Borda Néon Verde Oficial)
