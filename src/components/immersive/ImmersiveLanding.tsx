@@ -1,5 +1,6 @@
 "use client";
 
+import { services } from "@/config/services";
 import Image from "next/image";
 import { KONNEXY_PORTFOLIO } from "@/config/konnexy-projects";
 import Link from "next/link";
@@ -80,43 +81,7 @@ const products: Product[] = [
   },
 ];
 
-const services = [
-  {
-    title: "Catálogos e vitrines digitais",
-    description: "Seus produtos organizados por categorias, com fotos e pedidos pelo WhatsApp.",
-    href: "/servicos/catalogo-cardapio-digital",
-  },
-  {
-    title: "Criação de sites",
-    description: "Sites e landing pages profissionais, responsivos e preparados para conversão.",
-    href: "/servicos/criacao-de-sites",
-  },
-  {
-    title: "Google & SEO local",
-    description: "Estrutura para melhorar presença nas buscas locais e no Google Maps.",
-    href: "/servicos/otimizacao-perfil-google",
-  },
-  {
-    title: "Tráfego pago",
-    description: "Campanhas conectadas à oferta, página de destino e atendimento.",
-    href: "/servicos/trafego-pago",
-  },
-  {
-    title: "Sistemas web",
-    description: "Soluções personalizadas para organizar processos e operação.",
-    href: "/servicos/sistemas-web",
-  },
-  {
-    title: "Link profissional",
-    description: "WhatsApp, localização, redes e portfólio em um único endereço.",
-    href: "/servicos/link-profissional",
-  },
-  {
-    title: "NFC & QR Code",
-    description: "Experiências phygital para avaliações, contatos e acessos rápidos.",
-    href: "/servicos/nfc-qr-code",
-  },
-] as const;
+
 
 function Eyebrow({ children, light = false }: { children: React.ReactNode; light?: boolean }) {
   return (
@@ -216,7 +181,7 @@ function Hero() {
 
           <div data-hero-support className="mt-6 grid gap-5 border-t border-white/10 pt-5 lg:grid-cols-[1fr_auto] lg:items-end">
             <p className="max-w-2xl text-sm leading-7 text-slate-300 sm:text-base">
-              Sites, presença no Google e sistemas para facilitar suas vendas e seu atendimento. Conheça as soluções e veja qual combina com o seu negócio.
+              Sites, presença no Google e sistemas para facilitar suas vendas e seu atendimento. Em São Paulo, com foco na Zona Leste e em Guaianases, e atendimento online. Conheça as soluções para seu negócio.
             </p>
             <Button asChild variant="ghost" className="h-auto w-fit p-0 text-xs font-black uppercase tracking-[0.16em] text-white hover:bg-transparent hover:text-cyan-300">
               <a href="#produtos">Ver soluções e apresentações <ArrowDown className="ml-2 h-4 w-4" /></a>

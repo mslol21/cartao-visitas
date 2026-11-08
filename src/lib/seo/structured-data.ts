@@ -1,111 +1,38 @@
+import { SITE_URL, SOCIAL_IMAGE } from './site';
+
+const organizationId = `${SITE_URL}/#organization`;
+const websiteId = `${SITE_URL}/#website`;
+
 export function generateOrganizationSchema() {
-  return {
-    '@context': 'https://schema.org',
-    '@type': 'Organization',
-    '@id': 'https://konnexy.com.br/#organization',
-    name: 'Konnexy',
-    url: 'https://konnexy.com.br',
-    logo: 'https://konnexy.com.br/logo.png',
-    image: 'https://konnexy.com.br/images/koi_hero.png',
-    description: 'Soluções digitais para empresas: criação de sites, otimização do Perfil da Empresa no Google, tráfego pago, catálogos, NFC e QR Code e sistemas web sob medida.',
-    telephone: '+55 16 99155-1200',
-    areaServed: [
-      { '@type': 'City', name: 'São Paulo' },
-      { '@type': 'Country', name: 'Brasil' },
-    ],
-    knowsAbout: [
-      'Criação de sites',
-      'SEO local',
-      'Perfil da Empresa no Google',
-      'Google Ads',
-      'Tráfego pago',
-      'Desenvolvimento de sistemas web',
-      'Catálogo digital',
-      'NFC',
-      'QR Code',
-    ],
-    contactPoint: {
-      '@type': 'ContactPoint',
-      telephone: '+55 16 99155-1200',
-      contactType: 'customer service',
-      availableLanguage: ['Portuguese'],
-      areaServed: 'BR',
+  return { '@context': 'https://schema.org', '@graph': [
+    { '@type': 'Organization', '@id': organizationId, name: 'Konnexy', url: `${SITE_URL}/`,
+      logo: { '@type': 'ImageObject', '@id': `${SITE_URL}/#logo`, url: `${SITE_URL}/images/koi_hero.png`, width: 1024, height: 1024 },
+      description: 'Sites, presença no Google, catálogos, NFC e QR Code e sistemas web para pequenos negócios.',
+      slogan: 'Conecta • Organiza • Vende',
+      sameAs: ['https://www.instagram.com/konnexy.web'],
+      contactPoint: { '@type': 'ContactPoint', telephone: '+55 16 99155-1200', contactType: 'customer service', availableLanguage: ['pt-BR'] },
     },
-    sameAs: [
-      'https://www.instagram.com/konnexy.web',
-    ],
-  }
+    { '@type': 'WebSite', '@id': websiteId, url: `${SITE_URL}/`, name: 'Konnexy', inLanguage: 'pt-BR', publisher: { '@id': organizationId } },
+  ] };
 }
 
-export function generateProductSchema() {
-  return {
-    '@context': 'https://schema.org',
-    '@type': 'Product',
-    name: 'Catálogo Digital Konnexy',
-    description: 'Catálogo digital profissional com carrinho de compras integrado, formas de pagamento e pedidos automatizados no WhatsApp',
-    brand: {
-      '@type': 'Brand',
-      name: 'Konnexy',
-    },
-    offers: [
-      {
-        '@type': 'Offer',
-        name: 'Plano Konnexy Pro',
-        price: '49.90',
-        priceCurrency: 'BRL',
-        availability: 'https://schema.org/InStock',
-        priceValidUntil: '2026-12-31',
-      },
-    ],
-  }
-}
-
-export function generateWebPageSchema(pageData: {
-  title: string
-  description: string
-  url: string
+export function generatePageGraph({title, description, path, services = []}: {
+  title: string; description: string; path: string;
+  services?: readonly {title: string; description: string; href: string}[];
 }) {
-  return {
-    '@context': 'https://schema.org',
-    '@type': 'WebPage',
-    name: pageData.title,
-    description: pageData.description,
-    url: pageData.url,
-    publisher: {
-      '@type': 'Organization',
-      name: 'Konnexy',
-      logo: {
-        '@type': 'ImageObject',
-        url: 'https://konnexy.com.br/logo.png',
-      },
+  const url = new URL(path, SITE_URL).href;
+  const pageId = `${url}#webpage`;
+  const crumbs = [{name: 'Konnexy', url: `${SITE_URL}/`}];
+  if (path.startsWith('/servicos')) crumbs.push({name: 'Serviços', url: `${SITE_URL}/servicos`});
+  else if (path !== '/') crumbs.push({name: title, url});
+  if (path.startsWith('/servicos/')) crumbs.push({name: title, url});
+  return { '@context': 'https://schema.org', '@graph': [
+    { '@type': 'WebPage', '@id': pageId, url, name: title, description, inLanguage: 'pt-BR',
+      isPartOf: { '@id': websiteId }, publisher: { '@id': organizationId },
+      primaryImageOfPage: { '@type': 'ImageObject', url: SOCIAL_IMAGE.url, width: 1200, height: 630 },
+      ...(path !== '/' ? {breadcrumb: {'@id': `${url}#breadcrumb`}} : {}),
     },
-  }
-}
-
-export function generateBreadcrumbSchema(items: { name: string; url: string }[]) {
-  return {
-    '@context': 'https://schema.org',
-    '@type': 'BreadcrumbList',
-    itemListElement: items.map((item, index) => ({
-      '@type': 'ListItem',
-      position: index + 1,
-      name: item.name,
-      item: item.url,
-    })),
-  }
-}
-
-export function generateFAQSchema(faqs: { question: string; answer: string }[]) {
-  return {
-    '@context': 'https://schema.org',
-    '@type': 'FAQPage',
-    mainEntity: faqs.map((faq) => ({
-      '@type': 'Question',
-      name: faq.question,
-      acceptedAnswer: {
-        '@type': 'Answer',
-        text: faq.answer,
-      },
-    })),
-  }
+    ...(path !== '/' ? [{ '@type': 'BreadcrumbList', '@id': `${url}#breadcrumb`, itemListElement: crumbs.map((item,index) => ({ '@type': 'ListItem', position: index+1, name: item.name, item: item.url })) }] : []),
+    ...services.map(service => ({ '@type': 'Service', '@id': `${new URL(service.href, SITE_URL).href}#service`, name: service.title, description: service.description, url: new URL(service.href,SITE_URL).href, provider: {'@id': organizationId}, areaServed: { '@type': 'City', name: 'São Paulo' }, mainEntityOfPage: {'@id': pageId} })),
+  ] };
 }

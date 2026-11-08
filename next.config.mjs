@@ -27,6 +27,7 @@ const nextConfig = {
   },
   async headers() {
     return [
+      { source: '/:path(dashboard|admin|management|login|signup|auth|api|streetup)/:rest*', headers: [{ key: 'X-Robots-Tag', value: 'noindex, nofollow' }] },
       {
         source: '/(.*)',
         headers: [

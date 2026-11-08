@@ -1,11 +1,10 @@
+import { pageMetadata } from "@/lib/seo/site";
+import { StructuredData } from "@/components/seo/StructuredData";
+import { generatePageGraph } from "@/lib/seo/structured-data";
 import type { Metadata } from "next";
 import Link from "next/link";
 
-export const metadata: Metadata = {
-  title: "Serviços Digitais para Empresas",
-  description: "Conheça os serviços da Konnexy: criação de sites, Perfil da Empresa no Google, tráfego pago, sistemas web, catálogos, link profissional, NFC e QR Code.",
-  alternates: { canonical: "https://konnexy.com.br/servicos" }
-};
+export const metadata: Metadata = pageMetadata('Serviços digitais para empresas | Konnexy', 'Sites, presença no Google, tráfego pago, catálogos e sistemas para pequenos negócios em São Paulo.', '/servicos');
 
 const services = [
   ["Criação de Sites Profissionais", "/servicos/criacao-de-sites", "Sites responsivos, rápidos e preparados para gerar contatos."],
@@ -20,6 +19,7 @@ const services = [
 export default function ServicesPage() {
   return (
     <main className="min-h-screen bg-[#050711] text-white">
+      <StructuredData data={generatePageGraph({ title: "Serviços", description: "Serviços digitais da Konnexy", path: "/servicos" })} />
       <section className="mx-auto max-w-6xl px-6 py-20 md:py-28">
         <Link href="/" className="text-sm font-semibold text-cyan-300 hover:text-cyan-200">← Konnexy</Link>
         <div className="mt-8 max-w-3xl">

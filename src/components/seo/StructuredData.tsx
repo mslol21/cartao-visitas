@@ -10,9 +10,8 @@ export function StructuredData({ data }: StructuredDataProps) {
       {jsonLd.map((item, index) => (
         <script
           key={index}
-          id={`structured-data-${index}`}
           type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(item) }}
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(item).replace(/</g, '\\u003c') }}
         />
       ))}
     </>

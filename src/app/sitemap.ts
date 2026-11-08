@@ -1,8 +1,12 @@
 import { MetadataRoute } from 'next'
+import { publicProfileEntries } from '@/lib/seo/public-profiles'
+import { SITE_URL } from '@/lib/seo/site'
+export const revalidate = 3600
 
-export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl = 'https://konnexy.com.br'
-  const currentDate = new Date()
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
+  const baseUrl = SITE_URL
+  const profiles = await publicProfileEntries()
+
 
   const servicePages = [
     'criacao-de-sites',
@@ -16,32 +20,28 @@ export default function sitemap(): MetadataRoute.Sitemap {
 
   return [
     {
-      url: baseUrl,
-      lastModified: currentDate,
+      url: `${baseUrl}/`,
       changeFrequency: 'weekly',
       priority: 1,
     },
     {
       url: `${baseUrl}/servicos`,
-      lastModified: currentDate,
       changeFrequency: 'weekly',
       priority: 0.95,
     },
     ...servicePages.map((slug) => ({
       url: `${baseUrl}/servicos/${slug}`,
-      lastModified: currentDate,
       changeFrequency: 'monthly' as const,
       priority: 0.9,
     })),
-    {
-      url: `${baseUrl}/massami`,
-      lastModified: currentDate,
-      changeFrequency: 'monthly',
+    ...Array.from(new Map([{username: 'massami'}, ...profiles].map(profile => [profile.username, profile])).values()).map(profile => ({
+      url: `${baseUrl}/${encodeURIComponent(profile.username)}`,
+      changeFrequency: 'monthly' as const,
       priority: 0.7,
-    },
+      ...('updated_at' in profile && profile.updated_at && !Number.isNaN(Date.parse(profile.updated_at as string)) ? {lastModified: profile.updated_at as string} : {}),
+    })),
     {
       url: `${baseUrl}/pricing`,
-      lastModified: currentDate,
       changeFrequency: 'monthly',
       priority: 0.6,
     },

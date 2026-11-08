@@ -1,3 +1,6 @@
+import { pageMetadata } from "@/lib/seo/site";
+import { StructuredData } from "@/components/seo/StructuredData";
+import { generatePageGraph } from "@/lib/seo/structured-data";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
@@ -87,27 +90,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   const service = services[slug as ServiceSlug];
   if (!service) return { title: "Serviço não encontrado" };
 
-  const url = `https://konnexy.com.br/servicos/${slug}`;
-  return {
-    title: service.metaTitle,
-    description: service.description,
-    keywords: [...service.keywords],
-    alternates: { canonical: url },
-    openGraph: {
-      type: "website",
-      locale: "pt_BR",
-      url,
-      title: `${service.metaTitle} | Konnexy`,
-      description: service.description,
-      images: ["/images/koi_hero.png"]
-    },
-    twitter: {
-      card: "summary_large_image",
-      title: `${service.metaTitle} | Konnexy`,
-      description: service.description,
-      images: ["/images/koi_hero.png"]
-    }
-  };
+  return pageMetadata(`${service.metaTitle} | Konnexy`, service.description, `/servicos/${slug}`);
 }
 
 export default async function ServicePage({ params }: { params: Promise<{ slug: string }> }) {
@@ -115,26 +98,11 @@ export default async function ServicePage({ params }: { params: Promise<{ slug: 
   const service = services[slug as ServiceSlug];
   if (!service) notFound();
 
-  const schema = {
-    "@context": "https://schema.org",
-    "@type": "Service",
-    name: service.title,
-    description: service.description,
-    provider: {
-      "@type": "Organization",
-      name: "Konnexy",
-      url: "https://konnexy.com.br"
-    },
-    areaServed: [
-      { "@type": "City", name: "São Paulo" },
-      { "@type": "Country", name: "Brasil" }
-    ],
-    url: `https://konnexy.com.br/servicos/${slug}`
-  };
+  const schema = generatePageGraph({ title: service.title, description: service.description, path: `/servicos/${slug}`, services: [{ title: service.title, description: service.description, href: `/servicos/${slug}` }] });
 
   return (
     <main className="min-h-screen bg-[#050711] text-white">
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }} />
+      <StructuredData data={schema} />
       <section className="mx-auto max-w-5xl px-6 py-20 md:py-28">
         <Link href="/" className="text-sm font-semibold text-cyan-300 hover:text-cyan-200">← Konnexy</Link>
         <div className="mt-8 max-w-3xl">

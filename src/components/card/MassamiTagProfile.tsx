@@ -24,6 +24,7 @@ import {
   ZoomIn
 } from 'lucide-react';
 import Image from 'next/image';
+import { SITE_URL } from '@/lib/seo/site';
 import { PublicProfileDetails } from './PublicProfileDetails';
 import { toast } from 'sonner';
 import { NeonGradientCard } from '@/components/tag/NeonGradientCard';
@@ -561,8 +562,8 @@ export function MassamiTagProfile({
   const handleShare = async () => {
     const publicUsername = profile?.username || (isMassami ? 'massami' : '');
     const publicUrl = publicUsername
-      ? `${typeof window !== 'undefined' ? window.location.origin : 'https://konnexy.com.br'}/${encodeURIComponent(publicUsername)}`
-      : 'https://konnexy.com.br';
+      ? `${SITE_URL}/${encodeURIComponent(publicUsername)}`
+      : SITE_URL;
 
     const shareData = {
       title: displayName,
