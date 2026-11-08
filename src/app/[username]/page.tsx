@@ -1,8 +1,7 @@
-import { cache } from 'react';
 import { StructuredData } from '@/components/seo/StructuredData';
 import { generatePageGraph } from '@/lib/seo/structured-data';
 import { pageMetadata } from "@/lib/seo/site";
-import { createClient } from '@/utils/supabase/server';
+import { getPublicProfile } from '@/lib/seo/public-profile';
 import { MassamiTagProfile } from '@/components/card/MassamiTagProfile';
 import { KonnexyPageIntro } from '@/components/brand/KonnexyPageIntro';
 import { Metadata } from 'next';
@@ -13,11 +12,7 @@ interface Props {
   params: Promise<{ username: string }>;
 }
 
-const getPublicProfile = cache(async (username: string) => {
-  const supabase = await createClient();
-  const {data} = await supabase.from('profiles').select('*').eq('username', username).single();
-  return data;
-});
+
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { username } = await params;
