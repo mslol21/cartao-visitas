@@ -1,11 +1,13 @@
 import { createClient } from '@supabase/supabase-js';
+import { getSanitizedUrl } from '@/utils/supabase/server';
 
 const reserved = new Set(['admin', 'dashboard', 'management', 'login', 'signup', 'auth', 'api', 'pricing', 'servicos', 'streetup']);
 export async function publicProfileEntries(): Promise<{username: string; updated_at?: string}[]> {
-  const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
-  const key = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+  const url = getSanitizedUrl();
+  const key = (process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || '').trim().replace(/['"]/g, '');
   if (!url || !key || url.includes('example.') || url.includes('placeholder')) return [];
   // Anonymous read: the sitemap must never bypass RLS or expose account details.
+  try {
   const client = createClient(url, key, {auth: {persistSession: false, autoRefreshToken: false}});
   const result: {username: string; updated_at?: string}[] = [];
   for (let offset = 0; ; offset += 1000) {
@@ -19,4 +21,5 @@ export async function publicProfileEntries(): Promise<{username: string; updated
     if (!data || data.length < 1000) break;
   }
   return result;
+  } catch { console.warn('Sitemap: perfis públicos temporariamente indisponíveis'); return []; }
 }

@@ -4,7 +4,7 @@ import { createClient as createSupabaseJS } from '@supabase/supabase-js'
 
 const DEFAULT_URL = 'https://fyexdnjvxphhgestfvrt.supabase.co';
 
-function getSanitizedUrl() {
+export function getSanitizedUrl() {
   const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
   if (!url || url === 'undefined' || url === 'null' || url.trim() === '') {
     return DEFAULT_URL;
