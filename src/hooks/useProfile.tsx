@@ -1,6 +1,7 @@
 import { useState, useEffect, useMemo, useCallback } from 'react';
 import { createClient } from '@/utils/supabase/client';
 import { useAuth } from './useAuth';
+import { getOwnerProfileNeon, updateOwnerProfileNeon } from '@/app/actions/neon-profile';
 import { Profile, ProfileFormData } from '@/types/profile';
 import { toast } from 'sonner';
 
@@ -14,61 +15,8 @@ export function useProfile() {
     if (!user) return;
 
     try {
-      const { data, error } = await supabase
-        .from('profiles')
-        .select('*')
-        .eq('user_id', user.id)
-        .single();
-
-      if (error) {
-        if (error.code === 'PGRST116') {
-          // Profile not found, let's create it as a fallback
-          console.log('Profile missing, creating one for user:', user.id);
-          const { data: newProfile, error: createError } = await supabase
-            .from('profiles')
-            .insert({
-              user_id: user.id,
-              plan: 'free'
-            })
-            .select()
-            .single();
-
-          if (createError) {
-            console.error('Failed to create fallback profile:', createError);
-            return;
-          }
-          
-          if (newProfile) {
-            setProfile(newProfile as Profile);
-          }
-        } else {
-          throw error;
-        }
-      }
-      
-      if (data) {
-        const profileData = data as Profile;
-        // Check for manual plan expiration
-        if (profileData.billing_type === 'manual' && profileData.plan_expires_at) {
-          const expirationDate = new Date(profileData.plan_expires_at);
-          if (expirationDate < new Date()) {
-            // Plan expired, demote to free
-            const updates = { 
-              plan: 'free' as const, 
-              billing_type: 'stripe' as const 
-            };
-            
-            await supabase
-              .from('profiles')
-              .update(updates)
-              .eq('id', profileData.id);
-              
-            setProfile({ ...profileData, ...updates });
-            return;
-          }
-        }
-        setProfile(profileData);
-      }
+      const data = await getOwnerProfileNeon();
+      setProfile(data);
     } catch (error) {
       console.error('Error fetching profile:', error);
     } finally {
@@ -89,12 +37,8 @@ export function useProfile() {
     if (!user) return { error: new Error('Not authenticated') };
 
     try {
-      const { error } = await supabase
-        .from('profiles')
-        .update(formData)
-        .eq('user_id', user.id);
-
-      if (error) throw error;
+      const result = await updateOwnerProfileNeon(formData);
+      if (result.error) throw new Error(result.error);
 
       // Update local state selectively to avoid full refetch if possible
       setProfile(prev => prev ? { ...prev, ...formData } as Profile : null);
