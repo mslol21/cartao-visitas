@@ -1,11 +1,21 @@
 "use server";
 
 import { createClient } from '@/utils/supabase/server';
+import { getNeonSql } from '@/utils/neon/db';
 
 export type AnalyticsEventType = 'page_view' | 'click_whatsapp' | 'click_instagram' | 'click_linkedin' | 'click_facebook' | 'click_tiktok' | 'click_twitter' | 'click_youtube' | 'click_website' | 'click_cta' | 'click_address' | 'click_music_play';
 
 export async function trackEvent(profileId: string, eventType: AnalyticsEventType, metadata: any = {}) {
   try {
+    if (process.env.NEON_READS_ENABLED === 'true') {
+      const allowed: readonly string[] = ['page_view', 'click_whatsapp', 'click_instagram', 'click_linkedin', 'click_facebook', 'click_tiktok', 'click_twitter', 'click_youtube', 'click_website', 'click_cta', 'click_address', 'click_music_play'];
+      if (!/^[0-9a-f-]{36}$/i.test(profileId) || !allowed.includes(eventType)) return { success: false };
+      const sql = getNeonSql();
+      await sql`INSERT INTO public.analytics (profile_id, event_type, metadata)
+        SELECT id, ${eventType}, ${JSON.stringify(metadata ?? {})}::jsonb
+        FROM public.profiles WHERE id = ${profileId}::uuid AND ativo IS DISTINCT FROM false`;
+      return { success: true };
+    }
     const supabase = await createClient();
     
     const { error } = await supabase
@@ -63,32 +73,34 @@ export async function getProfileAnalytics(profileId: string): Promise<AnalyticsD
     }
 
     const admin = createAdminClient();
-    if (!admin) {
+    if (!admin && process.env.NEON_READS_ENABLED !== 'true') {
       console.error('❌ getProfileAnalytics: Admin client unavailable');
       return emptyResult;
     }
 
-    // 1. Verificar se o usuário é dono do perfil ou admin
-    const { data: requesterProfile } = await admin
-      .from('profiles')
-      .select('id, role')
-      .eq('user_id', authUser.id)
-      .single();
-
+    let requesterProfile: { id: string; role: string | null } | null = null;
+    let allEvents: { event_type: string; created_at: string }[] | null = null;
+    let eventsError: unknown = null;
+    if (process.env.NEON_READS_ENABLED === 'true') {
+      const sql = getNeonSql();
+      const requester = await sql`SELECT id, role FROM public.profiles WHERE user_id = ${authUser.id}::uuid LIMIT 1`;
+      requesterProfile = requester[0] as { id: string; role: string | null } | undefined || null;
+    } else {
+      const result = await admin!.from('profiles').select('id, role').eq('user_id', authUser.id).single();
+      requesterProfile = result.data;
+    }
     const isOwner = requesterProfile?.id === profileId;
     const isAdmin = requesterProfile?.role === 'admin';
+    if (!isOwner && !isAdmin) return emptyResult;
 
-    if (!isOwner && !isAdmin) {
-      console.warn(`⚠️ Unauthorized analytics request from ${authUser.id} for profile ${profileId}`);
-      return emptyResult;
+    if (process.env.NEON_READS_ENABLED === 'true') {
+      const sql = getNeonSql();
+      allEvents = await sql`SELECT event_type, created_at FROM public.analytics WHERE profile_id = ${profileId}::uuid` as { event_type: string; created_at: string }[];
+    } else {
+      const result = await admin!.from('analytics').select('event_type, created_at').eq('profile_id', profileId);
+      allEvents = result.data;
+      eventsError = result.error;
     }
-
-    // 1. Fetch ALL events for this profile to ensure we don't miss anything
-    // We fetch everything and process in JS for better debugging/flexibility
-    const { data: allEvents, error: eventsError } = await admin
-      .from('analytics')
-      .select('event_type, created_at')
-      .eq('profile_id', profileId);
 
     if (eventsError) {
       console.error('❌ Supabase Analytics Query Error:', eventsError);
