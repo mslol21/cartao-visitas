@@ -25,6 +25,16 @@ A Konnexy cria e implementa soluções digitais para pequenos negócios. Os prin
 - [Link profissional](https://www.konnexy.com.br/servicos/link-profissional) — página com WhatsApp, localização, redes sociais, serviços e portfólio.
 - [NFC e QR Code](https://www.konnexy.com.br/servicos/nfc-qr-code) — acesso por aproximação ou leitura de QR Code a avaliações, contatos, páginas, catálogos e cardápios.
 
+## Soluções por necessidade
+
+- [Criação de sites em São Paulo](https://www.konnexy.com.br/solucoes/criacao-de-sites-sao-paulo)
+- [SEO local para pequenos negócios](https://www.konnexy.com.br/solucoes/seo-local-pequenos-negocios)
+- [Otimização do Perfil da Empresa no Google](https://www.konnexy.com.br/solucoes/otimizar-google-meu-negocio)
+- [Sistema para loja](https://www.konnexy.com.br/solucoes/sistema-para-loja)
+- [PDV para pequeno comércio](https://www.konnexy.com.br/solucoes/pdv-pequeno-comercio)
+- [Cardápio digital para restaurante](https://www.konnexy.com.br/solucoes/cardapio-digital-restaurante)
+- [Site para prestador de serviços](https://www.konnexy.com.br/solucoes/site-para-prestador-de-servicos)
+
 ## Produtos Konnexy
 
 - [Konnexy Menu](https://menu.konnexy.com.br/) — cardápio digital, pedidos, retirada, delivery e painel de cozinha.
