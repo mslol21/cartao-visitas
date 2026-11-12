@@ -81,8 +81,10 @@ export function generatePageGraph({ title, description, path, services = [], faq
   const pageId = `${url}#webpage`;
   const crumbs = [{ name: 'Konnexy', url: `${SITE_URL}/` }];
   if (path.startsWith('/servicos')) crumbs.push({ name: 'Serviços', url: `${SITE_URL}/servicos` });
+  else if (path.startsWith('/solucoes')) crumbs.push({ name: 'Soluções', url: `${SITE_URL}/solucoes` });
   else if (path !== '/') crumbs.push({ name: title, url });
-  if (path.startsWith('/servicos/')) crumbs.push({ name: title, url });
+
+  if (path.startsWith('/servicos/') || path.startsWith('/solucoes/')) crumbs.push({ name: title, url });
 
   return { '@context': 'https://schema.org', '@graph': [
     {
