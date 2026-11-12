@@ -1,12 +1,13 @@
 import { MetadataRoute } from 'next'
 import { publicProfileEntries } from '@/lib/seo/public-profiles'
 import { SITE_URL } from '@/lib/seo/site'
+import { seoIntentPages } from '@/config/seo-intent-pages'
+
 export const revalidate = 3600
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = SITE_URL
   const profiles = await publicProfileEntries()
-
 
   const servicePages = [
     'criacao-de-sites',
@@ -17,6 +18,8 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     'catalogo-cardapio-digital',
     'nfc-qr-code',
   ]
+
+  const intentPages = Object.keys(seoIntentPages)
 
   return [
     {
@@ -33,6 +36,16 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       url: `${baseUrl}/servicos/${slug}`,
       changeFrequency: 'monthly' as const,
       priority: 0.9,
+    })),
+    {
+      url: `${baseUrl}/solucoes`,
+      changeFrequency: 'weekly',
+      priority: 0.9,
+    },
+    ...intentPages.map((slug) => ({
+      url: `${baseUrl}/solucoes/${slug}`,
+      changeFrequency: 'monthly' as const,
+      priority: 0.85,
     })),
     ...Array.from(new Map([{username: 'massami'}, ...profiles].map(profile => [profile.username, profile])).values()).map(profile => ({
       url: `${baseUrl}/${encodeURIComponent(profile.username)}`,
