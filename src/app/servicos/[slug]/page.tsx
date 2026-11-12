@@ -98,7 +98,32 @@ export default async function ServicePage({ params }: { params: Promise<{ slug: 
   const service = services[slug as ServiceSlug];
   if (!service) notFound();
 
-  const schema = generatePageGraph({ title: service.title, description: service.description, path: `/servicos/${slug}`, services: [{ title: service.title, description: service.description, href: `/servicos/${slug}` }] });
+  const faq = [
+    {
+      question: `O que a Konnexy entrega em ${service.title}?`,
+      answer: service.intro,
+    },
+    {
+      question: "Para quem este serviço é indicado?",
+      answer: service.audience,
+    },
+    {
+      question: "A Konnexy atende somente em São Paulo?",
+      answer: "Não. A Konnexy atende empresas em São Paulo e também realiza atendimento online para negócios de outras regiões do Brasil.",
+    },
+    {
+      question: "Como solicitar uma análise deste serviço?",
+      answer: "Use o botão Solicitar análise para falar com a Konnexy pelo WhatsApp. A conversa começa pelo objetivo do negócio e pela estrutura que você já possui.",
+    },
+  ] as const;
+
+  const schema = generatePageGraph({
+    title: service.title,
+    description: service.description,
+    path: `/servicos/${slug}`,
+    services: [{ title: service.title, description: service.description, href: `/servicos/${slug}` }],
+    faq,
+  });
 
   return (
     <main className="min-h-screen bg-[#050711] text-white">
@@ -133,6 +158,21 @@ export default async function ServicePage({ params }: { params: Promise<{ slug: 
           <p className="mt-4 leading-relaxed text-slate-300">
             O atendimento pode ser realizado em São Paulo e também de forma online para outras regiões do Brasil.
           </p>
+        </section>
+
+        <section className="mt-16 max-w-3xl" aria-labelledby="faq-title">
+          <span className="text-xs font-black uppercase tracking-[0.25em] text-cyan-300">Perguntas frequentes</span>
+          <h2 id="faq-title" className="mt-3 text-3xl font-black">Respostas rápidas sobre {service.title}</h2>
+          <div className="mt-7 space-y-4">
+            {faq.map((item) => (
+              <details key={item.question} className="group rounded-2xl border border-white/10 bg-white/[0.03] p-5">
+                <summary className="cursor-pointer list-none pr-6 font-bold text-white marker:hidden">
+                  {item.question}
+                </summary>
+                <p className="mt-3 leading-relaxed text-slate-300">{item.answer}</p>
+              </details>
+            ))}
+          </div>
         </section>
 
         <div className="mt-14 flex flex-wrap gap-4">
