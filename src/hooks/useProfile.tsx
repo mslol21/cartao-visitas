@@ -6,38 +6,43 @@ import { Profile, ProfileFormData } from '@/types/profile';
 import { toast } from 'sonner';
 
 export function useProfile() {
-  const { user } = useAuth();
+  const { user, session } = useAuth();
   const [profile, setProfile] = useState<Profile | null>(null);
   const [loading, setLoading] = useState(true);
   const supabase = useMemo(() => createClient(), []);
 
   const fetchProfile = useCallback(async () => {
-    if (!user) return;
+    if (!user || !session?.access_token) {
+      setProfile(null);
+      setLoading(false);
+      return;
+    }
 
+    setLoading(true);
     try {
-      const data = await getOwnerProfileNeon();
+      const data = await getOwnerProfileNeon(session.access_token);
       setProfile(data);
     } catch (error) {
       console.error('Error fetching profile:', error);
     } finally {
       setLoading(false);
     }
-  }, [user, supabase]);
+  }, [user, session?.access_token]);
 
   useEffect(() => {
-    if (user) {
+    if (user && session?.access_token) {
       fetchProfile();
     } else {
       setProfile(null);
       setLoading(false);
     }
-  }, [user, fetchProfile]);
+  }, [user, session?.access_token, fetchProfile]);
 
   const updateProfile = async (formData: Partial<ProfileFormData>) => {
-    if (!user) return { error: new Error('Not authenticated') };
+    if (!user || !session?.access_token) return { error: new Error('Not authenticated') };
 
     try {
-      const result = await updateOwnerProfileNeon(formData);
+      const result = await updateOwnerProfileNeon(formData, session.access_token);
       if (result.error) throw new Error(result.error);
 
       // Update local state selectively to avoid full refetch if possible
