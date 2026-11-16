@@ -1,6 +1,6 @@
 "use server";
 
-import { createClient } from '@/utils/supabase/server';
+import { createClient, createAdminClient } from '@/utils/supabase/server';
 import { getNeonSql } from '@/utils/neon/db';
 import type { Profile, ProfileFormData } from '@/types/profile';
 
@@ -32,8 +32,12 @@ async function authenticatedUserId(accessToken?: string) {
 
 export async function getOwnerProfileNeon(accessToken?: string): Promise<Profile | null> {
   if (process.env.NEON_READS_ENABLED !== 'true') {
-    const supabase = await createClient();
     const userId = await authenticatedUserId(accessToken);
+    // Authentication was verified above; scope every privileged query to this user.
+    // The server-action cookie client can be anonymous when the browser session
+    // was refreshed before the request.
+    const supabase = await createAdminClient();
+    if (!supabase) throw new Error('Serviço de perfis não configurado');
     const { data, error } = await supabase.from('profiles').select('*').eq('user_id', userId).maybeSingle();
     if (error) throw error;
     if (data) return data as Profile;
@@ -60,10 +64,13 @@ export async function updateOwnerProfileNeon(input: Partial<ProfileFormData>, ac
     if (entries.length === 0) throw new Error('Nenhum campo editável');
     if (entries.length > 50 || JSON.stringify(input).length > 100_000) throw new Error('Dados excedem o limite');
     if (process.env.NEON_READS_ENABLED !== 'true') {
-      const supabase = await createClient();
+      const supabase = await createAdminClient();
+      if (!supabase) throw new Error('Serviço de perfis não configurado');
       const safe = Object.fromEntries(entries);
-      const { error } = await supabase.from('profiles').update(safe).eq('user_id', userId);
+      const { data, error } = await supabase.from('profiles')
+        .update(safe).eq('user_id', userId).select('id').maybeSingle();
       if (error) throw error;
+      if (!data) throw new Error('Nenhum perfil foi atualizado');
       return { error: null };
     }
     const sql = getNeonSql();
