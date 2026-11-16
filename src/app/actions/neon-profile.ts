@@ -18,17 +18,22 @@ const editable = new Set([
   'bio_profissional','diferenciais','servicos','custom_fields','whatsapp_message'
 ]);
 
-async function authenticatedUserId() {
+async function authenticatedUserId(accessToken?: string) {
   const supabase = await createClient();
-  const { data: { user }, error } = await supabase.auth.getUser();
+  // When client-side auth is stored in the browser, the Server Action may not
+  // receive refreshed auth cookies. Verify the bearer token with Supabase Auth;
+  // never trust a user ID provided by the browser.
+  const { data: { user }, error } = accessToken
+    ? await supabase.auth.getUser(accessToken)
+    : await supabase.auth.getUser();
   if (error || !user) throw new Error('Não autenticado');
   return user.id;
 }
 
-export async function getOwnerProfileNeon(): Promise<Profile | null> {
+export async function getOwnerProfileNeon(accessToken?: string): Promise<Profile | null> {
   if (process.env.NEON_READS_ENABLED !== 'true') {
     const supabase = await createClient();
-    const userId = await authenticatedUserId();
+    const userId = await authenticatedUserId(accessToken);
     const { data, error } = await supabase.from('profiles').select('*').eq('user_id', userId).maybeSingle();
     if (error) throw error;
     if (data) return data as Profile;
@@ -36,7 +41,7 @@ export async function getOwnerProfileNeon(): Promise<Profile | null> {
     if (created.error) throw created.error;
     return created.data as Profile;
   }
-  const userId = await authenticatedUserId();
+  const userId = await authenticatedUserId(accessToken);
   const sql = getNeonSql();
   const rows = await sql`SELECT * FROM public.profiles WHERE user_id = ${userId}::uuid LIMIT 1`;
   if (rows[0]) return rows[0] as unknown as Profile;
@@ -47,9 +52,9 @@ export async function getOwnerProfileNeon(): Promise<Profile | null> {
   return (retry[0] as unknown as Profile) ?? null;
 }
 
-export async function updateOwnerProfileNeon(input: Partial<ProfileFormData>) {
+export async function updateOwnerProfileNeon(input: Partial<ProfileFormData>, accessToken?: string) {
   try {
-    const userId = await authenticatedUserId();
+    const userId = await authenticatedUserId(accessToken);
     if (!input || typeof input !== 'object' || Array.isArray(input)) throw new Error('Dados inválidos');
     const entries = Object.entries(input).filter(([key, value]) => editable.has(key) && value !== undefined);
     if (entries.length === 0) throw new Error('Nenhum campo editável');
