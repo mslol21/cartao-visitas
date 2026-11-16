@@ -136,7 +136,10 @@ function DashboardContent() {
   };
 
   const handleAutoSave = async (data: Partial<Profile>) => {
-    await updateProfile(data);
+    const result = await updateProfile(data);
+    if (result?.error) {
+      throw result.error;
+    }
   };
 
   const copyLink = () => {
