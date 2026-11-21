@@ -1,8 +1,10 @@
 import { StructuredData } from '@/components/seo/StructuredData';
 import { generatePageGraph } from '@/lib/seo/structured-data';
-import { pageMetadata } from "@/lib/seo/site";
+import { pageMetadata, SITE_URL } from "@/lib/seo/site";
 import { getPublicProfile } from '@/lib/seo/public-profile';
 import { MassamiTagProfile } from '@/components/card/MassamiTagProfile';
+import { MusicProfileView } from '@/components/music/MusicProfileView';
+import { isMusicProfession } from '@/types/music';
 import { KonnexyPageIntro } from '@/components/brand/KonnexyPageIntro';
 import { Metadata } from 'next';
 import { notFound } from 'next/navigation';
@@ -11,8 +13,6 @@ import { trackEvent } from '@/app/actions/analytics';
 interface Props {
   params: Promise<{ username: string }>;
 }
-
-
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { username } = await params;
@@ -28,12 +28,14 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
   if (!profile || profile.ativo === false) notFound();
 
+  const isMusic = isMusicProfession(profile.profession) || (profile.custom_fields as any)?.music_pro?.config?.enabled;
   const name = profile.business_name || profile.name || username;
-  const title = profile.seo_title || `${name} | Konnexy Profissional`;
+  const title = profile.seo_title || (isMusic ? `${name} | Portfólio Musical Konnexy` : `${name} | Konnexy Profissional`);
   const description =
     profile.seo_description ||
     profile.subtitle ||
     profile.tagline ||
+    profile.bio_profissional ||
     `Confira o cartão de visita digital de ${name}. Contato via WhatsApp, redes sociais e serviços.`;
 
   return pageMetadata(title, description, `/${encodeURIComponent(profile.username || username)}`, 'profile');
@@ -54,11 +56,38 @@ export default async function PublicPage({ params }: Props) {
     trackEvent(profile.id, 'page_view').catch(console.error);
   }
 
-  // Renderiza o layout Konnexy Tag em todo o sistema e todas as contas
+  const isMusic = !isMassami && profile && (
+    isMusicProfession(profile.profession) || 
+    Boolean((profile.custom_fields as any)?.music_pro?.config?.enabled)
+  );
+
+  const name = profile?.business_name || profile?.name || username;
+  const path = `/${encodeURIComponent(profile?.username || username)}`;
+
+  const schemaData = isMusic
+    ? {
+        '@context': 'https://schema.org',
+        '@type': profile?.profession === 'banda' || profile?.profession === 'grupo_musical' ? 'MusicGroup' : 'Person',
+        name,
+        description: profile?.seo_description || profile?.subtitle || profile?.bio_profissional || 'Portfólio musical oficial',
+        image: profile?.photo_url || undefined,
+        url: `${SITE_URL}${path}`,
+        genre: (profile?.custom_fields as any)?.estilo_musical || 'Música'
+      }
+    : generatePageGraph({ 
+        title: name, 
+        description: profile?.seo_description || profile?.subtitle || profile?.tagline || 'Perfil profissional Konnexy', 
+        path 
+      });
+
   return (
     <KonnexyPageIntro>
-      <StructuredData data={generatePageGraph({ title: profile?.business_name || profile?.name || username, description: profile?.seo_description || profile?.subtitle || profile?.tagline || 'Perfil profissional Konnexy', path: `/${encodeURIComponent(profile?.username || username)}` })} />
-      <MassamiTagProfile profile={profile} />
+      <StructuredData data={schemaData} />
+      {isMusic && profile ? (
+        <MusicProfileView profile={profile} />
+      ) : (
+        <MassamiTagProfile profile={profile} />
+      )}
     </KonnexyPageIntro>
   );
 }

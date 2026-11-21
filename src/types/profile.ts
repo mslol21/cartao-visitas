@@ -1,3 +1,5 @@
+import type { MusicProfileData } from './music';
+
 // Types for the new profession structure
 export type ProfessionCategory = 
   | 'barbearia' 
@@ -37,6 +39,13 @@ export type ProfessionCategory =
   | 'artesao'
   | 'service'
   | 'musico'
+  | 'cantor'
+  | 'compositor'
+  | 'banda'
+  | 'grupo_musical'
+  | 'dj'
+  | 'instrumentista'
+  | 'produtor_musical'
   | 'van_escolar'
   | 'guia_turistico'
   | 'mestre_de_obras'
@@ -300,6 +309,9 @@ export interface CustomFields {
   tipos_eventos_atendidos?: string[];
   link_cardapio?: string;
   imagem_fundo?: string;
+
+  // Konnexy Music Pro
+  music_pro?: MusicProfileData;
 }
 
 // Keeping old items for backwards compatibility during migration

@@ -914,10 +914,10 @@ export const professionsMap: Record<ProfessionCategory, ProfessionConfig> = {
   },
   musico: {
     id: 'musico',
-    label: 'Músico / Banda / Cantor',
-    theme: { color: 'fuchsia', style: 'glass' },
+    label: 'Músico(a)',
+    theme: { color: 'amber', style: 'oled' },
     customFields: [
-      { name: 'estilo_musical', label: 'Estilo Musical', type: 'text', placeholder: 'Ex: Sertanejo, Rock, Pop' },
+      { name: 'estilo_musical', label: 'Gênero / Estilo Musical', type: 'text', placeholder: 'Ex: MPB, Pop, Instrumental' },
       { name: 'spotify_link', label: 'Link do Spotify', type: 'text', placeholder: 'https://open.spotify.com/...' },
       { name: 'youtube_link', label: 'Link do YouTube', type: 'text', placeholder: 'https://youtube.com/...' }
     ],
@@ -928,11 +928,151 @@ export const professionsMap: Record<ProfessionCategory, ProfessionConfig> = {
       'https://images.unsplash.com/photo-1514320291840-2e0a9bf2a9ae?auto=format&fit=crop&q=80&w=1080&h=1920'
     ],
     defaultBio: 'Levando música, sentimento e muita energia para o seu evento. Repertório personalizado para casamentos, formaturas, bares e eventos corporativos, garantindo que cada momento tenha a trilha sonora perfeita.',
-    defaultCta: 'Solicitar Orçamento 🎸',
+    defaultCta: 'Contratar para Eventos 🎸',
     defaultServices: [
       { nome: 'Show Acústico (Voz e Violão)', descricao: 'Ideal para ambientes intimistas, cerimônias e jantares.', preco: 'A partir de R$ 400' },
-      { nome: 'Banda Completa', descricao: 'A energia necessária para fazer todo mundo dançar na sua festa.', preco: 'Sob consulta' },
-      { nome: 'Composição Inédita', descricao: 'Música personalizada para homenagens ou projetos especiais.', preco: 'Sob consulta' }
+      { nome: 'Apresentação Completa', descricao: 'A energia necessária para fazer todo mundo cantar e dançar na sua festa.', preco: 'Sob consulta' },
+      { nome: 'Cerimônia de Casamento', descricao: 'Trilha sonora personalizada e emocionante para a entrada e votos.', preco: 'Sob consulta' }
+    ]
+  },
+  cantor: {
+    id: 'cantor',
+    label: 'Cantor(a)',
+    theme: { color: 'amber', style: 'glass' },
+    customFields: [
+      { name: 'estilo_musical', label: 'Gênero Musical', type: 'text', placeholder: 'Ex: Sertanejo, Pop, MPB, Gospel' },
+      { name: 'spotify_link', label: 'Spotify do Artista', type: 'text', placeholder: 'https://open.spotify.com/artist/...' },
+      { name: 'youtube_link', label: 'Canal do YouTube', type: 'text', placeholder: 'https://youtube.com/@...' }
+    ],
+    suggestedBackgrounds: [
+      'https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?auto=format&fit=crop&q=80&w=1080&h=1920',
+      'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?auto=format&fit=crop&q=80&w=1080&h=1920',
+      'https://images.unsplash.com/photo-1508700115892-45ecd05ae2ad?auto=format&fit=crop&q=80&w=1080&h=1920'
+    ],
+    defaultBio: 'Voz marcante e repertório emocionante para eventos, festas, formaturas e casamentos. Levando música ao vivo de qualidade que encanta e conecta o público.',
+    defaultCta: 'Contratar Show 🎤',
+    defaultServices: [
+      { nome: 'Show Solo / Acústico', descricao: 'Apresentação intimista e emocionante para eventos particulares e restaurantes.', preco: 'A partir de R$ 500' },
+      { nome: 'Show com Banda', descricao: 'Show completo com alta energia e repertório animado para casamentos e formaturas.', preco: 'Sob consulta' }
+    ]
+  },
+  compositor: {
+    id: 'compositor',
+    label: 'Compositor(a)',
+    theme: { color: 'stone', style: 'minimalist' },
+    customFields: [
+      { name: 'estilo_musical', label: 'Gêneros de Composição', type: 'text', placeholder: 'Ex: MPB, Pop, Sertanejo, Rap' },
+      { name: 'spotify_link', label: 'Obras Gravadas (Spotify)', type: 'text', placeholder: 'https://open.spotify.com/...' }
+    ],
+    suggestedBackgrounds: [
+      'https://images.unsplash.com/photo-1507838153414-b4b713384a76?auto=format&fit=crop&q=80&w=1080&h=1920',
+      'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?auto=format&fit=crop&q=80&w=1080&h=1920'
+    ],
+    defaultBio: 'Criando melodias e letras que contam histórias e emocionam. Composições autorais exclusivas para artistas, campanhas publicitárias e projetos audiovisuais.',
+    defaultCta: 'Encomendar Composição ✍️',
+    defaultServices: [
+      { nome: 'Composição de Música Inédita', descricao: 'Letra e harmonia sob medida para o seu estilo e projeto.', preco: 'Sob consulta' },
+      { nome: 'Música Personalizada para Homenagens', descricao: 'Canção única para casamentos, aniversários ou marcos especiais.', preco: 'A partir de R$ 600' }
+    ]
+  },
+  banda: {
+    id: 'banda',
+    label: 'Banda',
+    theme: { color: 'red', style: 'oled' },
+    customFields: [
+      { name: 'estilo_musical', label: 'Estilo / Gênero da Banda', type: 'text', placeholder: 'Ex: Rock, Pop Rock, Reggae, Baile' },
+      { name: 'spotify_link', label: 'Perfil no Spotify', type: 'text', placeholder: 'https://open.spotify.com/artist/...' },
+      { name: 'youtube_link', label: 'Vídeos ao Vivo (YouTube)', type: 'text', placeholder: 'https://youtube.com/...' }
+    ],
+    suggestedBackgrounds: [
+      'https://images.unsplash.com/photo-1465847899084-d164df4dedc6?auto=format&fit=crop&q=80&w=1080&h=1920',
+      'https://images.unsplash.com/photo-1501386761578-eac5c94b800a?auto=format&fit=crop&q=80&w=1080&h=1920',
+      'https://images.unsplash.com/photo-1524368535928-5b5e00ddc76b?auto=format&fit=crop&q=80&w=1080&h=1920'
+    ],
+    defaultBio: 'Show enérgico e repertório explosivo para festivais, eventos corporativos, casamentos e casas de show. Toda a estrutura e sonoridade profissional para sua festa ser inesquecível.',
+    defaultCta: 'Contratar Banda ⚡',
+    defaultServices: [
+      { nome: 'Show Completo para Festivais e Casas de Show', descricao: 'Setlist completo de 2 a 3 horas com estrutura profissional.', preco: 'Sob consulta' },
+      { nome: 'Show Baile para Casamentos e Corporativos', descricao: 'Repertório variado e dançante para fazer a pista vibrar do início ao fim.', preco: 'Sob consulta' }
+    ]
+  },
+  grupo_musical: {
+    id: 'grupo_musical',
+    label: 'Grupo Musical',
+    theme: { color: 'orange', style: 'glass' },
+    customFields: [
+      { name: 'estilo_musical', label: 'Gênero do Grupo', type: 'text', placeholder: 'Ex: Samba, Pagode, Choro, Quarteto de Cordas' },
+      { name: 'spotify_link', label: 'Perfil no Spotify', type: 'text', placeholder: 'https://open.spotify.com/...' },
+      { name: 'youtube_link', label: 'Apresentações (YouTube)', type: 'text', placeholder: 'https://youtube.com/...' }
+    ],
+    suggestedBackgrounds: [
+      'https://images.unsplash.com/photo-1514525253161-7a46d19cd819?auto=format&fit=crop&q=80&w=1080&h=1920',
+      'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?auto=format&fit=crop&q=80&w=1080&h=1920'
+    ],
+    defaultBio: 'Apresentação musical autêntica e contagiante. Harmonia perfeita de vozes e instrumentos para confraternizações, recepções e grandes comemorações.',
+    defaultCta: 'Contratar Grupo 🥁',
+    defaultServices: [
+      { nome: 'Apresentação em Eventos e Festas', descricao: 'Show animado e dinâmico com toda a equipe do grupo.', preco: 'Sob consulta' }
+    ]
+  },
+  dj: {
+    id: 'dj',
+    label: 'DJ',
+    theme: { color: 'purple', style: 'oled' },
+    customFields: [
+      { name: 'estilo_musical', label: 'Gêneros (Setlist)', type: 'text', placeholder: 'Ex: Open Format, House, Techno, Funk, Pop' },
+      { name: 'soundcloud_link', label: 'SoundCloud / Sets', type: 'text', placeholder: 'https://soundcloud.com/...' },
+      { name: 'spotify_link', label: 'Perfil Spotify', type: 'text', placeholder: 'https://open.spotify.com/...' }
+    ],
+    suggestedBackgrounds: [
+      'https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?auto=format&fit=crop&q=80&w=1080&h=1920',
+      'https://images.unsplash.com/photo-1571266028243-3716f02d2d2e?auto=format&fit=crop&q=80&w=1080&h=1920',
+      'https://images.unsplash.com/photo-1470225620780-dba8ba36b745?auto=format&fit=crop&q=80&w=1080&h=1920'
+    ],
+    defaultBio: 'Sets personalizados, transições impecáveis e a melhor leitura de pista para casamentos, aniversários de 15 anos, formaturas e baladas. Equipamentos de som e iluminação de última geração.',
+    defaultCta: 'Reservar Data com o DJ 🎧',
+    defaultServices: [
+      { nome: 'DJ para Casamentos & 15 Anos', descricao: 'Reunião prévia de alinhamento de setlist, som e pista cheia até o final.', preco: 'A partir de R$ 800' },
+      { nome: 'DJ para Festas Corporativas & Bares', descricao: 'Música ambiente e animação alinhada à identidade do evento.', preco: 'Sob consulta' }
+    ]
+  },
+  instrumentista: {
+    id: 'instrumentista',
+    label: 'Instrumentista',
+    theme: { color: 'amber', style: 'glass' },
+    customFields: [
+      { name: 'instrumento_principal', label: 'Instrumento Principal', type: 'text', placeholder: 'Ex: Saxofone, Violino, Violoncelo, Piano, Guitarra' },
+      { name: 'estilo_musical', label: 'Estilo / Repertório', type: 'text', placeholder: 'Ex: Jazz, Clássico, Pop Instrumental, Bossa Nova' },
+      { name: 'youtube_link', label: 'Apresentações (YouTube)', type: 'text', placeholder: 'https://youtube.com/...' }
+    ],
+    suggestedBackgrounds: [
+      'https://images.unsplash.com/photo-1520523839897-bd0b52f945a0?auto=format&fit=crop&q=80&w=1080&h=1920',
+      'https://images.unsplash.com/photo-1511192336575-5a79af67a629?auto=format&fit=crop&q=80&w=1080&h=1920'
+    ],
+    defaultBio: 'Música instrumental sofisticada e emocionante para cerimônias de casamento, recepções, jantares e eventos corporativos de alto padrão.',
+    defaultCta: 'Solicitar Orçamento 🎷',
+    defaultServices: [
+      { nome: 'Cerimônia de Casamento / Entrada', descricao: 'Performances inesquecíveis para a entrada dos noivos, alianças e bênção.', preco: 'A partir de R$ 450' },
+      { nome: 'Música Instrumental para Recepções & Jantares', descricao: 'Som suave e sofisticado para recepcionar convidados com elegância.', preco: 'Sob consulta' }
+    ]
+  },
+  produtor_musical: {
+    id: 'produtor_musical',
+    label: 'Produtor(a) Musical',
+    theme: { color: 'cyan', style: 'oled' },
+    customFields: [
+      { name: 'especialidades_producao', label: 'Especialidades', type: 'text', placeholder: 'Ex: Gravação, Beatmaking, Mixagem & Masterização' },
+      { name: 'spotify_link', label: 'Portfólio no Spotify', type: 'text', placeholder: 'https://open.spotify.com/playlist/...' }
+    ],
+    suggestedBackgrounds: [
+      'https://images.unsplash.com/photo-1598488035139-bdbb2231ce04?auto=format&fit=crop&q=80&w=1080&h=1920',
+      'https://images.unsplash.com/photo-1519508234439-4f23643125c1?auto=format&fit=crop&q=80&w=1080&h=1920'
+    ],
+    defaultBio: 'Produção musical completa do arranjo à masterização final. Equipamentos analógicos e digitais de ponta para transformar a sua ideia musical em um produto pronto para o mercado.',
+    defaultCta: 'Produzir Minha Música 🎛️',
+    defaultServices: [
+      { nome: 'Produção Musical Completa (Single / EP)', descricao: 'Arranjos, instrumentação, captação, mixagem e masterização.', preco: 'Sob consulta' },
+      { nome: 'Mixagem & Masterização Profissional', descricao: 'Tratamento de áudio com peso, clareza e fidelidade estéreo para streaming.', preco: 'A partir de R$ 250 / faixa' }
     ]
   },
   van_escolar: {

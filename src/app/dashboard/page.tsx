@@ -52,6 +52,9 @@ import { Logo } from '@/components/brand/Logo';
 import { verifyCheckoutSession, forceSyncProPlan } from '@/app/actions/checkout';
 import { getProfileAnalytics } from '@/app/actions/analytics';
 import { StyledQRCode } from '@/components/StyledQRCode';
+import { MusicDashboardManager } from '@/components/dashboard/music/MusicDashboardManager';
+import { isMusicProfession } from '@/types/music';
+import { Music } from 'lucide-react';
 
 type DashboardTab = 'editor' | 'analytics' | 'settings';
 
@@ -76,6 +79,10 @@ function DashboardContent() {
   const [loadingAnalytics, setLoadingAnalytics] = useState(false);
   const [copied, setCopied] = useState(false);
   const [isSyncing, setIsSyncing] = useState(false);
+
+  const isMusicUser = isMusicProfession(profile?.profession) || Boolean((profile?.custom_fields as any)?.music_pro?.config?.enabled);
+  const [musicModeOverride, setMusicModeOverride] = useState<boolean | null>(null);
+  const isMusicMode = musicModeOverride !== null ? musicModeOverride : isMusicUser;
 
   useEffect(() => {
     if (profile) {
@@ -279,64 +286,94 @@ function DashboardContent() {
             >
               {/* LEFT: Management */}
               <div className="space-y-8">
-                <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
-                  <div className="space-y-2">
-                    <div className="flex items-center gap-2 text-[10px] font-black uppercase tracking-[0.3em] text-primary">
-                      <span className="w-8 h-[2px] bg-primary rounded-full" />
-                      Workplace
-                    </div>
-                    <h1 className="text-3xl sm:text-4xl font-black tracking-tighter">Personalize seu Perfil</h1>
-                  </div>
-
-                  {publicUrl && (
-                    <div className="flex items-center gap-3">
-                      <button 
-                        onClick={copyLink}
-                        className="flex items-center gap-2 px-5 h-12 rounded-2xl bg-white dark:bg-slate-900 border border-border/50 shadow-sm font-bold text-sm hover:border-primary transition-all active:scale-95"
-                      >
-                        {copied ? <Check className="w-4 h-4 text-green-500" /> : <Copy className="w-4 h-4" />}
-                        {copied ? 'Copiado' : 'Link'}
-                      </button>
-                      <Button asChild variant="hero" className="h-12 px-6 rounded-2xl shadow-xl shadow-primary/20 group">
-                        <Link href={publicUrl} target="_blank">
-                          Ver Perfil
-                          <ExternalLink className="w-4 h-4 ml-2 transition-transform group-hover:translate-x-1 group-hover:-translate-y-1" />
-                        </Link>
-                      </Button>
-                    </div>
-                  )}
-                </div>
-
-                <div className="relative z-10 bg-white/98 dark:bg-slate-900/98 rounded-[2rem] border border-slate-200/80 dark:border-slate-700/80 p-6 sm:p-8 shadow-xl shadow-slate-200/40 dark:shadow-black/20 isolate">
-                  <EditorForm
-                    initialData={currentData}
-                    onSubmit={handleAutoSave}
-                    onChange={setCurrentData}
-                    isPro={isPro}
-                    canCustomizeTheme={profile?.role === 'admin' || (profile?.can_customize_theme ?? true)}
+                {isMusicMode && profile ? (
+                  <MusicDashboardManager
+                    profile={profile}
+                    onRefresh={refetch}
+                    onSwitchToStandard={() => setMusicModeOverride(false)}
                   />
-                </div>
+                ) : (
+                  <>
+                    <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
+                      <div className="space-y-2">
+                        <div className="flex items-center gap-2 text-[10px] font-black uppercase tracking-[0.3em] text-primary">
+                          <span className="w-8 h-[2px] bg-primary rounded-full" />
+                          Workplace
+                        </div>
+                        <h1 className="text-3xl sm:text-4xl font-black tracking-tighter">Personalize seu Perfil</h1>
+                      </div>
 
-                {/* QR Code Section */}
-                {profile?.username && (
-                  <div className="space-y-6">
-                    <div className="flex items-center gap-2 text-[10px] font-black uppercase tracking-[0.3em] text-primary">
-                      <span className="w-8 h-[2px] bg-primary rounded-full" />
-                      Compartilhamento
+                      {publicUrl && (
+                        <div className="flex items-center gap-3">
+                          <button 
+                            onClick={copyLink}
+                            className="flex items-center gap-2 px-5 h-12 rounded-2xl bg-white dark:bg-slate-900 border border-border/50 shadow-sm font-bold text-sm hover:border-primary transition-all active:scale-95"
+                          >
+                            {copied ? <Check className="w-4 h-4 text-green-500" /> : <Copy className="w-4 h-4" />}
+                            {copied ? 'Copiado' : 'Link'}
+                          </button>
+                          <Button asChild variant="hero" className="h-12 px-6 rounded-2xl shadow-xl shadow-primary/20 group">
+                            <Link href={publicUrl} target="_blank">
+                              Ver Perfil
+                              <ExternalLink className="w-4 h-4 ml-2 transition-transform group-hover:translate-x-1 group-hover:-translate-y-1" />
+                            </Link>
+                          </Button>
+                        </div>
+                      )}
                     </div>
-                    <div>
-                      <h2 className="text-2xl font-black tracking-tighter">Seu QR Code Profissional</h2>
-                      <p className="text-sm text-muted-foreground">Utilize este QR Code em seus materiais impressos para facilitar o acesso ao seu perfil.</p>
+
+                    {/* Banner de Ativação do Music Pro */}
+                    <div className="p-4 rounded-2xl bg-gradient-to-r from-red-950/40 via-zinc-900 to-zinc-950 border border-red-500/30 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                      <div className="flex items-center gap-3">
+                        <div className="w-9 h-9 rounded-xl bg-red-500/20 flex items-center justify-center text-red-400 shrink-0">
+                          <Music className="w-4 h-4" />
+                        </div>
+                        <div>
+                          <p className="text-xs font-bold text-white">É músico, cantor, DJ ou toca em eventos?</p>
+                          <p className="text-[11px] text-zinc-400">Ative o Konnexy Music Pro para criar sua discografia, Smart Links e agenda.</p>
+                        </div>
+                      </div>
+                      <button
+                        type="button"
+                        onClick={() => setMusicModeOverride(true)}
+                        className="px-3 py-1.5 rounded-xl bg-red-600 hover:bg-red-700 text-white font-bold text-xs uppercase tracking-wider shrink-0 transition"
+                      >
+                        Ativar Music Pro
+                      </button>
                     </div>
-                    <div className="max-w-md">
-                      <StyledQRCode 
-                        url={`${typeof window !== 'undefined' ? window.location.origin : ''}/${profile.username}`} 
-                        isPro={isPro} 
-                        username={profile.username} 
-                        photoUrl={profile.photo_url || undefined}
+
+                    <div className="relative z-10 bg-white/98 dark:bg-slate-900/98 rounded-[2rem] border border-slate-200/80 dark:border-slate-700/80 p-6 sm:p-8 shadow-xl shadow-slate-200/40 dark:shadow-black/20 isolate">
+                      <EditorForm
+                        initialData={currentData}
+                        onSubmit={handleAutoSave}
+                        onChange={setCurrentData}
+                        isPro={isPro}
+                        canCustomizeTheme={profile?.role === 'admin' || (profile?.can_customize_theme ?? true)}
                       />
                     </div>
-                  </div>
+
+                    {/* QR Code Section */}
+                    {profile?.username && (
+                      <div className="space-y-6">
+                        <div className="flex items-center gap-2 text-[10px] font-black uppercase tracking-[0.3em] text-primary">
+                          <span className="w-8 h-[2px] bg-primary rounded-full" />
+                          Compartilhamento
+                        </div>
+                        <div>
+                          <h2 className="text-2xl font-black tracking-tighter">Seu QR Code Profissional</h2>
+                          <p className="text-sm text-muted-foreground">Utilize este QR Code em seus materiais impressos para facilitar o acesso ao seu perfil.</p>
+                        </div>
+                        <div className="max-w-md">
+                          <StyledQRCode 
+                            url={`${typeof window !== 'undefined' ? window.location.origin : ''}/${profile.username}`} 
+                            isPro={isPro} 
+                            username={profile.username} 
+                            photoUrl={profile.photo_url || undefined}
+                          />
+                        </div>
+                      </div>
+                    )}
+                  </>
                 )}
               </div>
 
