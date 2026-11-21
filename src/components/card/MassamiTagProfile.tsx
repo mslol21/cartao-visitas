@@ -396,14 +396,12 @@ export function MassamiTagProfile({
     (isMassami ? 'shitara.massami@gmail.com' : '');
 
   const locationText =
+    profile?.city ||
     profile?.endereco_completo ||
     profile?.address ||
-    profile?.area_atendimento ||
-    profile?.service_area ||
-    profile?.city ||
     '';
 
-  const hoursText = profile?.horario_funcionamento || '';
+  const hoursText = '';
 
   // Chips Rápidos Dinâmicos
   const dynamicChips: ServiceChip[] = isMassami
@@ -493,9 +491,6 @@ export function MassamiTagProfile({
           activeProfessionBadges.push(val.trim());
         }
       }
-    }
-    if (profile?.tipo_atendimento && !isUrlLike(profile.tipo_atendimento)) {
-      activeProfessionBadges.push(profile.tipo_atendimento);
     }
   }
 

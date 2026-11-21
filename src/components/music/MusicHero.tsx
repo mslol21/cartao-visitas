@@ -252,32 +252,11 @@ export function MusicHero({
           )}
         </div>
 
-        {/* Localização / Região de Atuação */}
-        {(city || region) && (
+        {/* Localização */}
+        {city && (
           <div className="flex items-center justify-center gap-1.5 mt-2.5 text-xs text-zinc-400">
             <MapPin className="w-3.5 h-3.5 shrink-0 text-zinc-500" />
-            <span>{city ? (region ? `${city} • ${region}` : city) : region}</span>
-          </div>
-        )}
-
-        {/* Biografia Resumida */}
-        {bio && (
-          <div className="mt-4 max-w-lg text-sm text-zinc-300 leading-relaxed">
-            <p className="whitespace-pre-line">{displayBio}</p>
-            {isBioLong && (
-              <button
-                type="button"
-                onClick={() => setBioExpanded(!bioExpanded)}
-                className="mt-1.5 inline-flex items-center gap-1 text-xs font-semibold hover:underline"
-                style={{ color: primaryColor }}
-              >
-                {bioExpanded ? (
-                  <>Menos detalhes <ChevronUp className="w-3 h-3" /></>
-                ) : (
-                  <>Ler biografia completa <ChevronDown className="w-3 h-3" /></>
-                )}
-              </button>
-            )}
+            <span>{city}</span>
           </div>
         )}
 

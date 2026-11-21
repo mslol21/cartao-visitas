@@ -306,31 +306,6 @@ export function MontadorMoveisLayout({ data, isPro }: MontadorMoveisLayoutProps)
           </motion.div>
         )}
 
-        {/* ── DIFERENCIAIS DETALHADOS ── */}
-        {boolDiferenciais.length > 0 && (
-          <motion.div custom={2.5} initial="hidden" animate="visible" variants={fadeUp} className="px-5 pt-4 pb-1">
-            <div
-              className="rounded-2xl p-4"
-              style={{
-                backgroundColor: diferenciaisFundo || (hasBgImage ? 'rgba(10,10,10,0.65)' : 'transparent'),
-                color: diferenciaisTexto || undefined,
-              }}
-            >
-              <p
-                className="text-[9px] font-black uppercase tracking-[0.3em] mb-3"
-                style={{ color: diferenciaisTexto ? diferenciaisTexto + 'aa' : 'rgba(255,255,255,0.25)' }}
-              >Informações de Atendimento</p>
-              <div className="flex flex-wrap gap-2">
-                {boolDiferenciais.map(b => (
-                  <div key={b.key} className="flex items-center gap-2 px-3 py-2 rounded-xl text-[11px] font-bold border" style={{ borderColor: themeHex + '22', color: diferenciaisTexto || themeHex, background: themeHex + '0C' }}>
-                    <span className="w-1.5 h-1.5 rounded-full flex-none" style={{ backgroundColor: diferenciaisTexto || themeHex }} />
-                    {b.label}
-                  </div>
-                ))}
-              </div>
-            </div>
-          </motion.div>
-        )}
 
         {/* ── MARCAS ATENDIDAS ── */}
         {marcasAtendidas.length > 0 && (
@@ -403,51 +378,6 @@ export function MontadorMoveisLayout({ data, isPro }: MontadorMoveisLayoutProps)
           </motion.div>
         )}
 
-        {/* ── BIO / SOBRE ── */}
-        {data.bio_profissional && (
-          <motion.div custom={4} initial="hidden" animate="visible" variants={fadeUp} className="px-5 pt-6 pb-2">
-            <div
-              className="relative p-6 rounded-3xl border overflow-hidden"
-              style={{
-                borderColor: themeHex + '18',
-                backgroundColor: bioFundo || (hasBgImage ? 'rgba(10,10,10,0.65)' : '#0f0f0f'),
-                backdropFilter: hasBgImage ? 'blur(16px)' : undefined
-              }}
-            >
-              {/* Aspas decorativas */}
-              <span className="absolute top-1 left-4 text-8xl font-black leading-none select-none pointer-events-none" style={{ color: themeHex + '10' }}>"</span>
-              <div className="flex items-center gap-2.5 mb-4 relative z-10">
-                <div className="w-7 h-7 rounded-xl flex items-center justify-center" style={{ background: themeHex + '18' }}>
-                  <Wrench className="w-3.5 h-3.5" style={{ color: themeHex }} />
-                </div>
-                <span className="text-[9px] font-black uppercase tracking-[0.3em]" style={{ color: bioTexto ? bioTexto + 'aa' : 'rgba(255,255,255,0.3)' }}>Compromisso e Qualidade</span>
-              </div>
-              <p className="text-[13px] leading-relaxed tracking-tight relative z-10 italic" style={{ color: bioTexto || 'rgba(255,255,255,0.65)' }}>
-                {data.bio_profissional}
-              </p>
-            </div>
-          </motion.div>
-        )}
-
-        {/* ── ENDEREÇO / REGIÃO DE ATENDIMENTO ── */}
-        {data.endereco_completo && (
-          <motion.div custom={5} initial="hidden" animate="visible" variants={fadeUp} className="px-5 pt-3 pb-2">
-            <a
-              href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(data.endereco_completo)}`}
-              target="_blank" rel="noopener noreferrer"
-              className="flex items-center gap-3 px-4 py-3 rounded-2xl border transition-colors"
-              style={{
-                backgroundColor: infoFundo || (hasBgImage ? 'rgba(255,255,255,0.05)' : 'rgba(255,255,255,0.03)'),
-                borderColor: infoFundo ? 'transparent' : 'rgba(255,255,255,0.08)',
-                color: infoTexto || 'rgba(255,255,255,0.4)',
-                backdropFilter: hasBgImage ? 'blur(8px)' : undefined
-              }}
-            >
-              <MapPin className="w-4 h-4 flex-none text-red-400/60" />
-              <span className="text-[11px] font-medium truncate">Atende em: {data.endereco_completo}</span>
-            </a>
-          </motion.div>
-        )}
 
         {/* ── BRANDING ── */}
         <motion.div custom={6} initial="hidden" animate="visible" variants={fadeUp} className="px-5 pt-8 pb-14 flex items-center justify-center">
