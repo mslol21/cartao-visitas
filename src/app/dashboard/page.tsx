@@ -290,15 +290,14 @@ function DashboardContent() {
       </header>
 
       <main className="max-w-[1400px] mx-auto px-4 sm:px-6 pt-6 pb-36 lg:py-10">
-        <AnimatePresence mode="wait">
-          {activeTab === 'editor' && (
+        <div className="min-w-0">
+          {(
             <motion.div 
               key="editor"
-              initial={{ y: 10 }}
-              animate={{ y: 0 }}
-              exit={{ y: -10 }}
+              initial={false}
+              animate={{ opacity: 1 }}
               transition={{ duration: 0.2, ease: 'easeOut' }}
-              className="grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_minmax(0,450px)] gap-8 xl:gap-10 items-start opacity-100"
+              className={cn("grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_minmax(0,450px)] gap-8 xl:gap-10 items-start opacity-100", activeTab !== "editor" && "hidden")}
             >
               {/* LEFT: Management */}
               <div className="min-w-0 space-y-8">
@@ -677,7 +676,7 @@ function DashboardContent() {
               </div>
             </motion.div>
           )}
-        </AnimatePresence>
+        </div>
       </main>
 
         <footer className="max-w-[1400px] mx-auto px-6 py-12 flex flex-col sm:flex-row items-center justify-between gap-6 border-t border-border/30 mt-12 pb-32 lg:pb-12 text-center sm:text-left">
