@@ -637,7 +637,7 @@ export function EditorForm({ initialData, onSubmit, onChange, isPro = false, can
   const maxServices = isPro ? 20 : 1;
 
   return (
-    <div className="space-y-6 text-slate-900 dark:text-slate-100">
+    <div className="min-w-0 max-w-full space-y-6 text-slate-900 dark:text-slate-100">
       <div className="flex flex-wrap items-center justify-between gap-3">
         <h2 className="text-sm font-black uppercase tracking-widest text-muted-foreground flex items-center gap-2">
           <Layout className="w-4 h-4" />
@@ -680,7 +680,7 @@ export function EditorForm({ initialData, onSubmit, onChange, isPro = false, can
       </div>
 
       <Tabs defaultValue="basic" className="w-full">
-        <TabsList aria-label="Seções de edição do cartão" className="grid w-full grid-cols-2 sm:grid-cols-3 xl:grid-cols-5 h-auto p-1.5 gap-2 bg-slate-100 dark:bg-slate-800/90 rounded-2xl border border-slate-200 dark:border-slate-700">
+        <TabsList aria-label="Seções de edição do cartão" className="grid w-full min-w-0 grid-cols-2 sm:grid-cols-3 xl:grid-cols-5 h-auto p-1.5 gap-2 bg-slate-100 dark:bg-slate-800/90 rounded-2xl border border-slate-200 dark:border-slate-700">
           <TabsTrigger 
             value="basic" 
             className="data-[state=active]:bg-primary data-[state=active]:text-white data-[state=active]:shadow-lg transition-all duration-300 rounded-xl py-3 text-xs font-black uppercase tracking-wider flex items-center justify-center gap-2 hover:bg-white dark:hover:bg-slate-800"
