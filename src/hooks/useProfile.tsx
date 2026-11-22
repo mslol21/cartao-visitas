@@ -9,21 +9,26 @@ export function useProfile() {
   const { user, session } = useAuth();
   const [profile, setProfile] = useState<Profile | null>(null);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
   const supabase = useMemo(() => createClient(), []);
 
   const fetchProfile = useCallback(async () => {
     if (!user || !session?.access_token) {
       setProfile(null);
+      setError(null);
       setLoading(false);
       return;
     }
 
     setLoading(true);
+    setError(null);
     try {
       const data = await getOwnerProfileNeon(session.access_token);
+      if (!data) throw new Error('O perfil não foi encontrado.');
       setProfile(data);
-    } catch (error) {
-      console.error('Error fetching profile:', error);
+    } catch (cause) {
+      console.error('Error fetching profile:', cause);
+      setError('Não foi possível carregar seu perfil. Verifique a conexão e tente novamente.');
     } finally {
       setLoading(false);
     }
@@ -34,6 +39,7 @@ export function useProfile() {
       fetchProfile();
     } else {
       setProfile(null);
+      setError(null);
       setLoading(false);
     }
   }, [user, session?.access_token, fetchProfile]);
@@ -60,7 +66,7 @@ export function useProfile() {
     }
   };
 
-  return { profile, loading, updateProfile, refetch: fetchProfile };
+  return { profile, loading, error, updateProfile, refetch: fetchProfile };
 }
 
 export function usePublicProfile(username: string) {
