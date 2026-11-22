@@ -69,7 +69,7 @@ interface AnalyticsData {
 
 function DashboardContent() {
   const router = useRouter();
-  const { user, loading: authLoading, signOut } = useAuth();
+  const { user, session, loading: authLoading, signOut } = useAuth();
   const { profile, loading: profileLoading, error: profileError, updateProfile, refetch } = useProfile();
   const searchParams = useSearchParams();
   
@@ -81,9 +81,9 @@ function DashboardContent() {
   const [isSyncing, setIsSyncing] = useState(false);
 
   const isMusicUser = isMusicProfession(profile?.profession) || Boolean((profile?.custom_fields as any)?.music_pro?.config?.enabled);
-  const [musicModeOverride, setMusicModeOverride] = useState<boolean | null>(null);
+  const [musicModeOverride, setMusicModeOverride] = useState(false);
   // Never replace the standard editor automatically: musicians can opt into Music Pro.
-  const isMusicMode = musicModeOverride === true;
+  const isMusicMode = musicModeOverride;
 
   useEffect(() => {
     if (profile) {
@@ -306,6 +306,7 @@ function DashboardContent() {
                   <MusicDashboardManager
                     profile={profile}
                     onRefresh={refetch}
+                    accessToken={session?.access_token}
                     onSwitchToStandard={() => setMusicModeOverride(false)}
                   />
                 ) : (
@@ -354,7 +355,7 @@ function DashboardContent() {
                         onClick={() => setMusicModeOverride(true)}
                         className="px-3 py-1.5 rounded-xl bg-red-600 hover:bg-red-700 text-white font-bold text-xs uppercase tracking-wider shrink-0 transition"
                       >
-                        Ativar Music Pro
+                        {isMusicUser ? "Abrir Music Pro" : "Experimentar Music Pro"}
                       </button>
                     </div>
 
