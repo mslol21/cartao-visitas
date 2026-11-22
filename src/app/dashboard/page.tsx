@@ -70,7 +70,7 @@ interface AnalyticsData {
 function DashboardContent() {
   const router = useRouter();
   const { user, loading: authLoading, signOut } = useAuth();
-  const { profile, loading: profileLoading, updateProfile, refetch } = useProfile();
+  const { profile, loading: profileLoading, error: profileError, updateProfile, refetch } = useProfile();
   const searchParams = useSearchParams();
   
   const [activeTab, setActiveTab] = useState<DashboardTab>('editor');
@@ -82,7 +82,8 @@ function DashboardContent() {
 
   const isMusicUser = isMusicProfession(profile?.profession) || Boolean((profile?.custom_fields as any)?.music_pro?.config?.enabled);
   const [musicModeOverride, setMusicModeOverride] = useState<boolean | null>(null);
-  const isMusicMode = musicModeOverride !== null ? musicModeOverride : isMusicUser;
+  // Never replace the standard editor automatically: musicians can opt into Music Pro.
+  const isMusicMode = musicModeOverride === true;
 
   useEffect(() => {
     if (profile) {
@@ -176,6 +177,21 @@ function DashboardContent() {
           <p className="text-sm font-black uppercase tracking-[0.2em] text-muted-foreground animate-pulse">Sincronizando Dashboard...</p>
         </motion.div>
       </div>
+    );
+  }
+
+  if (!user) return null;
+
+  if (profileError || !profile) {
+    return (
+      <main className="min-h-screen flex items-center justify-center bg-slate-50 dark:bg-slate-950 px-4">
+        <section role="alert" className="w-full max-w-md rounded-3xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-8 text-center shadow-lg space-y-4">
+          <h1 className="text-xl font-bold">Não foi possível abrir seu cartão</h1>
+          <p className="text-sm text-muted-foreground">{profileError ?? 'Seu perfil ainda não está disponível.'}</p>
+          <Button onClick={() => void refetch()} className="w-full">Tentar novamente</Button>
+          <Button variant="outline" onClick={handleSignOut} className="w-full">Voltar ao início</Button>
+        </section>
+      </main>
     );
   }
 
@@ -273,7 +289,7 @@ function DashboardContent() {
         </div>
       </header>
 
-      <main className="max-w-[1400px] mx-auto px-4 sm:px-6 py-10">
+      <main className="max-w-[1400px] mx-auto px-4 sm:px-6 pt-6 pb-36 lg:py-10">
         <AnimatePresence mode="wait">
           {activeTab === 'editor' && (
             <motion.div 
@@ -282,10 +298,10 @@ function DashboardContent() {
               animate={{ y: 0 }}
               exit={{ y: -10 }}
               transition={{ duration: 0.2, ease: 'easeOut' }}
-              className="grid lg:grid-cols-[minmax(0,1fr),450px] gap-8 xl:gap-10 items-start opacity-100"
+              className="grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_minmax(0,450px)] gap-8 xl:gap-10 items-start opacity-100"
             >
               {/* LEFT: Management */}
-              <div className="space-y-8">
+              <div className="min-w-0 space-y-8">
                 {isMusicMode && profile ? (
                   <MusicDashboardManager
                     profile={profile}
@@ -322,7 +338,7 @@ function DashboardContent() {
                       )}
                     </div>
 
-                    {/* Banner de Ativação do Music Pro */}
+                    {/* Music Pro is optional, never hides the standard editor by profession. */}
                     <div className="p-4 rounded-2xl bg-gradient-to-r from-red-950/40 via-zinc-900 to-zinc-950 border border-red-500/30 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                       <div className="flex items-center gap-3">
                         <div className="w-9 h-9 rounded-xl bg-red-500/20 flex items-center justify-center text-red-400 shrink-0">
@@ -344,6 +360,7 @@ function DashboardContent() {
 
                     <div className="relative z-10 bg-white/98 dark:bg-slate-900/98 rounded-[2rem] border border-slate-200/80 dark:border-slate-700/80 p-6 sm:p-8 shadow-xl shadow-slate-200/40 dark:shadow-black/20 isolate">
                       <EditorForm
+                        key={profile.id}
                         initialData={currentData}
                         onSubmit={handleAutoSave}
                         onChange={setCurrentData}
@@ -378,7 +395,7 @@ function DashboardContent() {
               </div>
 
               {/* RIGHT: Visual Reference */}
-              <div className="lg:sticky lg:top-32 space-y-8">
+              <div className="min-w-0 lg:sticky lg:top-32 space-y-8">
                 <div className="bg-white/98 dark:bg-slate-900/98 rounded-[2rem] border border-slate-200/80 dark:border-slate-700/80 p-6 shadow-xl shadow-slate-200/40 dark:shadow-black/20 relative overflow-hidden isolate">
                   <div className="absolute top-0 right-0 p-8 opacity-5">
                     <LayoutDashboard className="w-40 h-40" />
@@ -672,8 +689,8 @@ function DashboardContent() {
       </div>
 
     {/* Mobile Tab Navigation */}
-    <div className="lg:hidden fixed bottom-6 left-6 right-6 z-50">
-      <nav className="glass shadow-2xl rounded-[2rem] p-1.5 flex items-center justify-between border border-white/20">
+    <div className="lg:hidden fixed bottom-[calc(0.75rem+env(safe-area-inset-bottom))] left-3 right-3 z-40">
+      <nav aria-label="Navegação do painel" className="glass shadow-2xl rounded-[2rem] p-1.5 flex items-center justify-between border border-white/20">
         {[
           { id: 'editor', label: 'Editor', icon: LayoutDashboard },
           { id: 'analytics', label: 'Stats', icon: Zap },
@@ -681,6 +698,8 @@ function DashboardContent() {
         ].map((tab) => (
           <button
             key={tab.id}
+            type="button"
+            aria-current={activeTab === tab.id ? "page" : undefined}
             onClick={() => setActiveTab(tab.id as DashboardTab)}
             className={cn(
               "flex-1 flex flex-col items-center gap-1 py-3 px-2 rounded-2xl transition-all",
