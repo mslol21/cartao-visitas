@@ -6,6 +6,7 @@ import { ArrowUpRight, Disc3, Headphones, Play, Radio } from 'lucide-react';
 import type { MusicRelease, MusicPlatformId } from '@/types/music';
 import { MUSIC_PLATFORMS } from '@/config/music-constants';
 import { trackMusicClickAction } from '@/app/actions/music-pro';
+import { MusicBrandIcon } from './MusicBrandIcon';
 
 interface MusicStreamingHubProps {
   releases: MusicRelease[];
@@ -18,12 +19,6 @@ const PLATFORM_ORDER: MusicPlatformId[] = [
   'spotify', 'apple_music', 'deezer', 'youtube_music', 'youtube',
   'amazon_music', 'tidal', 'soundcloud', 'bandcamp', 'mixcloud', 'custom'
 ];
-
-const PLATFORM_SHORT: Partial<Record<MusicPlatformId, string>> = {
-  spotify: '♫', apple_music: '♪', deezer: '≋', youtube_music: '▶',
-  youtube: '▶', amazon_music: '♫', tidal: '◆', soundcloud: '☁',
-  bandcamp: '◈', mixcloud: '≈', custom: '↗'
-};
 
 export function MusicStreamingHub({
   releases, profileId, username, primaryColor = '#ef4444'
@@ -109,7 +104,7 @@ export function MusicStreamingHub({
                     style={{ backgroundColor: platform.brandColor || primaryColor }}
                     aria-hidden="true"
                   >
-                    {PLATFORM_SHORT[link.platform] || '↗'}
+                    <MusicBrandIcon brand={link.platform} className="h-5 w-5" />
                   </span>
                 </span>
               </a>
