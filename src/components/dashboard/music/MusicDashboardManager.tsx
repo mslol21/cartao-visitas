@@ -80,8 +80,13 @@ export function MusicDashboardManager({
   return (
     <div className="flex flex-col gap-6 w-full">
       {/* Barra de Navegação Adaptativa dos 12 Menus Music Pro */}
-      <div className="w-full flex items-center justify-between gap-2 overflow-x-auto pb-1 scroll-hide bg-zinc-950/80 p-1.5 rounded-3xl border border-zinc-800">
-        <div className="flex items-center gap-1">
+      <div className="w-full flex flex-col gap-2 rounded-3xl border border-zinc-800 bg-zinc-950/80 p-1.5">
+        {onSwitchToStandard && (
+          <button type="button" onClick={onSwitchToStandard} className="self-start flex items-center gap-2 rounded-2xl px-3 py-2 text-xs font-bold text-white hover:bg-zinc-800" aria-label="Voltar ao editor de perfil padrão">
+            <ArrowLeft className="w-4 h-4" /> Voltar ao editor de perfil
+          </button>
+        )}
+        <div className="flex w-full items-center gap-1 overflow-x-auto pb-1 scroll-hide">
           {MUSIC_NAV_ITEMS.map((item) => {
             const Icon = item.icon;
             const isActive = activeTab === item.id;
@@ -104,17 +109,6 @@ export function MusicDashboardManager({
           })}
         </div>
 
-        {onSwitchToStandard && (
-          <button
-            type="button"
-            onClick={onSwitchToStandard}
-            className="flex items-center gap-1.5 px-3 py-2 rounded-2xl text-[11px] font-bold text-zinc-500 hover:text-zinc-300 hover:bg-zinc-900 transition shrink-0 ml-2"
-            title="Voltar ao Editor Geral de Cartão"
-          >
-            <ArrowLeft className="w-3.5 h-3.5" />
-            <span className="hidden lg:inline">Modo Tradicional</span>
-          </button>
-        )}
       </div>
 
       {/* Conteúdo da Aba Ativa */}
