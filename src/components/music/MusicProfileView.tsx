@@ -5,6 +5,7 @@ import type { Profile } from '@/types/profile';
 import { parseMusicProfileData } from '@/utils/music-utils';
 import { MUSIC_TEMPLATES } from '@/config/music-constants';
 import { MusicHero } from './MusicHero';
+import { MusicStreamingHub } from './MusicStreamingHub';
 import { MusicReleases } from './MusicReleases';
 import { MusicVideos } from './MusicVideos';
 import { MusicRepertoire } from './MusicRepertoire';
@@ -162,6 +163,17 @@ export function MusicProfileView({ profile, isPreview = false }: MusicProfileVie
           primaryColor={primaryColor}
           secondaryColor={secondaryColor}
         />
+
+        {/* Smart landing inspirado nos serviços de streaming: a capa e os links
+            publicados surgem primeiro, sem ocultar contratação e portfólio. */}
+        {!config.hidden_sections?.includes('releases') && (
+          <MusicStreamingHub
+            releases={releases}
+            username={profile.username || undefined}
+            profileId={profile.id}
+            primaryColor={primaryColor}
+          />
+        )}
 
         {/* Seções em ordem dinâmica */}
         {sectionOrder
