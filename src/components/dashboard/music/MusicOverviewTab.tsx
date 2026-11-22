@@ -47,18 +47,18 @@ export function MusicOverviewTab({ profile, musicData, onNavigateTab }: MusicOve
   const eventsCount = musicData.events.length;
 
   return (
-    <div className="flex flex-col gap-6">
+    <div className="flex min-w-0 w-full flex-col gap-6">
       {/* Banner Principal de Boas-vindas ao Konnexy Music Pro */}
-      <div className="relative overflow-hidden rounded-3xl bg-gradient-to-r from-red-950/80 via-zinc-900 to-zinc-950 border border-red-500/30 p-6 sm:p-8 shadow-2xl">
+      <div className="relative min-w-0 w-full overflow-hidden rounded-3xl bg-gradient-to-r from-red-950/80 via-zinc-900 to-zinc-950 border border-red-500/30 p-6 sm:p-8 shadow-2xl">
         <div className="absolute top-0 right-0 w-80 h-80 bg-red-600/10 rounded-full blur-3xl pointer-events-none" />
 
-        <div className="relative z-10 flex flex-col sm:flex-row sm:items-center justify-between gap-6">
-          <div className="space-y-2">
+        <div className="relative z-10 flex min-w-0 flex-col gap-6 sm:flex-row sm:items-center sm:justify-between">
+          <div className="min-w-0 space-y-2">
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-red-500/20 border border-red-500/40 text-red-400 text-xs font-black uppercase tracking-wider">
               <Sparkles className="w-3.5 h-3.5" />
               <span>Konnexy Music Pro Ativo</span>
             </div>
-            <h2 className="text-2xl sm:text-3xl font-black text-white tracking-tight">
+            <h2 className="break-words text-2xl sm:text-3xl font-black text-white tracking-tight">
               {musicData.config.stage_name || profile.business_name || profile.name || 'Seu Portfólio Artístico'}
             </h2>
             <p className="text-xs sm:text-sm text-zinc-300 max-w-xl leading-relaxed">
@@ -66,12 +66,12 @@ export function MusicOverviewTab({ profile, musicData, onNavigateTab }: MusicOve
             </p>
           </div>
 
-          <div className="flex flex-col sm:flex-row gap-2 shrink-0">
+          <div className="flex w-full min-w-0 flex-col gap-2 sm:w-auto sm:flex-row sm:shrink-0">
             <a
               href={publicUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center justify-center gap-2 px-4 py-3 rounded-2xl bg-white text-zinc-950 font-black text-xs uppercase tracking-wider hover:bg-zinc-200 transition shadow-lg active:scale-95"
+              className="flex w-full min-w-0 items-center justify-center gap-2 px-4 py-3 rounded-2xl sm:w-auto bg-white text-zinc-950 font-black text-xs uppercase tracking-wider hover:bg-zinc-200 transition shadow-lg active:scale-95"
             >
               <span>Ver Perfil</span>
               <ExternalLink className="w-4 h-4" />
