@@ -5,6 +5,7 @@ import { getPublicProfile } from '@/lib/seo/public-profile';
 import { parseMusicProfileData } from '@/utils/music-utils';
 import { MUSIC_PLATFORMS, MUSIC_TEMPLATES } from '@/config/music-constants';
 import { MusicAudioEmbed } from '@/components/music/MusicAudioEmbed';
+import { MusicBrandIcon } from '@/components/music/MusicBrandIcon';
 import { StructuredData } from '@/components/seo/StructuredData';
 import { 
   ArrowLeft, 
@@ -247,7 +248,7 @@ export default async function MusicSmartLinkPage({ params }: Props) {
                         className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full text-white"
                         style={{ backgroundColor: platDef.brandColor || primaryColor }}
                       >
-                        <Music2 className="h-5 w-5" />
+                        <MusicBrandIcon brand={link.platform} className="h-5 w-5" />
                       </span>
                     </span>
                   </a>
