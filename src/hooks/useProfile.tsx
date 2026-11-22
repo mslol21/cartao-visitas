@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo, useCallback } from 'react';
+import { useState, useEffect, useMemo, useCallback, useRef } from 'react';
 import { createClient } from '@/utils/supabase/client';
 import { useAuth } from './useAuth';
 import { getOwnerProfileNeon, updateOwnerProfileNeon } from '@/app/actions/neon-profile';
@@ -10,45 +10,52 @@ export function useProfile() {
   const [profile, setProfile] = useState<Profile | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const supabase = useMemo(() => createClient(), []);
+  const latestToken = useRef(session?.access_token);
+  latestToken.current = session?.access_token;
+  const requestId = useRef(0);
 
   const fetchProfile = useCallback(async () => {
-    if (!user || !session?.access_token) {
+    const token = latestToken.current;
+    const currentRequest = ++requestId.current;
+    if (!user?.id || !token) {
       setProfile(null);
       setError(null);
       setLoading(false);
       return;
     }
 
-    setLoading(true);
+    // A token refresh must not unmount the editor and discard in-progress edits.
+    setLoading(previous => previous && true);
     setError(null);
     try {
-      const data = await getOwnerProfileNeon(session.access_token);
+      const data = await getOwnerProfileNeon(token);
       if (!data) throw new Error('O perfil não foi encontrado.');
-      setProfile(data);
+      if (requestId.current === currentRequest) setProfile(data);
     } catch (cause) {
       console.error('Error fetching profile:', cause);
-      setError('Não foi possível carregar seu perfil. Verifique a conexão e tente novamente.');
+      if (requestId.current === currentRequest) setError('Não foi possível carregar seu perfil. Verifique a conexão e tente novamente.');
     } finally {
-      setLoading(false);
+      if (requestId.current === currentRequest) setLoading(false);
     }
-  }, [user, session?.access_token]);
+  }, [user?.id]);
 
   useEffect(() => {
-    if (user && session?.access_token) {
-      fetchProfile();
+    if (user?.id && latestToken.current) {
+      void fetchProfile();
     } else {
+      requestId.current += 1;
       setProfile(null);
       setError(null);
       setLoading(false);
     }
-  }, [user, session?.access_token, fetchProfile]);
+    return () => { requestId.current += 1; };
+  }, [user?.id, fetchProfile]);
 
   const updateProfile = async (formData: Partial<ProfileFormData>) => {
-    if (!user || !session?.access_token) return { error: new Error('Not authenticated') };
+    if (!user?.id || !latestToken.current) return { error: new Error('Not authenticated') };
 
     try {
-      const result = await updateOwnerProfileNeon(formData, session.access_token);
+      const result = await updateOwnerProfileNeon(formData, latestToken.current);
       if (result.error) throw new Error(result.error);
 
       // Update local state selectively to avoid full refetch if possible
