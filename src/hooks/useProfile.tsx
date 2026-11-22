@@ -13,6 +13,7 @@ export function useProfile() {
   const latestToken = useRef(session?.access_token);
   latestToken.current = session?.access_token;
   const requestId = useRef(0);
+  const loadedOwner = useRef<string | null>(null);
 
   const fetchProfile = useCallback(async () => {
     const token = latestToken.current;
@@ -25,12 +26,15 @@ export function useProfile() {
     }
 
     // A token refresh must not unmount the editor and discard in-progress edits.
-    setLoading(previous => previous && true);
+    setLoading(loadedOwner.current !== user.id);
     setError(null);
     try {
       const data = await getOwnerProfileNeon(token);
       if (!data) throw new Error('O perfil não foi encontrado.');
-      if (requestId.current === currentRequest) setProfile(data);
+      if (requestId.current === currentRequest) {
+        loadedOwner.current = user.id;
+        setProfile(data);
+      }
     } catch (cause) {
       console.error('Error fetching profile:', cause);
       if (requestId.current === currentRequest) setError('Não foi possível carregar seu perfil. Verifique a conexão e tente novamente.');
@@ -44,6 +48,7 @@ export function useProfile() {
       void fetchProfile();
     } else {
       requestId.current += 1;
+      loadedOwner.current = null;
       setProfile(null);
       setError(null);
       setLoading(false);
