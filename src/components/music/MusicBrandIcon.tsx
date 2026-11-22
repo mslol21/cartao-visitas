@@ -20,7 +20,7 @@ export function MusicBrandIcon({ brand, className = 'h-5 w-5' }: MusicBrandIconP
   if (brand === 'youtube' || brand === 'youtube_music') {
     return (
       <svg aria-hidden="true" className={className} viewBox="0 0 24 24" fill="currentColor">
-        <path d="M21.58 7.19a2.75 2.75 0 0 0-1.94-1.95C17.93 4.78 12 4.78 12 4.78s-5.93 0-7.64.46a2.75 2.75 0 0 0-1.94 1.95A28.7 28.7 0 0 0 2 12a28.7 28.7 0 0 0 .42 4.81 2.75 2.75 0 0 0 1.94 1.95c1.71.46 7.64.46 7.64.46s5.93 0 7.64-.46a2.75 2.75 0 0 0 1.94-1.95A28.7 28.7 0 0 0 22 12a28.7 28.7 0 0 0-.42-4.81ZM10 15.5v-7l6 3.5-6 3.5Z" />
+        <rect x="2" y="5" width="20" height="14" rx="4" fill="currentColor" />\n        <path d="m10 8.5 6 3.5-6 3.5v-7Z" fill="#fff" />
       </svg>
     );
   }
