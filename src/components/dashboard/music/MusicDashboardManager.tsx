@@ -78,15 +78,15 @@ export function MusicDashboardManager({
   const musicData = parseMusicProfileData(profile);
 
   return (
-    <div className="flex flex-col gap-6 w-full">
+    <div className="flex min-w-0 max-w-full flex-col gap-6 w-full">
       {/* Barra de Navegação Adaptativa dos 12 Menus Music Pro */}
-      <div className="w-full flex flex-col gap-2 rounded-3xl border border-zinc-800 bg-zinc-950/80 p-1.5">
+      <div className="w-full min-w-0 max-w-full flex flex-col gap-2 rounded-3xl border border-zinc-800 bg-zinc-950/80 p-1.5">
         {onSwitchToStandard && (
           <button type="button" onClick={onSwitchToStandard} className="self-start flex items-center gap-2 rounded-2xl px-3 py-2 text-xs font-bold text-white hover:bg-zinc-800" aria-label="Voltar ao editor de perfil padrão">
             <ArrowLeft className="w-4 h-4" /> Voltar ao editor de perfil
           </button>
         )}
-        <div className="flex w-full items-center gap-1 overflow-x-auto pb-1 scroll-hide">
+        <div className="flex min-w-0 max-w-full items-center gap-1 overflow-x-auto overscroll-x-contain pb-1 scroll-hide">
           {MUSIC_NAV_ITEMS.map((item) => {
             const Icon = item.icon;
             const isActive = activeTab === item.id;
@@ -112,7 +112,7 @@ export function MusicDashboardManager({
       </div>
 
       {/* Conteúdo da Aba Ativa */}
-      <div className="w-full">
+      <div className="w-full min-w-0">
         {activeTab === 'overview' && (
           <MusicOverviewTab
             profile={profile}
