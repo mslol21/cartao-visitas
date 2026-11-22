@@ -218,67 +218,48 @@ export default async function MusicSmartLinkPage({ params }: Props) {
           </div>
         )}
 
-        {/* Botões de Plataformas de Streaming */}
-        <div className="w-full flex flex-col gap-2.5">
-          <div className="flex items-center justify-between px-1">
-            <span className="text-xs font-bold uppercase tracking-wider text-zinc-400">
-              Escolha sua plataforma
-            </span>
-            <span className="text-[11px] text-zinc-500">
-              {release.streaming_links.length} disponíveis
-            </span>
+        {/* Plataformas de streaming em destaque: experiência mobile-first */}
+        <section className="w-full min-w-0 space-y-4" aria-label="Plataformas para ouvir este lançamento">
+          <div className="px-1 text-center">
+            <h2 className="text-lg font-extrabold text-white">Ouça na sua plataforma favorita</h2>
+            <p className="mt-1 text-xs text-zinc-300">Selecione onde deseja reproduzir</p>
           </div>
-
           {release.streaming_links.length > 0 ? (
-            release.streaming_links.map((link, index) => {
-              const platDef = MUSIC_PLATFORMS[link.platform] || MUSIC_PLATFORMS.custom;
-
-              return (
-                <a
-                  key={index}
-                  href={link.url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="group flex items-center justify-between p-3.5 rounded-2xl bg-zinc-950/90 border border-zinc-800/90 hover:border-zinc-700 transition-all duration-300 active:scale-[0.98] shadow-lg"
-                >
-                  <div className="flex items-center gap-3 min-w-0">
-                    <div 
-                      className="w-10 h-10 rounded-xl flex items-center justify-center shrink-0 border"
-                      style={{ 
-                        backgroundColor: `${platDef.brandColor}18`,
-                        borderColor: `${platDef.brandColor}40`,
-                        color: platDef.brandColor
-                      }}
-                    >
-                      <Radio className="w-5 h-5" />
-                    </div>
-
-                    <div className="min-w-0">
-                      <p className="text-sm font-bold text-white group-hover:text-zinc-200 truncate">
-                        {link.label || platDef.name}
-                      </p>
-                      <p className="text-[11px] text-zinc-500 truncate">
-                        Ouvir no {platDef.name}
-                      </p>
-                    </div>
-                  </div>
-
-                  <div 
-                    className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold text-white shadow-md transition group-hover:scale-105 shrink-0"
-                    style={{ backgroundColor: platDef.brandColor }}
+            <div className="flex min-w-0 flex-col gap-3">
+              {release.streaming_links.map((link, index) => {
+                const platDef = MUSIC_PLATFORMS[link.platform] || MUSIC_PLATFORMS.custom;
+                return (
+                  <a
+                    key={`${link.platform}-${index}`}
+                    href={link.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label={`Reproduzir ${release.title} no ${link.label || platDef.name}`}
+                    className="group flex min-h-16 w-full min-w-0 items-center justify-between gap-3 rounded-full border border-white/90 bg-white px-5 py-3 text-zinc-950 shadow-lg transition-all hover:-translate-y-0.5 hover:shadow-xl focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white active:scale-[0.99]"
                   >
-                    <span>Play</span>
-                    <ExternalLink className="w-3 h-3" />
-                  </div>
-                </a>
-              );
-            })
+                    <span className="flex shrink-0 items-center gap-2 text-sm font-bold">
+                      <Music2 className="h-4 w-4" /> Reproduzir
+                    </span>
+                    <span className="flex min-w-0 items-center gap-2">
+                      <span className="truncate text-right text-xs font-semibold text-zinc-500 sm:text-sm">{link.label || platDef.name}</span>
+                      <span
+                        aria-hidden="true"
+                        className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full text-white"
+                        style={{ backgroundColor: platDef.brandColor || primaryColor }}
+                      >
+                        <Music2 className="h-5 w-5" />
+                      </span>
+                    </span>
+                  </a>
+                );
+              })}
+            </div>
           ) : (
-            <div className="p-6 rounded-2xl bg-zinc-900/60 border border-zinc-800 text-center text-xs text-zinc-400">
-              Links de streaming em atualização. Visite o perfil do artista para novidades.
+            <div className="rounded-2xl border border-zinc-800 bg-zinc-900/80 p-6 text-center text-xs text-zinc-300">
+              Os links de streaming serão publicados em breve.
             </div>
           )}
-        </div>
+        </section>
 
         {/* Retorno ao Perfil do Artista */}
         <div className="w-full pt-4 border-t border-zinc-850 flex flex-col items-center gap-3 text-center">
