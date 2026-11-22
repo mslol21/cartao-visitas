@@ -15,6 +15,7 @@ import {
   ChevronUp
 } from 'lucide-react';
 import { toast } from 'sonner';
+import { MusicBrandIcon } from './MusicBrandIcon';
 import type { MusicProfileConfig } from '@/types/music';
 import { SITE_URL } from '@/lib/seo/site';
 import { trackMusicClickAction } from '@/app/actions/music-pro';
@@ -289,7 +290,7 @@ export function MusicHero({
               title="Spotify"
               aria-label="Spotify"
             >
-              <Music className="w-5 h-5" />
+              <MusicBrandIcon brand="spotify" className="w-5 h-5" />
             </a>
           )}
 
@@ -303,7 +304,7 @@ export function MusicHero({
               title="YouTube"
               aria-label="YouTube"
             >
-              <ExternalLink className="w-5 h-5" />
+              <MusicBrandIcon brand="youtube" className="w-5 h-5" />
             </a>
           )}
 
@@ -317,7 +318,7 @@ export function MusicHero({
               title="Instagram"
               aria-label="Instagram"
             >
-              <span className="text-xs font-black">IG</span>
+              <MusicBrandIcon brand="instagram" className="w-5 h-5" />
             </a>
           )}
 
@@ -331,7 +332,7 @@ export function MusicHero({
               title="TikTok"
               aria-label="TikTok"
             >
-              <span className="text-xs font-black">TT</span>
+              <MusicBrandIcon brand="tiktok" className="w-5 h-5" />
             </a>
           )}
 
@@ -345,7 +346,7 @@ export function MusicHero({
               title="SoundCloud"
               aria-label="SoundCloud"
             >
-              <span className="text-xs font-black">SC</span>
+              <MusicBrandIcon brand="soundcloud" className="w-5 h-5" />
             </a>
           )}
         </div>
